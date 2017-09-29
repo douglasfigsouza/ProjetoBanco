@@ -1,0 +1,23 @@
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Web;
+
+namespace ProjetoBanco.MVC.ViewModels
+{
+    public class ClienteViewModel
+    {
+        public int cidadeId { get; set; }
+        public int Id { get; set; }
+        public string nome { get; set; }
+        public string cpf { get; set; }
+        public string rg { get; set; }
+        public string rua { get; set; }
+        public string bairro { get; set; }
+        public int num { get; set; }
+        public string fone { get; set; }
+        public DateTime dataCadastro { get; set; }
+        public char nivel { get; set; }
+        public bool ativo { get; set; }
+    }
+}

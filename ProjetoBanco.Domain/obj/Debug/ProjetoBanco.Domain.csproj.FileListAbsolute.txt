@@ -1,0 +1,4 @@
+c:\users\douglas\documents\visual studio 2015\Projects\ProjetoBanco\ProjetoBanco.Domain\bin\Debug\ProjetoBanco.Domain.dll
+c:\users\douglas\documents\visual studio 2015\Projects\ProjetoBanco\ProjetoBanco.Domain\bin\Debug\ProjetoBanco.Domain.pdb
+c:\users\douglas\documents\visual studio 2015\Projects\ProjetoBanco\ProjetoBanco.Domain\obj\Debug\ProjetoBanco.Domain.dll
+c:\users\douglas\documents\visual studio 2015\Projects\ProjetoBanco\ProjetoBanco.Domain\obj\Debug\ProjetoBanco.Domain.pdb
