@@ -30,8 +30,12 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Compile Include="CidadeAppService.cs" />
     <Compile Include="ClienteAppService.cs" />
+    <Compile Include="EstadoAppService.cs" />
+    <Compile Include="Interfaces\ICidadesAppService.cs" />
     <Compile Include="Interfaces\IClienteAppService.cs" />
+    <Compile Include="Interfaces\IEstadoAppService.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>

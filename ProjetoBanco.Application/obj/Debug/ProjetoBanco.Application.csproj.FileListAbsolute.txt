@@ -12,3 +12,10 @@ D:\ProjetoBanco\ProjetoBanco.Application\bin\Debug\ProjetoBanco.Domain.pdb
 D:\ProjetoBanco\ProjetoBanco.Application\obj\Debug\ProjetoBanco.Application.csprojResolveAssemblyReference.cache
 D:\ProjetoBanco\ProjetoBanco.Application\obj\Debug\ProjetoBanco.Application.dll
 D:\ProjetoBanco\ProjetoBanco.Application\obj\Debug\ProjetoBanco.Application.pdb
+C:\Users\Douglas\ProjetoBanco\ProjetoBanco.Application\bin\Debug\ProjetoBanco.Application.dll
+C:\Users\Douglas\ProjetoBanco\ProjetoBanco.Application\bin\Debug\ProjetoBanco.Application.pdb
+C:\Users\Douglas\ProjetoBanco\ProjetoBanco.Application\bin\Debug\ProjetoBanco.Domain.dll
+C:\Users\Douglas\ProjetoBanco\ProjetoBanco.Application\bin\Debug\ProjetoBanco.Domain.pdb
+C:\Users\Douglas\ProjetoBanco\ProjetoBanco.Application\obj\Debug\ProjetoBanco.Application.csprojResolveAssemblyReference.cache
+C:\Users\Douglas\ProjetoBanco\ProjetoBanco.Application\obj\Debug\ProjetoBanco.Application.dll
+C:\Users\Douglas\ProjetoBanco\ProjetoBanco.Application\obj\Debug\ProjetoBanco.Application.pdb

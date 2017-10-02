@@ -2,6 +2,8 @@
 using ProjetoBanco.Domain.Entities;
 using ProjetoBanco.MVC.ViewModels;
 using System;
+using System.Collections.Generic;
+using System.Web.Helpers;
 using System.Web.Mvc;
 
 namespace ProjetoBanco.MVC.Controllers
@@ -10,26 +12,29 @@ namespace ProjetoBanco.MVC.Controllers
     {
         private readonly IClienteAppService _clienteApp;
         private Cliente cliente;
-        public ClientesController(IClienteAppService clienteApp)
+        private EstadosCidadesController estadosCidades;
+
+        public ClientesController(IClienteAppService clienteApp, IEstadoAppService estadoApp, ICidadesAppService ICidadeAppService)
         {
+            estadosCidades= new EstadosCidadesController(estadoApp, ICidadeAppService);
             _clienteApp = clienteApp;
             cliente = new Cliente();
         }
         // GET: Clientes/Create
-        public ActionResult Create()
+        public ActionResult CreateCliente()
         {
-           return View();
+            ViewBag.estados = estadosCidades.GetAllEstados();
+            return View();
         }
 
         // POST: Clientes/Create
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Create(ClienteViewModel clienteViewModel)
+        public ActionResult CreateCliente(ClienteViewModel clienteViewModel, FormCollection form)
         {
-            ModelState.Clear();
             if (ModelState.IsValid)
             {
-                cliente.cidadeId = 2761;
+                cliente.cidadeId =clienteViewModel.cidadeId;
                 cliente.nome = clienteViewModel.nome;
                 cliente.cpf = clienteViewModel.cpf;
                 cliente.rg = clienteViewModel.rg;
@@ -47,6 +52,11 @@ namespace ProjetoBanco.MVC.Controllers
             {
                 return View(clienteViewModel);
             }
+        }
+
+        public JsonResult GetCidadesByIdEstado(int id)
+        {
+            return Json(estadosCidades.GetCidadesByIdEstado(id),JsonRequestBehavior.AllowGet);
         }
 
         //// GET: Clientes/Edit/5
