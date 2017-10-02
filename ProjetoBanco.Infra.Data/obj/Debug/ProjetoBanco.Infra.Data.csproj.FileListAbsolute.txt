@@ -1,0 +1,7 @@
+D:\ProjetoBanco\ProjetoBanco.Infra.Data\bin\Debug\ProjetoBanco.Infra.Data.dll
+D:\ProjetoBanco\ProjetoBanco.Infra.Data\bin\Debug\ProjetoBanco.Infra.Data.pdb
+D:\ProjetoBanco\ProjetoBanco.Infra.Data\bin\Debug\ProjetoBanco.Domain.dll
+D:\ProjetoBanco\ProjetoBanco.Infra.Data\bin\Debug\ProjetoBanco.Domain.pdb
+D:\ProjetoBanco\ProjetoBanco.Infra.Data\obj\Debug\ProjetoBanco.Infra.Data.dll
+D:\ProjetoBanco\ProjetoBanco.Infra.Data\obj\Debug\ProjetoBanco.Infra.Data.pdb
+D:\ProjetoBanco\ProjetoBanco.Infra.Data\obj\Debug\ProjetoBanco.Infra.Data.csprojResolveAssemblyReference.cache

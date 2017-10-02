@@ -1,4 +1,5 @@
 using ProjetoBanco.Domain.Interfaces.IRepositories;
+using ProjetoBanco.Domain.Interfaces.IServices;
 
 [assembly: WebActivatorEx.PreApplicationStartMethod(typeof(ProjetoBanco.MVC.App_Start.NinjectWebCommon), "Start")]
 [assembly: WebActivatorEx.ApplicationShutdownMethodAttribute(typeof(ProjetoBanco.MVC.App_Start.NinjectWebCommon), "Stop")]
@@ -15,6 +16,7 @@ namespace ProjetoBanco.MVC.App_Start
     using Application.Interfaces;
     using Domain.Services;
     using Application;
+    using Infra.Data.Repositories;
 
     public static class NinjectWebCommon 
     {
@@ -67,8 +69,8 @@ namespace ProjetoBanco.MVC.App_Start
         private static void RegisterServices(IKernel kernel)
         {
             kernel.Bind<IClienteAppService>().To<ClienteAppService>();
-            kernel.Bind<ClienteService>().To<ClienteService>();
-            kernel.Bind<IClienteRepositoryDomain>().To<IClienteRepositoryDomain>();
+            kernel.Bind<IClienteServiceDomain>().To<ClienteService>();
+            kernel.Bind<IClienteRepositoryDomain>().To<ClientesRepository>();
         }       
     }
 }

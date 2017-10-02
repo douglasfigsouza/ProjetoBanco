@@ -5,3 +5,10 @@ c:\users\douglas\documents\visual studio 2015\Projects\ProjetoBanco\ProjetoBanco
 c:\users\douglas\documents\visual studio 2015\Projects\ProjetoBanco\ProjetoBanco.Application\bin\Debug\ProjetoBanco.Domain.pdb
 c:\users\douglas\documents\visual studio 2015\Projects\ProjetoBanco\ProjetoBanco.Application\obj\Debug\ProjetoBanco.Application.dll
 c:\users\douglas\documents\visual studio 2015\Projects\ProjetoBanco\ProjetoBanco.Application\obj\Debug\ProjetoBanco.Application.pdb
+D:\ProjetoBanco\ProjetoBanco.Application\bin\Debug\ProjetoBanco.Application.dll
+D:\ProjetoBanco\ProjetoBanco.Application\bin\Debug\ProjetoBanco.Application.pdb
+D:\ProjetoBanco\ProjetoBanco.Application\bin\Debug\ProjetoBanco.Domain.dll
+D:\ProjetoBanco\ProjetoBanco.Application\bin\Debug\ProjetoBanco.Domain.pdb
+D:\ProjetoBanco\ProjetoBanco.Application\obj\Debug\ProjetoBanco.Application.csprojResolveAssemblyReference.cache
+D:\ProjetoBanco\ProjetoBanco.Application\obj\Debug\ProjetoBanco.Application.dll
+D:\ProjetoBanco\ProjetoBanco.Application\obj\Debug\ProjetoBanco.Application.pdb

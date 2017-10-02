@@ -2,3 +2,8 @@ c:\users\douglas\documents\visual studio 2015\Projects\ProjetoBanco\ProjetoBanco
 c:\users\douglas\documents\visual studio 2015\Projects\ProjetoBanco\ProjetoBanco.Domain\bin\Debug\ProjetoBanco.Domain.pdb
 c:\users\douglas\documents\visual studio 2015\Projects\ProjetoBanco\ProjetoBanco.Domain\obj\Debug\ProjetoBanco.Domain.dll
 c:\users\douglas\documents\visual studio 2015\Projects\ProjetoBanco\ProjetoBanco.Domain\obj\Debug\ProjetoBanco.Domain.pdb
+D:\ProjetoBanco\ProjetoBanco.Domain\bin\Debug\ProjetoBanco.Domain.dll
+D:\ProjetoBanco\ProjetoBanco.Domain\bin\Debug\ProjetoBanco.Domain.pdb
+D:\ProjetoBanco\ProjetoBanco.Domain\obj\Debug\ProjetoBanco.Domain.csprojResolveAssemblyReference.cache
+D:\ProjetoBanco\ProjetoBanco.Domain\obj\Debug\ProjetoBanco.Domain.dll
+D:\ProjetoBanco\ProjetoBanco.Domain\obj\Debug\ProjetoBanco.Domain.pdb

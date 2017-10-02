@@ -9,11 +9,11 @@ namespace ProjetoBanco.Domain.Interfaces.IRepositories
 {
     public interface IClienteRepositoryDomain
     {
-        void Add(Cliente cliente);
-        Cliente GetById(int id);
-        IEnumerable<Cliente> GetAll();
-        void Update(Cliente cliente);
-        void Remove(Cliente obj);
+        void AddCliente(Cliente cliente);
+        Cliente GetByClienteId(int id);
+        IEnumerable<Cliente> GetAllClientes();
+        void UpdateClientes(Cliente cliente);
+        void RemoveClientes(Cliente obj);
         void Dispose();
     }
 }

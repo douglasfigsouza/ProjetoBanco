@@ -15,27 +15,27 @@ namespace ProjetoBanco.Application
             _iClienteService = iClienteService;
         }
 
-        public void Add(Cliente cliente)
+        public void AddCliente(Cliente cliente)
         {
-            _iClienteService.Add(cliente);
+            _iClienteService.AddCliente(cliente);
         }
 
-        public Cliente GetById(int id)
-        {
-            throw new NotImplementedException();
-        }
-
-        public IEnumerable<Cliente> GetAll()
+        public Cliente GetByClienteId(int id)
         {
             throw new NotImplementedException();
         }
 
-        public void Update(Cliente cliente)
+        public IEnumerable<Cliente> GetAllClientes()
         {
             throw new NotImplementedException();
         }
 
-        public void Remove(Cliente obj)
+        public void UpdateCliente(Cliente cliente)
+        {
+            throw new NotImplementedException();
+        }
+
+        public void RemoveCliente(Cliente cliente)
         {
             throw new NotImplementedException();
         }

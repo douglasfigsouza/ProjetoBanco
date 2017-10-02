@@ -18,7 +18,7 @@ namespace ProjetoBanco.MVC.Controllers
         // GET: Clientes/Create
         public ActionResult Create()
         {
-            return View();
+           return View();
         }
 
         // POST: Clientes/Create
@@ -40,7 +40,7 @@ namespace ProjetoBanco.MVC.Controllers
                 cliente.nivel = clienteViewModel.nivel;
                 cliente.dataCadastro = DateTime.Now;
                 cliente.ativo = true;
-                _clienteApp.Add(cliente);
+                _clienteApp.AddCliente(cliente);
                 return RedirectToAction("Index");
             }
             else

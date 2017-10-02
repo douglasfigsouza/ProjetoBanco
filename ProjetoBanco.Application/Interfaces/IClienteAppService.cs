@@ -5,11 +5,11 @@ namespace ProjetoBanco.Application.Interfaces
 {
     public interface IClienteAppService
     {
-        void Add(Cliente cliente);
-        Cliente GetById(int id);
-        IEnumerable<Cliente> GetAll();
-        void Update(Cliente cliente);
-        void Remove(Cliente obj);
+        void AddCliente(Cliente cliente);
+        Cliente GetByClienteId(int id);
+        IEnumerable<Cliente> GetAllClientes();
+        void UpdateCliente(Cliente cliente);
+        void RemoveCliente(Cliente cliente);
         void Dispose();
     }
 }

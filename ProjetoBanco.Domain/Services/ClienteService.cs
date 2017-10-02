@@ -18,31 +18,30 @@ namespace ProjetoBanco.Domain.Services
             _repository = repository;
         }
 
-        public void Add(Cliente cliente)
+        public void AddCliente(Cliente cliente)
         {
-            _repository.Add(cliente);
+            _repository.AddCliente(cliente);
         }
 
-        public Cliente GetById(int id)
-        {
-            throw new NotImplementedException();
-        }
-
-        public IEnumerable<Cliente> GetAll()
+        public IEnumerable<Cliente> GetAllClientes()
         {
             throw new NotImplementedException();
         }
 
-        public void Update(Cliente cliente)
+        public Cliente GetByClienteId(int id)
         {
             throw new NotImplementedException();
         }
 
-        public void Remove(Cliente obj)
+        public void RemoveClientes(Cliente obj)
         {
             throw new NotImplementedException();
         }
 
+        public void UpdateClientes(Cliente cliente)
+        {
+            throw new NotImplementedException();
+        }
         public void Dispose()
         {
             _repository.Dispose();

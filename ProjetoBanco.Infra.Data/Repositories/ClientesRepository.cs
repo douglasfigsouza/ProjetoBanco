@@ -8,18 +8,18 @@ using ProjetoBanco.Domain.Interfaces.IRepositories;
 
 namespace ProjetoBanco.Infra.Data.Repositories
 {
-    class ClientesRepository:IClienteRepositoryDomain
+    public class ClientesRepository:IClienteRepositoryDomain
     {
         Conexao conn = new Conexao();
 
         private enum Procedures
         {
-            PBSP_INSERTCLI
+            PBSP_INSERTCLIENTE
         }
-        public void Add(Cliente cliente)
-        {
 
-            conn.ExecuteProcedure(Procedures.PBSP_INSERTCLI);
+        public void AddCliente(Cliente cliente)
+        {
+            conn.ExecuteProcedure(Procedures.PBSP_INSERTCLIENTE);
             conn.AddParameter("@cidadeId", cliente.cidadeId);
             conn.AddParameter("@nome", cliente.nome);
             conn.AddParameter("@cpf", cliente.cpf);
@@ -35,26 +35,25 @@ namespace ProjetoBanco.Infra.Data.Repositories
             conn.ExecuteNonQuery();
         }
 
-        public Cliente GetById(int id)
+        public Cliente GetByClienteId(int id)
         {
             throw new NotImplementedException();
         }
 
-        public IEnumerable<Cliente> GetAll()
+        public IEnumerable<Cliente> GetAllClientes()
         {
             throw new NotImplementedException();
         }
 
-        public void Update(Cliente cliente)
+        public void UpdateClientes(Cliente cliente)
         {
             throw new NotImplementedException();
         }
 
-        public void Remove(Cliente obj)
+        public void RemoveClientes(Cliente obj)
         {
             throw new NotImplementedException();
         }
-
 
         public void Dispose()
         {
