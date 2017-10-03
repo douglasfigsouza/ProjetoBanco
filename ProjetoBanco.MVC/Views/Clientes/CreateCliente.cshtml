@@ -6,91 +6,92 @@
 
 <h5>Cadastro de Clientes</h5>
 <div class="row">
-    <div class="col s7">
+    <div class="col s12">
         <hr>
     </div>
-    <div class="col s8">
+    <div class="col s12">
         @using (Html.BeginForm())
         {
             @Html.AntiForgeryToken()
-            <div class="row">
-                <label for="nome" class="col s12">Nome</label>
-                <div class="col s10">
-                    @Html.EditorFor(model => model.nome, new { htmlAttributes = new { @class = "col s12" } })
-                    @Html.ValidationMessageFor(model => model.nome, "", new { @class = "text-danger" })
+            @Html.ValidationSummary(true)
+            {
+                <div class="row">
+                    <div class="col s6">
+                        <label for="nome" class="col s12">Nome</label>
+                        @Html.EditorFor(model => model.nome, new { htmlAttributes = new { @class = "col s12" } })
+                        @Html.ValidationMessageFor(model => model.nome, "", new { @class = "text-danger" })
+                    </div>
                 </div>
-            </div>
-            <div class="row">
-                <label for="cpf" class="col s12">CPF</label>
-                <div class="col s10">
-                    @Html.EditorFor(model => model.cpf, new { htmlAttributes = new { @class = "col s12" } })
-                    @Html.ValidationMessageFor(model => model.cpf, "", new { @class = "text-danger" })
+
+                <div class="row">
+                    <div class="col s6">
+                        <label for="cpf" class="col s12">CPF</label>
+                        @Html.EditorFor(model => model.cpf, new { htmlAttributes = new { @class = "col s12 cpf" } })
+                        @Html.ValidationMessageFor(model => model.cpf, "", new { @class = "text-danger" })
+                    </div>
+                    <div class="col s6">
+                        <label for="rg" class="col s12">RG</label>
+                        @Html.EditorFor(model => model.rg, new { htmlAttributes = new { @class = "col s12 rg" } })
+                    </div>
                 </div>
-            </div>
-            <div class="row">
-                <label for="rg" class="col s12">RG</label>
-                <div class="col s10">
-                    @Html.EditorFor(model => model.rg, new { htmlAttributes = new { @class = "col s12" } })
-                    @Html.ValidationMessageFor(model => model.rg, "", new { @class = "text-danger" })
+
+                <div class="row">
+                    <div class="col s6">
+                        <label for="fone" class="col s12">Fone</label>
+                        @Html.EditorFor(model => model.fone, new { htmlAttributes = new { @class = "col s12 fone" } })
+                        @Html.ValidationMessageFor(model => model.fone, "", new { @class = "text-danger" })
+                    </div>
+                    <div class="col s6">
+                        <label class="col s12">Nivel de Usuário</label>
+                        <p>
+                            <input class="with-gap col s1" value="c" name="nivel" type="radio" id="cliente" checked />
+                            <label for="cliente" class="col s4">Cliente</label>
+                        </p>
+                        <p>
+                            <input class="with-gap col s1" name="nivel" value="f" type="radio" id="funcionario" />
+                            <label for="funcionario" class="col s4">Funcionario</label>
+                        </p>
+                    </div>
                 </div>
-            </div>
-            <div class="row">
-                <label for="fone" class="col s12">Fone</label>
-                <div class="col s10">
-                    @Html.EditorFor(model => model.fone, new { htmlAttributes = new { @class = "col s12" } })
-                    @Html.ValidationMessageFor(model => model.fone, "", new { @class = "text-danger" })
+
+                <div class="row">
+                    <div class="col s5">
+                        <label class="col s12" for="ddlestadoClientes">Estado</label>
+                        @Html.DropDownList("ddlestadoClientes", new SelectList(ViewBag.estados, "EstadoId", "Sigla"), "Selecione", new { @class = "col s10" })
+                    </div>
+                    <div class="col s7">
+                        <label class="col s12" for="ddlCidadesClientes">Cidade</label>
+                        <select id="ddlCidadesClientes" name="cidadeId" class="col s8" disabled>
+                            <option value="0">Selecione</option>
+                        </select>
+                    </div>
                 </div>
-            </div>
-            <div class="row">
-                <label class="col s12">Nivel de Usuário</label>
-                <div class="col s10">
-                    <p>
-                        <input class="with-gap col s1" value="c" name="nivel" type="radio" id="cliente" />
-                        <label for="cliente" class="col s4">Cliente</label>
-                    </p>
-                    <p>
-                        <input class="with-gap col s1" name="nivel" value="f" type="radio" id="funcionario" />
-                        <label for="funcionario" class="col s4">Funcionario</label>
-                    </p>
+
+                <div class="row">
+                    <div class="col s4">
+                        <label for="bairro" class="col s12">Bairro</label>
+                        @Html.EditorFor(model => model.bairro, new { htmlAttributes = new { @class = "col s12" } })
+                        @Html.ValidationMessageFor(model => model.bairro, "", new { @class = "text-danger" })
+                    </div>
+                    <div class="col s5">
+                        <label for="rua" class="col s12">Rua</label>
+                        @Html.EditorFor(model => model.rua, new { htmlAttributes = new { @class = "col s12" } })
+                        @Html.ValidationMessageFor(model => model.rua, "", new { @class = "text-danger" })
+                    </div>
+                    <div class="col s3">
+                        <label for="num" class="col s12">N°</label>
+                        @Html.EditorFor(model => model.num, new { htmlAttributes = new { @class = "col s6" } })
+                        @Html.ValidationMessageFor(model => model.num, "", new { @class = "text-danger" })
+                    </div>
                 </div>
-            </div>
-            <div class="row">
-                <div class="col s5">
-                    <label class="col s12" for="ddlestadoClientes">Estado</label>
-                    @Html.DropDownList("ddlestadoClientes", new SelectList(ViewBag.estados, "EstadoId", "Sigla"), "Selecione", new { @class = "col s10" })
+
+                <div class="row">
+                    <button class="btn waves-effect waves-light right" type="submit" name="action">
+                        Cadastrar
+                        <i class="material-icons right">send</i>
+                    </button>
                 </div>
-                <div class="col s7">
-                    <label class="col s12" for="ddlCidadesClientes">Cidade</label>
-                    <select id="ddlCidadesClientes" name="cidadeId" class="col s8" disabled>
-                        <option value="0">Selecione</option>
-                    </select>
-                </div>
-            </div>
-            <div class="row">
-                <label for="bairro" class="col s12">Bairro</label>
-                <div class="col s10">
-                    @Html.EditorFor(model => model.bairro, new { htmlAttributes = new { @class = "col s12" } })
-                    @Html.ValidationMessageFor(model => model.bairro, "", new { @class = "text-danger" })
-                </div>
-            </div>
-            <div class="row">
-                <div class="col s8">
-                    <label for="rua" class="col s12">Rua</label>
-                    @Html.EditorFor(model => model.rua, new { htmlAttributes = new { @class = "col s12" } })
-                    @Html.ValidationMessageFor(model => model.rua, "", new { @class = "text-danger" })
-                </div>
-                <div class="col s4">
-                    <label for="num" class="col s12">N°</label>
-                    @Html.EditorFor(model => model.num, new { htmlAttributes = new { @class = "col s6" } })
-                    @Html.ValidationMessageFor(model => model.num, "", new { @class = "text-danger" })
-                </div>
-            </div>
-            <div class="row">
-                <button class="btn waves-effect waves-light" type="submit" name="action">
-                    Cadastrar
-                    <i class="material-icons right">send</i>
-                </button>
-            </div>
+            }
         }
     </div>
 </div>
@@ -117,6 +118,79 @@
 
                 });
             $("#ddlCidadesClientes").removeAttr('disabled');
+        });
+        $(".cpf").mask("999.999.999-99");
+        $(".rg").mask("99.999.999");
+        $(".fone").mask("(99) 9 9999-9999");
+        $("form").validate({
+            submitHandler: function (form) {
+                form.submit();
+            },
+            rules: {
+                nome: {
+                    required: true,
+                    minlength: 5,
+                    maxlength: 100
+                },
+                cpf: {
+                    required: true
+                },
+                rg: {
+                    required: true
+                },
+                fone: {
+                    required: true
+                },
+                bairro: {
+                    required: true
+                },
+                rua: {
+                    required: true
+                },
+                num: {
+                    required: true
+                },
+                nivel: {
+                    required: true
+                },
+                cidadeId: {
+                    required: true
+                }
+            },
+            messages: {
+                nome: {
+                    required: "O campo Nome é Obrigatório! Digite-O",
+                    minlength: "O campo Nome deve conter no mínimo 5 caracteres!",
+                    maxlength: "O campo Nome deve conter no máximo 100 caracteres!"
+                },
+                cpf: {
+                    required: "O campo CPF é Obrigatório! Digite-O"
+                },
+                rg: {
+                    required: "O campo RG é Obrigatório! Digite-O"
+                },
+                fone: {
+                    required: "O campo Fone é Obrigatório! Digite-O"
+                },
+                bairro: {
+                    required: "O campo Bairro é Obrigatório! Digite-O"
+                },
+                rua: {
+                    required: "O campo Rua é Obrigatório! Digite-O"
+                },
+                num: {
+                    required: "O campo N° é Obrigatório! Digite-O"
+
+                },
+                nivel: {
+                    required: "O campo Nível é Obrigatório! Digite-O"
+
+                },
+                cidadeId: {
+                    required: "Selecione a cidade!"
+                }
+
+            }
         });
     });
 </script>

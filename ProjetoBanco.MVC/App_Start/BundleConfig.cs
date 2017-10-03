@@ -23,7 +23,9 @@ namespace ProjetoBanco.MVC
                       "~/Scripts/materialize/materialize.js",
                       "~/Scripts/respond.js",
                       "~/Scripts/SisBank.js",
-                      "~/Scripts/materialize/SisBankMaterialize.js"));
+                      "~/Scripts/materialize/SisBankMaterialize.js",
+                      "~/Scripts/jquery.maskedinput.js",
+                      "~/Scripts/jquery.validate.js"));
 
             bundles.Add(new StyleBundle("~/Content/css").Include(
                       "~/Content/materialize/css/materialize.css",

@@ -2,8 +2,7 @@
 using ProjetoBanco.Domain.Entities;
 using ProjetoBanco.MVC.ViewModels;
 using System;
-using System.Collections.Generic;
-using System.Web.Helpers;
+using ProjetoBanco.MVC.Utilitarios;
 using System.Web.Mvc;
 
 namespace ProjetoBanco.MVC.Controllers
@@ -36,9 +35,9 @@ namespace ProjetoBanco.MVC.Controllers
             {
                 cliente.cidadeId =clienteViewModel.cidadeId;
                 cliente.nome = clienteViewModel.nome;
-                cliente.cpf = clienteViewModel.cpf;
-                cliente.rg = clienteViewModel.rg;
-                cliente.fone = clienteViewModel.fone;
+                cliente.cpf = Utilitarios.Utilitarios.retiraMask(clienteViewModel.cpf);
+                cliente.rg = Utilitarios.Utilitarios.retiraMask(clienteViewModel.rg);
+                cliente.fone = Utilitarios.Utilitarios.retiraMask(clienteViewModel.fone);
                 cliente.rua = clienteViewModel.rua;
                 cliente.bairro = clienteViewModel.bairro;
                 cliente.num = clienteViewModel.num;
@@ -47,7 +46,7 @@ namespace ProjetoBanco.MVC.Controllers
                 cliente.ativo = true;
                 _clienteApp.AddCliente(cliente);
                 return RedirectToAction("Index");
-            }
+                }
             else
             {
                 return View(clienteViewModel);
