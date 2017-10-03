@@ -29,7 +29,7 @@
                         @Html.EditorFor(model => model.cpf, new { htmlAttributes = new { @class = "col s12 cpf" } })
                         @Html.ValidationMessageFor(model => model.cpf, "", new { @class = "text-danger" })
                     </div>
-                    <div class="col s6">
+                    <div class="col s6 ">
                         <label for="rg" class="col s12">RG</label>
                         @Html.EditorFor(model => model.rg, new { htmlAttributes = new { @class = "col s12 rg" } })
                     </div>
@@ -73,12 +73,12 @@
                         @Html.EditorFor(model => model.bairro, new { htmlAttributes = new { @class = "col s12" } })
                         @Html.ValidationMessageFor(model => model.bairro, "", new { @class = "text-danger" })
                     </div>
-                    <div class="col s5">
+                    <div class="col s5 ">
                         <label for="rua" class="col s12">Rua</label>
                         @Html.EditorFor(model => model.rua, new { htmlAttributes = new { @class = "col s12" } })
                         @Html.ValidationMessageFor(model => model.rua, "", new { @class = "text-danger" })
                     </div>
-                    <div class="col s3">
+                    <div class="col s3 ">
                         <label for="num" class="col s12">N°</label>
                         @Html.EditorFor(model => model.num, new { htmlAttributes = new { @class = "col s6" } })
                         @Html.ValidationMessageFor(model => model.num, "", new { @class = "text-danger" })
@@ -100,6 +100,7 @@
         //função que busca cidades pelo id do estado e seta no combo cidades
         $("#ddlestadoClientes").change(function () {
             var id = $("#ddlestadoClientes").val();
+            $('#ddlCidadesClientes').empty();
             $.ajax(
                 {
                     type: 'GET',

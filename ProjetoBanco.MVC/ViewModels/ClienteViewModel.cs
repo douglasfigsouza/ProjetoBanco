@@ -11,6 +11,7 @@ namespace ProjetoBanco.MVC.ViewModels
         [Required(ErrorMessage = "Selecione uma cidade!")]
         public int cidadeId { get; set; }
 
+
         public int Id { get; set; }
 
         [Required(ErrorMessage ="O campo nome é obrigatório,digite-O!")]

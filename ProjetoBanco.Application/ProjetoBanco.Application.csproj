@@ -30,13 +30,17 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Compile Include="BancoAppService.cs" />
     <Compile Include="CidadeAppService.cs" />
     <Compile Include="ClienteAppService.cs" />
     <Compile Include="EstadoAppService.cs" />
+    <Compile Include="Interfaces\IBancoAppService.cs" />
     <Compile Include="Interfaces\ICidadesAppService.cs" />
     <Compile Include="Interfaces\IClienteAppService.cs" />
     <Compile Include="Interfaces\IEstadoAppService.cs" />
+    <Compile Include="Interfaces\IUsuarioAppService.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="UsuarioAppService.cs" />
   </ItemGroup>
   <ItemGroup>
     <Reference Include="System" />

@@ -27,7 +27,7 @@ namespace ProjetoBanco.Application
 
         public IEnumerable<Cliente> GetAllClientes()
         {
-            throw new NotImplementedException();
+            return _iClienteService.GetAllClientes();
         }
 
         public void UpdateCliente(Cliente cliente)

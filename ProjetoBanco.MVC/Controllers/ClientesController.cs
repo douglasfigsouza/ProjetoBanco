@@ -10,19 +10,21 @@ namespace ProjetoBanco.MVC.Controllers
     public class ClientesController : Controller
     {
         private readonly IClienteAppService _clienteApp;
+        private readonly IEstadoAppService _estadoAppService;
+        private readonly ICidadesAppService _cidadesAppService;
         private Cliente cliente;
-        private EstadosCidadesController estadosCidades;
 
-        public ClientesController(IClienteAppService clienteApp, IEstadoAppService estadoApp, ICidadesAppService ICidadeAppService)
+        public ClientesController(IClienteAppService clienteApp, IEstadoAppService estadoApp, ICidadesAppService ICidadeAppService, IBancoAppService IBancoAppService)
         {
-            estadosCidades= new EstadosCidadesController(estadoApp, ICidadeAppService);
             _clienteApp = clienteApp;
+            _estadoAppService = estadoApp;
+            _cidadesAppService = ICidadeAppService;
             cliente = new Cliente();
         }
         // GET: Clientes/Create
         public ActionResult CreateCliente()
         {
-            ViewBag.estados = estadosCidades.GetAllEstados();
+            ViewBag.estados = _estadoAppService.GetAllEstados();
             return View();
         }
 
@@ -49,13 +51,14 @@ namespace ProjetoBanco.MVC.Controllers
                 }
             else
             {
+                ViewBag.estados = _estadoAppService.GetAllEstados();
                 return View(clienteViewModel);
             }
         }
-
+        [HttpGet]
         public JsonResult GetCidadesByIdEstado(int id)
         {
-            return Json(estadosCidades.GetCidadesByIdEstado(id),JsonRequestBehavior.AllowGet);
+            return Json(_cidadesAppService.GetCidadesByEstadoId(id),JsonRequestBehavior.AllowGet);
         }
 
         //// GET: Clientes/Edit/5

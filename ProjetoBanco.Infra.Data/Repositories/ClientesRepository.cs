@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Data.SqlClient;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -11,10 +12,18 @@ namespace ProjetoBanco.Infra.Data.Repositories
     public class ClientesRepository:IClienteRepositoryDomain
     {
         Conexao conn = new Conexao();
+        private SqlDataReader result;
+        private List<Cliente> lstClientes;
+
+        public ClientesRepository()
+        {
+            lstClientes = new List<Cliente>();
+        }
 
         private enum Procedures
         {
-            PBSP_INSERTCLIENTE
+            PBSP_INSERTCLIENTE,
+            PBSP_GETALLCLIENTES
         }
 
         public void AddCliente(Cliente cliente)
@@ -42,7 +51,17 @@ namespace ProjetoBanco.Infra.Data.Repositories
 
         public IEnumerable<Cliente> GetAllClientes()
         {
-            throw new NotImplementedException();
+            conn.ExecuteProcedure(Procedures.PBSP_GETALLCLIENTES);
+            result = conn.ExecuteReader();
+            while (result.Read())
+            {
+                lstClientes.Add(new Cliente
+                {
+                    Id = Convert.ToInt32(result["Id"].ToString()),
+                    nome = result["nome"].ToString()
+                });
+            }
+            return lstClientes.ToList();
         }
 
         public void UpdateClientes(Cliente cliente)

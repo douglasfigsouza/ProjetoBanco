@@ -1,0 +1,50 @@
+﻿@model ProjetoBanco.MVC.ViewModels.BancoViewModel
+<h5>Cadastro de Banco</h5>
+<div class="row">
+    <div class="col s4">
+        <hr/>
+        @using (Html.BeginForm())
+        {
+            @Html.AntiForgeryToken()
+            @Html.ValidationSummary(true)
+            {
+                <div class="row">
+                    <div class="col s12">
+                        <label for="nome" class="col s12">Banco</label>
+                        @Html.TextBoxFor(b=>b.nome, new {@class="col s12"})
+                    </div>
+                </div>
+
+                <div class="row">
+                    <button class="btn waves-effect waves-light right" type="submit" name="CadastroBanco">
+                        Cadastrar
+                        <i class="material-icons right">send</i>
+                    </button>
+                </div>
+            }
+        }
+    </div>
+</div>
+<script>
+    $(document).ready(function() {
+        $("form").validate({
+            submitHandler: function (form) {
+                form.submit();
+            },
+            rules: {
+                nome: {
+                    required: true,
+                    maxlength: 200
+                }
+            },
+            messages: {
+                nome: {
+                    required: "O campo nome é Obrigatório! Digite-O",
+                    maxlength: "O campo Nome deve conter no minímo 5 caracteres!",
+                    maxlength: "O campo Nome deve conter no máximo 200 caracteres!"
+                }
+            }
+        });
+    });
+</script>
+

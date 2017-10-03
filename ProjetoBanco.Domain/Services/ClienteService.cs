@@ -25,7 +25,7 @@ namespace ProjetoBanco.Domain.Services
 
         public IEnumerable<Cliente> GetAllClientes()
         {
-            throw new NotImplementedException();
+            return _repository.GetAllClientes();
         }
 
         public Cliente GetByClienteId(int id)
