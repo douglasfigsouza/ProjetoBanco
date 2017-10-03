@@ -13,15 +13,18 @@ namespace ProjetoBanco.Infra.Data.Repositories
     {
         private Conexao conn;
         private SqlDataReader result;
+        private Usuario usuario;
 
         public enum Procedures
         {
-            PBSP_INSERTUSUARIOS
+            PBSP_INSERTUSUARIOS,
+            PBSP_AUTENTICA
         }
 
         public UsuarioRepository()
         {
             conn = new Conexao();
+            usuario = new Usuario();
         }
         public void AddUsuario(Usuario usuario)
         {
@@ -34,7 +37,18 @@ namespace ProjetoBanco.Infra.Data.Repositories
 
         public Usuario VerificaLogin(Usuario usuario)
         {
-            throw new NotImplementedException();
+            conn.ExecuteProcedure(Procedures.PBSP_AUTENTICA);
+            conn.AddParameter("@nome",usuario.nome);
+            conn.AddParameter("@senha",usuario.senha);
+            result = conn.ExecuteReader();
+            while (result.Read())
+            {
+                usuario.clienteId = Convert.ToInt32(result["clienteId"].ToString());
+                usuario.nome = result["nome"].ToString();
+                usuario.senha = result["senha"].ToString();
+                usuario.nivel = Convert.ToChar(result["nivel"].ToString());
+            }
+            return usuario;
         }
 
         public Usuario GetByUsuarioId(int id)

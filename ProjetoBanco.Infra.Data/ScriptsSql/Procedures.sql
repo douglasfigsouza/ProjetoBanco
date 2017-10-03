@@ -163,7 +163,7 @@ CREATE PROCEDURE [dbo].[PBSP_AUTENTICA]
 	/*
 	Documentação
 	Arquivo Fonte.....: ArquivoFonte.sql
-	Objetivo..........: ver
+	Objetivo..........: verifica se existe o usuario informado no banco, se houver retorna 
 	Autor.............: SMN - Douglas
  	Data..............: 03/10/2017
 	Ex................: EXEC [dbo].[PBSP_AUTENTICA]
@@ -172,7 +172,8 @@ CREATE PROCEDURE [dbo].[PBSP_AUTENTICA]
 
 	BEGIN
 	
-		SELECT * FROM [dbo].[Usuario] with(nolock)
+		SELECT Usuario.clienteId,Usuario.nome,Usuario.senha, Clientes.nivel FROM [dbo].[Usuario] with(nolock)
+			INNER JOIN Clientes ON Clientes.Id = Usuario.clienteId
 			WHERE [dbo].[Usuario].nome=@nome and [dbo].[Usuario].senha=@senha
 
 	END

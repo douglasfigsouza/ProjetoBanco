@@ -11,5 +11,6 @@ namespace ProjetoBanco.Domain.Entities
         public int clienteId  { get; set; }
         public string nome { get; set; }
         public string senha { get; set; }
+        public char nivel { get; set; }
     }
 }

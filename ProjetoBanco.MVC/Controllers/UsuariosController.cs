@@ -13,7 +13,7 @@ namespace ProjetoBanco.MVC.Controllers
     {
         private readonly IUsuarioAppService _IUsuarioAppService;
         private readonly IClienteAppService _IClienteAppService;
-        private Usuario usuario;
+        private Usuario usuario,usuarioAutenticado;
 
         public UsuariosController(IUsuarioAppService IUsuarioAppService, IClienteAppService IClienteAppService)
         {
@@ -27,13 +27,30 @@ namespace ProjetoBanco.MVC.Controllers
             return View();
         }
 
-        //[HttpPost]
-        //public ActionResult Login(FormCollection form)
-        //{
-        //    usuario.nome = form["nome"];
-        //    usuario.senha= form["senha"];
+        [HttpPost]
+        public ActionResult Login(FormCollection form)
+        {
+            usuario.nome = form["usuario"];
+            usuario.senha = form["senha"];
+            if (usuario.senha != "" && usuario.nome != "")
+            {
+                usuario = _IUsuarioAppService.VerificaLogin(usuario);
 
-        //}
+                if (usuario.nivel !=0)
+                {
+                    Session["nivel"] = usuario.nivel;
+                    return RedirectToAction("Index", "Home");
+                }
+                else
+                {
+                    return View("Login");
+                }
+            }
+            else
+            {
+                return View("Login");
+            }
+        }
 
         public ActionResult CreateUsuario()
         {
