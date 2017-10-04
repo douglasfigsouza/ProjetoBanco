@@ -178,4 +178,60 @@ CREATE PROCEDURE [dbo].[PBSP_AUTENTICA]
 
 	END
 GO
-								
+--insere Operacaoes		
+
+IF EXISTS (SELECT * FROM dbo.sysobjects WHERE id = object_id(N'[dbo].[PBSP_INSERTOPERACAO]') AND objectproperty(id, N'IsPROCEDURE')=1)
+	DROP PROCEDURE [dbo].[PBSP_INSERTOPERACAO]
+GO
+
+CREATE PROCEDURE [dbo].[PBSP_INSERTOPERACAO]
+	@descricao[VARCHAR](200)
+	AS
+
+	/*
+	Documentação
+	Arquivo Fonte.....: ArquivoFonte.sql
+	Objetivo..........: Inserir Opercaoes
+	Autor.............: SMN - Douglas
+ 	Data..............: 04/10/2017
+	Ex................: EXEC [dbo].[PBSP_INSERTOPERACAO]
+
+	*/
+
+	BEGIN
+	
+		INSERT INTO [dbo].[Operacoes](descricao)
+			VALUES(@descricao)
+
+	END
+GO
+--Insere Agencia
+
+IF EXISTS (SELECT * FROM dbo.sysobjects WHERE id = object_id(N'[dbo].[PBSP_INSERTAGENCIA]') AND objectproperty(id, N'IsPROCEDURE')=1)
+	DROP PROCEDURE [dbo].[PBSP_INSERTAGENCIA]
+GO
+
+CREATE PROCEDURE [dbo].[PBSP_INSERTAGENCIA]
+	@cidadeId[INT],
+	@bancoId[SMALLINT],
+	@agencia[INT]
+	AS
+
+	/*
+	Documentação
+	Arquivo Fonte.....: ArquivoFonte.sql
+	Objetivo..........: Inserir agencias
+	Autor.............: SMN - Douglas
+ 	Data..............: 04/10/2017
+	Ex................: EXEC [dbo].[PBSP_INSERTAGENCIA]
+
+	*/
+
+	BEGIN
+	
+		INSERT INTO [dbo].[Agencia](CidadeId,bancoId,agencia)
+			VALUES(@cidadeId,@bancoId,@agencia)
+
+	END
+GO
+				

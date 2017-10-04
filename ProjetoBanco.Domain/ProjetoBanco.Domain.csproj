@@ -30,26 +30,34 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Compile Include="Entities\Agencia.cs" />
     <Compile Include="Entities\Banco.cs" />
     <Compile Include="Entities\Cidade.cs" />
     <Compile Include="Entities\Cliente.cs" />
     <Compile Include="Entities\Estado.cs" />
+    <Compile Include="Entities\Operacoes.cs" />
     <Compile Include="Entities\Usuario.cs" />
+    <Compile Include="Interfaces\IRepositories\IAgenciaRepositoryDomain.cs" />
     <Compile Include="Interfaces\IRepositories\IBancoRepositoryDomain.cs" />
     <Compile Include="Interfaces\IRepositories\ICidadeRepositoryDomain.cs" />
     <Compile Include="Interfaces\IRepositories\IClienteRepositoryDomain.cs" />
     <Compile Include="Interfaces\IRepositories\IEstadoRepositoryDomain.cs" />
+    <Compile Include="Interfaces\IRepositories\IOperacoesRepositoryDomain.cs" />
     <Compile Include="Interfaces\IRepositories\IUsuarioRepositoryDomain.cs" />
+    <Compile Include="Interfaces\IServices\IAgenciaServiceDomain.cs" />
     <Compile Include="Interfaces\IServices\IBancoServiceDomain.cs" />
     <Compile Include="Interfaces\IServices\ICidadeServiceDomain.cs" />
     <Compile Include="Interfaces\IServices\IClienteServiceDomain.cs" />
     <Compile Include="Interfaces\IServices\IEstadoServiceDomain.cs" />
+    <Compile Include="Interfaces\IServices\IOperacaoServiceDomain.cs" />
     <Compile Include="Interfaces\IServices\IUsuariosServiceDomain.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Services\AgenciaServiceDomain.cs" />
     <Compile Include="Services\BancoServiceDomain.cs" />
     <Compile Include="Services\CidadeServiceDomain.cs" />
     <Compile Include="Services\ClienteService.cs" />
     <Compile Include="Services\EstadoServiceDomain.cs" />
+    <Compile Include="Services\OpercoesServiceDomain.cs" />
     <Compile Include="Services\UsuarioSeviceDomain.cs" />
   </ItemGroup>
   <ItemGroup>

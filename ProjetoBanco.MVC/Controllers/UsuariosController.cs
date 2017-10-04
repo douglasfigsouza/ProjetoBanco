@@ -13,7 +13,7 @@ namespace ProjetoBanco.MVC.Controllers
     {
         private readonly IUsuarioAppService _IUsuarioAppService;
         private readonly IClienteAppService _IClienteAppService;
-        private Usuario usuario,usuarioAutenticado;
+        private Usuario usuario;
 
         public UsuariosController(IUsuarioAppService IUsuarioAppService, IClienteAppService IClienteAppService)
         {

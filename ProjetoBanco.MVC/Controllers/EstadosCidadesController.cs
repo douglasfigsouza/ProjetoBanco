@@ -10,25 +10,26 @@ namespace ProjetoBanco.MVC.Controllers
 {
     public class EstadosCidadesController : Controller
     {
-        private readonly IEstadoAppService _IEstadoAppService;
-        private readonly ICidadesAppService _ICidadeAppService;
+        private readonly IEstadoAppService _EstadoAppService;
+        private readonly ICidadesAppService _CidadeAppService;
 
         public EstadosCidadesController(IEstadoAppService IEstadoAppService, ICidadesAppService ICidadeAppService)
         {
-            _IEstadoAppService = IEstadoAppService;
-            _ICidadeAppService = ICidadeAppService;
+            _EstadoAppService = IEstadoAppService;
+            _CidadeAppService = ICidadeAppService;
         }
 
         // GET: EstadosCidades
         public IEnumerable<Estado> GetAllEstados()
         {
-            return _IEstadoAppService.GetAllEstados();
+            return _EstadoAppService.GetAllEstados();
         }
 
         //Busca Cidades pelo id do estado
-        public IEnumerable<Cidade> GetCidadesByIdEstado(int id)
+        [HttpGet]
+        public JsonResult GetCidadesByIdEstado(int id)
         {
-            return _ICidadeAppService.GetCidadesByEstadoId(id);
+            return Json(_CidadeAppService.GetCidadesByEstadoId(id), JsonRequestBehavior.AllowGet);
         }
     }
 }

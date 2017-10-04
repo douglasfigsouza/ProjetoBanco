@@ -11,15 +11,15 @@ namespace ProjetoBanco.Domain.Services
 {
     public class BancoServiceDomain:IBancoServiceDomain
     {
-        private readonly IBancoRepositoryDomain _IBancoRepositoryDomain;
+        private readonly IBancoRepositoryDomain _bancoRepositoryDomain;
 
-        public BancoServiceDomain( IBancoRepositoryDomain IBancoRepositoryDomain)
+        public BancoServiceDomain( IBancoRepositoryDomain bancoRepositoryDomain)
         {
-            _IBancoRepositoryDomain = IBancoRepositoryDomain;
+            _bancoRepositoryDomain = bancoRepositoryDomain;
         }
         public void AddBanco(Banco banco)
         {
-           _IBancoRepositoryDomain.AddBanco(banco);
+           _bancoRepositoryDomain.AddBanco(banco);
         }
 
         public Banco GetByBancoId(int id)
@@ -29,7 +29,7 @@ namespace ProjetoBanco.Domain.Services
 
         public IEnumerable<Banco> GetAllBancos()
         {
-           return _IBancoRepositoryDomain.GetAllBancos();
+           return _bancoRepositoryDomain.GetAllBancos();
         }
 
         public void UpdateBanco(Banco banco)

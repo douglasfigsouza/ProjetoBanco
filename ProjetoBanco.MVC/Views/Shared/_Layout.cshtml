@@ -13,10 +13,12 @@
 <body>
     <header>
         <ul id="cadastros" class="dropdown-content">
-            @if (Session["nivel"].ToString()=="f")
+            @if (Session["nivel"].ToString() == "f")
             {
-                <li>@Html.ActionLink("Clientes", "CreateCliente", "Clientes")</li>
+                <li>@Html.ActionLink("Agências", "CreateAgencia", "Agencia")</li>
                 <li>@Html.ActionLink("Bancos", "CreateBanco", "Banco")</li>
+                <li>@Html.ActionLink("Clientes", "CreateCliente", "Clientes")</li>
+                <li>@Html.ActionLink("Operações", "CreateOperacao", "Operacoes")</li>
                 <li>@Html.ActionLink("Usuários", "CreateUsuario", "Usuarios")</li>
             }
             @*<li><a href="#!">two</a></li>

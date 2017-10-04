@@ -1,0 +1,51 @@
+﻿@model ProjetoBanco.MVC.ViewModels.OperacaoViewModel
+<h5>Cadastro de Banco</h5>
+<div class="row">
+    <div class="col s4">
+        <hr />
+        @using (Html.BeginForm())
+        {
+            @Html.AntiForgeryToken()
+            @Html.ValidationSummary(true)
+            {
+                <div class="row">
+                    <div class="col s12">
+                        <label for="descricao" class="col s12">Operacão</label>
+                        @Html.TextBoxFor(o=>o.descricao, new { @class = "col s12" })
+                    </div>
+                </div>
+
+                <div class="row">
+                    <button class="btn waves-effect waves-light right" type="submit" name="CadastraOperacao">
+                        Cadastrar
+                        <i class="material-icons right">send</i>
+                    </button>
+                </div>
+            }
+        }
+    </div>
+</div>
+<script>
+    $(document).ready(function() {
+        $("form").validate({
+            submitHandler: function (form) {
+                form.submit();
+            },
+            rules: {
+                descricao: {
+                    required: true,
+                    maxlength: 200
+                }
+            },
+            messages: {
+                descricao: {
+                    required: "O campo saque é Obrigatório! Digite-O",
+                    maxlength: "O campo saque deve conter no máximo 200 caracteres!"
+                }
+            }
+        });
+    });
+</script>
+
+
+

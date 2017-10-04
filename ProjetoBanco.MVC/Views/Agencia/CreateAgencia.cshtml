@@ -1,0 +1,94 @@
+﻿@model ProjetoBanco.MVC.ViewModels.AgenciaViewModel
+
+@{
+    ViewBag.Title = "CreateAgência";
+}
+
+<h5>Cadastro de Agência</h5>
+<div class="row">
+    <div class="col s12">
+        <hr>
+    </div>
+    <div class="col s12">
+        @using (Html.BeginForm())
+        {
+            @Html.AntiForgeryToken()
+            @Html.ValidationSummary(true)
+            {
+                <div class="row">
+                    <div class="col s5">
+                        <label class="col s12" for="ddlestadoAgencia">Estado</label>
+                        @Html.DropDownList("ddlestadoAgencia", new SelectList(ViewBag.estados, "EstadoId", "Sigla"), "Selecione", new { @class = "col s10" })
+                    </div>
+                    <div class="col s7">
+                        <label class="col s12" for="ddlCidadesAgencia">Cidade</label>
+                        <select id="ddlCidadesAgencia" name="cidadeId" class="col s8" disabled>
+                            <option value="0">Selecione</option>
+                        </select>
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="col s5">
+                        <label class="col s12" for="ddlestadoAgencia">Banco</label>
+                        @Html.DropDownListFor(a => a.bancoId, new SelectList(ViewBag.bancos, "Id", "Nome"), "Selecione", new { @class = "col s10" })
+                    </div>
+                    <div class="col s6">
+                        <label for="agencia" class="col s12">N° Agência</label>
+                        @Html.EditorFor(a => a.agencia, new { htmlAttributes = new { @class = "col s5" } })
+                    </div>
+                </div>
+
+                <div class="row">
+                    <button class="btn waves-effect waves-light right" type="submit" name="CadastrarAgencia">
+                        Cadastrar
+                        <i class="material-icons right">send</i>
+                    </button>
+                </div>
+            }
+        }
+    </div>
+</div>
+<script>
+    $(document).ready(function () {
+        //função que busca cidades pelo id do estado e seta no combo cidades
+        $("#ddlestadoAgencia").change(function () {
+            var id = $("#ddlestadoAgencia").val();
+            $('#ddlCidadesAgencia').empty();
+            $.ajax(
+                {
+                    type: 'GET',
+                    url: "/EstadosCidades/GetCidadesByIdEstado/" + id,
+                    dataType: 'json',
+                    cache: false,
+                    async: true,
+                    success: function (data) {
+                        $.each(data, function (key, value) {
+                            $("#ddlCidadesAgencia").append("<option value=" + value.cidadeId + ">" + value.Nome + "</option>");
+                        });
+                        $('#ddlCidadesAgencia').material_select();
+                    }, error(e) {
+                        alert("Erro ao Consultar Cidades!");
+                    }
+
+                });
+            $("#ddlCidadesAgencia").removeAttr('disabled');
+        });
+        $("form").validate({
+            submitHandler: function (form) {
+                form.submit();
+            },
+            rules: {
+                agencia: {
+                    required: true
+                }
+            },
+            messages: {
+                agencia: {
+                    required: "O campo N° é Obrigatório! Digite-O"
+
+                }
+            }
+        });
+    });
+</script>

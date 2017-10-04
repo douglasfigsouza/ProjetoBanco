@@ -68,6 +68,18 @@ namespace ProjetoBanco.MVC.App_Start
         /// <param name="kernel">The kernel.</param>
         private static void RegisterServices(IKernel kernel)
         {
+            kernel.Bind<IAgenciaAppService>().To<AgenciaAppService>();
+            kernel.Bind<IAgenciaServiceDomain>().To<AgenciaServiceDomain>();
+            kernel.Bind<IAgenciaRepositoryDomain>().To<AgenciaRepository>();
+
+            kernel.Bind<IBancoAppService>().To<BancoAppService>();
+            kernel.Bind<IBancoServiceDomain>().To<BancoServiceDomain>();
+            kernel.Bind<IBancoRepositoryDomain>().To<BancoRepository>();
+
+            kernel.Bind<ICidadesAppService>().To<CidadeAppService>();
+            kernel.Bind<ICidadeServiceDomain>().To<CidadeServiceDomain>();
+            kernel.Bind<ICidadeRepositoryDomain>().To<CidadeRepository>();
+
             kernel.Bind<IClienteAppService>().To<ClienteAppService>();
             kernel.Bind<IClienteServiceDomain>().To<ClienteService>();
             kernel.Bind<IClienteRepositoryDomain>().To<ClientesRepository>();
@@ -77,20 +89,13 @@ namespace ProjetoBanco.MVC.App_Start
             kernel.Bind<IEstadoRepositoryDomain>().To<EstadoRepository>();
 
 
-            kernel.Bind<ICidadesAppService>().To<CidadeAppService>();
-            kernel.Bind<ICidadeServiceDomain>().To<CidadeServiceDomain>();
-            kernel.Bind<ICidadeRepositoryDomain>().To<CidadeRepository>();
-
-
-
-            kernel.Bind<IBancoAppService>().To<BancoAppService>();
-            kernel.Bind<IBancoServiceDomain>().To<BancoServiceDomain>();
-            kernel.Bind<IBancoRepositoryDomain>().To<BancoRepository>();
+            kernel.Bind<IOperacoesAppService>().To<OperacoesAppService>();
+            kernel.Bind<IOperacaoServiceDomain>().To<OpercoesServiceDomain>();
+            kernel.Bind<IOperacoesRepositoryDomain>().To<OperacoesRepository>();
 
             kernel.Bind<IUsuarioAppService>().To<UsuarioAppService>();
             kernel.Bind<IUsuariosServiceDomain>().To<UsuarioSeviceDomain>();
             kernel.Bind<IUsuarioRepositoryDomain>().To<UsuarioRepository>();
-
         }       
     }
 }

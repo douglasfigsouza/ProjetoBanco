@@ -1,0 +1,50 @@
+﻿using System;
+using System.CodeDom;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+using ProjetoBanco.Domain.Entities;
+using ProjetoBanco.Domain.Interfaces.IRepositories;
+using ProjetoBanco.Domain.Interfaces.IServices;
+
+namespace ProjetoBanco.Domain.Services
+{
+    public class AgenciaServiceDomain:IAgenciaServiceDomain
+    {
+        private readonly IAgenciaRepositoryDomain _repository;
+        public AgenciaServiceDomain(IAgenciaRepositoryDomain repository)
+        {
+            _repository = repository;
+        }
+        public void AddAgencia(Agencia agencia)
+        {
+            _repository.AddAgencia(agencia);
+        }
+
+        public Agencia GetByAgenciaId(int id)
+        {
+           return _repository.GetByAgenciaId(id);
+        }
+
+        public IEnumerable<Agencia> GetAllAgencias()
+        {
+            return _repository.GetAllAgencias();
+        }
+
+        public void UpdateAgencia(Agencia agencia)
+        {
+            _repository.UpdateAgencia(agencia);
+        }
+
+        public void RemoveAgencia(Agencia agencia)
+        {
+            _repository.RemoveAgencia(agencia);
+        }
+
+        public void Dispose()
+        {
+            _repository.Dispose();
+        }
+    }
+}

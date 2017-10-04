@@ -5,20 +5,23 @@ using System.Text;
 using System.Threading.Tasks;
 using ProjetoBanco.Application.Interfaces;
 using ProjetoBanco.Domain.Entities;
+using ProjetoBanco.Domain.Interfaces.IRepositories;
 using ProjetoBanco.Domain.Interfaces.IServices;
 
 namespace ProjetoBanco.Application
 {
     public  class BancoAppService:IBancoAppService
     {
-        private readonly IBancoServiceDomain _IBancoServiceDomain;
-        public BancoAppService(IBancoServiceDomain IBancoServiceDomain)
+        private readonly IBancoServiceDomain _bancoServiceDomain;
+        private readonly IBancoRepositoryDomain _bancoRepositoryDomain;
+        public BancoAppService(IBancoServiceDomain IBancoServiceDomain, IBancoRepositoryDomain bancoRepositoryDomain)
         {
-            _IBancoServiceDomain = IBancoServiceDomain;
+            _bancoServiceDomain = IBancoServiceDomain;
+            _bancoRepositoryDomain = bancoRepositoryDomain;
         }
         public void AddBanco(Banco banco)
         {
-            _IBancoServiceDomain.AddBanco(banco);
+            _bancoRepositoryDomain.AddBanco(banco);
         }
 
         public Banco GetByBancoId(int id)
@@ -28,7 +31,7 @@ namespace ProjetoBanco.Application
 
         public IEnumerable<Banco> GetAllBancos()
         {
-            return _IBancoServiceDomain.GetAllBancos();
+            return _bancoRepositoryDomain.GetAllBancos();
         }
 
         public void UpdateBanco(Banco banco)
