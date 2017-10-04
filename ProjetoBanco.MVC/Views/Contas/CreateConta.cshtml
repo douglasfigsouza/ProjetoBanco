@@ -50,7 +50,7 @@
 
                 <!-- Modal Trigger -->
                 @*<button id="abremodal" type="button">abre</button>*@
-                <a class="waves-effect waves-light btn modal-trigger" href="#modalCientesConta">Modal</a>
+                <button class="waves-effect waves-light btn modal-trigger"type="button" href="#modalCientesConta" id="buscaClienetes">Adicionar</button>
 
 
                 <!-- Modal Structure -->
@@ -71,7 +71,7 @@
                                             <th>Incluir</th>
                                         </tr>
                                     </thead>
-                                    <tbody>
+                                    <tbody id="tbdClientesConta">
                                         <tr>
                                             <td>Tiger</td>
                                             <td>Nixon</td>
@@ -131,29 +131,25 @@
                 }
      
         });
-        ////função que busca cidades pelo id do estado e seta no combo cidades
-        //$("#ddlestadoClientes").change(function () {
-        //    var id = $("#ddlestadoClientes").val();
-        //    $('#ddlCidadesClientes').empty();
-        //    $.ajax(
-        //        {
-        //            type: 'GET',
-        //            url: "GetCidadesByIdEstado/" + id,
-        //            dataType: 'json',
-        //            cache: false,
-        //            async: true,
-        //            success: function (data) {
-        //                $.each(data, function (key, value) {
-        //                    $("#ddlCidadesClientes").append("<option value=" + value.cidadeId + ">" + value.Nome + "</option>");
-        //                });
-        //                $('#ddlCidadesClientes').material_select();
-        //            }, error(e) {
-        //                alert("Erro ao Consultar Cidades!");
-        //            }
+        //função que busca cidades pelo id do estado e seta no combo cidades
+        $("#buscaClienetes").click(function () {
+            $.ajax(
+                {
+                    type: 'GET',
+                    url: "/Clientes/GetAllClientes",
+                    dataType: 'json',
+                    cache: false,
+                    async: true,
+                    success: function (data) {
+                        $.each(data, function (key, value) {
+                            $("#tbdClientesConta").append("<tr id="+value.Id+"><td>" + value.nome + "</td></tr>");
+                        });
+                    }, error(e) {
+                        alert("Erro ao Consultar Clientes!");
+                    }
 
-        //        });
-        //    $("#ddlCidadesClientes").removeAttr('disabled');
-        //});
+                });
+        });
         $("form").validate({
             submitHandler: function (form) {
                 form.submit();

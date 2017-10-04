@@ -60,6 +60,11 @@ namespace ProjetoBanco.MVC.Controllers
         {
             return Json(_cidadesAppService.GetCidadesByEstadoId(id),JsonRequestBehavior.AllowGet);
         }
+        [HttpGet]
+        public JsonResult GetAllClientes()
+        {
+            return Json(_clienteApp.GetAllClientes(), JsonRequestBehavior.AllowGet);
+        }
 
         //// GET: Clientes/Edit/5
         //public ActionResult Edit(int id)
