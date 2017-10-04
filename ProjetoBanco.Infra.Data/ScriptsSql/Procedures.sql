@@ -234,4 +234,30 @@ CREATE PROCEDURE [dbo].[PBSP_INSERTAGENCIA]
 
 	END
 GO
+/*Retona todas as agencias*/
+
+IF EXISTS (SELECT * FROM dbo.sysobjects WHERE id = object_id(N'[dbo].[PBSP_GETALLAGENCIAS]') AND objectproperty(id, N'IsPROCEDURE')=1)
+	DROP PROCEDURE [dbo].[PBSP_GETALLAGENCIAS]
+GO
+
+CREATE PROCEDURE [dbo].[PBSP_GETALLAGENCIAS]
+
+	AS
+
+	/*
+	Documentação
+	Arquivo Fonte.....: ArquivoFonte.sql
+	Objetivo..........: Retorna todas as agências
+	Autor.............: SMN - Douglas
+ 	Data..............: 04/10/2017
+	Ex................: EXEC [dbo].[PBSP_GETALLAGENCIAS]
+
+	*/
+
+	BEGIN
+	
+		
+
+	END
+GO
 				

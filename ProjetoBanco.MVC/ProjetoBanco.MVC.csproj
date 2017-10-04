@@ -168,6 +168,7 @@
     <Compile Include="Controllers\AgenciaController.cs" />
     <Compile Include="Controllers\BancoController.cs" />
     <Compile Include="Controllers\ClientesController.cs" />
+    <Compile Include="Controllers\ContasController.cs" />
     <Compile Include="Controllers\EstadosCidadesController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\OperacoesController.cs" />
@@ -180,10 +181,15 @@
     <Compile Include="ViewModels\AgenciaViewModel.cs" />
     <Compile Include="ViewModels\BancoViewModel.cs" />
     <Compile Include="ViewModels\ClienteViewModel.cs" />
+    <Compile Include="ViewModels\CombosContaViewModel.cs" />
     <Compile Include="ViewModels\OperacaoViewModel.cs" />
     <Compile Include="ViewModels\UsuarioViewModel.cs" />
   </ItemGroup>
   <ItemGroup>
+    <Content Include="Content\dataTables.jqueryui.css" />
+    <Content Include="Content\datatables.min.css" />
+    <Content Include="Content\jquery.dataTables.css" />
+    <Content Include="Content\jquery.dataTables.min.css" />
     <Content Include="Content\SisBank.css" />
     <Content Include="favicon.ico" />
     <Content Include="fonts\glyphicons-halflings-regular.svg" />
@@ -194,10 +200,13 @@
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
     <None Include="Scripts\jquery-2.1.1.intellisense.js" />
+    <Content Include="Scripts\datatables.min.js" />
+    <Content Include="Scripts\dataTables.semanticui.js" />
     <Content Include="Scripts\jquery-2.1.1.js" />
     <Content Include="Scripts\jquery-2.1.1.min.js" />
     <Content Include="Scripts\jquery-2.1.1.min.map" />
     <None Include="Scripts\jquery.validate-vsdoc.js" />
+    <Content Include="Scripts\jquery.dataTables.js" />
     <Content Include="Scripts\jquery.maskedinput.js" />
     <Content Include="Scripts\jquery.validate.js" />
     <Content Include="Scripts\jquery.validate.min.js" />
@@ -233,9 +242,11 @@
     <Content Include="Views\Usuarios\Login.cshtml" />
     <Content Include="Views\Operacoes\CreateOperacao.cshtml" />
     <Content Include="Views\Agencia\CreateAgencia.cshtml" />
+    <Content Include="Views\Contas\CreateConta.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
+    <Folder Include="materialize\" />
     <Folder Include="Views\EstadosCidades\" />
   </ItemGroup>
   <ItemGroup>

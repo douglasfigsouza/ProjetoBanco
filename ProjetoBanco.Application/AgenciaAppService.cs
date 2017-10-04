@@ -35,7 +35,7 @@ namespace ProjetoBanco.Application
 
         public IEnumerable<Agencia> GetAllAgencias()
         {
-            throw new NotImplementedException();
+            return _agenciaRepositoryDomain.GetAllAgencias();
         }
 
         public void UpdateAgencia(Agencia agencia)

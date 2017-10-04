@@ -20,7 +20,8 @@ namespace ProjetoBanco.MVC
                         "~/Scripts/modernizr-*"));
 
             bundles.Add(new ScriptBundle("~/bundles/bootstrap").Include(
-                      "~/Scripts/materialize/materialize.js",
+                      "~/materialize/js/materialize.js",
+                      "~/Scripts/datatables.min.js",
                       "~/Scripts/respond.js",
                       "~/Scripts/SisBank.js",
                       "~/Scripts/materialize/SisBankMaterialize.js",
@@ -28,8 +29,9 @@ namespace ProjetoBanco.MVC
                       "~/Scripts/jquery.validate.js"));
 
             bundles.Add(new StyleBundle("~/Content/css").Include(
-                      "~/Content/materialize/css/materialize.css",
-                      "~/Content/SisBank.css"));
+                      "~/materialize/css/materialize.css",
+                      "~/Content/SisBank.css",
+                      "~/Content/datatables.min.css"));
         }
     }
 }

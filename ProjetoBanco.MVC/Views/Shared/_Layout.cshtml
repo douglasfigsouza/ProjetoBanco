@@ -8,6 +8,7 @@
     <title>@ViewBag.Title - SisBank</title>
     @Styles.Render("~/Content/css")
     @Scripts.Render("~/bundles/modernizr")
+    <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/v/dt/dt-1.10.16/datatables.min.css"/>
     @Scripts.Render("~/bundles/jquery")
 </head>
 <body>
@@ -17,6 +18,7 @@
             {
                 <li>@Html.ActionLink("Agências", "CreateAgencia", "Agencia")</li>
                 <li>@Html.ActionLink("Bancos", "CreateBanco", "Banco")</li>
+                <li>@Html.ActionLink("Contas", "CreateConta", "Contas")</li>
                 <li>@Html.ActionLink("Clientes", "CreateCliente", "Clientes")</li>
                 <li>@Html.ActionLink("Operações", "CreateOperacao", "Operacoes")</li>
                 <li>@Html.ActionLink("Usuários", "CreateUsuario", "Usuarios")</li>
@@ -41,11 +43,12 @@
             </div>
         </nav>
     </header>
-    <div class="container">
-        @RenderBody()
-        <footer>
-        </footer>
-    </div>
+<div class="container">
+    @RenderBody()
+    <footer>
+    </footer>
+</div>
+
     @Scripts.Render("~/bundles/bootstrap")
     @RenderSection("scripts", required: false)
 

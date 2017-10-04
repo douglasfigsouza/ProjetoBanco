@@ -13,13 +13,16 @@ namespace ProjetoBanco.Infra.Data.Repositories
     {
         private Conexao conn;
         private SqlDataReader result;
+        private List<Agencia> Agencias;
         public enum Procedures
         {
-            PBSP_INSERTAGENCIA
+            PBSP_INSERTAGENCIA,
+            PBSP_GETALLAGENCIAS
         }
         public AgenciaRepository()
         {
             conn = new Conexao();
+            Agencias = new List<Agencia>();
         }
 
         public void AddAgencia(Agencia agencia)
@@ -47,7 +50,18 @@ namespace ProjetoBanco.Infra.Data.Repositories
 
         public IEnumerable<Agencia> GetAllAgencias()
         {
-            throw new NotImplementedException();
+            conn.ExecuteProcedure(Procedures.PBSP_GETALLAGENCIAS);
+            result = conn.ExecuteReader();
+            while (result.Read())
+            {
+                Agencias.Add(new Agencia
+                {
+                    bancoId = Convert.ToInt32(result["bancoId"].ToString()),
+                    agencia = Convert.ToInt32(result["agencia"].ToString()),
+                    CidadeId = Convert.ToInt32(result["CidadeId"].ToString())
+                });
+            }
+            return Agencias.ToList();
         }
 
         public void UpdateAgencia(Agencia agencia)
