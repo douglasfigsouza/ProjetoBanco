@@ -65,9 +65,9 @@
                                             <th>CPF</th>
                                             <th>RG</th>
                                             <th>Fone</th>
-                                            <th>Cidade</th>
                                             <th>Bairro</th>
                                             <th>Rua</th>
+                                            <th>Num</th>
                                             <th>Incluir</th>
                                         </tr>
                                     </thead>
@@ -105,6 +105,9 @@
 <script>
     $(document).ready(function () {
         $('.modal').modal({ dismissible: false });
+        $(document).on("click", ".btnClienteConta", function () {
+            alert($(".btnClienteConta").parent('tr').find('input').val());
+        });
         $("#clientesConta").dataTable({
             language:{
             "sEmptyTable": "Nenhum registro encontrado",
@@ -141,8 +144,23 @@
                     cache: false,
                     async: true,
                     success: function (data) {
+                        $("#tbdClientesConta").empty();
                         $.each(data, function (key, value) {
-                            $("#tbdClientesConta").append("<tr id="+value.Id+"><td>" + value.nome + "</td></tr>");
+                            $("#tbdClientesConta").append("<tr id=" + value.id + ">" +
+                                    "<input type='hidden'id='"+value.Id+"' value='"+value.Id+"'/>"+
+                                    "<td>" + value.nome + "</td>" +
+                                    "<td>" + value.cpf + "</td>" +
+                                    "<td>" + value.rg + "</td>" +
+                                    "<td>" + value.fone + "</td>" +
+                                    "<td>" + value.bairro + "</td>" +
+                                    "<td>" + value.rua + "</td>" +
+                                    "<td>" + value.num + "</td>" +
+                                    "<td><button type='button' class='btnClienteConta modal-action modal-close btn  green'>" +
+                                        "<i class='material-icons '>add_box</i>" +
+                                        "</button>"+
+                                    "</td>" +
+
+                                "</tr>");
                         });
                     }, error(e) {
                         alert("Erro ao Consultar Clientes!");

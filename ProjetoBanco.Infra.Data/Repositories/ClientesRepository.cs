@@ -58,7 +58,15 @@ namespace ProjetoBanco.Infra.Data.Repositories
                 lstClientes.Add(new Cliente
                 {
                     Id = Convert.ToInt32(result["Id"].ToString()),
-                    nome = result["nome"].ToString()
+                    nome = result["nome"].ToString(),
+                    cpf = result["cpf"].ToString(),
+                    rg = result["rg"].ToString(),
+                    rua = result["rua"].ToString(),
+                    fone = result["fone"].ToString(),
+                    bairro = result["bairro"].ToString(),
+                    nivel = Convert.ToChar(result["nivel"].ToString()),
+                    num = Convert.ToInt32(result["num"].ToString()),
+                    dataCadastro = Convert.ToDateTime(result["dataCadastro"].ToString())
                 });
             }
             return lstClientes.ToList();

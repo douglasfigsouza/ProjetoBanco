@@ -56,7 +56,7 @@ CREATE PROCEDURE [dbo].[PBSP_GETALLCLIENTES]
 
 	BEGIN
 	
-		SELECT * FROM [dbo].[Clientes]
+		SELECT Id,nome,cpf,rg,fone,rua,bairro,num,nivel,dataCadastro FROM [dbo].[Clientes]WITH(NOLOCK)
 			WHERE [dbo].[Clientes].ativo=1;
 
 	END
@@ -256,7 +256,7 @@ CREATE PROCEDURE [dbo].[PBSP_GETALLAGENCIAS]
 
 	BEGIN
 	
-		
+		SELECT 	agencia,bancoId,CidadeId FROM[dbo].[Agencia] WITH(NOLOCK)
 
 	END
 GO
