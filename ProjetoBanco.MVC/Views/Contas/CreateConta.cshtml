@@ -50,9 +50,17 @@
 
                 <!-- Modal Trigger -->
                 @*<button id="abremodal" type="button">abre</button>*@
-                <button class="waves-effect waves-light btn modal-trigger"type="button" href="#modalCientesConta" id="buscaClienetes">Adicionar</button>
+                <div class="row">
+                    <label class='col s12'>Vincular Clientes</label>
+                    <div class="col s6">
+                        <button class="waves-effect waves-light modal-trigger btn"type="button" href="#modalCientesConta" id="buscaClienetes">
+                            <i class="large material-icons">add_box</i>
+                        </button>
 
+                    </div>
+                </div>
 
+               
                 <!-- Modal Structure -->
                 <div id="modalCientesConta" class="modal">
                     <div class="modal-content">
@@ -72,18 +80,6 @@
                                         </tr>
                                     </thead>
                                     <tbody id="tbdClientesConta">
-                                        <tr>
-                                            <td>Tiger</td>
-                                            <td>Nixon</td>
-                                            <td>System Architect</td>
-                                            <td>Edinburgh</td>
-                                            <td>61</td>
-                                            <td>2011/04/25</td>
-                                            <td>$320,800</td>
-                                            <td>
-                                                <i class="material-icons modal-action modal-close green">add_box</i>
-                                           </td>
-                                        </tr>
                                     </tbody>
                                 </table>
                             </div>
@@ -91,6 +87,22 @@
                     </div>
                 </div>
 
+                <div class="row" id="clientesSelecionados">
+                    <div class="col s12">
+                        <table class="striped responsive-table centered">
+                            <thead>
+                            <tr>
+                                <th>Nome</th>
+                                <th>CPF</th>
+                                <th>Remover</th>
+                            </tr>
+                            </thead>
+                            <tbody id="clientesSelecionadosConta">
+                            
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
 
                 <div class="row">
                     <button class="btn waves-effect waves-light right" type="submit" name="action">
@@ -104,9 +116,26 @@
 </div>
 <script>
     $(document).ready(function () {
+        $("#clientesSelecionados").hide();
         $('.modal').modal({ dismissible: false });
         $(document).on("click", ".btnClienteConta", function () {
-            alert($(".btnClienteConta").parent('tr').find('input').val());
+            var id = $(this).closest('tr').attr('id');
+            var nome = $('td#nome' + id).text();
+            var cpf = $('td#cpf'+id).text();
+            $("#clientesSelecionadosConta").append("<tr>" +
+                    "<input type='hidden' name='ClientesSelecionados' value='"+id+"'/>"+
+                    "<td>"+ nome +"</td>" +
+                    "<td>" + cpf + "</td>" +
+                    "<td>" +
+                        "<button type='button' class='btnClienteContaRemove modal-action modal-close btn red'>" +
+                            "<i class='material-icons '>remove</i>" +
+                        "</button>" +
+                    "</td>" +
+                "</tr>");
+            $("#clientesSelecionados").show();
+        });
+        $(document).on("click",".btnClienteContaRemove ",function() {
+            $(this).closest('tr').remove();
         });
         $("#clientesConta").dataTable({
             language:{
@@ -146,16 +175,15 @@
                     success: function (data) {
                         $("#tbdClientesConta").empty();
                         $.each(data, function (key, value) {
-                            $("#tbdClientesConta").append("<tr id=" + value.id + ">" +
-                                    "<input type='hidden'id='"+value.Id+"' value='"+value.Id+"'/>"+
-                                    "<td>" + value.nome + "</td>" +
-                                    "<td>" + value.cpf + "</td>" +
+                            $("#tbdClientesConta").append("<tr id=" + value.Id + ">" +
+                                    "<td id='nome"+value.Id+"'>" + value.nome + "</td>" +
+                                    "<td id='cpf"+value.Id+"'>" + value.cpf + "</td>" +
                                     "<td>" + value.rg + "</td>" +
                                     "<td>" + value.fone + "</td>" +
                                     "<td>" + value.bairro + "</td>" +
                                     "<td>" + value.rua + "</td>" +
                                     "<td>" + value.num + "</td>" +
-                                    "<td><button type='button' class='btnClienteConta modal-action modal-close btn  green'>" +
+                                    "<td><button type='button' class='btnClienteConta modal-action modal-close btn green'>" +
                                         "<i class='material-icons '>add_box</i>" +
                                         "</button>"+
                                     "</td>" +

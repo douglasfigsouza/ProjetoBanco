@@ -75,6 +75,13 @@ namespace ProjetoBanco.Infra.Data.Repositories
                 DbType = parameterType
             });
         }
+        // Método para executar procedure que tem retorno (Insert,Delete)
+        public int ExecuteNonQueryWithReturn()
+        {
+            AddParameterReturn();
+            _command.ExecuteNonQuery();
+            return int.Parse(_command.Parameters["@RETURN_VALUE"].Value.ToString());
+        }
         // Metodo exclusivo para procedure que retorna valores (Select)
         public SqlDataReader ExecuteReader()
         {

@@ -182,6 +182,8 @@
     <Compile Include="ViewModels\BancoViewModel.cs" />
     <Compile Include="ViewModels\ClienteViewModel.cs" />
     <Compile Include="ViewModels\CombosContaViewModel.cs" />
+    <Compile Include="ViewModels\ContaClienteViewModel.cs" />
+    <Compile Include="ViewModels\ContaViewModel.cs" />
     <Compile Include="ViewModels\OperacaoViewModel.cs" />
     <Compile Include="ViewModels\UsuarioViewModel.cs" />
   </ItemGroup>

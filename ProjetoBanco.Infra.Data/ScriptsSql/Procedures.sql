@@ -260,4 +260,68 @@ CREATE PROCEDURE [dbo].[PBSP_GETALLAGENCIAS]
 
 	END
 GO
-				
+
+--insert conta 
+
+IF EXISTS (SELECT * FROM dbo.sysobjects WHERE id = object_id(N'[dbo].[PBSP_INSERTCONTA]') AND objectproperty(id, N'IsPROCEDURE')=1)
+	DROP PROCEDURE [dbo].[PBSP_INSERTCONTA]
+GO
+
+CREATE PROCEDURE [dbo].[PBSP_INSERTCONTA]
+	@num[VARCHAR](20),
+	@senha[VARCHAR](20),
+	@tipo[VARCHAR](100)
+	AS
+
+	/*
+	Documentação
+	Arquivo Fonte.....: ArquivoFonte.sql
+	Objetivo..........: Insere conta
+	Autor.............: SMN - Douglas
+ 	Data..............: 05/10/2017
+	Ex................: EXEC [dbo].[PBSP_INSERTCONTA]
+
+	*/
+	BEGIN
+		DECLARE @contaId[INT]=0;
+		INSERT INTO [dbo].[Conta](num,tipo,senha)
+			VALUES(@num,@tipo,@senha);
+			RETURN SCOPE_IDENTITY();
+	END
+GO
+
+--insere na contacliente
+
+IF EXISTS (SELECT * FROM dbo.sysobjects WHERE id = object_id(N'[dbo].[PBSP_INSERTCONTACLIENTE]') AND objectproperty(id, N'IsPROCEDURE')=1)
+	DROP PROCEDURE [dbo].[PBSP_INSERTCONTACLIENTE]
+GO
+
+CREATE PROCEDURE [dbo].[PBSP_INSERTCONTACLIENTE]
+	@contaId[SMALLINT],
+	@agencia[SMALLINT],
+	@clienteId[SMALLINT]
+	AS
+
+	/*
+	Documentação
+	Arquivo Fonte.....: ArquivoFonte.sql
+	Objetivo..........: Vincular os clientes na conta 
+	Autor.............: SMN - Douglas
+ 	Data..............: 05/10/2017
+	Ex................: EXEC [dbo].[PBSP_INSERTCONTACLIENTE]
+
+	*/
+
+	BEGIN
+		
+		DECLARE @bancoId[INT]=0
+		SET @bancoId = (SELECT Id FROM [dbo].[Banco] WITH(NOLOCK)
+			INNER JOIN [dbo].[Agencia] WITH(NOLOCK) ON Banco.Id = Agencia.bancoId
+			WHERE Agencia.agencia = @agencia);
+			SELECT @bancoId;
+
+		INSERT INTO[dbo].[ContaCliente](contaId,agencia,bancoId,clienteId)
+			VALUES(@contaId,@agencia,@bancoId,@clienteId);		
+
+		END
+GO

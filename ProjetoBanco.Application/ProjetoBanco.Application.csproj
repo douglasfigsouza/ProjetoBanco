@@ -34,11 +34,13 @@
     <Compile Include="BancoAppService.cs" />
     <Compile Include="CidadeAppService.cs" />
     <Compile Include="ClienteAppService.cs" />
+    <Compile Include="ContaClienteAppService.cs" />
     <Compile Include="EstadoAppService.cs" />
     <Compile Include="Interfaces\IAgenciaAppService.cs" />
     <Compile Include="Interfaces\IBancoAppService.cs" />
     <Compile Include="Interfaces\ICidadesAppService.cs" />
     <Compile Include="Interfaces\IClienteAppService.cs" />
+    <Compile Include="Interfaces\IContaClienteAppService.cs" />
     <Compile Include="Interfaces\IEstadoAppService.cs" />
     <Compile Include="Interfaces\IOperacoesAppService.cs" />
     <Compile Include="Interfaces\IUsuarioAppService.cs" />
