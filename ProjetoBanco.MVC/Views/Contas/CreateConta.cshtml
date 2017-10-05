@@ -38,7 +38,7 @@
                     <div class="col s12">
                         <label class="col s12">Tipo de Conta</label>
                         <p>
-                            <input class="with-gap col s1" value="c" name="tipoConta" type="radio" id="corrente" checked />
+                            <input class="with-gap col s1" value="c" name="tipoConta" type="radio" id="corrente" checked/>
                             <label for="corrente" class="col s5">C. Corrente</label>
                         </p>
                         <p>
@@ -116,8 +116,11 @@
 </div>
 <script>
     $(document).ready(function () {
+        //oculta table on de serão inseridos os clientes
         $("#clientesSelecionados").hide();
+        //desabilita o fechamento do modal com clique fora do button 
         $('.modal').modal({ dismissible: false });
+        //função que adiciona cliente na tabelas 
         $(document).on("click", ".btnClienteConta", function () {
             var id = $(this).closest('tr').attr('id');
             var nome = $('td#nome' + id).text();
@@ -134,9 +137,11 @@
                 "</tr>");
             $("#clientesSelecionados").show();
         });
+        //remove cliente selecionado
         $(document).on("click",".btnClienteContaRemove ",function() {
             $(this).closest('tr').remove();
         });
+        //tradução do plugin dataTable
         $("#clientesConta").dataTable({
             language:{
             "sEmptyTable": "Nenhum registro encontrado",
@@ -196,74 +201,44 @@
 
                 });
         });
+        //faz a validação dos campos 
         $("form").validate({
             submitHandler: function (form) {
                 form.submit();
             },
             rules: {
-                nome: {
-                    required: true,
-                    minlength: 5,
-                    maxlength: 100
-                },
-                cpf: {
-                    required: true
-                },
-                rg: {
-                    required: true
-                },
-                fone: {
-                    required: true
-                },
-                bairro: {
-                    required: true
-                },
-                rua: {
-                    required: true
-                },
                 num: {
-                    required: true
+                    required: true,
+                    maxlength: 20
                 },
-                nivel: {
-                    required: true
+                senha: {
+                    required: true,
+                    maxlength:20,
                 },
-                cidadeId: {
-                    required: true
+                conf_senha: {
+                    required: true,
+                    equalTo:"#senha"
+                },
+                tipoConta: {
+                    required:true
                 }
             },
             messages: {
-                nome: {
-                    required: "O campo Nome é Obrigatório! Digite-O",
-                    minlength: "O campo Nome deve conter no mínimo 5 caracteres!",
-                    maxlength: "O campo Nome deve conter no máximo 100 caracteres!"
-                },
-                cpf: {
-                    required: "O campo CPF é Obrigatório! Digite-O"
-                },
-                rg: {
-                    required: "O campo RG é Obrigatório! Digite-O"
-                },
-                fone: {
-                    required: "O campo Fone é Obrigatório! Digite-O"
-                },
-                bairro: {
-                    required: "O campo Bairro é Obrigatório! Digite-O"
-                },
-                rua: {
-                    required: "O campo Rua é Obrigatório! Digite-O"
-                },
                 num: {
-                    required: "O campo N° é Obrigatório! Digite-O"
+                    required: "O campo N° Conta é Obrigatório! Digite-O",
 
+                    maxlength: "O campo num deve conter no máximo {0} caracteres!"
                 },
-                nivel: {
-                    required: "O campo Nível é Obrigatório! Digite-O"
-
+                senha: {
+                    required: "O campo senha é Obrigatório! Digite-O"
                 },
-                cidadeId: {
-                    required: "Selecione a cidade!"
+                conf_senha: {
+                    required: "O campo Confirme sua Senha é Obrigatório! Digite-O",
+                    equalTo:"As senhas nao conferem!"
+                },
+                tipoConta: {
+                    required:"O Tipo de Conta deve ser informado!"
                 }
-
             }
         });
     });

@@ -3,6 +3,7 @@ using System;
 using System.Collections.Generic;
 using ProjetoBanco.Application.Interfaces;
 using ProjetoBanco.Domain.Entities;
+using ProjetoBanco.Domain.Interfaces.IRepositories;
 using ProjetoBanco.Domain.Interfaces.IServices;
 
 namespace ProjetoBanco.Application
@@ -10,9 +11,11 @@ namespace ProjetoBanco.Application
     public class ClienteAppService : IClienteAppService
     {
         private readonly IClienteServiceDomain _iClienteService;
-        public ClienteAppService(IClienteServiceDomain iClienteService)
+        private readonly IClienteRepositoryDomain _clienteRepositoryDomain;
+        public ClienteAppService(IClienteServiceDomain iClienteService, IClienteRepositoryDomain clienteRepositoryDomain)
         {
             _iClienteService = iClienteService;
+            _clienteRepositoryDomain = clienteRepositoryDomain;
         }
 
         public void AddCliente(Cliente cliente)
@@ -22,7 +25,7 @@ namespace ProjetoBanco.Application
 
         public Cliente GetByClienteId(int id)
         {
-            throw new NotImplementedException();
+            return _clienteRepositoryDomain.GetByClienteId(id);
         }
 
         public IEnumerable<Cliente> GetAllClientes()
@@ -42,7 +45,7 @@ namespace ProjetoBanco.Application
 
         public void Dispose()
         {
-            throw new NotImplementedException();
+            _clienteRepositoryDomain.Dispose();
         }
     }
 }

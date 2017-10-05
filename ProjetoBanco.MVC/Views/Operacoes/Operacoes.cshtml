@@ -1,0 +1,19 @@
+﻿<div class="row Operacoes">
+    <div class="row">
+        <div class="col s12">
+            <h6>
+                Bem Vinda: <label class="6">@ViewBag.cliente.nome</label>
+            </h6>
+        </div>
+    </div>
+    <div class="row">
+        @if (Convert.ToInt32(TempData["operacao"])==0)
+        {
+            @Html.Partial("Deposito")
+        }
+        @if (Convert.ToInt32(TempData["operacao"])==2)
+        {
+            @Html.Partial("Saldo")
+        }
+    </div>
+</div>

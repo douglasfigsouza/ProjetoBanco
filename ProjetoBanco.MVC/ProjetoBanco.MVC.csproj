@@ -245,6 +245,9 @@
     <Content Include="Views\Operacoes\CreateOperacao.cshtml" />
     <Content Include="Views\Agencia\CreateAgencia.cshtml" />
     <Content Include="Views\Contas\CreateConta.cshtml" />
+    <Content Include="Views\Operacoes\Operacoes.cshtml" />
+    <Content Include="Views\Operacoes\Deposito.cshtml" />
+    <Content Include="Views\Operacoes\Saldo.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

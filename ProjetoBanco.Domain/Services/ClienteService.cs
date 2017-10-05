@@ -30,7 +30,7 @@ namespace ProjetoBanco.Domain.Services
 
         public Cliente GetByClienteId(int id)
         {
-            throw new NotImplementedException();
+            return _repository.GetByClienteId(id);
         }
 
         public void RemoveClientes(Cliente obj)

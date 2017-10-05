@@ -14,6 +14,7 @@ namespace ProjetoBanco.Infra.Data.Repositories
         Conexao conn = new Conexao();
         private SqlDataReader result;
         private List<Cliente> lstClientes;
+        private Cliente cliente;
 
         public ClientesRepository()
         {
@@ -23,7 +24,8 @@ namespace ProjetoBanco.Infra.Data.Repositories
         private enum Procedures
         {
             PBSP_INSERTCLIENTE,
-            PBSP_GETALLCLIENTES
+            PBSP_GETALLCLIENTES,
+            PBSP_GETCLIENTEBYID
         }
 
         public void AddCliente(Cliente cliente)
@@ -46,7 +48,26 @@ namespace ProjetoBanco.Infra.Data.Repositories
 
         public Cliente GetByClienteId(int id)
         {
-            throw new NotImplementedException();
+            conn.ExecuteProcedure(Procedures.PBSP_GETCLIENTEBYID);
+            conn.AddParameter("@id",id);
+            result = conn.ExecuteReader();
+            while (result.Read())
+            {
+                cliente = new Cliente
+                {
+                    Id = Convert.ToInt32(result["Id"].ToString()),
+                    nome = result["nome"].ToString(),
+                    cpf = result["cpf"].ToString(),
+                    rg = result["rg"].ToString(),
+                    rua = result["rua"].ToString(),
+                    fone = result["fone"].ToString(),
+                    bairro = result["bairro"].ToString(),
+                    nivel = Convert.ToChar(result["nivel"].ToString()),
+                    num = Convert.ToInt32(result["num"].ToString()),
+                    dataCadastro = Convert.ToDateTime(result["dataCadastro"].ToString())
+                };
+            }
+            return cliente;
         }
 
         public IEnumerable<Cliente> GetAllClientes()

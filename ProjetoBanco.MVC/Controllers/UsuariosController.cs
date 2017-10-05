@@ -39,6 +39,7 @@ namespace ProjetoBanco.MVC.Controllers
                 if (usuario.nivel !=0)
                 {
                     Session["nivel"] = usuario.nivel;
+                    Session["cliente"] = _IClienteAppService.GetByClienteId(usuario.clienteId);
                     return RedirectToAction("Index", "Home");
                 }
                 else

@@ -9,6 +9,12 @@ using ProjetoBanco.MVC.ViewModels;
 
 namespace ProjetoBanco.MVC.Controllers
 {
+    /*
+        Códigos de Operações
+        0 - Depósito
+        1 - Saque 
+        2 - Saldo
+    */
     public class OperacoesController : Controller
     {
         private readonly IOperacoesAppService _OperacaoAppService;
@@ -38,6 +44,23 @@ namespace ProjetoBanco.MVC.Controllers
             {
                 return View(opViewModel);
             }
+        }
+
+        public ActionResult Deposito()
+        {
+            ViewBag.cliente = (Cliente) Session["cliente"];
+            TempData["operacao"] = 0;
+            return View("Operacoes");
+        }
+        public ActionResult VerificaDadosDeposito(FormCollection form)
+        {
+            
+        }
+        public ActionResult Saldo()
+        {
+            ViewBag.cliente = (Cliente)Session["cliente"];
+            TempData["operacao"] = 2;
+            return View("Operacoes");
         }
     }
 }

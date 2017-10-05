@@ -283,7 +283,7 @@ CREATE PROCEDURE [dbo].[PBSP_INSERTCONTA]
 
 	*/
 	BEGIN
-		DECLARE @contaId[INT]=0;
+		DECLARE @contaId INT=0;
 		INSERT INTO [dbo].[Conta](num,tipo,senha)
 			VALUES(@num,@tipo,@senha);
 			RETURN SCOPE_IDENTITY();
@@ -314,14 +314,41 @@ CREATE PROCEDURE [dbo].[PBSP_INSERTCONTACLIENTE]
 
 	BEGIN
 		
-		DECLARE @bancoId[INT]=0
+		DECLARE @bancoId INT=0
 		SET @bancoId = (SELECT Id FROM [dbo].[Banco] WITH(NOLOCK)
 			INNER JOIN [dbo].[Agencia] WITH(NOLOCK) ON Banco.Id = Agencia.bancoId
 			WHERE Agencia.agencia = @agencia);
-			SELECT @bancoId;
 
 		INSERT INTO[dbo].[ContaCliente](contaId,agencia,bancoId,clienteId)
 			VALUES(@contaId,@agencia,@bancoId,@clienteId);		
 
 		END
 GO
+/*Busca clientes pelo id informado*/
+
+IF EXISTS (SELECT * FROM dbo.sysobjects WHERE id = object_id(N'[dbo].[PBSP_GETCLIENTEBYID]') AND objectproperty(id, N'IsPROCEDURE')=1)
+	DROP PROCEDURE [dbo].[PBSP_GETCLIENTEBYID]
+GO
+
+CREATE PROCEDURE [dbo].[PBSP_GETCLIENTEBYID]
+	@id INT
+	AS
+
+	/*
+	Documentação
+	Arquivo Fonte.....: ArquivoFonte.sql
+	Objetivo..........: Retorna cliente pelo id informado
+	Autor.............: SMN - Douglas
+ 	Data..............: 05/10/2017
+	Ex................: EXEC [dbo].[PBSP_GETCLIENTEBYID]
+
+	*/
+
+	BEGIN
+	
+		SELECT Id,nome,cpf,rg,fone,rua,bairro,num,nivel,dataCadastro FROM [dbo].[Clientes]WITH(NOLOCK)
+			WHERE Clientes.ativo=1 AND Clientes.Id=@id;
+
+	END
+GO
+				
