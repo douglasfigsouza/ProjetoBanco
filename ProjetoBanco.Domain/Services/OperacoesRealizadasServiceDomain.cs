@@ -14,7 +14,7 @@ namespace ProjetoBanco.Domain.Services
         {
             _operacoesRealizadasRepositoryDomain = operacoesRealizadasRepositoryDomain;
         }
-        public void AddOpRealizada(OperacaoRealizada operacaoRealizada, Operacoes op)
+        public void AddOpRealizada(OperacaoRealizada operacaoRealizada,int op)
         {
            _operacoesRealizadasRepositoryDomain.AddOpRealizada(operacaoRealizada,op);
         }

@@ -14,6 +14,8 @@ namespace ProjetoBanco.Domain.Interfaces.IRepositories
         IEnumerable<Operacoes> GetAllOperacoes();
         void UpdateOperacao(Operacoes op);
         void RemoveOperacao(Operacoes op);
+        Transacao VerificaDadosDeposito(Transacao transacao);
+        decimal ConsultaSaldo(Transacao transacao);
         void Dispose();
     }
 }

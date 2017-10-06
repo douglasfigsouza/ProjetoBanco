@@ -9,7 +9,7 @@ namespace ProjetoBanco.Domain.Interfaces.IServices
 {
     public interface IOperacoeRealizadaServiceDomain
     {
-        void AddOpRealizada(OperacaoRealizada operacaoRealizada, Operacoes op);
+        void AddOpRealizada(OperacaoRealizada operacaoRealizada, int op);
         void Dispose();
     }
 }

@@ -41,9 +41,28 @@ namespace ProjetoBanco.Domain.Services
             _repository.RemoveOperacao(op);
         }
 
+        public Transacao VerificaDadosDeposito(Transacao transacao)
+        {
+            transacao = _repository.VerificaDadosDeposito(transacao);
+
+            if (transacao!=null)
+            {
+                return transacao; ;
+            }
+            else
+            {
+                return null;
+            }
+        }
+
         public void Dispose()
         {
             _repository.Dispose();
+        }
+
+        public decimal ConsultaSaldo(Transacao transacao)
+        {
+           return _repository.ConsultaSaldo(transacao);
         }
     }
 }

@@ -9,13 +9,16 @@ using ProjetoBanco.Domain.Interfaces.IRepositories;
 
 namespace ProjetoBanco.Infra.Data.Repositories
 {
-    public class OperacoesRepository:IOperacoesRepositoryDomain
+    public class OperacoesRepository:IOperacoesRepositoryDomain, IDisposable
     {
         private Conexao conn;
         private SqlDataReader result;
+
         public enum Procedures
         {
-            PBSP_INSERTOPERACAO
+            PBSP_INSERTOPERACAO,
+            PBSP_VERIFICADADOSTRASACAO,
+            PBSP_CONSULTASALDO
         }
 
         public OperacoesRepository()
@@ -55,6 +58,42 @@ namespace ProjetoBanco.Infra.Data.Repositories
         public void RemoveOperacao(Operacoes op)
         {
             throw new NotImplementedException();
+        }
+
+        public Transacao VerificaDadosDeposito(Transacao transacao)
+        {
+            conn.ExecuteProcedure(Procedures.PBSP_VERIFICADADOSTRASACAO);
+            conn.AddParameter("@agencia", transacao.agencia);
+            conn.AddParameter("@conta", transacao.conta);
+            conn.AddParameter("@clienteId", transacao.clienteId);
+            result = conn.ExecuteReader();
+            while (result.Read())
+            {
+                transacao = new Transacao
+                {
+                    clienteId = Convert.ToInt32(result["clienteId"].ToString()),
+                    nome = result["nome"].ToString(),
+                    bancoId = Convert.ToInt32(result["bancoId"].ToString()),
+                    agencia = Convert.ToInt32(result["agencia"].ToString()),
+                    contaId = Convert.ToInt32(result["contaId"].ToString()),
+                };
+            }
+            return transacao;
+        }
+
+        public decimal ConsultaSaldo(Transacao transacao)
+        {
+            conn.ExecuteProcedure(Procedures.PBSP_CONSULTASALDO);
+            conn.AddParameter("@conta",transacao.conta);
+            conn.AddParameter("@agencia", transacao.agencia);
+            conn.AddParameter("@clienteId", transacao.clienteId);
+            result = conn.ExecuteReader();
+            decimal saldo=0;
+            while (result.Read())
+            {
+                saldo = Convert.ToDecimal(result["Saldo"].ToString());
+            }
+            return saldo ;
         }
 
         public void Dispose()

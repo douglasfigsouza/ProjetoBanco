@@ -49,5 +49,15 @@ namespace ProjetoBanco.Application
         {
             throw new NotImplementedException();
         }
+
+        public Transacao VerificaDadosDeposito(Transacao transacao)
+        {
+            return _OperacaoServiceDomain.VerificaDadosDeposito(transacao);
+        }
+
+        public decimal ConsultaSaldo(Transacao transacao)
+        {
+            return _OperacaoRepositoryDomain.ConsultaSaldo(transacao);
+        }
     }
 }

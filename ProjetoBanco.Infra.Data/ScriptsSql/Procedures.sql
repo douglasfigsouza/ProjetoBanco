@@ -351,4 +351,132 @@ CREATE PROCEDURE [dbo].[PBSP_GETCLIENTEBYID]
 
 	END
 GO
+
+--verifica dados da transação
+
+IF EXISTS (SELECT * FROM dbo.sysobjects WHERE id = object_id(N'[dbo].[PBSP_VERIFICADADOSTRASACAO]') AND objectproperty(id, N'IsPROCEDURE')=1)
+	DROP PROCEDURE [dbo].[PBSP_VERIFICADADOSTRASACAO]
+GO
+
+CREATE PROCEDURE [dbo].[PBSP_VERIFICADADOSTRASACAO]
+	@agencia INT,
+	@conta VARCHAR(20),
+	@clienteId SMALLINT
+	AS
+
+	/*
+	Documentação
+	Arquivo Fonte.....: ArquivoFonte.sql
+	Objetivo..........:	Garantir que a trasação possa ser realizada
+	Autor.............: SMN - Douglas
+ 	Data..............: 06/10/2017
+	Ex................: EXEC [dbo].[PBSP_VERIFICADADOSTRASACAO]
+
+	*/
+
+	BEGIN
+		SELECT Clientes.Id AS clienteId, Clientes.nome,Banco.Id AS bancoId, Agencia.agencia, Conta.Id as contaId FROM ContaCliente
+			INNER JOIN Clientes ON ContaCliente.clienteId = Clientes.Id
+			INNER JOIN Conta ON ContaCliente.contaId = Conta.Id
+			INNER JOIN Agencia ON ContaCliente.agencia = Agencia.agencia
+			INNER JOIN Banco ON ContaCliente.bancoId = Banco.Id
+			WHERE Conta.num = @conta AND Agencia.agencia = @agencia AND Clientes.ID = @clienteId
+	END
+GO
+--insere operacao realizada
+
+IF EXISTS (SELECT * FROM dbo.sysobjects WHERE id = object_id(N'[dbo].[PBSP_INSERTOPREALIZADA]') AND objectproperty(id, N'IsPROCEDURE')=1)
+	DROP PROCEDURE [dbo].[PBSP_INSERTOPREALIZADA]
+GO
+
+CREATE PROCEDURE [dbo].[PBSP_INSERTOPREALIZADA]
+	@operacaoId SMALLINT,
+	@clienteId SMALLINT,
+	@contaId SMALLINT,
+	@agencia INT,
+	@dataOp DATETIME,
+	@valorOp MONEY
+	AS
+
+	/*
+	Documentação
+	Arquivo Fonte.....: ArquivoFonte.sql
+	Objetivo..........: Insere operaçãorealizada
+	Autor.............: SMN - Douglas
+ 	Data..............: 06/10/2017
+	Ex................: EXEC [dbo].[PBSP_INSERTOPREALIZADA]
+
+	*/
+	
+	BEGIN
+		DECLARE @bancoId SMALLINT,
+				@saldoAnterior MONEY;
+		SET	@bancoId = dbo.RetornaIdBanco(@agencia);
+		SET @saldoAnterior = dbo.RetornaSaldo(@contaId);
+
+			select @saldoAnterior
+		INSERT INTO OperacoesRealizadas(operacaoId,clienteId,contaId,agencia,bancoId,dataOP,saldoAnterior,valorOp)
+			VALUES(@operacaoId,@clienteId,@contaId,@agencia,@bancoId,@dataOp,@saldoAnterior,@valorOp)
+
+	END
+GO
+--função que retorna id do banco em função da agencia
+CREATE FUNCTION dbo.RetornaIdBanco(@agencia INT)
+	RETURNS SMALLINT
+	BEGIN
+		RETURN (SELECT Banco.Id FROM Banco WITH(NOLOCK)
+						INNER JOIN Agencia WITH(NOLOCK) ON Banco.Id = Agencia.bancoId
+						WHERE Agencia.agencia = @agencia);
+
+	END	
+GO
+--consulta Saldo
+
+IF EXISTS (SELECT * FROM dbo.sysobjects WHERE id = object_id(N'[dbo].[PBSP_CONSULTASALDO]') AND objectproperty(id, N'IsPROCEDURE')=1)
+	DROP PROCEDURE [dbo].[PBSP_CONSULTASALDO]
+GO
+
+CREATE PROCEDURE [dbo].[PBSP_CONSULTASALDO]
+	@agencia INT,
+	@clienteId SMALLINT,
+	@conta VARCHAR(20)
+	AS
+
+	/*
+	Documentação
+	Arquivo Fonte.....: ArquivoFonte.sql
+	Objetivo..........: Consultar o saldo 
+	Autor.............: SMN - Douglas
+ 	Data..............: 06/10/2017
+	Ex................: EXEC [dbo].[PBSP_CONSULTASALDO]
+
+	*/
+
+	BEGIN
+	DECLARE @contaId SMALLINT;
+		SET @contaId =(SELECT Conta.Id FROM Conta WITH(NOLOCK)
+						INNER JOIN ContaCliente WITH(NOLOCK) ON Conta.Id = ContaCliente.contaId
+						INNER JOIN Clientes WITH(NOLOCK) ON ContaCliente.clienteId = Clientes.Id
+						WHERE Conta.num = '1110191' AND Clientes.Id =4
+
+		);
+		SELECT SUM(OperacoesRealizadas.valorOp) AS Saldo FROM OperacoesRealizadas WITH(NOLOCK)
+			INNER JOIN Conta WITH(NOLOCK)  ON OperacoesRealizadas.contaId = Conta.Id
+			WHERE Conta.Id = @contaId;
+	END
+GO
 				
+--Funções
+--função que retorna o Saldo
+CREATE FUNCTION dbo.RetornaSaldo(@contaId SMALLINT)
+	RETURNS DECIMAL
+	BEGIN
+		DECLARE @saldo Decimal;
+		SET @saldo = (SELECT SUM(OperacoesRealizadas.valorOp) FROM OperacoesRealizadas WITH(NOLOCK)
+						INNER JOIN Conta WITH(NOLOCK) ON Conta.ID = @contaId);
+		IF(@saldo IS NULL)
+			BEGIN
+				SET @saldo=0
+			END
+		RETURN @saldo
+	END	

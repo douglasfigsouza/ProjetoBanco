@@ -185,6 +185,8 @@
     <Compile Include="ViewModels\ContaClienteViewModel.cs" />
     <Compile Include="ViewModels\ContaViewModel.cs" />
     <Compile Include="ViewModels\OperacaoViewModel.cs" />
+    <Compile Include="ViewModels\OperacoesRealizadasViewModel.cs" />
+    <Compile Include="ViewModels\TrasacaoViewModel.cs" />
     <Compile Include="ViewModels\UsuarioViewModel.cs" />
   </ItemGroup>
   <ItemGroup>
@@ -248,6 +250,8 @@
     <Content Include="Views\Operacoes\Operacoes.cshtml" />
     <Content Include="Views\Operacoes\Deposito.cshtml" />
     <Content Include="Views\Operacoes\Saldo.cshtml" />
+    <Content Include="Views\Operacoes\Confirmacao.cshtml" />
+    <Content Include="Views\Operacoes\MostraSaldo.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

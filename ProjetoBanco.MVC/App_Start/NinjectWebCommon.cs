@@ -97,6 +97,10 @@ namespace ProjetoBanco.MVC.App_Start
             kernel.Bind<IOperacaoServiceDomain>().To<OpercoesServiceDomain>();
             kernel.Bind<IOperacoesRepositoryDomain>().To<OperacoesRepository>();
 
+            kernel.Bind<IOperacaoesRealizadasAppService>().To<OperacoesRealizadasAppService>();
+            kernel.Bind<IOperacoeRealizadaServiceDomain>().To<OperacoesRealizadasServiceDomain>();
+            kernel.Bind<IOperacoesRealizadasRepositoryDomain>().To<OperacaoRealizadaRepository>();
+
             kernel.Bind<IUsuarioAppService>().To<UsuarioAppService>();
             kernel.Bind<IUsuariosServiceDomain>().To<UsuarioSeviceDomain>();
             kernel.Bind<IUsuarioRepositoryDomain>().To<UsuarioRepository>();

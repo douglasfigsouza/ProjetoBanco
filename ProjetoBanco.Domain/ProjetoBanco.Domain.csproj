@@ -39,6 +39,7 @@
     <Compile Include="Entities\Estado.cs" />
     <Compile Include="Entities\OperacaoRealizada.cs" />
     <Compile Include="Entities\Operacoes.cs" />
+    <Compile Include="Entities\Transacao.cs" />
     <Compile Include="Entities\Usuario.cs" />
     <Compile Include="Interfaces\IRepositories\IAgenciaRepositoryDomain.cs" />
     <Compile Include="Interfaces\IRepositories\IBancoRepositoryDomain.cs" />

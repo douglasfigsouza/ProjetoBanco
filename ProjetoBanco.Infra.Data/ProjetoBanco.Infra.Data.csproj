@@ -38,6 +38,7 @@
     <Compile Include="Repositories\Conexao.cs" />
     <Compile Include="Repositories\ContaClienteRepository.cs" />
     <Compile Include="Repositories\EstadoRepository.cs" />
+    <Compile Include="Repositories\OperacaoRealizadaRepository.cs" />
     <Compile Include="Repositories\OperacoesRepository.cs" />
     <Compile Include="Repositories\UsuarioRepository.cs" />
   </ItemGroup>
