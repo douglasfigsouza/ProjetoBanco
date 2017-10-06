@@ -15,5 +15,9 @@
         {
             @Html.Partial("Saldo")
         }
+        @if (Convert.ToInt32(TempData["operacao"]) == 3)
+        {
+            @Html.Partial("Saque")
+        }
     </div>
 </div>

@@ -5,8 +5,9 @@
         <hr />
     </div>
     <div class="col s6">
-        @using (Html.BeginForm("VerificaDadosDeposito", "Operacoes"))
+        @using (Html.BeginForm("VerificaDados", "Operacoes"))
         {
+            @Html.HiddenFor(t=>t.op, new {value=1})
             @Html.ValidationSummary(true)
             {
                 <div class="row">

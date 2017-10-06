@@ -252,6 +252,7 @@
     <Content Include="Views\Operacoes\Saldo.cshtml" />
     <Content Include="Views\Operacoes\Confirmacao.cshtml" />
     <Content Include="Views\Operacoes\MostraSaldo.cshtml" />
+    <Content Include="Views\Operacoes\Saque.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

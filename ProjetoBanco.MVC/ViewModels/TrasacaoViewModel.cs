@@ -6,6 +6,8 @@ namespace ProjetoBanco.MVC.ViewModels
 {
     public class TrasacaoViewModel
     {
+        public int op { get; set; }
+
         [Required]
         public string conta { get; set; }
         [Required]

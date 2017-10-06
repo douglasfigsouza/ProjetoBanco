@@ -59,7 +59,7 @@ namespace ProjetoBanco.MVC.Controllers
             TempData["operacao"] = 1;
             return View("Operacoes");
         }
-        public ActionResult VerificaDadosDeposito(TrasacaoViewModel trasacaoViewModel)
+        public ActionResult VerificaDados(TrasacaoViewModel trasacaoViewModel)
         {
             if (ModelState.IsValid)
             {
@@ -80,6 +80,7 @@ namespace ProjetoBanco.MVC.Controllers
                     trasacaoViewModel.agencia= transacao.agencia;
                     trasacaoViewModel.nome = transacao.nome;
                     trasacaoViewModel.valor = valor;
+                    ViewBag.operacao = trasacaoViewModel.op;
                     return View("Confirmacao",trasacaoViewModel);
                 }
                 else
@@ -94,7 +95,7 @@ namespace ProjetoBanco.MVC.Controllers
                 return View("Deposito",trasacaoViewModel);
             }
         }
-
+        //confirma os dados do deposito
         public ActionResult ConfirmTrasacao(TrasacaoViewModel trasacaoViewModel)
         {
             operacaoRealizada.agencia = trasacaoViewModel.agencia;
@@ -121,5 +122,12 @@ namespace ProjetoBanco.MVC.Controllers
             ViewBag.saldo = _OperacaoAppService.ConsultaSaldo(transacao);
             return View("MostraSaldo");
         }
+
+        public ActionResult Saque()
+        {
+            TempData["operacao"] = 3;
+            ViewBag.cliente= (Cliente) Session["cliente"];
+            return View("Operacoes");
+        }    
     }
 }
