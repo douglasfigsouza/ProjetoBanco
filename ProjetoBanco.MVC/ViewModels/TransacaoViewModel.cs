@@ -4,7 +4,7 @@ using System.ComponentModel.DataAnnotations;
 
 namespace ProjetoBanco.MVC.ViewModels
 {
-    public class TrasacaoViewModel
+    public class TransacaoViewModel
     {
         public int op { get; set; }
 

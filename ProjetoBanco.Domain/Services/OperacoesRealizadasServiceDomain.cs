@@ -14,9 +14,21 @@ namespace ProjetoBanco.Domain.Services
         {
             _operacoesRealizadasRepositoryDomain = operacoesRealizadasRepositoryDomain;
         }
-        public void AddOpRealizada(OperacaoRealizada operacaoRealizada,int op)
+        public void Deposito(OperacaoRealizada operacaoRealizada,int op)
         {
-           _operacoesRealizadasRepositoryDomain.AddOpRealizada(operacaoRealizada,op);
+           _operacoesRealizadasRepositoryDomain.Deposito(operacaoRealizada,op);
+        }
+
+        public string Saque(OperacaoRealizada operacaoRealizada, int op)
+        {
+            if (_operacoesRealizadasRepositoryDomain.Saque(operacaoRealizada, op) == 0)
+            {
+                return "Não foi possivel realizar o saque, pois você não possui saldo suficiente";
+            }
+            else
+            {
+                return "Saque realizado com sucesso";
+            }
         }
 
         public void Dispose()

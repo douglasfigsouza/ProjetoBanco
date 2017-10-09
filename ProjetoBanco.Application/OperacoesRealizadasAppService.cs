@@ -19,9 +19,9 @@ namespace ProjetoBanco.Application
             _operacoesRealizadaServiceDomain = operacoesRealizadaServiceDomain;
             _operacoesRealizadasRepositoryDomain = operacoesRealizadasRepositoryDomain;
         }
-        public void AddOpRealizada(OperacaoRealizada operacaoRealizada, int op)
+        public void Deposito(OperacaoRealizada operacaoRealizada, int op)
         {
-           _operacoesRealizadasRepositoryDomain.AddOpRealizada(operacaoRealizada,op);
+           _operacoesRealizadasRepositoryDomain.Deposito(operacaoRealizada,op);
         }
 
         public void Dispose()
@@ -29,5 +29,11 @@ namespace ProjetoBanco.Application
             _operacoesRealizadasRepositoryDomain.Dispose();
             _operacoesRealizadaServiceDomain.Dispose();
         }
+
+        public string Saque(OperacaoRealizada operacaoRealizada, int op)
+        {
+           return _operacoesRealizadaServiceDomain.Saque(operacaoRealizada,op);
+        }
+
     }
 }

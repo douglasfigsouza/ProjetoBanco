@@ -11,13 +11,17 @@
         {
             @Html.Partial("Deposito")
         }
-        @if (Convert.ToInt32(TempData["operacao"])==2)
+        @if (Convert.ToInt32(TempData["operacao"]) == 2)
+        {
+            @Html.Partial("Saque")
+        }
+        @if (Convert.ToInt32(TempData["operacao"])==3)
         {
             @Html.Partial("Saldo")
         }
-        @if (Convert.ToInt32(TempData["operacao"]) == 3)
+        @if (Convert.ToInt32(TempData["operacao"]) == 4)
         {
-            @Html.Partial("Saque")
+            @Html.Partial("Transferencia")
         }
     </div>
 </div>

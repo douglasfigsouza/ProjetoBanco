@@ -43,7 +43,7 @@ CREATE TABLE [Clientes]
 CREATE TABLE [USUARIO]
 (
 	clienteId[SMALLINT] NOT NULL,
-	nome[VARCHAR](20) NOT NULL, 
+	nome[VARCHAR](20) NOT NULL UNIQUE, 
 	senha[VARCHAR](8) NOT NULL,
 	CONSTRAINT FK_ClienteUsuario FOREIGN KEY(clienteId) REFERENCES Clientes
 )
@@ -52,6 +52,7 @@ CREATE TABLE Agencia
 	agencia [SMALLINT] NOT NULL,
 	bancoId [SMALLINT] NOT NULL ,
 	cidadeId [SMALLINT] NOT NULL,
+	ativo BIT,
 	CONSTRAINT PK_AGENCIA PRIMARY KEY(agencia, bancoId),
 	CONSTRAINT FK_Cidade_Agencia FOREIGN KEY(CidadeId) REFERENCES Cidade,
 	CONSTRAINT FK_Banco_Agencia foreign key (bancoId) REFERENCES Banco
@@ -72,6 +73,7 @@ CREATE TABLE Operacoes
 (
 	Id[SMALLINT] NOT NULL PRIMARY KEY IDENTITY, 
 	descricao[VARCHAR](100) NOT NULL, 
+	ativo BIT
 )
 GO
 CREATE TABLE OperacoesRealizadas
@@ -82,8 +84,8 @@ CREATE TABLE OperacoesRealizadas
 	bancoId[SMALLINT] NOT NULL,
 	contaId[SMALLINT] NOT NULL,
 	dataOp[DATETIME] NOT NULL,
-	SaldoAnterior[MONEY] NOT NULL,
-	valorOp[MONEY] NOT NULL
+	SaldoAnterior DECIMAL NOT NULL,
+	valorOp DECIMAL NOT NULL
 	CONSTRAINT FK_Opercoes_OpRealizadas FOREIGN KEY(operacaoId) REFERENCES Operacoes,
 	CONSTRAINT FK_Clientes_OpRealizadas FOREIGN KEY(clienteId) REFERENCES Clientes,
 	CONSTRAINT FK_Agencia_OpRealizadas FOREIGN KEY(agenciaId,bancoId) REFERENCES Agencia,

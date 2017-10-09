@@ -15,6 +15,7 @@ namespace ProjetoBanco.Domain.Interfaces.IServices
         void UpdateOperacao(Operacoes op);
         void RemoveOperacao(Operacoes op);
         Transacao VerificaDadosDeposito(Transacao transacao);
+        List<Transacao> VerificaDadosTransferencia(List<Transacao> transacoes);
         decimal ConsultaSaldo(Transacao transacao);
         void Dispose();
 

@@ -9,7 +9,8 @@ namespace ProjetoBanco.Domain.Interfaces.IRepositories
 {
     public interface IOperacoesRealizadasRepositoryDomain
     {
-        void AddOpRealizada(OperacaoRealizada operacaoRealizada, int op);
+        void Deposito(OperacaoRealizada operacaoRealizada, int op);
+        int Saque(OperacaoRealizada operacaoRealizada, int op);
         void Dispose();
     }
 }

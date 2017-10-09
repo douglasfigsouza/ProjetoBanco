@@ -13,6 +13,7 @@ namespace ProjetoBanco.Infra.Data.Repositories
     {
         private Conexao conn;
         private SqlDataReader result;
+        private List<Transacao> lstTransacoes;
 
         public enum Procedures
         {
@@ -24,6 +25,7 @@ namespace ProjetoBanco.Infra.Data.Repositories
         public OperacoesRepository()
         {
             conn = new Conexao();
+            lstTransacoes = new List<Transacao>();
         }
 
         public void AddOperacao(Operacoes op)
@@ -79,6 +81,32 @@ namespace ProjetoBanco.Infra.Data.Repositories
                 };
             }
             return transacao;
+        }
+
+        public List<Transacao> VerificaDadosTransferencia(List<Transacao> transacoes)
+        {
+            foreach (var transacao in transacoes)
+            {
+                conn= new Conexao();
+                conn.ExecuteProcedure(Procedures.PBSP_VERIFICADADOSTRASACAO);
+                conn.AddParameter("@agencia", transacao.agencia);
+                conn.AddParameter("@conta", transacao.conta);
+                conn.AddParameter("@clienteId", transacao.clienteId);
+                result = conn.ExecuteReader();
+                while (result.Read())
+                {
+                    lstTransacoes.Add(new Transacao
+                    {
+                        clienteId = Convert.ToInt32(result["clienteId"].ToString()),
+                        nome = result["nome"].ToString(),
+                        bancoId = Convert.ToInt32(result["bancoId"].ToString()),
+                        agencia = Convert.ToInt32(result["agencia"].ToString()),
+                        contaId = Convert.ToInt32(result["contaId"].ToString()),
+                    });
+                }
+            }
+         
+            return lstTransacoes;
         }
 
         public decimal ConsultaSaldo(Transacao transacao)

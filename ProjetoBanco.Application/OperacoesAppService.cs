@@ -55,6 +55,11 @@ namespace ProjetoBanco.Application
             return _OperacaoServiceDomain.VerificaDadosDeposito(transacao);
         }
 
+        public List<Transacao> VerificaDadosTransferencia(List<Transacao> transacoes)
+        {
+            return _OperacaoServiceDomain.VerificaDadosTransferencia(transacoes);
+        }
+
         public decimal ConsultaSaldo(Transacao transacao)
         {
             return _OperacaoRepositoryDomain.ConsultaSaldo(transacao);
