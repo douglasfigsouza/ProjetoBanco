@@ -92,6 +92,8 @@ namespace ProjetoBanco.MVC.Controllers
                 valor = trasacaoViewModel.valor;
                 transacao.agencia = trasacaoViewModel.agencia;
                 transacao.conta = trasacaoViewModel.conta;
+                transacao.senhaCli = trasacaoViewModel.senhaCli;
+                transacao.nivel = cli.nivel;
 
                 if (trasacaoViewModel.op == 1)
                 {

@@ -25,6 +25,10 @@
                         <label for="valor" class="col s12">Valor</label>
                         @Html.EditorFor(t => t.valor, new { @class = "col s12" })
                     </div>
+                    <div class="col s6">
+                        <label for="senhaCli" class="col s12">Senha</label>
+                        @Html.TextBoxFor(t => t.senhaCli, new { @class = "col s12",@type="password" })
+                    </div>
                 </div>
                 <div class="row">
                     <div class="col s6">

@@ -412,6 +412,8 @@ GO
 
 CREATE PROCEDURE [dbo].[PBSP_VERIFICADADOSTRASACAO]
 	@op INT,
+	@nivel CHAR(1),
+	@senhaCli VARCHAR(20),
 	@agencia INT,
 	@conta VARCHAR(20),
 	@clienteId SMALLINT
@@ -447,14 +449,27 @@ CREATE PROCEDURE [dbo].[PBSP_VERIFICADADOSTRASACAO]
 				WHERE Conta.num = @conta AND Agencia.agencia = @agencia AND Clientes.ID = @Id;
 		END
 		END
-	ELSE IF(@OP=2)
+	ELSE IF(@op=2)
 		BEGIN
-			SELECT Clientes.Id AS clienteId, Clientes.nome,Banco.Id AS bancoId, Agencia.agencia, Conta.Id as contaId FROM ContaCliente
+			IF(@nivel='f')
+			BEGIN
+				SELECT Clientes.Id AS clienteId, Clientes.nome,Banco.Id AS bancoId, Agencia.agencia, Conta.Id as contaId FROM ContaCliente
 				INNER JOIN Clientes ON ContaCliente.clienteId = Clientes.Id
 				INNER JOIN Conta ON ContaCliente.contaId = Conta.Id
 				INNER JOIN Agencia ON ContaCliente.agencia = Agencia.agencia
 				INNER JOIN Banco ON ContaCliente.bancoId = Banco.Id
-				WHERE Conta.num = @conta AND Agencia.agencia = @agencia AND Clientes.ID = @clienteId;
+				WHERE Conta.num = @conta AND Agencia.agencia = @agencia AND Conta.senha=@senhaCli;
+			END
+			ELSE IF(@nivel='c')
+			BEGIN 
+				SELECT Clientes.Id AS clienteId, Clientes.nome,Banco.Id AS bancoId, Agencia.agencia, Conta.Id as contaId FROM ContaCliente
+				INNER JOIN Clientes ON ContaCliente.clienteId = Clientes.Id
+				INNER JOIN Conta ON ContaCliente.contaId = Conta.Id
+				INNER JOIN Agencia ON ContaCliente.agencia = Agencia.agencia
+				INNER JOIN Banco ON ContaCliente.bancoId = Banco.Id
+				WHERE Conta.num = @conta AND Agencia.agencia = @agencia AND Clientes.ID = @clienteId AND Conta.senha=@senhaCli;
+			END
+
 		END
 
 	END

@@ -69,6 +69,8 @@ namespace ProjetoBanco.Infra.Data.Repositories
             conn = new Conexao();
             conn.ExecuteProcedure(Procedures.PBSP_VERIFICADADOSTRASACAO);
             conn.AddParameter("@op", op);
+            conn.AddParameter("@nivel",transacao.nivel);
+            conn.AddParameter("@senhaCli", transacao.senhaCli);
             conn.AddParameter("@agencia", transacao.agencia);
             conn.AddParameter("@clienteId", transacao.clienteId);
             conn.AddParameter("@conta", transacao.conta);
