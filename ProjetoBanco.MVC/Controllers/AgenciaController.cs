@@ -41,7 +41,8 @@ namespace ProjetoBanco.MVC.Controllers
                 agencia.agencia = agenciaViewModel.agencia;
 
                 _agenciaAppService.AddAgencia(agencia);
-                return RedirectToAction("Success", "Index");
+                ViewBag.messagem = "Agência: " + agenciaViewModel.agencia + " cadastrada com sucesso!";
+                return RedirectToAction("Index", "Success");
             }
             else
             {

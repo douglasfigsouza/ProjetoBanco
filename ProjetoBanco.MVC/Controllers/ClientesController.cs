@@ -47,7 +47,8 @@ namespace ProjetoBanco.MVC.Controllers
                 cliente.dataCadastro = DateTime.Now;
                 cliente.ativo = true;
                 _clienteApp.AddCliente(cliente);
-                return RedirectToAction("Index");
+                ViewBag.messagem = "Cliente: " + clienteViewModel.nome + " cadastrado com sucesso!";
+                return RedirectToAction("Index","Success");
                 }
             else
             {

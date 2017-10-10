@@ -16,5 +16,7 @@ namespace ProjetoBanco.Domain.Entities
         public int bancoId { get; set; }
         public int contaId { get; set; }
         public DateTime dataOp { get; set; }
+        public char nivel { get; set;}
+        public string senhaCli { get; set; }
     }
 }

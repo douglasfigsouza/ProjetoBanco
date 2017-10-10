@@ -27,7 +27,8 @@ namespace ProjetoBanco.MVC.Controllers
                 banco.nome = bancoViewModel.nome;
                 banco.ativo = true;
                 _IBancoAppService.AddBanco(banco);
-                return RedirectToAction("Success", "Index");
+                ViewBag.messagem = "Banco: " + bancoViewModel.nome + " cadastrado com sucesso!";
+                return RedirectToAction("Index", "Success");
             }
             else
             {

@@ -8,7 +8,7 @@
     <title>@ViewBag.Title - SisBank</title>
     @Styles.Render("~/Content/css")
     @Scripts.Render("~/bundles/modernizr")
-    <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/v/dt/dt-1.10.16/datatables.min.css"/>
+    <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/v/dt/dt-1.10.16/datatables.min.css" />
     @Scripts.Render("~/bundles/jquery")
 </head>
 <body>
@@ -25,13 +25,10 @@
             }
         </ul>
         <ul id="operacoes" class="dropdown-content">
-            @if (Session["nivel"].ToString() == "c")
-            {
-                <li>@Html.ActionLink("Deposito", "Deposito", "Operacoes")</li>
-                <li>@Html.ActionLink("Saldo", "Saldo", "Operacoes")</li>
-                <li>@Html.ActionLink("Saque", "Saque", "Operacoes")</li>
-                <li>@Html.ActionLink("Transferência", "Transferencia", "Operacoes")</li>
-            }
+            <li>@Html.ActionLink("Deposito", "Deposito", "Operacoes")</li>
+            <li>@Html.ActionLink("Saldo", "Saldo", "Operacoes")</li>
+            <li>@Html.ActionLink("Saque", "Saque", "Operacoes")</li>
+            <li>@Html.ActionLink("Transferência", "Transferencia", "Operacoes")</li>
         </ul>
         <nav>
             <div class="nav-wrapper">
@@ -50,11 +47,10 @@
             </div>
         </nav>
     </header>
-<div class="container">
-    @RenderBody()
-    <footer>
-    </footer>
-</div>
+    <div class="container">
+        @RenderBody()
+        <footer></footer>
+    </div>
 
     @Scripts.Render("~/bundles/bootstrap")
     @RenderSection("scripts", required: false)

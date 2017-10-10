@@ -112,18 +112,15 @@ namespace ProjetoBanco.Infra.Data.Repositories
         {
             try
             {
-                conn = new Conexao();
                 conn.ExecuteProcedure(Procedures.PBSP_CONSULTASALDO);
+                conn.AddParameter("@nivel",transacao.nivel);
+                conn.AddParameter("@senhaCli", transacao.senhaCli);
                 conn.AddParameter("@conta", transacao.conta);
                 conn.AddParameter("@agencia", transacao.agencia);
                 conn.AddParameter("@clienteId", transacao.clienteId);
-                result = conn.ExecuteReader();
-                decimal saldo = -1;
-                while (result.Read())
-                {
-                    saldo = Convert.ToDecimal(result["Saldo"].ToString());
-                }
-                return saldo;
+
+                return conn.ExecuteNonQueryWithReturn();
+
             }
             catch (Exception ex)
             {

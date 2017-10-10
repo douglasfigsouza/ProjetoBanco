@@ -18,5 +18,6 @@ namespace ProjetoBanco.MVC.ViewModels
         public string nome { get; set; }
         public int bancoId { get; set; }
         public int contaId { get; set; }
+        public string senhaCli { get; set;}
     }
 }

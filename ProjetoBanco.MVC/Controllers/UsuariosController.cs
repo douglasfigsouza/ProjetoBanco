@@ -68,7 +68,8 @@ namespace ProjetoBanco.MVC.Controllers
                 usuario.nome = usuarioViewModel.nome;
                 usuario.senha = usuarioViewModel.senha;
                 _IUsuarioAppService.AddUsuario(usuario);
-                return RedirectToAction("Success", "Index");
+                ViewBag.messagem = "Usuário: " + usuarioViewModel.nome + " cadastrado com sucesso!";
+                return RedirectToAction("Index", "Success");
             }
             else
             {

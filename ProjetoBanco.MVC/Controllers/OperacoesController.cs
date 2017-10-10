@@ -49,6 +49,7 @@ namespace ProjetoBanco.MVC.Controllers
             {
                 op.descricao = opViewModel.descricao;
                 _OperacaoAppService.AddOperacao(op);
+                ViewBag.messagem = "Operação: " + opViewModel.descricao + " cadastrada com sucesso!";
                 return RedirectToAction("Index", "Success");
             }
             else
@@ -144,6 +145,8 @@ namespace ProjetoBanco.MVC.Controllers
         public ActionResult ConsultaSaldo(TransacaoViewModel trasacaoViewModel)
         {
             Cliente cli = (Cliente)Session["cliente"];
+            transacao.nivel = cli.nivel;
+            transacao.senhaCli = trasacaoViewModel.senhaCli;
             transacao.clienteId = cli.Id;
             transacao.agencia = trasacaoViewModel.agencia;
             transacao.conta = trasacaoViewModel.conta;
