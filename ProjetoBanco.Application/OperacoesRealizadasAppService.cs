@@ -26,7 +26,7 @@ namespace ProjetoBanco.Application
 
         public string Transferencia(OperacaoRealizada opConta1, OperacaoRealizada opConta2)
         {
-            if (_operacoesRealizadaServiceDomain.Transferencia(opConta1, opConta2)==0)
+            if (_operacoesRealizadaServiceDomain.Transferencia(opConta1, opConta2)==1)
             {
                 return "Transferência Realizada com sucesso";
             }

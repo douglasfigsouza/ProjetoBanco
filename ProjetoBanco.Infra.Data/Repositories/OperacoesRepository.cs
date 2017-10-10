@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Data.SqlClient;
 using System.Linq;
+using System.Runtime.CompilerServices;
 using System.Text;
 using System.Threading.Tasks;
 using ProjetoBanco.Domain.Entities;
@@ -19,6 +20,7 @@ namespace ProjetoBanco.Infra.Data.Repositories
         {
             PBSP_INSERTOPERACAO,
             PBSP_VERIFICADADOSTRASACAO,
+            PBSP_VERIFICADADOSDATRANSFERENCIA,
             PBSP_CONSULTASALDO
         }
 
@@ -62,13 +64,14 @@ namespace ProjetoBanco.Infra.Data.Repositories
             throw new NotImplementedException();
         }
 
-        public Transacao VerificaDadosDeposito(Transacao transacao)
+        public Transacao VerificaDadosTransacao(Transacao transacao, int op)
         {
             conn = new Conexao();
             conn.ExecuteProcedure(Procedures.PBSP_VERIFICADADOSTRASACAO);
+            conn.AddParameter("@op", op);
             conn.AddParameter("@agencia", transacao.agencia);
-            conn.AddParameter("@conta", transacao.conta);
             conn.AddParameter("@clienteId", transacao.clienteId);
+            conn.AddParameter("@conta", transacao.conta);
             result = conn.ExecuteReader();
             while (result.Read())
             {
@@ -84,47 +87,51 @@ namespace ProjetoBanco.Infra.Data.Repositories
             return transacao;
         }
 
-        public List<Transacao> VerificaDadosTransferencia(List<Transacao> transacoes)
+        public Transacao VerificaDadosTransferencia(Transacao transacao)
         {
-            foreach (var transacao in transacoes)
+            conn = new Conexao();
+            conn.ExecuteProcedure(Procedures.PBSP_VERIFICADADOSDATRANSFERENCIA);
+            conn.AddParameter("@agencia", transacao.agencia);
+            conn.AddParameter("@conta", transacao.conta);
+            result = conn.ExecuteReader();
+            while (result.Read())
             {
-                conn= new Conexao();
-                conn.ExecuteProcedure(Procedures.PBSP_VERIFICADADOSTRASACAO);
-                conn.AddParameter("@agencia", transacao.agencia);
-                conn.AddParameter("@conta", transacao.conta);
-                conn.AddParameter("@clienteId", transacao.clienteId);
-                result = conn.ExecuteReader();
-                while (result.Read())
+                transacao = new Transacao
                 {
-                    lstTransacoes.Add(new Transacao
-                    {
-                        clienteId = Convert.ToInt32(result["clienteId"].ToString()),
-                        nome = result["nome"].ToString(),
-                        bancoId = Convert.ToInt32(result["bancoId"].ToString()),
-                        agencia = Convert.ToInt32(result["agencia"].ToString()),
-                        contaId = Convert.ToInt32(result["contaId"].ToString()),
-                    });
-                }
+                    clienteId = Convert.ToInt32(result["clienteId"].ToString()),
+                    nome = result["nome"].ToString(),
+                    bancoId = Convert.ToInt32(result["bancoId"].ToString()),
+                    agencia = Convert.ToInt32(result["agencia"].ToString()),
+                    contaId = Convert.ToInt32(result["contaId"].ToString()),
+                };
             }
-         
-            return lstTransacoes;
+            return transacao;
         }
 
         public decimal ConsultaSaldo(Transacao transacao)
         {
-            conn.ExecuteProcedure(Procedures.PBSP_CONSULTASALDO);
-            conn.AddParameter("@conta",transacao.conta);
-            conn.AddParameter("@agencia", transacao.agencia);
-            conn.AddParameter("@clienteId", transacao.clienteId);
-            result = conn.ExecuteReader();
-            decimal saldo=0;
-            while (result.Read())
+            try
             {
-                saldo = Convert.ToDecimal(result["Saldo"].ToString());
+                conn = new Conexao();
+                conn.ExecuteProcedure(Procedures.PBSP_CONSULTASALDO);
+                conn.AddParameter("@conta", transacao.conta);
+                conn.AddParameter("@agencia", transacao.agencia);
+                conn.AddParameter("@clienteId", transacao.clienteId);
+                result = conn.ExecuteReader();
+                decimal saldo = -1;
+                while (result.Read())
+                {
+                    saldo = Convert.ToDecimal(result["Saldo"].ToString());
+                }
+                return saldo;
             }
-            return saldo ;
-        }
+            catch (Exception ex)
+            {
+                return -1;
 
+            }
+ 
+        }
         public void Dispose()
         {
             throw new NotImplementedException();

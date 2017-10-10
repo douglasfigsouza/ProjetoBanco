@@ -14,8 +14,8 @@ namespace ProjetoBanco.Domain.Interfaces.IServices
         IEnumerable<Operacoes> GetAllOperacoes();
         void UpdateOperacao(Operacoes op);
         void RemoveOperacao(Operacoes op);
-        Transacao VerificaDadosDeposito(Transacao transacao);
-        List<Transacao> VerificaDadosTransferencia(List<Transacao> transacoes);
+        Transacao VerificaDadosTransacao(Transacao transacao, int op);
+        Transacao VerificaDadosTransferencia(Transacao transacao);
         decimal ConsultaSaldo(Transacao transacao);
         void Dispose();
 

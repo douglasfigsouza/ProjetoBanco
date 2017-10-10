@@ -39,20 +39,30 @@ namespace ProjetoBanco.Infra.Data.Repositories
 
         public int Transferencia(OperacaoRealizada opConta1, OperacaoRealizada opConta2)
         {
-            conn.ExecuteProcedure(Procedure.PBSP_TRANSFERENCIA);
+            conn.ExecuteProcedure(Procedure.PBSP_SAQUE);
+            conn.AddParameter("operacaoId",2);
             conn.AddParameter("@agencia", opConta1.agencia);
             conn.AddParameter("@contaId", opConta1.contaId);
             conn.AddParameter("@clienteId", opConta1.clienteId);
             conn.AddParameter("@dataOp", opConta1.dataOp);
             conn.AddParameter("@valorOp", opConta1.valorOp);
+            if (conn.ExecuteNonQueryWithReturn() == 1)
+            {
+                conn = new Conexao();
+                conn.ExecuteProcedure(Procedure.PBSP_TRANSFERENCIA);
+                conn.AddParameter("operacaoId", 4);
+                conn.AddParameter("@agencia", opConta2.agencia);
+                conn.AddParameter("@contaId", opConta2.contaId);
+                conn.AddParameter("@dataOp", opConta2.dataOp);
+                conn.AddParameter("@valorOp", opConta1.valorOp);
+                conn.ExecuteNonQuery();
+                return 1;
+            }
 
-            conn.AddParameter("@agencia1", opConta2.agencia);
-            conn.AddParameter("@conta1Id", opConta2.contaId);
-            conn.AddParameter("@cliente1Id", opConta2.clienteId);
-            conn.AddParameter("@dataOp1", opConta2.dataOp);
-            conn.AddParameter("@valorOp1", opConta2.valorOp);
-
-            return conn.ExecuteNonQueryWithReturn();
+            else
+            {
+                return 0;
+            }
         }
 
         public void Dispose()

@@ -50,19 +50,27 @@ namespace ProjetoBanco.Application
             throw new NotImplementedException();
         }
 
-        public Transacao VerificaDadosDeposito(Transacao transacao)
+        public Transacao VerificaDadosTransacao(Transacao transacao, int op)
         {
-            return _OperacaoServiceDomain.VerificaDadosDeposito(transacao);
+            return _OperacaoServiceDomain.VerificaDadosTransacao(transacao,op);
         }
 
-        public List<Transacao> VerificaDadosTransferencia(List<Transacao> transacoes)
+        public Transacao VerificaDadosTransferencia(Transacao transacao)
         {
-            return _OperacaoServiceDomain.VerificaDadosTransferencia(transacoes);
+           return _OperacaoServiceDomain.VerificaDadosTransferencia(transacao);
         }
 
-        public decimal ConsultaSaldo(Transacao transacao)
+
+        public string ConsultaSaldo(Transacao transacao)
         {
-            return _OperacaoRepositoryDomain.ConsultaSaldo(transacao);
+            if( _OperacaoRepositoryDomain.ConsultaSaldo(transacao)==(-1))
+            {
+                return null;
+            }
+            else
+            {
+                return _OperacaoRepositoryDomain.ConsultaSaldo(transacao)+"";
+            }
         }
     }
 }

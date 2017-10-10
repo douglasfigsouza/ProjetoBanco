@@ -371,7 +371,7 @@ CREATE PROCEDURE [dbo].[PBSP_INSERTCONTACLIENTE]
 			INNER JOIN [dbo].[Agencia] WITH(NOLOCK) ON Banco.Id = Agencia.bancoId
 			WHERE Agencia.agencia = @agencia);
 
-		INSERT INTO[dbo].[ContaCliente](contaId,agenciaId,bancoId,clienteId)
+		INSERT INTO[dbo].[ContaCliente](contaId,agencia,bancoId,clienteId)
 			VALUES(@contaId,@agencia,@bancoId,@clienteId);		
 
 		END
@@ -430,7 +430,7 @@ CREATE PROCEDURE [dbo].[PBSP_VERIFICADADOSTRASACAO]
 		SELECT Clientes.Id AS clienteId, Clientes.nome,Banco.Id AS bancoId, Agencia.agencia, Conta.Id as contaId FROM ContaCliente
 			INNER JOIN Clientes ON ContaCliente.clienteId = Clientes.Id
 			INNER JOIN Conta ON ContaCliente.contaId = Conta.Id
-			INNER JOIN Agencia ON ContaCliente.agenciaId = Agencia.agencia
+			INNER JOIN Agencia ON ContaCliente.agencia = Agencia.agencia
 			INNER JOIN Banco ON ContaCliente.bancoId = Banco.Id
 			WHERE Conta.num = @conta AND Agencia.agencia = @agencia AND Clientes.ID = @clienteId
 	END
@@ -443,7 +443,6 @@ GO
 
 CREATE PROCEDURE [dbo].[PBSP_DEPOSITO]
 	@operacaoId SMALLINT,
-	@clienteId SMALLINT,
 	@contaId SMALLINT,
 	@agencia INT,
 	@dataOp DATETIME,
@@ -462,11 +461,13 @@ CREATE PROCEDURE [dbo].[PBSP_DEPOSITO]
 	
 	BEGIN
 		DECLARE @bancoId SMALLINT,
-				@saldoAnterior MONEY;
+				@saldoAnterior DECIMAL,
+				@clienteId SMALLINT;
 		SET	@bancoId = dbo.RetornaIdBanco(@agencia);
 		SET @saldoAnterior = dbo.RetornaSaldo(@contaId);
+		SET @clienteId = dbo.RetornaIdClienteConta(@contaId);
 
-		INSERT INTO OperacoesRealizadas(operacaoId,clienteId,contaId,agenciaId,bancoId,dataOP,saldoAnterior,valorOp)
+		INSERT INTO OperacoesRealizadas(operacaoId,clienteId,contaId,agencia,bancoId,dataOP,saldoAnterior,valorOp)
 			VALUES(@operacaoId,@clienteId,@contaId,@agencia,@bancoId,@dataOp,@saldoAnterior,@valorOp)
 
 	END
@@ -498,12 +499,12 @@ CREATE PROCEDURE [dbo].[PBSP_SAQUE]
 	
 	BEGIN
 		DECLARE @bancoId SMALLINT,
-				@saldoAnterior MONEY;
+				@saldoAnterior DECIMAL;
 		SET	@bancoId = dbo.RetornaIdBanco(@agencia);
 		SET @saldoAnterior = dbo.RetornaSaldo(@contaId);
-		IF(@saldoAnterior - @valorOp > 0) 
+		IF((@saldoAnterior - @valorOp) >= 0) 
 			BEGIN
-				INSERT INTO OperacoesRealizadas(operacaoId,clienteId,contaId,agenciaId,bancoId,dataOP,saldoAnterior,valorOp)
+				INSERT INTO OperacoesRealizadas(operacaoId,clienteId,contaId,agencia,bancoId,dataOP,saldoAnterior,valorOp)
 				VALUES(@operacaoId,@clienteId,@contaId,@agencia,@bancoId,@dataOp,@saldoAnterior,@valorOp*(-1))
 				RETURN 1;
 			END
@@ -546,30 +547,61 @@ CREATE PROCEDURE [dbo].[PBSP_CONSULTASALDO]
 						WHERE Conta.num = @conta AND Clientes.Id =@clienteId
 
 		);
-		SELECT SUM(OperacoesRealizadas.valorOp) AS Saldo FROM OperacoesRealizadas WITH(NOLOCK)
-			INNER JOIN Conta WITH(NOLOCK)  ON OperacoesRealizadas.contaId = Conta.Id
-			WHERE Conta.Id = @contaId;
+		IF(@contaId IS NULL)
+			BEGIN
+				RETURN -1;
+			END
+		ELSE
+			BEGIN
+				SELECT SUM(OperacoesRealizadas.valorOp) AS Saldo FROM OperacoesRealizadas WITH(NOLOCK)
+					INNER JOIN Conta WITH(NOLOCK)  ON OperacoesRealizadas.contaId = Conta.Id
+					INNER JOIN ContaCliente WITH(NOLOCK) ON Conta.Id = ContaCliente.contaId
+					INNER JOIN Agencia WITH(NOLOCK) ON ContaCliente.agencia = Agencia.agencia
+					WHERE Conta.Id = @contaId AND Agencia.agencia=@agencia;
+			END;
 	END
 GO
 
+IF EXISTS (SELECT * FROM dbo.sysobjects WHERE id = object_id(N'[dbo].[PBSP_VERIFICADADOSDATRANSFERENCIA]') AND objectproperty(id, N'IsPROCEDURE')=1)
+	DROP PROCEDURE [dbo].[PBSP_VERIFICADADOSDATRANSFERENCIA]
+GO
+
+CREATE PROCEDURE [dbo].[PBSP_VERIFICADADOSDATRANSFERENCIA]
+	@conta VARCHAR(16),
+	@agencia INT
+	AS
+
+	/*
+	Documentação
+	Arquivo Fonte.....: ArquivoFonte.sql
+	Objetivo..........: Verifica se existem as duas contas informadas para transação
+	Autor.............: SMN - Douglas
+ 	Data..............: 10/10/2017
+	Ex................: EXEC [dbo].[PBSP_VERIFICADADOSDATRANSFERENCIA]
+
+	*/
+
+
+	BEGIN
+		SELECT Clientes.Id AS clienteId, Clientes.nome,Banco.Id AS bancoId, Agencia.agencia, Conta.Id as contaId FROM ContaCliente
+			INNER JOIN Clientes ON ContaCliente.clienteId = Clientes.Id
+			INNER JOIN Conta ON ContaCliente.contaId = Conta.Id
+			INNER JOIN Agencia ON ContaCliente.agencia = Agencia.agencia
+			INNER JOIN Banco ON ContaCliente.bancoId = Banco.Id
+			WHERE Conta.num = @conta AND Agencia.agencia = @agencia;
+	END
+GO
+				
 IF EXISTS (SELECT * FROM dbo.sysobjects WHERE id = object_id(N'[dbo].[PBSP_TRANSFERENCIA]') AND objectproperty(id, N'IsPROCEDURE')=1)
 	DROP PROCEDURE [dbo].[PBSP_TRANSFERENCIA]
 GO
 
 CREATE PROCEDURE [dbo].[PBSP_TRANSFERENCIA]
 	@operacaoId SMALLINT,
-	@clienteId SMALLINT,
 	@contaId SMALLINT,
 	@agencia INT,
 	@dataOp DATETIME,
-	@valorOp DECIMAL,
-
-	@operacao1Id SMALLINT,
-	@cliente1Id SMALLINT,
-	@conta1Id SMALLINT,
-	@agencia1 INT,
-	@dataOp1 DATETIME,
-	@valorOp1 DECIMAL
+	@valorOp DECIMAL
 	AS
 
 	/*
@@ -585,24 +617,14 @@ CREATE PROCEDURE [dbo].[PBSP_TRANSFERENCIA]
 		BEGIN
 		DECLARE @bancoId SMALLINT,
 				@saldoAnterior DECIMAL,
-				@saldoAnterior1 DECIMAL;
+				@clienteId SMALLINT;
 		SET	@bancoId = dbo.RetornaIdBanco(@agencia);
 		SET @saldoAnterior = dbo.RetornaSaldo(@contaId);
-		SET @saldoAnterior1 = dbo.RetornaSaldo(@conta1Id);
-		IF(@saldoAnterior - @valorOp > 0) 
+		SET @clienteId = dbo.RetornaIdClienteConta(@contaId);
 			BEGIN
-				INSERT INTO OperacoesRealizadas(operacaoId,clienteId,contaId,agenciaId,bancoId,dataOP,saldoAnterior,valorOp)
-				VALUES(4,@clienteId,@contaId,@agencia,@bancoId,@dataOp,@saldoAnterior,@valorOp*(-1));
-
-				INSERT INTO OperacoesRealizadas(operacaoId,clienteId,contaId,agenciaId,bancoId,dataOP,saldoAnterior,valorOp)
-				VALUES(4,@cliente1Id,@conta1Id,@agencia1,@bancoId,@dataOp1,@saldoAnterior1,@valorOp1*(-1))
-				RETURN 1;
+				INSERT INTO OperacoesRealizadas(operacaoId,clienteId,contaId,agencia,bancoId,dataOP,saldoAnterior,valorOp)
+				VALUES(103,@clienteId,@contaId,@agencia,@bancoId,@dataOp,@saldoAnterior,@valorOp);
 			END
-		ELSE
-			BEGIN
-				RETURN 0;
-			END
-
 	END
 GO
 								
@@ -628,6 +650,17 @@ CREATE FUNCTION dbo.RetornaIdBanco(@agencia INT)
 		RETURN (SELECT Banco.Id FROM Banco WITH(NOLOCK)
 						INNER JOIN Agencia WITH(NOLOCK) ON Banco.Id = Agencia.bancoId
 						WHERE Agencia.agencia = @agencia);
+
+	END	
+GO
+--Retorna id do cliente da conta 
+CREATE FUNCTION dbo.RetornaIdClienteConta(@contaId SMALLINT)
+	RETURNS SMALLINT
+	BEGIN
+		RETURN (SELECT TOP(1) Clientes.Id FROM Clientes WITH(NOLOCK)
+						INNER JOIN ContaCliente WITH(NOLOCK) ON Clientes.Id = ContaCliente.clienteId
+						INNER JOIN Conta WITH(NOLOCK) ON ContaCliente.contaId = Conta.Id
+						WHERE Conta.Id = @contaId);
 
 	END	
 GO

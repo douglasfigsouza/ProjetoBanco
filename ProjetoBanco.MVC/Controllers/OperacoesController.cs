@@ -1,7 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Web;
 using System.Web.Mvc;
 using ProjetoBanco.Application.Interfaces;
 using ProjetoBanco.Domain.Entities;
@@ -24,7 +22,6 @@ namespace ProjetoBanco.MVC.Controllers
         private OperacaoRealizada operacaoRealizada1;
         private Operacoes op;
         private Transacao transacao;
-        private List<Transacao> lstTransacoes;
         private List<TransacaoViewModel> lstTransacoesViewModels;
         private decimal valor;
 
@@ -36,7 +33,6 @@ namespace ProjetoBanco.MVC.Controllers
             operacaoRealizada = new OperacaoRealizada();
             operacaoRealizada1 = new OperacaoRealizada();
             transacao = new Transacao();
-            lstTransacoes = new List<Transacao>();
             lstTransacoesViewModels = new List<TransacaoViewModel>();
             op = new Operacoes();
         }
@@ -107,7 +103,7 @@ namespace ProjetoBanco.MVC.Controllers
                     ViewBag.operacao = 2;
                 }
 
-                transacao = _OperacaoAppService.VerificaDadosDeposito(transacao);
+                transacao = _OperacaoAppService.VerificaDadosTransacao(transacao,trasacaoViewModel.op);
                 if (transacao.nome != null)
                 {
                     //insere os valores na view no hidden
@@ -151,8 +147,17 @@ namespace ProjetoBanco.MVC.Controllers
             transacao.clienteId = cli.Id;
             transacao.agencia = trasacaoViewModel.agencia;
             transacao.conta = trasacaoViewModel.conta;
-            ViewBag.saldo = _OperacaoAppService.ConsultaSaldo(transacao);
-            return View("MostraSaldo");
+            if (_OperacaoAppService.ConsultaSaldo(transacao) == null)
+            {
+                ViewBag.erro ="Conta não encontrada!" ;
+                return View("MostraSaldo");
+            }
+            else
+            {
+                ViewBag.saldo = _OperacaoAppService.ConsultaSaldo(transacao);
+                return View("MostraSaldo");
+            }
+
         }
         //confirma os dados do saque
         public ActionResult ConfirmSaque(TransacaoViewModel trasacaoViewModel)
@@ -183,9 +188,9 @@ namespace ProjetoBanco.MVC.Controllers
                 conta = transacaoConta2.conta,
                 clienteId = cli.Id
             };
-
-            transacao1 = _OperacaoAppService.VerificaDadosDeposito(transacao1);
-            transacao2 = _OperacaoAppService.VerificaDadosDeposito(transacao2);
+            //garante que a primeira conta é a sua própria, para impedir que tranferencia entre conta de terceiros
+            transacao1 = _OperacaoAppService.VerificaDadosTransacao(transacao1,2);
+            transacao2 = _OperacaoAppService.VerificaDadosTransferencia(transacao2);
             if (transacao1.nome != null)
             {
                 TransacaoViewModel transacao1ViewModel = new TransacaoViewModel();
@@ -206,44 +211,49 @@ namespace ProjetoBanco.MVC.Controllers
                     transacao2ViewModel.valor = transacaoConta2.valor;
                     lstTransacoesViewModels.Add(transacao1ViewModel);
                     lstTransacoesViewModels.Add(transacao2ViewModel);
-
-                    return View("ConfirmTransferencia", lstTransacoesViewModels);
+                    if (transacao1ViewModel.contaId == transacao2ViewModel.contaId)
+                    {
+                        ViewBag.erroTransacao = "Trasação nao pode ser realizada, pois não é possivel fazer tranferencia para você mesmo! Use a opção de depósito.";
+                        return View("ConfirmTransferencia");
+                    }
+                    else
+                    {
+                        return View("ConfirmTransferencia", lstTransacoesViewModels);
+                    }
                 }
                 else
                 {
-                    return View();
+                    ViewBag.erroTransacao = "Trasação nao pode ser realizada, pois nao foi possivel localizar uma conta com os dados informado";
+                    return View("ConfirmTransferencia");
                 }
 
             }
             else
             {
-                return View("ConfirmTransferencia", lstTransacoesViewModels);
+                ViewBag.erroTransacao = "Trasação nao pode ser realizada, pois nao foi possivel localizar uma conta com os dados informado";
+                return View("ConfirmTransferencia");
             }
         }
 
         public ActionResult ConfirmTransferencia(List<TransacaoViewModel> Transacoes)
         {
-            
-            foreach (var transacao in Transacoes)
-            {
-                operacaoRealizada.agencia = transacao.agencia;
-                operacaoRealizada.clienteId = transacao.clienteId;
-                operacaoRealizada.contaId = transacao.contaId;
-                operacaoRealizada.dataOp = DateTime.Now;
-                operacaoRealizada.valorOp = transacao.valor;
 
-                operacaoRealizada1.agencia = transacao.agencia;
-                operacaoRealizada1.clienteId = transacao.clienteId;
-                operacaoRealizada1.contaId = transacao.contaId;
-                operacaoRealizada1.dataOp = DateTime.Now;
-                operacaoRealizada1.valorOp = transacao.valor;
 
-                TempData["menssagem"] = _operacaoesRealizadasAppService.Transferencia(operacaoRealizada,operacaoRealizada1);
+            operacaoRealizada.agencia = Transacoes[0].agencia;
+            operacaoRealizada.clienteId = Transacoes[0].clienteId;
+            operacaoRealizada.contaId = Transacoes[0].contaId;
+            operacaoRealizada.dataOp = DateTime.Now;
+            operacaoRealizada.valorOp = Transacoes[0].valor;
 
-                return RedirectToAction("Index", "Success");
+            operacaoRealizada1.agencia = Transacoes[1].agencia;
+            operacaoRealizada1.clienteId = Transacoes[1].clienteId;
+            operacaoRealizada1.contaId = Transacoes[1].contaId;
+            operacaoRealizada1.dataOp = DateTime.Now;
 
-            }
-            return View();
+            TempData["menssagem"] = _operacaoesRealizadasAppService.Transferencia(operacaoRealizada, operacaoRealizada1);
+
+            return RedirectToAction("Index", "Success");
+
         }
     }
 }

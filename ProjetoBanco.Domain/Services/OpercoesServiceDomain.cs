@@ -41,9 +41,9 @@ namespace ProjetoBanco.Domain.Services
             _repository.RemoveOperacao(op);
         }
 
-        public Transacao VerificaDadosDeposito(Transacao transacao)
+        public Transacao VerificaDadosTransacao(Transacao transacao, int op)
         {
-            transacao = _repository.VerificaDadosDeposito(transacao);
+            transacao = _repository.VerificaDadosTransacao(transacao, op);
 
             if (transacao!=null)
             {
@@ -55,10 +55,11 @@ namespace ProjetoBanco.Domain.Services
             }
         }
 
-        //public List<Transacao> VerificaDadosTransferencia(List<Transacao> transacoes)
-        //{
-        //    return _repository.VerificaDadosTransferencia(transacoes);
-        //}
+        public Transacao VerificaDadosTransferencia(Transacao transacao)
+        {
+           return _repository.VerificaDadosTransferencia(transacao);
+        }
+
 
         public void Dispose()
         {
