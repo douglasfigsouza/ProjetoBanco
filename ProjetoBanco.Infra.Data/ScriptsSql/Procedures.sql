@@ -413,7 +413,7 @@ GO
 CREATE PROCEDURE [dbo].[PBSP_VERIFICADADOSTRASACAO]
 	@op INT,
 	@nivel CHAR(1),
-	@senhaCli VARCHAR(20),
+	@senhaCli VARCHAR(20)='',
 	@agencia INT,
 	@conta VARCHAR(20),
 	@clienteId SMALLINT

@@ -183,6 +183,8 @@ namespace ProjetoBanco.MVC.Controllers
             Cliente cli = (Cliente)Session["cliente"];
             Transacao transacao1 = new Transacao
             {
+                nivel = cli.nivel,
+                senhaCli = transacaoConta1.senhaCli,
                 agencia = transacaoConta1.agencia,
                 conta = transacaoConta1.conta,
                 clienteId = cli.Id
