@@ -1,4 +1,56 @@
 
+IF EXISTS (SELECT * FROM dbo.sysobjects WHERE id = object_id(N'[dbo].[PBSP_GETALLESTADOS]') AND objectproperty(id, N'IsPROCEDURE')=1)
+	DROP PROCEDURE [dbo].[PBSP_GETALLESTADOS]
+GO
+
+CREATE PROCEDURE [dbo].[PBSP_GETALLESTADOS]
+
+	AS
+
+	/*
+	Documentação
+	Arquivo Fonte.....: ArquivoFonte.sql
+	Objetivo..........: Busca Todos os Estado
+	Autor.............: SMN - Douglas
+ 	Data..............: 01/10/2017
+	Ex................: EXEC [dbo].[PBSP_GETALLESTADOS]
+
+	*/
+
+	BEGIN
+		SELECT Estado.EstadoId,Estado.Sigla FROM Estado WITH(NOLOCK)
+	END
+GO
+
+
+IF EXISTS (SELECT * FROM dbo.sysobjects WHERE id = object_id(N'[dbo].[PBSP_GETCIDADESBYIDESTADO]') AND objectproperty(id, N'IsPROCEDURE')=1)
+	DROP PROCEDURE [dbo].[PBSP_GETCIDADESBYIDESTADO]
+GO
+
+CREATE PROCEDURE [dbo].[PBSP_GETCIDADESBYIDESTADO]
+@id[SMALLINT]
+	AS
+
+	/*
+	Documentação
+	Arquivo Fonte.....: ArquivoFonte.sql
+	Objetivo..........: Retorna todas as cidades vinculadas ao estado informado
+	Autor.............: SMN - Douglas
+ 	Data..............: 03/10/2017
+	Ex................: EXEC [dbo].[PBSP_GETCIDADESBYIDESTADO]
+
+	*/
+
+	BEGIN
+	
+		SELECT Cidade.CidadeId, Cidade.Nome FROM [dbo].[Cidade] WITH(NOLOCK)
+			INNER JOIN [dbo].[Estado]WITH(NOLOCK) on Cidade.EstadoId = Estado.EstadoId 
+			WHERE Estado.EstadoId = @id
+
+	END
+GO
+				
+			
 IF EXISTS (SELECT * FROM dbo.sysobjects WHERE id = object_id(N'[dbo].[PBSP_INSERTCLIENTE]') AND objectproperty(id, N'IsPROCEDURE')=1)
 	DROP PROCEDURE [dbo].[PBSP_INSERTCLIENTE]
 GO
@@ -268,9 +320,9 @@ IF EXISTS (SELECT * FROM dbo.sysobjects WHERE id = object_id(N'[dbo].[PBSP_INSER
 GO
 
 CREATE PROCEDURE [dbo].[PBSP_INSERTCONTA]
-	@num[VARCHAR](20),
-	@senha[VARCHAR](20),
-	@tipo[VARCHAR](100)
+	@num[VARCHAR](15),
+	@senha[VARCHAR](6),
+	@tipo[CHAR](1)
 	AS
 
 	/*
@@ -319,7 +371,7 @@ CREATE PROCEDURE [dbo].[PBSP_INSERTCONTACLIENTE]
 			INNER JOIN [dbo].[Agencia] WITH(NOLOCK) ON Banco.Id = Agencia.bancoId
 			WHERE Agencia.agencia = @agencia);
 
-		INSERT INTO[dbo].[ContaCliente](contaId,agencia,bancoId,clienteId)
+		INSERT INTO[dbo].[ContaCliente](contaId,agenciaId,bancoId,clienteId)
 			VALUES(@contaId,@agencia,@bancoId,@clienteId);		
 
 		END
@@ -378,7 +430,7 @@ CREATE PROCEDURE [dbo].[PBSP_VERIFICADADOSTRASACAO]
 		SELECT Clientes.Id AS clienteId, Clientes.nome,Banco.Id AS bancoId, Agencia.agencia, Conta.Id as contaId FROM ContaCliente
 			INNER JOIN Clientes ON ContaCliente.clienteId = Clientes.Id
 			INNER JOIN Conta ON ContaCliente.contaId = Conta.Id
-			INNER JOIN Agencia ON ContaCliente.agencia = Agencia.agencia
+			INNER JOIN Agencia ON ContaCliente.agenciaId = Agencia.agencia
 			INNER JOIN Banco ON ContaCliente.bancoId = Banco.Id
 			WHERE Conta.num = @conta AND Agencia.agencia = @agencia AND Clientes.ID = @clienteId
 	END
@@ -414,7 +466,7 @@ CREATE PROCEDURE [dbo].[PBSP_DEPOSITO]
 		SET	@bancoId = dbo.RetornaIdBanco(@agencia);
 		SET @saldoAnterior = dbo.RetornaSaldo(@contaId);
 
-		INSERT INTO OperacoesRealizadas(operacaoId,clienteId,contaId,agencia,bancoId,dataOP,saldoAnterior,valorOp)
+		INSERT INTO OperacoesRealizadas(operacaoId,clienteId,contaId,agenciaId,bancoId,dataOP,saldoAnterior,valorOp)
 			VALUES(@operacaoId,@clienteId,@contaId,@agencia,@bancoId,@dataOp,@saldoAnterior,@valorOp)
 
 	END
@@ -451,7 +503,7 @@ CREATE PROCEDURE [dbo].[PBSP_SAQUE]
 		SET @saldoAnterior = dbo.RetornaSaldo(@contaId);
 		IF(@saldoAnterior - @valorOp > 0) 
 			BEGIN
-				INSERT INTO OperacoesRealizadas(operacaoId,clienteId,contaId,agencia,bancoId,dataOP,saldoAnterior,valorOp)
+				INSERT INTO OperacoesRealizadas(operacaoId,clienteId,contaId,agenciaId,bancoId,dataOP,saldoAnterior,valorOp)
 				VALUES(@operacaoId,@clienteId,@contaId,@agencia,@bancoId,@dataOp,@saldoAnterior,@valorOp*(-1))
 				RETURN 1;
 			END
@@ -461,6 +513,7 @@ CREATE PROCEDURE [dbo].[PBSP_SAQUE]
 			END
 
 	END
+GO
 GO
 				
 --consulta Saldo
@@ -490,7 +543,7 @@ CREATE PROCEDURE [dbo].[PBSP_CONSULTASALDO]
 		SET @contaId =(SELECT Conta.Id FROM Conta WITH(NOLOCK)
 						INNER JOIN ContaCliente WITH(NOLOCK) ON Conta.Id = ContaCliente.contaId
 						INNER JOIN Clientes WITH(NOLOCK) ON ContaCliente.clienteId = Clientes.Id
-						WHERE Conta.num = @conta AND Clientes.Id =4
+						WHERE Conta.num = @conta AND Clientes.Id =@clienteId
 
 		);
 		SELECT SUM(OperacoesRealizadas.valorOp) AS Saldo FROM OperacoesRealizadas WITH(NOLOCK)
@@ -498,7 +551,61 @@ CREATE PROCEDURE [dbo].[PBSP_CONSULTASALDO]
 			WHERE Conta.Id = @contaId;
 	END
 GO
-				
+
+IF EXISTS (SELECT * FROM dbo.sysobjects WHERE id = object_id(N'[dbo].[PBSP_TRANSFERENCIA]') AND objectproperty(id, N'IsPROCEDURE')=1)
+	DROP PROCEDURE [dbo].[PBSP_TRANSFERENCIA]
+GO
+
+CREATE PROCEDURE [dbo].[PBSP_TRANSFERENCIA]
+	@operacaoId SMALLINT,
+	@clienteId SMALLINT,
+	@contaId SMALLINT,
+	@agencia INT,
+	@dataOp DATETIME,
+	@valorOp DECIMAL,
+
+	@operacao1Id SMALLINT,
+	@cliente1Id SMALLINT,
+	@conta1Id SMALLINT,
+	@agencia1 INT,
+	@dataOp1 DATETIME,
+	@valorOp1 DECIMAL
+	AS
+
+	/*
+	Documentação
+	Arquivo Fonte.....: ArquivoFonte.sql
+	Objetivo..........: Faz a transferencia entre duas contas
+	Autor.............: SMN - Douglas
+ 	Data..............: 09/10/2017
+	Ex................: EXEC [dbo].[PBSP_TRANSFERENCIA]
+
+	*/
+
+		BEGIN
+		DECLARE @bancoId SMALLINT,
+				@saldoAnterior DECIMAL,
+				@saldoAnterior1 DECIMAL;
+		SET	@bancoId = dbo.RetornaIdBanco(@agencia);
+		SET @saldoAnterior = dbo.RetornaSaldo(@contaId);
+		SET @saldoAnterior1 = dbo.RetornaSaldo(@conta1Id);
+		IF(@saldoAnterior - @valorOp > 0) 
+			BEGIN
+				INSERT INTO OperacoesRealizadas(operacaoId,clienteId,contaId,agenciaId,bancoId,dataOP,saldoAnterior,valorOp)
+				VALUES(4,@clienteId,@contaId,@agencia,@bancoId,@dataOp,@saldoAnterior,@valorOp*(-1));
+
+				INSERT INTO OperacoesRealizadas(operacaoId,clienteId,contaId,agenciaId,bancoId,dataOP,saldoAnterior,valorOp)
+				VALUES(4,@cliente1Id,@conta1Id,@agencia1,@bancoId,@dataOp1,@saldoAnterior1,@valorOp1*(-1))
+				RETURN 1;
+			END
+		ELSE
+			BEGIN
+				RETURN 0;
+			END
+
+	END
+GO
+								
 --Funções
 --função que retorna o Saldo
 CREATE FUNCTION dbo.RetornaSaldo(@contaId SMALLINT)

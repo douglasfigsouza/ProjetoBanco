@@ -1,5 +1,6 @@
 ﻿
 
+using System;
 using ProjetoBanco.Domain.Entities;
 using ProjetoBanco.Domain.Interfaces.IRepositories;
 using ProjetoBanco.Domain.Interfaces.IServices;
@@ -34,6 +35,11 @@ namespace ProjetoBanco.Domain.Services
         public void Dispose()
         {
             _operacoesRealizadasRepositoryDomain.Dispose();
+        }
+
+        public int Transferencia(OperacaoRealizada opConta1, OperacaoRealizada opConta2)
+        {
+           return  _operacoesRealizadasRepositoryDomain.Transferencia(opConta1, opConta2);
         }
     }
 }

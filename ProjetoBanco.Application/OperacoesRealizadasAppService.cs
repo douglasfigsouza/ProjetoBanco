@@ -24,6 +24,20 @@ namespace ProjetoBanco.Application
            _operacoesRealizadasRepositoryDomain.Deposito(operacaoRealizada,op);
         }
 
+        public string Transferencia(OperacaoRealizada opConta1, OperacaoRealizada opConta2)
+        {
+            if (_operacoesRealizadaServiceDomain.Transferencia(opConta1, opConta2)==0)
+            {
+                return "Transferência Realizada com sucesso";
+            }
+            else
+            { 
+                return "A transferência não pode ser realizada, você não possui saldo suficiente";
+
+            }
+            
+        }
+
         public void Dispose()
         {
             _operacoesRealizadasRepositoryDomain.Dispose();

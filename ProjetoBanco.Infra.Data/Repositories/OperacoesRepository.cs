@@ -64,6 +64,7 @@ namespace ProjetoBanco.Infra.Data.Repositories
 
         public Transacao VerificaDadosDeposito(Transacao transacao)
         {
+            conn = new Conexao();
             conn.ExecuteProcedure(Procedures.PBSP_VERIFICADADOSTRASACAO);
             conn.AddParameter("@agencia", transacao.agencia);
             conn.AddParameter("@conta", transacao.conta);

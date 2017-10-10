@@ -8,6 +8,7 @@ namespace ProjetoBanco.Application.Interfaces
     {
         void Deposito(OperacaoRealizada operacaoRealizada, int op);
         string Saque(OperacaoRealizada operacaoRealizada, int op);
+        string Transferencia(OperacaoRealizada opConta1, OperacaoRealizada opConta2);
         void Dispose();
     }
 }

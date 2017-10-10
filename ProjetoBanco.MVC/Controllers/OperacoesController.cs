@@ -21,6 +21,7 @@ namespace ProjetoBanco.MVC.Controllers
         private readonly IOperacoesAppService _OperacaoAppService;
         private readonly IOperacaoesRealizadasAppService _operacaoesRealizadasAppService;
         private OperacaoRealizada operacaoRealizada;
+        private OperacaoRealizada operacaoRealizada1;
         private Operacoes op;
         private Transacao transacao;
         private List<Transacao> lstTransacoes;
@@ -33,6 +34,7 @@ namespace ProjetoBanco.MVC.Controllers
             _OperacaoAppService = OperacaoAppService;
             _operacaoesRealizadasAppService = operacaoesRealizadasAppService;
             operacaoRealizada = new OperacaoRealizada();
+            operacaoRealizada1 = new OperacaoRealizada();
             transacao = new Transacao();
             lstTransacoes = new List<Transacao>();
             lstTransacoesViewModels = new List<TransacaoViewModel>();
@@ -61,7 +63,7 @@ namespace ProjetoBanco.MVC.Controllers
 
         public ActionResult Deposito()
         {
-            ViewBag.cliente = (Cliente) Session["cliente"];
+            ViewBag.cliente = (Cliente)Session["cliente"];
             TempData["operacao"] = 1;
             return View("Operacoes");
         }
@@ -105,17 +107,17 @@ namespace ProjetoBanco.MVC.Controllers
                     ViewBag.operacao = 2;
                 }
 
-                transacao =_OperacaoAppService.VerificaDadosDeposito(transacao);
+                transacao = _OperacaoAppService.VerificaDadosDeposito(transacao);
                 if (transacao.nome != null)
                 {
                     //insere os valores na view no hidden
                     trasacaoViewModel.clienteId = transacao.clienteId;
                     trasacaoViewModel.contaId = transacao.contaId;
-                    trasacaoViewModel.agencia= transacao.agencia;
+                    trasacaoViewModel.agencia = transacao.agencia;
                     trasacaoViewModel.nome = transacao.nome;
                     trasacaoViewModel.valor = valor;
-                 
-                    return View("Confirmacao",trasacaoViewModel);
+
+                    return View("Confirmacao", trasacaoViewModel);
                 }
                 else
                 {
@@ -126,7 +128,7 @@ namespace ProjetoBanco.MVC.Controllers
             }
             else
             {
-                return View("Deposito",trasacaoViewModel);
+                return View("Deposito", trasacaoViewModel);
             }
         }
         //confirma os dados do deposito
@@ -135,11 +137,11 @@ namespace ProjetoBanco.MVC.Controllers
             operacaoRealizada.agencia = trasacaoViewModel.agencia;
             operacaoRealizada.clienteId = trasacaoViewModel.clienteId;
             operacaoRealizada.contaId = trasacaoViewModel.contaId;
-            operacaoRealizada.dataOp=DateTime.Now;
+            operacaoRealizada.dataOp = DateTime.Now;
             operacaoRealizada.valorOp = trasacaoViewModel.valor;
 
 
-            _operacaoesRealizadasAppService.Deposito(operacaoRealizada,1);
+            _operacaoesRealizadasAppService.Deposito(operacaoRealizada, 1);
             return View();
         }
 
@@ -163,12 +165,12 @@ namespace ProjetoBanco.MVC.Controllers
 
 
             TempData["menssagem"] = _operacaoesRealizadasAppService.Saque(operacaoRealizada, 2);
-            return RedirectToAction("Index","Success");
+            return RedirectToAction("Index", "Success");
         }
         [HttpPost]
         public ActionResult Transferencia(TransacaoViewModel transacaoConta1, TransacaoViewModel transacaoConta2)
         {
-            Cliente cli =(Cliente) Session["cliente"];
+            Cliente cli = (Cliente)Session["cliente"];
             Transacao transacao1 = new Transacao
             {
                 agencia = transacaoConta1.agencia,
@@ -181,22 +183,67 @@ namespace ProjetoBanco.MVC.Controllers
                 conta = transacaoConta2.conta,
                 clienteId = cli.Id
             };
-            lstTransacoes.Add(transacao1);
-            lstTransacoes.Add(transacao2);
-            lstTransacoes =_OperacaoAppService.VerificaDadosTransferencia(lstTransacoes);
-            foreach (var transacao in lstTransacoes)
-            {
-                lstTransacoesViewModels.Add(new TransacaoViewModel
-                {
-                    //insere os valores na view no hidden
-                    clienteId = transacao.clienteId,
-                    contaId = transacao.contaId,
-                    agencia = transacao.agencia,
-                    nome = transacao.nome,
 
-            });
+            transacao1 = _OperacaoAppService.VerificaDadosDeposito(transacao1);
+            transacao2 = _OperacaoAppService.VerificaDadosDeposito(transacao2);
+            if (transacao1.nome != null)
+            {
+                TransacaoViewModel transacao1ViewModel = new TransacaoViewModel();
+                //insere os valores na view no hidden
+                transacao1ViewModel.clienteId = transacao1.clienteId;
+                transacao1ViewModel.contaId = transacao1.contaId;
+                transacao1ViewModel.agencia = transacao1.agencia;
+                transacao1ViewModel.nome = transacao1.nome;
+                transacao1ViewModel.valor = transacaoConta1.valor;
+
+                if (transacao2.nome != null)
+                {
+                    TransacaoViewModel transacao2ViewModel = new TransacaoViewModel();
+                    transacao2ViewModel.clienteId = transacao2.clienteId;
+                    transacao2ViewModel.contaId = transacao2.contaId;
+                    transacao2ViewModel.agencia = transacao2.agencia;
+                    transacao2ViewModel.nome = transacao2.nome;
+                    transacao2ViewModel.valor = transacaoConta2.valor;
+                    lstTransacoesViewModels.Add(transacao1ViewModel);
+                    lstTransacoesViewModels.Add(transacao2ViewModel);
+
+                    return View("ConfirmTransferencia", lstTransacoesViewModels);
+                }
+                else
+                {
+                    return View();
+                }
+
             }
-            return View("ConfirmTransferencia",lstTransacoesViewModels);
+            else
+            {
+                return View("ConfirmTransferencia", lstTransacoesViewModels);
+            }
+        }
+
+        public ActionResult ConfirmTransferencia(List<TransacaoViewModel> Transacoes)
+        {
+            
+            foreach (var transacao in Transacoes)
+            {
+                operacaoRealizada.agencia = transacao.agencia;
+                operacaoRealizada.clienteId = transacao.clienteId;
+                operacaoRealizada.contaId = transacao.contaId;
+                operacaoRealizada.dataOp = DateTime.Now;
+                operacaoRealizada.valorOp = transacao.valor;
+
+                operacaoRealizada1.agencia = transacao.agencia;
+                operacaoRealizada1.clienteId = transacao.clienteId;
+                operacaoRealizada1.contaId = transacao.contaId;
+                operacaoRealizada1.dataOp = DateTime.Now;
+                operacaoRealizada1.valorOp = transacao.valor;
+
+                TempData["menssagem"] = _operacaoesRealizadasAppService.Transferencia(operacaoRealizada,operacaoRealizada1);
+
+                return RedirectToAction("Index", "Success");
+
+            }
+            return View();
         }
     }
 }

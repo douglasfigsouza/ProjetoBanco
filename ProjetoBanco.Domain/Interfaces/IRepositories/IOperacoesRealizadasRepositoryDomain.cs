@@ -11,6 +11,7 @@ namespace ProjetoBanco.Domain.Interfaces.IRepositories
     {
         void Deposito(OperacaoRealizada operacaoRealizada, int op);
         int Saque(OperacaoRealizada operacaoRealizada, int op);
+        int Transferencia(OperacaoRealizada opConta1, OperacaoRealizada opConta2);
         void Dispose();
     }
 }

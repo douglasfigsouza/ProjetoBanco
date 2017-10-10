@@ -15,7 +15,7 @@ namespace ProjetoBanco.Domain.Interfaces.IRepositories
         void UpdateOperacao(Operacoes op);
         void RemoveOperacao(Operacoes op);
         Transacao VerificaDadosDeposito(Transacao transacao);
-        List<Transacao> VerificaDadosTransferencia(List<Transacao> transacoes);
+        //List<Transacao> VerificaDadosTransferencia(Transacao transacaoConta1,Transacao transacaoConta2);
         decimal ConsultaSaldo(Transacao transacao);
         void Dispose();
     }

@@ -55,10 +55,10 @@ namespace ProjetoBanco.Domain.Services
             }
         }
 
-        public List<Transacao> VerificaDadosTransferencia(List<Transacao> transacoes)
-        {
-            return _repository.VerificaDadosTransferencia(transacoes);
-        }
+        //public List<Transacao> VerificaDadosTransferencia(List<Transacao> transacoes)
+        //{
+        //    return _repository.VerificaDadosTransferencia(transacoes);
+        //}
 
         public void Dispose()
         {
@@ -68,6 +68,11 @@ namespace ProjetoBanco.Domain.Services
         public decimal ConsultaSaldo(Transacao transacao)
         {
            return _repository.ConsultaSaldo(transacao);
+        }
+
+        public List<Transacao> VerificaDadosTransferencia(List<Transacao> transacoes)
+        {
+            throw new NotImplementedException();
         }
     }
 }
