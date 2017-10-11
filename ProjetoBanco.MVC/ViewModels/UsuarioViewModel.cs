@@ -13,5 +13,6 @@ namespace ProjetoBanco.MVC.ViewModels
         public string nome { get; set; }
         [Required(ErrorMessage = "Esse campo é requerido")]
         public string senha { get; set; }
+        public bool ativo { get; set; }
     }
 }

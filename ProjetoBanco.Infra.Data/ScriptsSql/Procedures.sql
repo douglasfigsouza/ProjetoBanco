@@ -723,7 +723,85 @@ CREATE PROCEDURE [dbo].[PBSP_UPDATECLIENTE]
 						WHERE Clientes.Id = @id;
 	END
 GO
-												
+
+IF EXISTS (SELECT * FROM dbo.sysobjects WHERE id = object_id(N'[dbo].[PBSP_GETALLUSERS]') AND objectproperty(id, N'IsPROCEDURE')=1)
+	DROP PROCEDURE [dbo].[PBSP_GETALLUSERS]
+GO
+
+CREATE PROCEDURE [dbo].[PBSP_GETALLUSERS]
+
+	AS
+
+	/*
+	Documentação
+	Arquivo Fonte.....: ArquivoFonte.sql
+	Objetivo..........: Retorna todos os usuarios cadastrados
+	Autor.............: SMN - Douglas
+ 	Data..............: 01/01/2017
+	Ex................: EXEC [dbo].[PBSP_GETALLUSERS]
+
+	*/
+
+	BEGIN
+		SELECT clienteId,Usuario.nome as usuNome,Cli.nome as cliNome,senha FROM USUARIO WITH(NOLOCK)
+			INNER JOIN Clientes AS Cli WITH(NOLOCK) ON USUARIO.clienteId = Cli.Id
+	END
+GO
+				
+
+IF EXISTS (SELECT * FROM dbo.sysobjects WHERE id = object_id(N'[dbo].[PBSP_GETBYUSUARIOID]') AND objectproperty(id, N'IsPROCEDURE')=1)
+	DROP PROCEDURE [dbo].[PBSP_GETBYUSUARIOID]
+GO
+
+CREATE PROCEDURE [dbo].[PBSP_GETBYUSUARIOID]
+	@id SMALLINT
+	AS
+
+	/*
+	Documentação
+	Arquivo Fonte.....: ArquivoFonte.sql
+	Objetivo..........: Busca usuários pelo id
+	Autor.............: SMN - Douglas
+ 	Data..............: 11/10/2017
+	Ex................: EXEC [dbo].[PBSP_GETBYUSUARIOID]
+
+	*/
+
+	BEGIN
+	
+		SELECT clienteId,nome,senha, ativo FROM USUARIO WITH(NOLOCK)
+			   WHERE USUARIO.clienteId = @id;
+	END
+GO
+
+IF EXISTS (SELECT * FROM dbo.sysobjects WHERE id = object_id(N'[dbo].[PBSP_UPDATEUSUARIO]') AND objectproperty(id, N'IsPROCEDURE')=1)
+	DROP PROCEDURE [dbo].[PBSP_UPDATEUSUARIO]
+GO
+
+CREATE PROCEDURE [dbo].[PBSP_UPDATEUSUARIO]
+	@clienteId SMALLINT,
+	@nome VARCHAR(20),
+	@senha VARCHAR(20),
+	@ativo BIT
+	AS
+
+	/*
+	Documentação
+	Arquivo Fonte.....: ArquivoFonte.sql
+	Objetivo..........: Atualizar dados do usuario
+	Autor.............: SMN - Douglas
+ 	Data..............: 11/10/2017
+	Ex................: EXEC [dbo].[PBSP_UPDATEUSUARIO]
+
+	*/
+
+	BEGIN
+	
+		UPDATE USUARIO SET nome=@nome,senha=@senha,ativo =@ativo
+					   WHERE USUARIO.clienteId=@clienteId
+	END
+GO
+																		
 --Funções
 --função que retorna o Saldo
 CREATE FUNCTION dbo.RetornaSaldo(@contaId SMALLINT)

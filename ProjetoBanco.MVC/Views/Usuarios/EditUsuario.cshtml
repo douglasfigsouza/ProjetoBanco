@@ -1,0 +1,174 @@
+﻿@model ProjetoBanco.MVC.ViewModels.UsuarioViewModel
+<div class="row" id="divTblUsuariosEditaveis">
+    <div class="col s12">
+        <table id="tlbUsuariosEditaveis" class="striped responsive-table centered" cellspacing="0" width="100%">
+            <thead>
+            <tr>
+                <th>Cliente</th>
+                <th>Nome</th>
+                <th>Senha</th>
+                <th>Editar</th>
+            </tr>
+            </thead>
+            <tbody id="tbdClientesConta">
+            @foreach (var usu in ViewBag.usuarios)
+            {
+                <tr id=@usu.clienteId>
+                    <td>@usu.nomeCli</td>
+                    <td>@usu.nome</td>
+                    <td>@usu.senha</td>
+                    <td>
+                        <button type="button" class="btnUsuarioEditavel modal-action modal-close btn green">
+                            <i class="material-icons">add_box</i>
+                        </button>
+                    </td>
+                </tr>
+            }
+            </tbody>
+        </table>
+    </div>
+</div>
+<div id="formUsuarioEditavel">
+    <h5>Cadastro de Usuário</h5>
+    <div class="row">
+        <div class="col s8">
+            <hr />
+            @using (Html.BeginForm())
+            {
+                @Html.AntiForgeryToken()
+                @Html.ValidationSummary(true)
+                {
+                    <input type="hidden" name="clienteId"id="clienteId"/>
+                    <div class="row">
+                        <div class="col s4">
+                            <label for="nome" class="col s12">Usuário</label>
+                            @Html.TextBoxFor(u=>u.nome, new {@class="col s12"})
+                        </div>
+                        <div class="col s4">
+                            <label for="senha" class="col s12">Senha</label>
+                            @Html.TextBoxFor(u=>u.senha, new {@class="col s12", type="password"})
+                        </div>
+                        <div class="col s4">
+                            <label for="nome" class="col s12">Confirme sua Senha</label>
+                            <input type="password" class="col s12" name="conf_senha"/>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col s3 ">
+                            <input type="checkbox" id="ativo" name="ativo" checked/>
+                            <label for="ativo">Ativo</label>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <button class="btn waves-effect waves-light right" type="submit" name="AlterarUsuario">
+                            Alterar
+                            <i class="material-icons right">send</i>
+                        </button>
+                    </div>
+                }
+            }
+        </div>
+    </div>
+</div>
+<script>
+    $(document).ready(function () {
+        $("#formUsuarioEditavel").hide();
+        $("#tlbUsuariosEditaveis").dataTable({
+            language: {
+                "sEmptyTable": "Nenhum registro encontrado",
+                "sInfo": "Mostrando de _START_ até _END_ de _TOTAL_ registros",
+                "sInfoEmpty": "Mostrando 0 até 0 de 0 registros",
+                "sInfoFiltered": "(Filtrados de _MAX_ registros)",
+                "sInfoPostFix": "",
+                "sInfoThousands": ".",
+                "sLengthMenu": "Exibir _MENU_",
+                "sLoadingRecords": "Carregando...",
+                "sProcessing": "Processando...",
+                "sZeroRecords": "Nenhum registro encontrado",
+                "sSearch": "Pesquisar",
+                "oPaginate": {
+                    "sNext": "Próximo",
+                    "sPrevious": "Anterior",
+                    "sFirst": "Primeiro",
+                    "sLast": "Último"
+                },
+                "oAria": {
+                    "sSortAscending": ": Ordenar colunas de forma ascendente",
+                    "sSortDescending": ": Ordenar colunas de forma descendente"
+                }
+            }
+
+        });
+        $(".btnUsuarioEditavel").click(function () {
+            $("#divTblUsuariosEditaveis").hide();
+            var id = $(this).closest('tr').attr('id');
+                $.ajax({
+                    type: "GET",
+                    url: "/Usuarios/GetByUsuarioId",
+                    datatype: "Json",
+                    data: {
+                        clienteId: id
+                    },
+                    success: function(dados) {
+                        $("#clienteId").val(dados.clienteId);
+                        $("#nome").val(dados.nome);
+                        $("#senha").val(dados.senha);
+                        $("#formUsuarioEditavel").show();
+                        if (dados.ativo == 1) {
+                            $("#ativo").prop('checked', true);
+                            $("#ativo").val(true);
+                        } else {
+                            $("#ativo").prop('checked', false);
+                            $("#ativo").val(false);
+                        }
+                    },
+                    error: function ajaxError(dados) {
+                        alert(dados.status + ' ' + dados.statusText);
+                    }
+                });
+
+        });
+        $("form").validate({
+            submitHandler: function (form) {
+                form.submit();
+            },
+            rules: {
+                nome: {
+                    required: true,
+                    maxlength: 20
+                },
+                senha: {
+                    required: true,
+                    maxlength: 8
+                },
+                conf_senha: {
+                    required: true,
+                    equalTo: "#senha"
+                }
+            },
+            messages: {
+                nome: {
+                    required: "O campo nome é Obrigatório! Digite-O",
+                    maxlength: "O campo Nome deve conter no máximo 8 caracteres!"
+                },
+                senha: {
+                    required: "O campo senha é Obrigatório! Digite-O",
+                    maxlength: "o campo senha deve conter no máximo 8 caracteres!"
+                },
+                conf_senha: {
+                    required: "O campo Confirme sua Senha é Obrigatório! Digite-O",
+                    equalTo: "As senhas não conferem"
+                }
+
+            }
+        });
+        $("#ativo").change(function () {
+            if ($("#ativo").is(':checked')) {
+                $("#ativo").val(true);
+            } else {
+                $("#ativo").val(false);
+            }
+        });
+    });
+</script>
+

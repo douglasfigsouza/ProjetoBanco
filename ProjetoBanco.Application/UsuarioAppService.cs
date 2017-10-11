@@ -2,6 +2,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Runtime.InteropServices.WindowsRuntime;
 using System.Text;
 using System.Threading.Tasks;
 using ProjetoBanco.Application.Interfaces;
@@ -28,17 +29,17 @@ namespace ProjetoBanco.Application
 
         public Usuario GetByUsuarioId(int id)
         {
-            throw new NotImplementedException();
+           return _UsuarioRepositoryDomain.GetByUsuarioId(id);
         }
 
         public IEnumerable<Usuario> GetAllUsuarios()
         {
-            throw new NotImplementedException();
+            return _UsuarioRepositoryDomain.GetAllUsuarios();
         }
 
         public void UpdateUsuario(Usuario usuario)
         {
-            throw new NotImplementedException();
+            _UsuarioRepositoryDomain.UpdateUsuario(usuario);
         }
 
         public void RemoveUsuario(Usuario usuario)

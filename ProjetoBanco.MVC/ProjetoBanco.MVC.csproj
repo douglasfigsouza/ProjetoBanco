@@ -259,6 +259,7 @@
     <Content Include="Views\Operacoes\ConfirmTransferencia.cshtml" />
     <Content Include="Views\Clientes\CreateCliente.cshtml" />
     <Content Include="Views\Clientes\EditCliente.cshtml" />
+    <Content Include="Views\Usuarios\EditUsuario.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

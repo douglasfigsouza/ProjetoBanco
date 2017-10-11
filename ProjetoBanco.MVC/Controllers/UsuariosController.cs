@@ -77,5 +77,38 @@ namespace ProjetoBanco.MVC.Controllers
                 return View(usuarioViewModel);
             }
         }
+
+        public ActionResult EditUsuario()
+        {
+            ViewBag.usuarios = _IUsuarioAppService.GetAllUsuarios();
+            return View();
+        }
+
+        [HttpPost]
+        public ActionResult EditUsuario(UsuarioViewModel usuarioViewModel)
+        {
+            if (ModelState.IsValid)
+            {
+                usuario.clienteId = usuarioViewModel.clienteId;
+                usuario.senha = usuarioViewModel.senha;
+                usuario.nome = usuarioViewModel.nome;
+                usuario.ativo = usuarioViewModel.ativo;
+                _IUsuarioAppService.UpdateUsuario(usuario);
+                TempData["menssagem"] = "Usuário " + usuarioViewModel.nome + " Cadastrado com Sucesso!";
+                return RedirectToAction("Index", "Success");
+            }
+            else
+            {
+
+                ViewBag.usuarios = _IUsuarioAppService.GetAllUsuarios();
+                return View(usuarioViewModel);
+            }
+        }
+
+        [HttpGet]
+        public JsonResult GetByUsuarioId(int clienteId)
+        {
+           return Json(_IUsuarioAppService.GetByUsuarioId(clienteId), JsonRequestBehavior.AllowGet);
+        }
     }
 }
