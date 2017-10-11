@@ -258,6 +258,7 @@
     <Content Include="Views\Success\Error.cshtml" />
     <Content Include="Views\Operacoes\Transferencia.cshtml" />
     <Content Include="Views\Operacoes\ConfirmTransferencia.cshtml" />
+    <Content Include="Views\Clientes\EditCliente.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

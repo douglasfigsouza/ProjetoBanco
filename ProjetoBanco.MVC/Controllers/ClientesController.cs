@@ -67,6 +67,17 @@ namespace ProjetoBanco.MVC.Controllers
             return Json(_clienteApp.GetAllClientes(), JsonRequestBehavior.AllowGet);
         }
 
+        public ActionResult EditCliente()
+        {
+            ViewBag.clientes = _clienteApp.GetAllClientes();
+            return View();
+        }
+
+        public JsonResult GetByClienteId(int Id)
+        {
+           return Json(_clienteApp.GetByClienteId(Id), JsonRequestBehavior.AllowGet);
+        }
+
         //// GET: Clientes/Edit/5
         //public ActionResult Edit(int id)
         //{

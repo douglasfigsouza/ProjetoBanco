@@ -13,6 +13,13 @@
 </head>
 <body>
     <header>
+        <ul id="alteracoes" class="dropdown-content">
+            @if (Session["nivel"].ToString() == "f")
+            {
+                <li>@Html.ActionLink("Clientes", "EditCliente", "Clientes")</li>
+
+            }
+        </ul>
         <ul id="cadastros" class="dropdown-content">
             @if (Session["nivel"].ToString() == "f")
             {
@@ -35,6 +42,7 @@
                 <a href="#!" class="brand-logo">Logo</a>
                 <a href="#" data-activates="mobile-demo" class="button-collapse"><i class="material-icons">menu</i></a>
                 <ul class="right hide-on-med-and-down">
+                    <li><a class="dropdown-button" href="#!" data-activates="alteracoes">Alteracões<i class="material-icons right">arrow_drop_down</i></a></li>
                     <li><a class="dropdown-button" href="#!" data-activates="cadastros">Cadastros<i class="material-icons right">arrow_drop_down</i></a></li>
                     <li><a class="dropdown-button" href="#!" data-activates="operacoes">Operações<i class="material-icons right">arrow_drop_down</i></a></li>
                 </ul>
