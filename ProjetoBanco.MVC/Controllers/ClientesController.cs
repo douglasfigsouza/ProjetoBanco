@@ -77,6 +77,22 @@ namespace ProjetoBanco.MVC.Controllers
         {
            return Json(_clienteApp.GetByClienteId(Id), JsonRequestBehavior.AllowGet);
         }
+        [HttpGet]
+        public JsonResult ListaCidadeJaCadastrada(string Cidade_Id, string Uf)
+        {
+            foreach (var item in CidadeRep.BuscaCidadesId(Uf).ToList())
+            {
+                if (item.CIDADE_ID == Convert.ToInt32(Cidade_Id))
+                {
+                    ListaDeCidades.Add(new SelectListItem() { Text = item.NOME, Value = item.CIDADE_ID + "" });
+                }
+            }
+            foreach (var item in CidadeRep.BuscaCidadesId(Uf).ToList())
+            {
+                ListaDeCidades.Add(new SelectListItem() { Text = item.NOME, Value = item.CIDADE_ID + "" });
+            }
+            return Json(new SelectList(ListaDeCidades, "Value", "Text", 0), JsonRequestBehavior.AllowGet);
+        }
 
         //// GET: Clientes/Edit/5
         //public ActionResult Edit(int id)

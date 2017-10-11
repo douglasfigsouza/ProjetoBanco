@@ -31,5 +31,6 @@ namespace ProjetoBanco.Application
         {
             throw new NotImplementedException();
         }
+        
     }
 }
