@@ -11,7 +11,7 @@ namespace ProjetoBanco.Infra.Data.Repositories
 {
     public class EstadoRepository:IEstadoRepositoryDomain
     {
-        private readonly Conexao conn;
+        private  Conexao conn;
         private SqlDataReader result;
         private List<Estado> lstEstados;
 
@@ -21,7 +21,7 @@ namespace ProjetoBanco.Infra.Data.Repositories
         }
         public EstadoRepository()
         {
-            conn = new Conexao();
+
             lstEstados = new List<Estado>();
 
         }
@@ -33,6 +33,7 @@ namespace ProjetoBanco.Infra.Data.Repositories
 
         public IEnumerable<Estado> GetAllEstados()
         {
+            conn = new Conexao();
             conn.ExecuteProcedure(Procedures.PBSP_GETALLESTADOS);
             result = conn.ExecuteReader();
             while (result.Read())

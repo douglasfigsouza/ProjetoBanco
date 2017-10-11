@@ -42,7 +42,7 @@ namespace ProjetoBanco.MVC.Controllers
                     agencia = agencia.agencia
                 });
             }
-            foreach (var cliente in _clienteAppService.GetAllClientes())
+            foreach (var cliente in _clienteAppService.GetAllClientes(1))
             {
                 cmbContaViewModel.Clientes.Add(new ClienteViewModel
                 {

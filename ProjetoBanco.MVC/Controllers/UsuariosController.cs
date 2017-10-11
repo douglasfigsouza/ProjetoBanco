@@ -55,7 +55,7 @@ namespace ProjetoBanco.MVC.Controllers
 
         public ActionResult CreateUsuario()
         {
-            ViewBag.clientes = _IClienteAppService.GetAllClientes();
+            ViewBag.clientes = _IClienteAppService.GetAllClientes(1);
             return View();
         }
 
@@ -73,7 +73,7 @@ namespace ProjetoBanco.MVC.Controllers
             }
             else
             {
-                ViewBag.clientes = _IClienteAppService.GetAllClientes();
+                ViewBag.clientes = _IClienteAppService.GetAllClientes(1);
                 return View(usuarioViewModel);
             }
         }

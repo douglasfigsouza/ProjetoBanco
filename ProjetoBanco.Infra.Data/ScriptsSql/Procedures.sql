@@ -4,7 +4,6 @@ IF EXISTS (SELECT * FROM dbo.sysobjects WHERE id = object_id(N'[dbo].[PBSP_GETAL
 GO
 
 CREATE PROCEDURE [dbo].[PBSP_GETALLESTADOS]
-
 	AS
 
 	/*
@@ -93,7 +92,7 @@ IF EXISTS (SELECT * FROM dbo.sysobjects WHERE id = object_id(N'[dbo].[PBSP_GETAL
 GO
 
 CREATE PROCEDURE [dbo].[PBSP_GETALLCLIENTES]
-
+	@op INT = 1
 	AS
 
 	/*
@@ -107,10 +106,15 @@ CREATE PROCEDURE [dbo].[PBSP_GETALLCLIENTES]
 	*/
 
 	BEGIN
-	
-		SELECT Id,nome,cpf,rg,fone,rua,bairro,num,nivel,dataCadastro FROM [dbo].[Clientes]WITH(NOLOCK)
-			WHERE [dbo].[Clientes].ativo=1;
-
+		IF(@op=1)
+		BEGIN
+			SELECT Id,nome,cpf,rg,fone,rua,bairro,num,nivel,dataCadastro FROM [dbo].[Clientes]WITH(NOLOCK)
+				WHERE Clientes.ativo = 1;
+		END
+		ELSE
+		BEGIN
+			SELECT Id,nome,cpf,rg,fone,rua,bairro,num,nivel,dataCadastro FROM [dbo].[Clientes]WITH(NOLOCK)
+		END
 	END
 GO
 				
@@ -398,8 +402,11 @@ CREATE PROCEDURE [dbo].[PBSP_GETCLIENTEBYID]
 
 	BEGIN
 	
-		SELECT Id,nome,cpf,rg,fone,rua,bairro,num,nivel,dataCadastro FROM [dbo].[Clientes]WITH(NOLOCK)
-			WHERE Clientes.ativo=1 AND Clientes.Id=@id;
+		SELECT cli.Id,cli.CidadeId,cli.nome,cli.cpf,cli.rg,cli.fone,cli.bairro,cli.rua,cli.num,
+			   cli.ativo,cli.nivel,cli.dataCadastro, estado.EstadoId FROM Clientes AS cli WITH(NOLOCK)
+			   INNER JOIN Cidade AS city WITH(NOLOCK)  on cli.CidadeId= city.CidadeId
+			   INNER JOIN Estado AS estado WITH(NOLOCK) ON city.EstadoId = estado.EstadoId
+			   WHERE cli.Id=@id;
 
 	END
 GO
@@ -681,7 +688,42 @@ CREATE PROCEDURE [dbo].[PBSP_TRANSFERENCIA]
 			END
 	END
 GO
-								
+
+IF EXISTS (SELECT * FROM dbo.sysobjects WHERE id = object_id(N'[dbo].[PBSP_UPDATECLIENTE]') AND objectproperty(id, N'IsPROCEDURE')=1)
+	DROP PROCEDURE [dbo].[PBSP_UPDATECLIENTE]
+GO
+
+CREATE PROCEDURE [dbo].[PBSP_UPDATECLIENTE]
+	@id SMALLINT,
+	@cidadeId INT,
+	@nome VARCHAR(200),
+	@fone VARCHAR(20),
+	@cpf VARCHAR(20),
+	@rg VARCHAR(20),
+	@bairro VARCHAR(200),
+	@rua VARCHAR(100),
+	@num INT, 
+	@nivel CHAR(1),
+	@ativo BIT
+	AS
+
+	/*
+	Documentação
+	Arquivo Fonte.....: ArquivoFonte.sql
+	Objetivo..........: Atualiza dados do cliente
+	Autor.............: SMN - Douglas
+ 	Data..............: 11/10/2017
+	Ex................: EXEC [dbo].[PBSP_UPDATECLIENTE]
+
+	*/
+
+	BEGIN
+		UPDATE Clientes SET CidadeId=@cidadeId, nome=@nome,cpf=@cpf,rg=@rg,
+							fone=@fone,bairro=@bairro,rua=@rua,num=@num,ativo=@ativo,nivel=@nivel
+						WHERE Clientes.Id = @id;
+	END
+GO
+												
 --Funções
 --função que retorna o Saldo
 CREATE FUNCTION dbo.RetornaSaldo(@contaId SMALLINT)

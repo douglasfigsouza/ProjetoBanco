@@ -1,0 +1,366 @@
+﻿@model ProjetoBanco.MVC.ViewModels.ClienteViewModel
+<div class="row"id="divTblClientesEditaveis">
+    <div class="col s12">
+        <table id="tlbClientesEditaveis" class="striped responsive-table centered" cellspacing="0" width="100%">
+            <thead>
+            <tr>
+                <th>Nome</th>
+                <th>CPF</th>
+                <th>RG</th>
+                <th>Fone</th>
+                <th>Bairro</th>
+                <th>Rua</th>
+                <th>Num</th>
+                <th>Incluir</th>
+            </tr>
+            </thead>
+            <tbody id="tbdClientesConta">
+            @foreach (var cli in ViewBag.clientes)
+            {
+                <tr id=@cli.Id>
+                    <td>@cli.nome</td>
+                    <td>@cli.cpf</td>
+                    <td>@cli.rg</td>
+                    <td>@cli.fone</td>
+                    <td>@cli.bairro</td>
+                    <td>@cli.rua</td>
+                    <td>@cli.num</td>
+                    <td>
+                        <button type="button" class="btnClienteEditavel modal-action modal-close btn green">
+                            <i class="material-icons">add_box</i>
+                        </button>
+                    </td>
+                </tr>
+            }
+            </tbody>
+        </table>
+    </div>
+</div>
+
+<div id="formClienteEditavel">
+    <h5>Cadastro de Clientes</h5>
+    <div class="row">
+        <div class="col s12">
+            <hr>
+        </div>
+        <div class="col s12">
+            @using (Html.BeginForm())
+            {
+                @Html.AntiForgeryToken()
+                @Html.ValidationSummary(true)
+                {
+                    <input type="hidden" name="Id" id="id"/>
+                    <div class="row">
+                        <div class="col s6">
+                            <label for="nome" class="col s12">Nome</label>
+                            @Html.EditorFor(model => model.nome, new { htmlAttributes = new { @class = "col s12" } })
+                            @Html.ValidationMessageFor(model => model.nome, "", new { @class = "text-danger" })
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <div class="col s6">
+                            <label for="cpf" class="col s12">CPF</label>
+                            @Html.EditorFor(model => model.cpf, new { htmlAttributes = new { @class = "col s12 cpf" } })
+                            @Html.ValidationMessageFor(model => model.cpf, "", new { @class = "text-danger" })
+                        </div>
+                        <div class="col s6 ">
+                            <label for="rg" class="col s12">RG</label>
+                            @Html.EditorFor(model => model.rg, new { htmlAttributes = new { @class = "col s12 rg" } })
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <div class="col s6">
+                            <label for="fone" class="col s12">Fone</label>
+                            @Html.EditorFor(model => model.fone, new { htmlAttributes = new { @class = "col s12 fone" } })
+                            @Html.ValidationMessageFor(model => model.fone, "", new { @class = "text-danger" })
+                        </div>
+                        <div class="col s6">
+                            <label class="col s12">Nivel de Usuário</label>
+                            <p>
+                                <input class="with-gap col s1" value="c" name="nivel" type="radio" id="cliente" checked />
+                                <label for="cliente" class="col s4">Cliente</label>
+                            </p>
+                            <p>
+                                <input class="with-gap col s1" name="nivel" value="f" type="radio" id="funcionario" />
+                                <label for="funcionario" class="col s4">Funcionario</label>
+                            </p>
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <div class="col s5">
+                            <label class="col s12" for="ddlestadoClientes">Estado</label>
+                            <select id="ddlestadoClientes" name="EstadoId" class="col s8" disabled>
+                                <option value="0">Selecione</option>
+                            </select>
+                        </div>
+                        <div class="col s7">
+                            <label class="col s12" for="ddlCidadesClientes">Cidade</label>
+                            <select id="ddlCidadesCliente" name="cidadeId" class="col s8" disabled>
+                                <option value="0">Selecione</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <div class="col s4">
+                            <label for="bairro" class="col s12">Bairro</label>
+                            @Html.EditorFor(model => model.bairro, new { htmlAttributes = new { @class = "col s12" } })
+                            @Html.ValidationMessageFor(model => model.bairro, "", new { @class = "text-danger" })
+                        </div>
+                        <div class="col s5 ">
+                            <label for="rua" class="col s12">Rua</label>
+                            @Html.EditorFor(model => model.rua, new { htmlAttributes = new { @class = "col s12" } })
+                            @Html.ValidationMessageFor(model => model.rua, "", new { @class = "text-danger" })
+                        </div>
+                        <div class="col s3 ">
+                            <label for="num" class="col s12">N°</label>
+                            @Html.EditorFor(model => model.num, new { htmlAttributes = new { @class = "col s6" } })
+                            @Html.ValidationMessageFor(model => model.num, "", new { @class = "text-danger" })
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col s3 ">
+                            <input type="checkbox" id="ativo" name="ativo" checked/>
+                            <label for="ativo">Ativo</label>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <button class="btn waves-effect waves-light right" type="submit" name="action">
+                            Cadastrar
+                            <i class="material-icons right">send</i>
+                        </button>
+                    </div>
+                }
+            }
+        </div>
+    </div>
+</div>
+<script>
+    $(document).ready(function () {
+        $("#formClienteEditavel").hide();
+        $("#tlbClientesEditaveis").dataTable({
+            language: {
+                "sEmptyTable": "Nenhum registro encontrado",
+                "sInfo": "Mostrando de _START_ até _END_ de _TOTAL_ registros",
+                "sInfoEmpty": "Mostrando 0 até 0 de 0 registros",
+                "sInfoFiltered": "(Filtrados de _MAX_ registros)",
+                "sInfoPostFix": "",
+                "sInfoThousands": ".",
+                "sLengthMenu": "Exibir _MENU_",
+                "sLoadingRecords": "Carregando...",
+                "sProcessing": "Processando...",
+                "sZeroRecords": "Nenhum registro encontrado",
+                "sSearch": "Pesquisar",
+                "oPaginate": {
+                    "sNext": "Próximo",
+                    "sPrevious": "Anterior",
+                    "sFirst": "Primeiro",
+                    "sLast": "Último"
+                },
+                "oAria": {
+                    "sSortAscending": ": Ordenar colunas de forma ascendente",
+                    "sSortDescending": ": Ordenar colunas de forma descendente"
+                }
+            }
+
+        });
+        //pega o id do cliente selecionado 
+        $(".btnClienteEditavel").click(function() {
+            var id = $(this).closest('tr').attr('id');
+            $("#divTblClientesEditaveis").hide();
+            $.ajax(
+                {
+                    type: 'GET',
+                    url: "/Clientes/GetByClienteId/" + id,
+                    dataType: 'json',
+                    cache: false,
+                    async: true,
+                    success: function (data) {
+                        $("#id").val(data.Id);
+                        $("#nome").val(data.nome);
+                        $("#cpf").val(data.cpf);
+                        $("#rg").val(data.rg);
+                        $("#fone").val(data.fone);
+                        $("#bairro").val(data.bairro);
+                        $("#rua").val(data.rua);
+                        $("#num").val(data.num);
+                        if (data.nivel == 'f') {
+                            $("#funcionario").prop('checked', true);
+                        } else {
+                            $("#cliente").prop('checked', true);
+                        }
+                        if (data.ativo == 1) {
+                            $("#ativo").prop('checked', true);
+                            $("#ativo").val(true);
+                        } else {
+                            $("#ativo").prop('checked', false);
+                            $("#ativo").val(false);
+                        }
+                        //função que retornara a cidade do cliente
+                        $.ajax({
+                            type: "GET",
+                            url: "/EstadosCidades/GetCidadeJaCadastrada",
+                            datatype: "Json",
+                            data: {
+                                cidadeId: data.cidadeId,
+                                estadoId: data.estadoId
+                            },
+                            success: function(dados) {
+                                $('#ddlCidadesCliente').html('');
+                                $('#ddlCidadesCliente').removeAttr('disabled');
+
+                                $.each(dados,
+                                    function(value, option) {
+
+                                        $('#ddlCidadesCliente')
+                                            .append($('<option></option>').val(option.Value).html(option.Text));
+                                    });
+                                $('#ddlCidadesCliente').material_select();
+                            },
+                            error: function ajaxError(dados) {
+                                alert(dados.status + ' ' + dados.statusText);
+                            }
+                        });
+                        $.ajax({
+                            type: "GET",
+                            url: "/EstadosCidades/GetEstadoJaCadastrado",
+                            datatype: "Json",
+                            data: {
+                                estadoId: data.estadoId
+                            },
+                            success: function(dados) {
+                                $('#ddlestadoClientes').html('');
+                                $('#ddlestadoClientes').removeAttr('disabled');
+
+                                $.each(dados,
+                                    function(value, option) {
+
+                                        $('#ddlestadoClientes')
+                                            .append($('<option></option>').val(option.Value).html(option.Text));
+                                    });
+                                $('#ddlestadoClientes').material_select();
+                                $("#formClienteEditavel").show();
+                            },
+                            error: function ajaxError(dados) {
+                                alert(dados.status + ' ' + dados.statusText);
+                            }
+                        });
+                    },
+                    error(e) {
+                        alert("Erro ao Consultar Clientes!");
+                    }
+
+                });
+        });
+        $("#ativo").change(function () {
+            if ($("#ativo").is(':checked')) {
+                $("#ativo").val(true);
+            } else {
+                $("#ativo").val(false);
+            }
+        });
+        //função que busca cidades pelo id do estado e seta no combo cidades
+        $(document).on("change",
+            "#ddlestadoClientes",
+            function() {
+                var id = $("#ddlestadoClientes").val();
+                $('#ddlCidadesCliente').empty();
+                $.ajax(
+                    {
+                        type: 'GET',
+                        url: "GetCidadesByIdEstado/" + id,
+                        dataType: 'json',
+                        cache: false,
+                        async: true,
+                        success: function(data) {
+                            $.each(data,
+                                function(key, value) {
+                                    $("#ddlCidadesCliente")
+                                        .append("<option value=" + value.cidadeId + ">" + value.Nome + "</option>");
+                                });
+                            $('#ddlCidadesCliente').material_select();
+                        },
+                        error(e) {
+                            alert("Erro ao Consultar Cidades!");
+                        }
+
+                    });
+            });
+        $(".cpf").mask("999.999.999-99");
+        $(".rg").mask("99.999.999");
+        $(".fone").mask("(99) 9 9999-9999");
+        $("form").validate({
+            submitHandler: function(form) {
+                form.submit();
+            },
+            rules: {
+                nome: {
+                    required: true,
+                    minlength: 5,
+                    maxlength: 100
+                },
+                cpf: {
+                    required: true
+                },
+                rg: {
+                    required: true
+                },
+                fone: {
+                    required: true
+                },
+                bairro: {
+                    required: true
+                },
+                rua: {
+                    required: true
+                },
+                num: {
+                    required: true
+                },
+                nivel: {
+                    required: true
+                },
+                cidadeId: {
+                    required: true
+                }
+            },
+            messages: {
+                nome: {
+                    required: "O campo Nome é Obrigatório! Digite-O",
+                    minlength: "O campo Nome deve conter no mínimo 5 caracteres!",
+                    maxlength: "O campo Nome deve conter no máximo 100 caracteres!"
+                },
+                cpf: {
+                    required: "O campo CPF é Obrigatório! Digite-O"
+                },
+                rg: {
+                    required: "O campo RG é Obrigatório! Digite-O"
+                },
+                fone: {
+                    required: "O campo Fone é Obrigatório! Digite-O"
+                },
+                bairro: {
+                    required: "O campo Bairro é Obrigatório! Digite-O"
+                },
+                rua: {
+                    required: "O campo Rua é Obrigatório! Digite-O"
+                },
+                num: {
+                    required: "O campo N° é Obrigatório! Digite-O"
+
+                },
+                nivel: {
+                    required: "O campo Nível é Obrigatório! Digite-O"
+
+                },
+                cidadeId: {
+                    required: "Selecione a cidade!"
+                }
+
+            }
+        });
+    });
+</script>

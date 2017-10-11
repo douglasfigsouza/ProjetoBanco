@@ -28,14 +28,14 @@ namespace ProjetoBanco.Application
             return _clienteRepositoryDomain.GetByClienteId(id);
         }
 
-        public IEnumerable<Cliente> GetAllClientes()
+        public IEnumerable<Cliente> GetAllClientes(int op)
         {
-            return _iClienteService.GetAllClientes();
+            return _iClienteService.GetAllClientes(op);
         }
 
         public void UpdateCliente(Cliente cliente)
         {
-            throw new NotImplementedException();
+            _clienteRepositoryDomain.UpdateClientes(cliente);
         }
 
         public void RemoveCliente(Cliente cliente)

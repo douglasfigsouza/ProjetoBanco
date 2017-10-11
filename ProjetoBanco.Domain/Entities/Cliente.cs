@@ -5,6 +5,7 @@ namespace ProjetoBanco.Domain.Entities
     public class Cliente
     {
         public int cidadeId { get; set; }
+        public int estadoId { get; set; }
         public int Id { get; set; }
         public string nome { get; set; }
         public string cpf { get; set; }

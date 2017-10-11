@@ -12,7 +12,6 @@ namespace ProjetoBanco.Infra.Data.Repositories
         private Conexao conn;
         private SqlDataReader result;
         private int contaId;
-        private string tttt;
 
         public enum Procedure
         {

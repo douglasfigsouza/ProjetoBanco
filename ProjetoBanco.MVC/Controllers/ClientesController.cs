@@ -2,6 +2,8 @@
 using ProjetoBanco.Domain.Entities;
 using ProjetoBanco.MVC.ViewModels;
 using System;
+using System.Collections.Generic;
+using System.Linq;
 using ProjetoBanco.MVC.Utilitarios;
 using System.Web.Mvc;
 
@@ -13,6 +15,7 @@ namespace ProjetoBanco.MVC.Controllers
         private readonly IEstadoAppService _estadoAppService;
         private readonly ICidadesAppService _cidadesAppService;
         private Cliente cliente;
+        private List<Cidade> Cidades;
 
         public ClientesController(IClienteAppService clienteApp, IEstadoAppService estadoApp, ICidadesAppService ICidadeAppService, IBancoAppService IBancoAppService)
         {
@@ -20,6 +23,7 @@ namespace ProjetoBanco.MVC.Controllers
             _estadoAppService = estadoApp;
             _cidadesAppService = ICidadeAppService;
             cliente = new Cliente();
+            Cidades = new List<Cidade>();
         }
         // GET: Clientes/Create
         public ActionResult CreateCliente()
@@ -35,7 +39,7 @@ namespace ProjetoBanco.MVC.Controllers
         {
             if (ModelState.IsValid)
             {
-                cliente.cidadeId =clienteViewModel.cidadeId;
+                cliente.cidadeId = clienteViewModel.cidadeId;
                 cliente.nome = clienteViewModel.nome;
                 cliente.cpf = Utilitarios.Utilitarios.retiraMask(clienteViewModel.cpf);
                 cliente.rg = Utilitarios.Utilitarios.retiraMask(clienteViewModel.rg);
@@ -48,8 +52,8 @@ namespace ProjetoBanco.MVC.Controllers
                 cliente.ativo = true;
                 _clienteApp.AddCliente(cliente);
                 ViewBag.messagem = "Cliente: " + clienteViewModel.nome + " cadastrado com sucesso!";
-                return RedirectToAction("Index","Success");
-                }
+                return RedirectToAction("Index", "Success");
+            }
             else
             {
                 ViewBag.estados = _estadoAppService.GetAllEstados();
@@ -59,40 +63,52 @@ namespace ProjetoBanco.MVC.Controllers
         [HttpGet]
         public JsonResult GetCidadesByIdEstado(int id)
         {
-            return Json(_cidadesAppService.GetCidadesByEstadoId(id),JsonRequestBehavior.AllowGet);
+            return Json(_cidadesAppService.GetCidadesByEstadoId(id), JsonRequestBehavior.AllowGet);
         }
         [HttpGet]
         public JsonResult GetAllClientes()
         {
-            return Json(_clienteApp.GetAllClientes(), JsonRequestBehavior.AllowGet);
+            return Json(_clienteApp.GetAllClientes(1), JsonRequestBehavior.AllowGet);
         }
 
         public ActionResult EditCliente()
         {
-            ViewBag.clientes = _clienteApp.GetAllClientes();
+            ViewBag.clientes = _clienteApp.GetAllClientes(0);
             return View();
+        }
+
+        [HttpPost]
+        public ActionResult EditCliente(ClienteViewModel clienteViewModel)
+        {
+            if (ModelState.IsValid)
+            {
+                cliente.Id = clienteViewModel.Id;
+                cliente.nome = clienteViewModel.nome;
+                cliente.cpf = Utilitarios.Utilitarios.retiraMask( clienteViewModel.cpf);
+                cliente.rg = Utilitarios.Utilitarios.retiraMask(clienteViewModel.rg);
+                cliente.fone = Utilitarios.Utilitarios.retiraMask(clienteViewModel.fone);
+                cliente.bairro = clienteViewModel.bairro;
+                cliente.rua = clienteViewModel.rua;
+                cliente.num = clienteViewModel.num;
+                cliente.nivel = clienteViewModel.nivel;
+                cliente.ativo = clienteViewModel.ativo;
+                cliente.cidadeId = clienteViewModel.cidadeId;
+
+
+                _clienteApp.UpdateCliente(cliente);
+
+                TempData["menssagem"] = "Cliente " + clienteViewModel.nome + " alterado com Sucesso!";
+                return RedirectToAction("Index", "Success");
+            }
+            ViewBag.clientes = _clienteApp.GetAllClientes(0);
+            return View(clienteViewModel);
         }
 
         public JsonResult GetByClienteId(int Id)
         {
-           return Json(_clienteApp.GetByClienteId(Id), JsonRequestBehavior.AllowGet);
+            return Json(_clienteApp.GetByClienteId(Id), JsonRequestBehavior.AllowGet);
         }
-        [HttpGet]
-        public JsonResult ListaCidadeJaCadastrada(string Cidade_Id, string Uf)
-        {
-            foreach (var item in CidadeRep.BuscaCidadesId(Uf).ToList())
-            {
-                if (item.CIDADE_ID == Convert.ToInt32(Cidade_Id))
-                {
-                    ListaDeCidades.Add(new SelectListItem() { Text = item.NOME, Value = item.CIDADE_ID + "" });
-                }
-            }
-            foreach (var item in CidadeRep.BuscaCidadesId(Uf).ToList())
-            {
-                ListaDeCidades.Add(new SelectListItem() { Text = item.NOME, Value = item.CIDADE_ID + "" });
-            }
-            return Json(new SelectList(ListaDeCidades, "Value", "Text", 0), JsonRequestBehavior.AllowGet);
-        }
+
 
         //// GET: Clientes/Edit/5
         //public ActionResult Edit(int id)

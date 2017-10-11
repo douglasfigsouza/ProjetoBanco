@@ -25,7 +25,8 @@ namespace ProjetoBanco.Infra.Data.Repositories
         {
             PBSP_INSERTCLIENTE,
             PBSP_GETALLCLIENTES,
-            PBSP_GETCLIENTEBYID
+            PBSP_GETCLIENTEBYID,
+            PBSP_UPDATECLIENTE
         }
 
         public void AddCliente(Cliente cliente)
@@ -64,15 +65,19 @@ namespace ProjetoBanco.Infra.Data.Repositories
                     bairro = result["bairro"].ToString(),
                     nivel = Convert.ToChar(result["nivel"].ToString()),
                     num = Convert.ToInt32(result["num"].ToString()),
-                    dataCadastro = Convert.ToDateTime(result["dataCadastro"].ToString())
+                    dataCadastro = Convert.ToDateTime(result["dataCadastro"].ToString()),
+                    ativo = Convert.ToBoolean(result["ativo"].ToString()),
+                    cidadeId = Convert.ToInt32(result["CidadeId"].ToString()),
+                    estadoId= Convert.ToInt32(result["EstadoId"].ToString())
                 };
             }
             return cliente;
         }
 
-        public IEnumerable<Cliente> GetAllClientes()
+        public IEnumerable<Cliente> GetAllClientes(int op)
         {
             conn.ExecuteProcedure(Procedures.PBSP_GETALLCLIENTES);
+            conn.AddParameter("@op",op);
             result = conn.ExecuteReader();
             while (result.Read())
             {
@@ -95,7 +100,19 @@ namespace ProjetoBanco.Infra.Data.Repositories
 
         public void UpdateClientes(Cliente cliente)
         {
-            throw new NotImplementedException();
+            conn.ExecuteProcedure(Procedures.PBSP_UPDATECLIENTE);
+            conn.AddParameter("@id",cliente.Id);
+            conn.AddParameter("@cidadeId", cliente.cidadeId);
+            conn.AddParameter("@nome", cliente.nome);
+            conn.AddParameter("@cpf", cliente.cpf);
+            conn.AddParameter("@rg", cliente.rg);
+            conn.AddParameter("@fone", cliente.fone);
+            conn.AddParameter("@bairro", cliente.bairro);
+            conn.AddParameter("@rua", cliente.rua);
+            conn.AddParameter("@num", cliente.num);
+            conn.AddParameter("@nivel", cliente.nivel);
+            conn.AddParameter("@ativo", cliente.ativo);
+            conn.ExecuteNonQuery();
         }
 
         public void RemoveClientes(Cliente obj)

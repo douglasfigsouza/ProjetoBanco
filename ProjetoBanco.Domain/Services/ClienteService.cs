@@ -23,9 +23,9 @@ namespace ProjetoBanco.Domain.Services
             _repository.AddCliente(cliente);
         }
 
-        public IEnumerable<Cliente> GetAllClientes()
+        public IEnumerable<Cliente> GetAllClientes(int op)
         {
-            return _repository.GetAllClientes();
+            return _repository.GetAllClientes(op);
         }
 
         public Cliente GetByClienteId(int id)
@@ -40,7 +40,7 @@ namespace ProjetoBanco.Domain.Services
 
         public void UpdateClientes(Cliente cliente)
         {
-            throw new NotImplementedException();
+            _repository.UpdateClientes(cliente);
         }
         public void Dispose()
         {

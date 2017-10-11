@@ -240,7 +240,6 @@
     <Content Include="Views\Home\About.cshtml" />
     <Content Include="Views\Home\Contact.cshtml" />
     <Content Include="Views\Home\Index.cshtml" />
-    <Content Include="Views\Clientes\CreateCliente.cshtml" />
     <Content Include="Views\Banco\CreateBanco.cshtml" />
     <Content Include="Views\Usuarios\CreateUsuario.cshtml" />
     <Content Include="Views\Usuarios\_LayoutLogin.cshtml" />
@@ -258,6 +257,7 @@
     <Content Include="Views\Success\Error.cshtml" />
     <Content Include="Views\Operacoes\Transferencia.cshtml" />
     <Content Include="Views\Operacoes\ConfirmTransferencia.cshtml" />
+    <Content Include="Views\Clientes\CreateCliente.cshtml" />
     <Content Include="Views\Clientes\EditCliente.cshtml" />
   </ItemGroup>
   <ItemGroup>

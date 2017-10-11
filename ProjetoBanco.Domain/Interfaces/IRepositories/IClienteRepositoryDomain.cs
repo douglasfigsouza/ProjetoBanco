@@ -11,7 +11,7 @@ namespace ProjetoBanco.Domain.Interfaces.IRepositories
     {
         void AddCliente(Cliente cliente);
         Cliente GetByClienteId(int id);
-        IEnumerable<Cliente> GetAllClientes();
+        IEnumerable<Cliente> GetAllClientes(int op);
         void UpdateClientes(Cliente cliente);
         void RemoveClientes(Cliente obj);
         void Dispose();

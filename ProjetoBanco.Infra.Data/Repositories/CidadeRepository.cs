@@ -11,13 +11,12 @@ namespace ProjetoBanco.Infra.Data.Repositories
 {
     public class CidadeRepository:ICidadeRepositoryDomain
     {
-        private readonly Conexao conn;
+        private  Conexao conn;
         private SqlDataReader result;
         private List<Cidade> lstCidades;
 
         public CidadeRepository()
         {
-            conn = new Conexao();
             lstCidades = new List<Cidade>();
         }
         public enum Procedures
@@ -32,6 +31,7 @@ namespace ProjetoBanco.Infra.Data.Repositories
 
         public IEnumerable<Cidade> GetCidadesByEstadoId(int id)
         {
+            conn = new Conexao();
             conn.ExecuteProcedure(Procedures.PBSP_GETCIDADESBYIDESTADO);
             conn.AddParameter("@id", id);
             result = conn.ExecuteReader();
