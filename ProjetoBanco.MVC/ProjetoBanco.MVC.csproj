@@ -183,6 +183,7 @@
     <Compile Include="ViewModels\BancoViewModel.cs" />
     <Compile Include="ViewModels\ClienteViewModel.cs" />
     <Compile Include="ViewModels\CombosContaViewModel.cs" />
+    <Compile Include="ViewModels\ContaClienteAlteracaoViewModel.cs" />
     <Compile Include="ViewModels\ContaClienteViewModel.cs" />
     <Compile Include="ViewModels\ContaViewModel.cs" />
     <Compile Include="ViewModels\EstornoViewModel.cs" />
@@ -264,6 +265,7 @@
     <Content Include="Views\Operacoes\Estorno.cshtml" />
     <Content Include="Views\Operacoes\OpRealizadasEstorno.cshtml" />
     <Content Include="Views\Operacoes\ContaEstorno.cshtml" />
+    <Content Include="Views\Contas\ContaEdit.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

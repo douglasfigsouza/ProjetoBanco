@@ -58,7 +58,7 @@ namespace ProjetoBanco.MVC.Controllers
             conta.num = form["num"];
             conta.senha = form["senha"];
             conta.tipo = form["tipoConta"];
-            int agencia = Convert.ToInt32(form["ddlAgencias"]);
+            int agencia = int.Parse(form["ddlAgencias"]);
 
             foreach (var item in ClientesSelecionados)
             {
@@ -71,6 +71,23 @@ namespace ProjetoBanco.MVC.Controllers
             }
             _contaClienteAppService.AddContaCliente(conta,contaClientes);
             return View();
+        }
+
+        public ActionResult EditContaCliente()
+        {
+            return View("ContaEdit");
+        }
+
+        [HttpPost]
+        public ActionResult UpdateContaCliente()
+        {
+            return RedirectToAction("Index", "Success");
+        }
+
+        [HttpGet]
+        public JsonResult GetContaClienteById(int idConta)
+        {
+            return Json()
         }
     }
 }

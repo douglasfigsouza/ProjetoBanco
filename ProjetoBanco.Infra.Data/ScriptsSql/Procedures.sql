@@ -915,7 +915,35 @@ CREATE PROCEDURE [dbo].[PBSP_ESTORNA]
 				VALUES(@opId,@clienteId,@contaId,@agencia,@bancoId,GETDATE(),@saldoAnterior,@valorOp);
 	END
 GO
-							
+
+IF EXISTS (SELECT * FROM dbo.sysobjects WHERE id = object_id(N'[dbo].[PBSP_GETCONTACLIENTEBYID]') AND objectproperty(id, N'IsPROCEDURE')=1)
+	DROP PROCEDURE [dbo].[PBSP_GETCONTACLIENTEBYID]
+GO
+
+CREATE PROCEDURE [dbo].[PBSP_GETCONTACLIENTEBYID]
+	@agencia INT,
+	@conta VARCHAR(20),
+	@senha VARCHAR(20)
+	AS
+	/*
+	Documentação
+	Arquivo Fonte.....: ArquivoFonte.sql
+	Objetivo..........: Retorna Conta com os dados do cliente para alteração 
+	Autor.............: SMN - Douglas
+ 	Data..............: 16/10/2017
+	Ex................: EXEC [dbo].[PBSP_GETCONTACLIENTEBYID]
+
+	*/
+
+	BEGIN
+		SELECT  cli.nome, conta.num, conta.senha FROM ContaCliente AS contaCli WITH(NOLOCK)
+		INNER JOIN Clientes AS cli	WITH(NOLOCK) ON contaCli.clienteId = cli.Id
+		INNER JOIN Conta AS conta WITH(NOLOCK) ON contaCli.contaId = conta.Id
+		INNER JOIN Agencia AS ag WITH(NOLOCK) ON contaCli.agencia = ag.agencia
+		WHERE conta.Id = @conta AND conta.senha = @senha AND ag.agencia = @agencia
+	END
+GO
+								
 																		
 --Funções
 --função que retorna o Saldo

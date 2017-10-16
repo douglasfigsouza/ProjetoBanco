@@ -36,6 +36,7 @@
     <Compile Include="Entities\Cliente.cs" />
     <Compile Include="Entities\Conta.cs" />
     <Compile Include="Entities\ContaCliente.cs" />
+    <Compile Include="Entities\ContaClienteAlteracao.cs" />
     <Compile Include="Entities\Estado.cs" />
     <Compile Include="Entities\Estorno.cs" />
     <Compile Include="Entities\OperacaoRealizada.cs" />
