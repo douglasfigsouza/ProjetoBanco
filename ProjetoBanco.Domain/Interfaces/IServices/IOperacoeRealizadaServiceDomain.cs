@@ -12,6 +12,9 @@ namespace ProjetoBanco.Domain.Interfaces.IServices
         void Deposito(OperacaoRealizada operacaoRealizada, int op);
         string Saque(OperacaoRealizada operacaoRealizada, int op);
         int Transferencia(OperacaoRealizada opConta1, OperacaoRealizada opConta2);
+        IEnumerable<Estorno> GetAllOperacoesPorContaParaEstorno(string conta, string senha, int agencia);
+        IEnumerable<Estorno> GetAllOperacoesEstorno();
+        void ConfirmEstorno(int id);
         void Dispose();
     }
 }

@@ -801,6 +801,121 @@ CREATE PROCEDURE [dbo].[PBSP_UPDATEUSUARIO]
 					   WHERE USUARIO.clienteId=@clienteId
 	END
 GO
+
+
+
+IF EXISTS (SELECT * FROM dbo.sysobjects WHERE id = object_id(N'[dbo].[PBSP_GETALLOPERACOESESTORNO]') AND objectproperty(id, N'IsPROCEDURE')=1)
+	DROP PROCEDURE [dbo].[PBSP_GETALLOPERACOESESTORNO]
+GO
+
+CREATE PROCEDURE [dbo].[PBSP_GETALLOPERACOESESTORNO]
+
+	AS
+/*
+	Documentação
+	Arquivo Fonte.....: ArquivoFonte.sql
+	Objetivo..........: Recupera todas as operaçoes realiazadas para o estorno
+	Autor.............: SMN - Douglas
+ 	Data..............: 16/10/2017
+	Ex................: EXEC [dbo].[PBSP_GETALLOPERACOESESTORNO]
+
+	*/
+
+	BEGIN
+	
+	SELECT opReal.Id,opReal.operacaoId, opReal.dataOP,opReal.valorOp,
+			opReal.saldoAnterior, op.descricao, ag.agencia,
+			conta.num , cli.nome
+		FROM OperacoesRealizadas AS opReal WITH(NOLOCK)
+		INNER JOIN Operacoes AS op WITH(NOLOCK) on opReal.operacaoId = op.Id
+		INNER JOIN Agencia AS ag WITH(NOLOCK) ON opReal.agencia = ag.agencia
+		INNER JOIN Conta AS conta WITH(NOLOCK) ON opReal.contaId = conta.Id
+		INNER JOIN Clientes AS cli WITH(NOLOCK) ON opReal.clienteId = cli.Id
+
+	END
+GO
+
+								
+
+IF EXISTS (SELECT * FROM dbo.sysobjects WHERE id = object_id(N'[dbo].[PBSP_GETOPREALIZADASPORCONTA]') AND objectproperty(id, N'IsPROCEDURE')=1)
+	DROP PROCEDURE [dbo].[PBSP_GETOPREALIZADASPORCONTA]
+GO
+
+CREATE PROCEDURE [dbo].[PBSP_GETOPREALIZADASPORCONTA]
+	@conta VARCHAR(20),
+	@agencia INT,
+	@senha VARCHAR(20)
+	AS
+
+	/*
+	Documentação
+	Arquivo Fonte.....: ArquivoFonte.sql
+	Objetivo..........: Retorna operações realizadas por conta 
+	Autor.............: SMN - Douglas
+ 	Data..............: 16/10/2017
+	Ex................: EXEC [dbo].[PBSP_GETOPREALIZADASPORCONTA]
+
+	*/
+
+	BEGIN
+		SELECT opReal.Id,opReal.operacaoId, opReal.dataOP,opReal.valorOp,
+			opReal.saldoAnterior, op.descricao, ag.agencia,
+			conta.num , cli.nome
+		FROM OperacoesRealizadas AS opReal WITH(NOLOCK)
+		INNER JOIN Operacoes AS op WITH(NOLOCK) on opReal.operacaoId = op.Id
+		INNER JOIN Agencia AS ag WITH(NOLOCK) ON opReal.agencia = ag.agencia
+		INNER JOIN Conta AS conta WITH(NOLOCK) ON opReal.contaId = conta.Id
+		INNER JOIN Clientes AS cli WITH(NOLOCK) ON opReal.clienteId = cli.Id
+		WHERE conta.num=@conta AND ag.agencia=@agencia AND conta.senha=@senha
+	END
+GO
+
+IF EXISTS (SELECT * FROM dbo.sysobjects WHERE id = object_id(N'[dbo].[PBSP_ESTORNA]') AND objectproperty(id, N'IsPROCEDURE')=1)
+	DROP PROCEDURE [dbo].[PBSP_ESTORNA]
+GO
+
+CREATE PROCEDURE [dbo].[PBSP_ESTORNA]
+    @id SMALLINT,
+	@opId SMALLINT
+	AS
+
+	/*
+	Documentação
+	Arquivo Fonte.....: ArquivoFonte.sql
+	Objetivo..........: Grava o estorno 
+	Autor.............: SMN - Douglas
+ 	Data..............: 16/10/2017
+	Ex................: EXEC [dbo].[PBSP_ESTORNA]
+
+	*/
+
+	BEGIN
+		DECLARE @clienteId SMALLINT,
+				@contaId SMALLINT,
+				@agencia INT,
+				@bancoId SMALLINT,
+				@saldoAnterior DECIMAL,
+				@valorOp DECIMAL
+
+				SET @clienteId = (SELECT opReal.clienteId FROM OperacoesRealizadas AS opReal WITH(NOLOCK) 
+									INNER JOIN  Clientes as cli WITH(NOLOCK) on opReal.clienteId=cli.Id
+									WHERE opReal.Id = @id);
+				SET @contaId = (SELECT opReal.contaId FROM OperacoesRealizadas AS opReal WITH(NOLOCK)
+								INNER JOIN Conta AS conta WITH(NOLOCK) ON opReal.contaId= conta.Id
+								WHERE opReal.Id = @id);
+				SET @agencia = (SELECT opReal.agencia FROM OperacoesRealizadas  AS opReal WITH(NOLOCK)
+								INNER JOIN Agencia AS ag WITH(NOLOCK) ON opReal.agencia =  ag.agencia
+								WHERE opReal.Id = @id);
+				SET @bancoId = dbo.RetornaIdBanco(@agencia);
+				SET @saldoAnterior = dbo.RetornaSaldo(@contaId);
+				SET @valorOp = (SELECT opReal.valorOp FROM OperacoesRealizadas AS opReal WITH(NOLOCK)
+								WHERE opReal.Id = @id)*(-1);
+
+				INSERT INTO OperacoesRealizadas(operacaoId,clienteId,contaId,agencia,bancoId,dataOP,saldoAnterior,valorOp)
+				VALUES(@opId,@clienteId,@contaId,@agencia,@bancoId,GETDATE(),@saldoAnterior,@valorOp);
+	END
+GO
+							
 																		
 --Funções
 --função que retorna o Saldo

@@ -38,6 +38,40 @@ namespace ProjetoBanco.Application
             
         }
 
+        public Estorno GetOpRealizadaEstornoById(int Id)
+        {
+            Estorno est= null;
+            foreach (var op in _operacoesRealizadasRepositoryDomain.GetAllOperacoesEstorno())
+            {
+                if (op.Id == Id)
+                {
+                    est = new Estorno
+                    {
+                        Id = op.Id,
+                        opId = op.opId,
+                        cliente = op.cliente,
+                        conta = op.conta,
+                        agencia = op.agencia,
+                        valorOp = op.valorOp,
+                        dataFormatada = String.Format("{0:MM/dd/yyyy}", op.dataOp),
+                        descricao = op.descricao,
+                        saldoAnterior = op.saldoAnterior
+                    };
+                }
+            }
+            return est;
+        }
+
+        public void ConfirmEstorno(int id)
+        {
+            _operacoesRealizadasRepositoryDomain.ConfirmEstorno(id);
+        }
+
+        public IEnumerable<Estorno> GetAllOperacoesEstorno()
+        {
+           return _operacoesRealizadasRepositoryDomain.GetAllOperacoesEstorno();
+        }
+
         public void Dispose()
         {
             _operacoesRealizadasRepositoryDomain.Dispose();
@@ -49,5 +83,9 @@ namespace ProjetoBanco.Application
            return _operacoesRealizadaServiceDomain.Saque(operacaoRealizada,op);
         }
 
+        public IEnumerable<Estorno> GetAllOperacoesPorContaParaEstorno(string conta, string senha, int agencia)
+        {
+            return _operacoesRealizadasRepositoryDomain.GetAllOperacoesPorContaParaEstorno(conta, senha,agencia);
+        }
     }
 }

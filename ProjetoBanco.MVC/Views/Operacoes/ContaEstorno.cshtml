@@ -1,0 +1,30 @@
+﻿<div class="row">
+    <div class="col s6">
+        @using (Html.BeginForm("Estorno","Operacoes"))
+        {
+            <div class="row">
+                <h5>Digite os Dados</h5>
+                <hr/>
+            </div>
+            <div class="row">
+                <div class="col s4">
+                    <label class="col s12">Conta</label>
+                    <input type="text" class="col s12" name="conta">
+                </div>
+                <div class="col s4">
+                    <label class="col s12">Agência</label>
+                    <input type="text" class="col s12" name="agencia">
+                </div>
+                <div class="col s4">
+                    <label class="col s12">Senha</label>
+                    <input type="text" class="col s12" name="senha">
+                </div>
+            </div>
+            <div class="row">
+                <button class="btn waves-effect waves-light" type="submit">Estornar
+                    <i class="material-icons right">send</i>
+                </button>
+            </div>
+        }
+    </div>
+</div>

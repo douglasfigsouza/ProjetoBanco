@@ -1,0 +1,131 @@
+﻿@model IEnumerable<ProjetoBanco.MVC.ViewModels.EstornoViewModel>
+<div class="row" id="opEstorno">
+    @foreach (var op in @Model)
+    {
+        <hr/>
+        <div class="col s12">
+            <div class="col s2">
+                <label class="col s12">Cliente:</label>
+                <label class="col s12">@op.cliente</label>
+            </div>
+            <div class="col s1">
+                <label class="col s12">Conta:</label>
+                <label class="col s12">@op.conta</label>
+            </div>
+            <div class="col s1">
+                <label class="col s12">Agência:</label>
+                <label class="col s12">@op.agencia</label>
+            </div>
+            <div class="col s2">
+                <label class="col s12">Data Operação:</label>
+                <label class="col s12">@op.dataOp</label>
+            </div>
+            <div class="col s2">
+                <label class="col s12">Operação:</label>
+                <label class="col s12">@op.descricao</label>
+            </div>
+            <div class="col s1">
+                <label class="col s12">Valor:</label>
+                <label class="col s12">@op.valorOp</label>
+            </div>
+            <div class="col s2">
+                <label class="col s12">Saldo Anterior:</label>
+                <label class="col s12">@op.saldoAnterior</label>
+            </div>
+            <div class="col s1">
+                <a class="btn-floating btn-large waves-effect waves-light green addEstorno" id=@op.Id><i class="material-icons">arrow_forward</i></a>
+            </div>
+        </div>
+    }
+</div>
+<div class="row" id="opSelecionada">
+    <div class="col s12">
+        <h5>Confirma Estorno</h5>
+        <hr/>
+        <div class="col s12">
+            <div class="col s3">
+                <label class="col s12">Cliente:</label>
+                <label class="col s12" id="cliente"></label>
+            </div>
+            <div class="col s1">
+                <label class="col s12">Conta:</label>
+                <label class="col s12" id="conta"></label>
+            </div>
+            <div class="col s1">
+                <label class="col s12">Agência:</label>
+                <label class="col s12" id="agencia"></label>
+            </div>
+            <div class="col s2">
+                <label class="col s12">Data Operação:</label>
+                <label class="col s12" id="dataOp"></label>
+            </div>
+            <div class="col s2">
+                <label class="col s12">Operação:</label>
+                <label class="col s12" id="descricao"></label>
+            </div>
+            <div class="col s1">
+                <label class="col s12">Valor:</label>
+                <label class="col s12"id="valorOp"></label>
+            </div>
+            <div class="col s2">
+                <label class="col s12">Saldo Anterior:</label>
+                <label class="col s12" id="saldoOp"></label>
+            </div>
+        </div>
+        <div class="row">
+            <button class="btn waves-effect waves-light enviaEstorno" type="button" id="estorna">Estornar
+                <i class="material-icons right">send</i>
+            </button>
+        </div>
+    </div>
+</div>
+<script>
+    $(document).ready(function () {
+        $("#opSelecionada").hide();
+        var id = 0;
+        $(".addEstorno").click(function () {
+            $("#opEstorno").hide();
+            id = $(this).closest('a').attr('id');
+            $.ajax({
+                type: "GET",
+                url: "/Operacoes/GetOpRealizadaEstornoById",
+                datatype: "Json",
+                data: {
+                    id:id
+                },
+                success: function (dados) {
+                    $(".enviaEstorno").prop('id', dados.Id);
+                    $("#cliente").text(dados.cliente);
+                    $("#conta").text(dados.conta);
+                    $("#agencia").text(dados.agencia);
+                    $("#dataOp").text(dados.dataOp);
+                    $("#descricao").text(dados.descricao);
+                    $("#valorOp").text(dados.valorOp);
+                    $("#saldoOp").text(dados.saldoAnterior);
+                    $("#opSelecionada").show();
+                },
+                error: function ajaxError(dados) {
+                    alert(dados.status + ' ' + dados.statusText);
+                }
+            });
+        });
+        $("#estorna").click(function () {
+            debugger;
+            var id = $(this).closest('button').attr('id');
+            $.ajax({
+                type: "POST",
+                url: "/Operacoes/ConfirmEstorno",
+                dataType:"JSON",
+                data: {
+                    id: id
+                },
+                success: function (dados) {
+                    console.log("carregando...");
+                },
+                error: function ajaxError(dados) {
+                    alert(dados.status + ' ' + dados.statusText);
+                }
+            });
+        });
+    });
+</script>

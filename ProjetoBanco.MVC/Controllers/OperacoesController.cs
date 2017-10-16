@@ -23,6 +23,7 @@ namespace ProjetoBanco.MVC.Controllers
         private Operacoes op;
         private Transacao transacao;
         private List<TransacaoViewModel> lstTransacoesViewModels;
+        private List<EstornoViewModel> opsEstornoViewModels;
         private decimal valor;
 
 
@@ -35,6 +36,7 @@ namespace ProjetoBanco.MVC.Controllers
             transacao = new Transacao();
             lstTransacoesViewModels = new List<TransacaoViewModel>();
             op = new Operacoes();
+            opsEstornoViewModels = new List<EstornoViewModel>();
         }
         // GET: Operacoes
         public ActionResult CreateOperacao()
@@ -261,6 +263,45 @@ namespace ProjetoBanco.MVC.Controllers
 
             return RedirectToAction("Index", "Success");
 
+        }
+
+        public ActionResult DadosParaEstorno()
+        {
+            return View("Estorno");
+    
+        }
+
+        public ActionResult Estorno(FormCollection form)
+        {
+            foreach (var op in _operacaoesRealizadasAppService.GetAllOperacoesPorContaParaEstorno(form["conta"],form["senha"],Convert.ToInt32(form["agencia"])))
+            {
+                opsEstornoViewModels.Add(new EstornoViewModel
+                {
+                    Id = op.Id,
+                    opId = op.opId,
+                    cliente = op.cliente,
+                    agencia = op.agencia,
+                    conta = op.conta,
+                    saldoAnterior = op.saldoAnterior,
+                    valorOp = op.valorOp,
+                    dataOp = op.dataOp,
+                descricao = op.descricao
+                });
+            }
+            return View("OpRealizadasEstorno",opsEstornoViewModels);
+        }
+
+        [HttpPost]
+        public ActionResult ConfirmEstorno(int id)
+        {
+            _operacaoesRealizadasAppService.ConfirmEstorno(id);
+            TempData["menssagem"] = "Estorno realizado com sucesso!";
+            return RedirectToAction("Index", "Success");
+        }
+        [HttpGet]
+        public JsonResult GetOpRealizadaEstornoById(int id)
+        {
+            return Json(_operacaoesRealizadasAppService.GetOpRealizadaEstornoById(id), JsonRequestBehavior.AllowGet);
         }
     }
 }

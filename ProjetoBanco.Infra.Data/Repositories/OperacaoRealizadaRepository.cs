@@ -13,16 +13,21 @@ namespace ProjetoBanco.Infra.Data.Repositories
     {
         private Conexao conn;
         private SqlDataReader result;
+        private List<Estorno> OpsEstorno;
         private enum Procedure
         {
             PBSP_DEPOSITO,
             PBSP_SAQUE,
-            PBSP_TRANSFERENCIA
+            PBSP_TRANSFERENCIA,
+            PBSP_GETALLOPERACOESESTORNO,
+            PBSP_GETOPREALIZADASPORCONTA,
+            PBSP_ESTORNA
         }
 
         public OperacaoRealizadaRepository()
         {
             conn= new Conexao();
+            OpsEstorno = new List<Estorno>();
         }
         public void Deposito(OperacaoRealizada operacaoRealizada, int op)
         {
@@ -65,6 +70,40 @@ namespace ProjetoBanco.Infra.Data.Repositories
             }
         }
 
+        public IEnumerable<Estorno> GetAllOperacoesPorContaParaEstorno(string conta, string senha, int agencia)
+        {
+            conn.ExecuteProcedure(Procedure.PBSP_GETOPREALIZADASPORCONTA);
+            conn.AddParameter("@conta",conta);
+            conn.AddParameter("@senha", senha);
+            conn.AddParameter("@agencia", agencia);
+            result = conn.ExecuteReader();
+
+            while (result.Read())
+            {
+                OpsEstorno.Add( new Estorno
+                {
+                    Id = Convert.ToInt32(result["Id"].ToString()),
+                    opId = Convert.ToInt32(result["operacaoId"].ToString()),
+                    dataOp = Convert.ToDateTime(result["dataOp"].ToString()),
+                    valorOp = Convert.ToDecimal(result["valorOp"].ToString()),
+                    saldoAnterior = Convert.ToDecimal(result["saldoAnterior"].ToString()),
+                    descricao = result["descricao"].ToString(),
+                    agencia = Convert.ToInt32(result["agencia"].ToString()),
+                    conta = result["num"].ToString(),
+                    cliente =result["nome"].ToString()
+                });
+            }
+            return OpsEstorno;
+        }
+
+        public void ConfirmEstorno(int id)
+        {
+            conn.ExecuteProcedure(Procedure.PBSP_ESTORNA);
+            conn.AddParameter("@id",id);
+            conn.AddParameter("@opId", 104);
+            conn.ExecuteNonQuery();
+        }
+
         public void Dispose()
         {
             throw new NotImplementedException();
@@ -81,6 +120,29 @@ namespace ProjetoBanco.Infra.Data.Repositories
             conn.AddParameter("@valorOp", operacaoRealizada.valorOp);
 
             return conn.ExecuteNonQueryWithReturn();
+        }
+
+        public IEnumerable<Estorno> GetAllOperacoesEstorno()
+        {
+            conn.ExecuteProcedure(Procedure.PBSP_GETALLOPERACOESESTORNO);
+            result = conn.ExecuteReader();
+
+            while (result.Read())
+            {
+                OpsEstorno.Add(new Estorno
+                {
+                    Id = Convert.ToInt32(result["Id"].ToString()),
+                    opId = Convert.ToInt32(result["operacaoId"].ToString()),
+                    dataOp = Convert.ToDateTime(result["dataOp"].ToString()),
+                    valorOp = Convert.ToDecimal(result["valorOp"].ToString()),
+                    saldoAnterior = Convert.ToDecimal(result["saldoAnterior"].ToString()),
+                    descricao = result["descricao"].ToString(),
+                    agencia = Convert.ToInt32(result["agencia"].ToString()),
+                    conta = result["num"].ToString(),
+                    cliente = result["nome"].ToString()
+                });
+            }
+            return OpsEstorno;
         }
     }
 }

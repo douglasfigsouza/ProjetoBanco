@@ -185,6 +185,7 @@
     <Compile Include="ViewModels\CombosContaViewModel.cs" />
     <Compile Include="ViewModels\ContaClienteViewModel.cs" />
     <Compile Include="ViewModels\ContaViewModel.cs" />
+    <Compile Include="ViewModels\EstornoViewModel.cs" />
     <Compile Include="ViewModels\OperacaoViewModel.cs" />
     <Compile Include="ViewModels\OperacoesRealizadasViewModel.cs" />
     <Compile Include="ViewModels\TransacaoViewModel.cs" />
@@ -260,6 +261,9 @@
     <Content Include="Views\Clientes\CreateCliente.cshtml" />
     <Content Include="Views\Clientes\EditCliente.cshtml" />
     <Content Include="Views\Usuarios\EditUsuario.cshtml" />
+    <Content Include="Views\Operacoes\Estorno.cshtml" />
+    <Content Include="Views\Operacoes\OpRealizadasEstorno.cshtml" />
+    <Content Include="Views\Operacoes\ContaEstorno.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

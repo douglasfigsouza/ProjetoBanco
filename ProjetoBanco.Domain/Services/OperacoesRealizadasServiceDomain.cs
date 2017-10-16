@@ -1,6 +1,7 @@
 ﻿
 
 using System;
+using System.Collections.Generic;
 using ProjetoBanco.Domain.Entities;
 using ProjetoBanco.Domain.Interfaces.IRepositories;
 using ProjetoBanco.Domain.Interfaces.IServices;
@@ -32,6 +33,11 @@ namespace ProjetoBanco.Domain.Services
             }
         }
 
+        public void ConfirmEstorno(int id)
+        {
+            _operacoesRealizadasRepositoryDomain.ConfirmEstorno(id);
+        }
+
         public void Dispose()
         {
             _operacoesRealizadasRepositoryDomain.Dispose();
@@ -40,6 +46,16 @@ namespace ProjetoBanco.Domain.Services
         public int Transferencia(OperacaoRealizada opConta1, OperacaoRealizada opConta2)
         {
            return  _operacoesRealizadasRepositoryDomain.Transferencia(opConta1, opConta2);
+        }
+
+        public IEnumerable<Estorno> GetAllOperacoesEstorno()
+        {
+            return _operacoesRealizadasRepositoryDomain.GetAllOperacoesEstorno();
+        }
+
+        public IEnumerable<Estorno> GetAllOperacoesPorContaParaEstorno(string conta, string senha, int agencia)
+        {
+            return _operacoesRealizadasRepositoryDomain.GetAllOperacoesPorContaParaEstorno(conta, senha, agencia);
         }
     }
 }
