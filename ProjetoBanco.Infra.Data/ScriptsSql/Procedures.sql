@@ -916,11 +916,11 @@ CREATE PROCEDURE [dbo].[PBSP_ESTORNA]
 	END
 GO
 
-IF EXISTS (SELECT * FROM dbo.sysobjects WHERE id = object_id(N'[dbo].[PBSP_GETCONTACLIENTE]') AND objectproperty(id, N'IsPROCEDURE')=1)
-	DROP PROCEDURE [dbo].[PBSP_GETCONTACLIENTE]
+IF EXISTS (SELECT * FROM dbo.sysobjects WHERE id = object_id(N'[dbo].[PBSP_GETCONTA]') AND objectproperty(id, N'IsPROCEDURE')=1)
+	DROP PROCEDURE [dbo].[PBSP_GETCONTA]
 GO
 
-CREATE PROCEDURE [dbo].[PBSP_GETCONTACLIENTE]
+CREATE PROCEDURE [dbo].[PBSP_GETCONTA]
 	@agencia INT,
 	@conta VARCHAR(20),
 	@senha VARCHAR(20)
@@ -928,7 +928,7 @@ CREATE PROCEDURE [dbo].[PBSP_GETCONTACLIENTE]
 	/*
 	Documentação
 	Arquivo Fonte.....: ArquivoFonte.sql
-	Objetivo..........: Retorna Conta com os dados do cliente para alteração 
+	Objetivo..........: Retorna a conta especifica
 	Autor.............: SMN - Douglas
  	Data..............: 16/10/2017
 	Ex................: EXEC [dbo].[PBSP_GETCONTACLIENTE]
@@ -936,7 +936,7 @@ CREATE PROCEDURE [dbo].[PBSP_GETCONTACLIENTE]
 	*/
 
 	BEGIN
-		SELECT  cli.Id,cli.nome, conta.num, conta.senha FROM ContaCliente AS contaCli WITH(NOLOCK)
+		SELECT  cli.nome,conta.num,conta.Id, conta.senha, conta.ativo FROM ContaCliente AS contaCli WITH(NOLOCK)
 		INNER JOIN Clientes AS cli	WITH(NOLOCK) ON contaCli.clienteId = cli.Id
 		INNER JOIN Conta AS conta WITH(NOLOCK) ON contaCli.contaId = conta.Id
 		INNER JOIN Agencia AS ag WITH(NOLOCK) ON contaCli.agencia = ag.agencia

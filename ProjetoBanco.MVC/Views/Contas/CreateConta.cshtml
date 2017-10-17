@@ -5,8 +5,9 @@
 
 <h5>Cadastro de Conta</h5>
 <div class="row">
-    <div class="col s6">
-        <hr>
+    <hr>
+    <div class="col s6 border-right">
+
         @using (Html.BeginForm())
         {
             @Html.AntiForgeryToken()
@@ -15,22 +16,22 @@
                 <div class="row">
                     <div class="col s6">
                         <label class="col s12" for="ddlAgencias">Agência</label>
-                        @Html.DropDownList("ddlAgencias", new SelectList(@Model.Agencias, "agencia", "agencia"), "Selecione", new { @class = "col s10" })
+                        @Html.DropDownList("ddlAgencias", new SelectList(@Model.Agencias, "agencia", "agencia"), "Selecione", new {@class = "col s10"})
                     </div>
                     <div class="col s6">
                         <label class="col s12" for="num">N° Conta</label>
-                        <input type="text" class="col s12" id="num" name="num" />
+                        <input type="text" class="col s12" id="num" name="num"/>
                     </div>
                 </div>
 
                 <div class="row">
                     <div class="col s6">
                         <label class="col s12" for="senha">Senha</label>
-                        <input type="password" class="col s12" id="senha" name="senha" />
+                        <input type="password" class="col s12" id="senha" name="senha"/>
                     </div>
                     <div class="col s6">
                         <label class="col s12" for="conf_senha">Confirme sua Senha</label>
-                        <input type="password" class="col s12" id="conf_senha" name="conf_senha" />
+                        <input type="password" class="col s12" id="conf_senha" name="conf_senha"/>
                     </div>
                 </div>
 
@@ -42,7 +43,7 @@
                             <label for="corrente" class="col s5">C. Corrente</label>
                         </p>
                         <p>
-                            <input class="with-gap col s1" name="tipoConta" value="p" type="radio" id="poupanca" />
+                            <input class="with-gap col s1" name="tipoConta" value="p" type="radio" id="poupanca"/>
                             <label for="poupanca" class="col s5">C. Poupança</label>
                         </p>
                     </div>
@@ -60,7 +61,7 @@
                     </div>
                 </div>
 
-               
+
                 <!-- Modal Structure -->
                 <div id="modalCientesConta" class="modal">
                     <div class="modal-content">
@@ -68,16 +69,16 @@
                             <div class="col s12">
                                 <table id="clientesConta" class="striped responsive-table centered" cellspacing="0" width="100%">
                                     <thead>
-                                        <tr>
-                                            <th>Nome</th>
-                                            <th>CPF</th>
-                                            <th>RG</th>
-                                            <th>Fone</th>
-                                            <th>Bairro</th>
-                                            <th>Rua</th>
-                                            <th>Num</th>
-                                            <th>Incluir</th>
-                                        </tr>
+                                    <tr>
+                                        <th>Nome</th>
+                                        <th>CPF</th>
+                                        <th>RG</th>
+                                        <th>Fone</th>
+                                        <th>Bairro</th>
+                                        <th>Rua</th>
+                                        <th>Num</th>
+                                        <th>Incluir</th>
+                                    </tr>
                                     </thead>
                                     <tbody id="tbdClientesConta">
                                     </tbody>
@@ -87,32 +88,35 @@
                     </div>
                 </div>
 
-                <div class="row" id="clientesSelecionados">
-                    <div class="col s12">
-                        <table class="striped responsive-table centered">
-                            <thead>
-                            <tr>
-                                <th>Nome</th>
-                                <th>CPF</th>
-                                <th>Remover</th>
-                            </tr>
-                            </thead>
-                            <tbody id="clientesSelecionadosConta">
-                            
-                            </tbody>
-                        </table>
-                    </div>
-                </div>
 
-                <div class="row">
-                    <button class="btn waves-effect waves-light right" type="submit" name="action">
-                        Cadastrar
-                        <i class="material-icons right">send</i>
-                    </button>
-                </div>
             }
         }
     </div>
+    <div class="col s6">
+        <div class="row" id="clientesSelecionados">
+            <div class="col s12">
+                <table class="striped responsive-table centered">
+                    <thead>
+                    <tr>
+                        <th>Nome</th>
+                        <th>CPF</th>
+                        <th>Remover</th>
+                    </tr>
+                    </thead>
+                    <tbody id="clientesSelecionadosConta">
+
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+    </div>
+</div>
+<div class="row">
+    <button class="btn waves-effect waves-light right" type="submit" name="action">
+        Cadastrar
+        <i class="material-icons right">send</i>
+    </button>
 </div>
 <script>
     $(document).ready(function () {

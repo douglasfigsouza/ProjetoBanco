@@ -1,45 +1,48 @@
 ﻿@model ProjetoBanco.MVC.ViewModels.TransacaoViewModel
-<div class="row">
-    <div class="col s12">
-        <h5>Saque</h5>
-        <hr />
-    </div>
-    <div class="col s6">
-        @using (Html.BeginForm("VerificaDados", "Operacoes"))
-        {
-            <input type="hidden" name="op" value="2"/>
-            @Html.ValidationSummary(true)
-            {
-                <div class="row">
-                    <div class="col s6">
-                        <label for="agencia" class="col s12">Agência</label>
-                        @Html.EditorFor(t => t.agencia, new { @class = "col s12" })
-                    </div>
-                    <div class="col s6">
-                        <label for="conta" class="col s12">Conta</label>
-                        @Html.EditorFor(t => t.conta, new { @class = "col s12" })
-                    </div>
-                </div>
-                <div class="row">
-                    <div class="col s6">
-                        <label for="valor" class="col s12">Valor</label>
-                        @Html.EditorFor(t => t.valor, new { @class = "col s12" })
-                    </div>
-                    <div class="col s6">
-                        <label for="senhaCli" class="col s12">Senha</label>
-                        @Html.TextBoxFor(t => t.senhaCli, new { @class = "col s12",@type="password" })
-                    </div>
-                </div>
-                <div class="row">
-                    <div class="col s6">
-                        <button class="btn waves-effect waves-light" type="submit" name="Saca">
-                            Sacar
-                            <i class="material-icons right">send</i>
-                        </button>
-                    </div>
-                </div>
-            }
-        }
-    </div>
-</div>
+<div class="col s12">
+    <div class="row">
+        <div class="col s12">
+            <h5>Saque</h5>
 
+        </div>
+        <div class="col s6">
+            <hr />
+            @using (Html.BeginForm("VerificaDados", "Operacoes"))
+            {
+                <input type="hidden" name="op" value="2"/>
+                @Html.ValidationSummary(true)
+                {
+                    <div class="row">
+                        <div class="col s6">
+                            <label for="agencia" class="col s12">Agência</label>
+                            @Html.EditorFor(t => t.agencia, new {@class = "col s12"})
+                        </div>
+                        <div class="col s6">
+                            <label for="conta" class="col s12">Conta</label>
+                            @Html.EditorFor(t => t.conta, new {@class = "col s12"})
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col s6">
+                            <label for="valor" class="col s12">Valor</label>
+                            @Html.EditorFor(t => t.valor, new {@class = "col s12"})
+                        </div>
+                        <div class="col s6">
+                            <label for="senhaCli" class="col s12">Senha</label>
+                            @Html.TextBoxFor(t => t.senhaCli, new {@class = "col s12", @type = "password"})
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col s6">
+                            <button class="btn waves-effect waves-light" type="submit" name="Saca">
+                                Sacar
+                                <i class="material-icons right">send</i>
+                            </button>
+                        </div>
+                    </div>
+                }
+            }
+        </div>
+    </div>
+
+</div>

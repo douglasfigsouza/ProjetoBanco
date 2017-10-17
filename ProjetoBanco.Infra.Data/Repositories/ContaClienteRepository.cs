@@ -7,7 +7,7 @@ using ProjetoBanco.Domain.Interfaces.IRepositories;
 
 namespace ProjetoBanco.Infra.Data.Repositories
 {
-    public class ContaClienteRepository:IContaClienteRepositoryDomain
+    public class ContaClienteRepository : IContaClienteRepositoryDomain
     {
         private Conexao conn;
         private SqlDataReader result;
@@ -18,7 +18,7 @@ namespace ProjetoBanco.Infra.Data.Repositories
         {
             PBSP_INSERTCONTA,
             PBSP_INSERTCONTACLIENTE,
-            PBSP_GETCONTACLIENTE
+            PBSP_GETCONTA
         }
 
         public ContaClienteRepository()
@@ -58,12 +58,12 @@ namespace ProjetoBanco.Infra.Data.Repositories
             throw new NotImplementedException();
         }
 
-        public ContaClienteAlteracao GetContaCliente(string conta, int agencia, string senha)
+        public ContaClienteAlteracao GetConta(string conta, int agencia, string senha)
         {
             try
             {
-                conn.ExecuteProcedure(Procedure.PBSP_GETCONTACLIENTE);
-                conn.AddParameter("@conta",conta);
+                conn.ExecuteProcedure(Procedure.PBSP_GETCONTA);
+                conn.AddParameter("@conta", conta);
                 conn.AddParameter("@senha", senha);
                 conn.AddParameter("@agencia", agencia);
                 result = conn.ExecuteReader();
@@ -73,10 +73,9 @@ namespace ProjetoBanco.Infra.Data.Repositories
                     contaClienteAlteracao.senha = result["senha"].ToString();
                     contaClienteAlteracao.Clientes.Add(new Cliente
                     {
-                        Id = int.Parse(result["Id"].ToString()),
                         nome = result["nome"].ToString()
                     });
-                        
+                    contaClienteAlteracao.ativo = bool.Parse(result["ativo"].ToString());
                 }
                 return contaClienteAlteracao;
             }

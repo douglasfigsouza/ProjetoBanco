@@ -17,8 +17,25 @@
     margin-top:-50px;
     margin-left:-50px;
 }
-.Operacoes {
-    border: solid 5px #000000;
-    margin-top: 5px;
-    padding: 20px;
+.page-footer {
+    width: 80%;
+    position: fixed;
+    bottom: 0;
+    
 }
+.margim-top {
+    padding: 20px;
+    margin-top: 2%;
+    box-shadow:5px 5px 5px 5px #000000;
+    border-radius: 5px;
+}
+.border-right {
+    border-right:1px dashed #000000;
+}
+
+/*.fixed {
+    position: fixed;
+    top: 0;
+    width: 80%;
+    transition: 3s;
+}*/

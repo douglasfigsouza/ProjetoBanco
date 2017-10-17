@@ -65,6 +65,7 @@ CREATE TABLE ContaCliente
 	contaId[SMALLINT] NOT NULL,
 	agenciaId[SMALLINT] NOT NULL,
 	bancoId[SMALLINT] NOT NULL,
+	ativo[BIT],
 	CONSTRAINT FK_Cliente_ContaCliente FOREIGN KEY(clienteId) REFERENCES Clientes,
 	CONSTRAINT FK_Conta_ContaCliente FOREIGN KEY(contaId)REFERENCES Conta,
 	CONSTRAINT FK_Agencia_ContaCliente FOREIGN KEY(agenciaId,bancoId) REFERENCES Agencia,

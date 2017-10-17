@@ -73,28 +73,28 @@ namespace ProjetoBanco.MVC.Controllers
             return View();
         }
 
-        public ActionResult EditContaCliente()
+        public ActionResult EditConta()
         {
             return View("ContaEdit");
         }
 
-        [HttpPost]
-        public ActionResult UpdateContaCliente(List<int> clientes)
-        {
-            if (clientes != null)
-            {
-                return RedirectToAction("Index", "Success");
-            }
-            else
-            {
-                return View("ContaEdit");
-            }
-        }
+        //[HttpPost]
+        //public ActionResult UpdateConta()
+        //{
+        //    if (clientes != null)
+        //    {
+        //        return RedirectToAction("Index", "Success");
+        //    }
+        //    else
+        //    {
+        //        return View("ContaEdit");
+        //    }
+        //}
 
         [HttpGet]
-        public JsonResult GetContaCliente(string conta, int agencia, string senha)
+        public JsonResult GetConta(string conta, int agencia, string senha)
         {
-            return Json(_contaClienteAppService.GetContaCliente(conta, agencia, senha), JsonRequestBehavior.AllowGet);
+            return Json(_contaClienteAppService.GetConta(conta, agencia, senha), JsonRequestBehavior.AllowGet);
         }
     }
 }

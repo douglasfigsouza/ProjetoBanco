@@ -22,9 +22,9 @@ namespace ProjetoBanco.Application
            _contaClienteRepositoryDomain.AddContaCliente(conta,contaClientes);
         }
 
-        public ContaClienteAlteracao GetContaCliente(string conta, int agencia, string senha)
+        public ContaClienteAlteracao GetConta(string conta, int agencia, string senha)
         {
-            return _contaClienteRepositoryDomain.GetContaCliente(conta,  agencia, senha);
+            return _contaClienteRepositoryDomain.GetConta(conta,  agencia, senha);
         }
 
         public void Dispose()

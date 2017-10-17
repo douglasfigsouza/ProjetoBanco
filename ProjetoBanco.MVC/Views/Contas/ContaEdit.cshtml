@@ -19,56 +19,52 @@
             </div>
         </div>
         <div class="row">
-            <button class="btn waves-effect waves-light" type="button" id="getContaCliente">
+            <button class="btn waves-effect waves-light" type="button" id="getConta">
                 Buscar
                 <i class="material-icons right">send</i>
             </button>
         </div>
     </div>
 </div>
-<div class="row" id="formDadosContaCliente">
-    <div class="row">
-        <div class="col s8">
-            <h5 id="contaCli"></h5>
-            <hr />
+<div class="row">
+    <div class="col s8">
+        <h5 id="contaCli"></h5>
+        <hr />
+        <div class="row" id="divDadosDaConta">
             <div class="row">
-                <table class="responsive-table striped bordered">
-                    <thead>
-                        <tr>
-                            <th>Cliente</th>
-                            <th>Remover</th>
-                        </tr>
-                    </thead>
-                    <tbody id="tbdClientesConta"></tbody>
-                </table>
+                <div class="col s12">
+                    <label>Clientes</label>
+                    <label id="nomeCli" class="col s12"></label>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col s6">
+                    <label class="col s12">Senha</label>
+                    <input type="password" class="col s12" name="senha"/>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col s6">
+                    <label class="col s12">Confirme a Senha</label>
+                    <input type="password" class="col s12" name="confSenha"/>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col s3 ">
+                    <input type="checkbox" id="ativo" name="ativo" checked/>
+                    <label for="ativo">Ativo</label>
+                </div>
             </div>
         </div>
-    </div>
-    <div class="row">
-        <form>
-            <div class="col s6">
-                <label for="cpfCli" class="col s12">Adicionar Clientes</label>
-                <input type="text" placeholder="Digite o CPF" class="col s8" id="cpfCli" />
-                <button class="btn-floating btn-large waves-effect waves-light blue" type="button" id="addCliente">
-                    <i class="material-icons">add</i>
-                </button>
-            </div>
-
-        </form>
-    </div>
-    <div class="row">
-        <button class="btn waves-effect waves-light" type="button" id="atualizaConta" name="AtualizarConta">Atualizar Conta
-            <i class="material-icons right">send</i>
-        </button>
     </div>
 </div>
 <script>
     $(document).ready(function () {
         $("#formDadosContaCliente").hide();
-        $("#getContaCliente").click(function () {
+        $("#getConta").click(function () {
             $.ajax({
                 type: "GET",
-                url: "/Contas/GetContaCliente",
+                url: "/Contas/GetConta",
                 dataType: "Json",
                 data: {
                     conta: $("#conta").val(),
@@ -76,15 +72,10 @@
                     agencia: $("#agencia").val()
                 },
                 success: function (dados) {
+                    debugger;
                     $("#contaCli").text("Conta: " + dados.conta);
                     for (var i = 0; i < dados.Clientes.length; i++) {
-                        $("#tbdClientesConta").append("<tr id=" + dados.Clientes[i].Id + "><td>" + dados.Clientes[i].nome + "</td>" +
-                            "<td>  " +
-                            "<button class='btn-floating btn-large waves-effect waves-light red removeCliente'type='button'>" +
-                                "<i class='material-icons'>remove_circle_outline</i>" +
-                            "</button>" +
-                            "</td>" +
-                            "</tr>");
+                        $("#nomeCli").text(dados.Clientes[i].nome + "/" + $("#nomeCli").text());
                     }
                     $("#dadosContaCliente").hide();
                     $("#formDadosContaCliente").show();
@@ -151,11 +142,11 @@
                 type: "POST",
                 url: "/Contas/UpdateContaCliente",
                 data: {
-                    clientes:clientes
+                    clientes: clientes
                 },
                 dataType: "Json",
-                success:function() {
-                    
+                success: function () {
+
                 }
             });
         });

@@ -1,4 +1,5 @@
 ﻿@model ProjetoBanco.MVC.ViewModels.TransacaoViewModel
+<div class="col s12 ">
     @using (Html.BeginForm("ConsultaSaldo", "Operacoes"))
     {
         @Html.ValidationSummary(true)
@@ -33,3 +34,4 @@
         }
     }
 
+</div>

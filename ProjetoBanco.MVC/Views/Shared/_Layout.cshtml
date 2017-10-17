@@ -17,7 +17,7 @@
             @if (Session["nivel"].ToString() == "f")
             {
                 <li>@Html.ActionLink("Clientes", "EditCliente", "Clientes")</li>
-                <li>@Html.ActionLink("Conta", "EditContaCliente", "Contas")</li>
+                <li>@Html.ActionLink("Conta", "EditConta", "Contas")</li>
                 <li>@Html.ActionLink("Estorno", "DadosParaEstorno", "Operacoes")</li>
                 <li>@Html.ActionLink("Usuários", "EditUsuario", "Usuarios")</li>
 
@@ -40,9 +40,8 @@
             <li>@Html.ActionLink("Saque", "Saque", "Operacoes")</li>
             <li>@Html.ActionLink("Transferência", "Transferencia", "Operacoes")</li>
         </ul>
-        <nav>
+        <nav class="fixed" id="menu">
             <div class="nav-wrapper">
-                <a href="#!" class="brand-logo">Logo</a>
                 <a href="#" data-activates="mobile-demo" class="button-collapse"><i class="material-icons">menu</i></a>
                 <ul class="right hide-on-med-and-down">
                     <li><a class="dropdown-button" href="#!" data-activates="alteracoes">Alteracões<i class="material-icons right">arrow_drop_down</i></a></li>
@@ -58,10 +57,18 @@
             </div>
         </nav>
     </header>
-    <div class="container">
+    <div class="container margim-top">
         @RenderBody()
-        <footer></footer>
+
     </div>
+    <footer class="page-footer black">
+       
+        <div class="footer-copyright">
+            <div class="container">
+                © 2014 Copyright SisBank
+            </div>
+        </div>
+    </footer>
 
     @Scripts.Render("~/bundles/bootstrap")
     @RenderSection("scripts", required: false)
