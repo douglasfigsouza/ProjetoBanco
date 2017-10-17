@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Data.SqlClient;
 using System.Linq;
+using System.Runtime.InteropServices.WindowsRuntime;
 using System.Text;
 using System.Threading.Tasks;
 using ProjetoBanco.Domain.Entities;
@@ -9,7 +10,7 @@ using ProjetoBanco.Domain.Interfaces.IRepositories;
 
 namespace ProjetoBanco.Infra.Data.Repositories
 {
-    public class ClientesRepository:IClienteRepositoryDomain
+    public class ClientesRepository : IClienteRepositoryDomain
     {
         Conexao conn = new Conexao();
         private SqlDataReader result;
@@ -26,7 +27,8 @@ namespace ProjetoBanco.Infra.Data.Repositories
             PBSP_INSERTCLIENTE,
             PBSP_GETALLCLIENTES,
             PBSP_GETCLIENTEBYID,
-            PBSP_UPDATECLIENTE
+            PBSP_UPDATECLIENTE,
+            PBSP_GETCLIENTEBYCPF
         }
 
         public void AddCliente(Cliente cliente)
@@ -50,7 +52,7 @@ namespace ProjetoBanco.Infra.Data.Repositories
         public Cliente GetByClienteId(int id)
         {
             conn.ExecuteProcedure(Procedures.PBSP_GETCLIENTEBYID);
-            conn.AddParameter("@id",id);
+            conn.AddParameter("@id", id);
             result = conn.ExecuteReader();
             while (result.Read())
             {
@@ -68,7 +70,7 @@ namespace ProjetoBanco.Infra.Data.Repositories
                     dataCadastro = Convert.ToDateTime(result["dataCadastro"].ToString()),
                     ativo = Convert.ToBoolean(result["ativo"].ToString()),
                     cidadeId = Convert.ToInt32(result["CidadeId"].ToString()),
-                    estadoId= Convert.ToInt32(result["EstadoId"].ToString())
+                    estadoId = Convert.ToInt32(result["EstadoId"].ToString())
                 };
             }
             return cliente;
@@ -77,7 +79,7 @@ namespace ProjetoBanco.Infra.Data.Repositories
         public IEnumerable<Cliente> GetAllClientes(int op)
         {
             conn.ExecuteProcedure(Procedures.PBSP_GETALLCLIENTES);
-            conn.AddParameter("@op",op);
+            conn.AddParameter("@op", op);
             result = conn.ExecuteReader();
             while (result.Read())
             {
@@ -101,7 +103,7 @@ namespace ProjetoBanco.Infra.Data.Repositories
         public void UpdateClientes(Cliente cliente)
         {
             conn.ExecuteProcedure(Procedures.PBSP_UPDATECLIENTE);
-            conn.AddParameter("@id",cliente.Id);
+            conn.AddParameter("@id", cliente.Id);
             conn.AddParameter("@cidadeId", cliente.cidadeId);
             conn.AddParameter("@nome", cliente.nome);
             conn.AddParameter("@cpf", cliente.cpf);
@@ -123,6 +125,22 @@ namespace ProjetoBanco.Infra.Data.Repositories
         public void Dispose()
         {
             throw new NotImplementedException();
+        }
+
+        public Cliente GetClienteByCpf(string cpf)
+        {
+            conn.ExecuteProcedure(Procedures.PBSP_GETCLIENTEBYCPF);
+            conn.AddParameter("@cpf", cpf);
+            result = conn.ExecuteReader();
+            while (result.Read())
+            {
+                cliente = new Cliente
+                {
+                    Id = int.Parse(result["Id"].ToString()),
+                    nome = result["nome"].ToString()
+                };
+            }
+            return cliente;
         }
     }
 }

@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.Collections.Generic;
 using ProjetoBanco.Domain.Entities;
 
 namespace ProjetoBanco.Application.Interfaces
@@ -10,7 +6,7 @@ namespace ProjetoBanco.Application.Interfaces
     public interface IContaClienteAppService
     {
         void AddContaCliente(Conta conta, List<ContaCliente> contaCliente);
-        ContaClienteAlteracao GetContaClienteById(string conta, int agencia, string senha);
+        ContaClienteAlteracao GetContaCliente(string conta, int agencia, string senha);
         void Dispose();
     }
 }

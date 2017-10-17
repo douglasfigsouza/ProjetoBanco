@@ -17,6 +17,7 @@
             @if (Session["nivel"].ToString() == "f")
             {
                 <li>@Html.ActionLink("Clientes", "EditCliente", "Clientes")</li>
+                <li>@Html.ActionLink("Conta", "EditContaCliente", "Contas")</li>
                 <li>@Html.ActionLink("Estorno", "DadosParaEstorno", "Operacoes")</li>
                 <li>@Html.ActionLink("Usuários", "EditUsuario", "Usuarios")</li>
 

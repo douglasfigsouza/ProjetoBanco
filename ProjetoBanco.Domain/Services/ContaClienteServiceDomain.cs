@@ -27,9 +27,9 @@ namespace ProjetoBanco.Domain.Services
             _contaRepositoryDomain.Dispose();
         }
 
-        public ContaClienteAlteracao GetContaClienteById(string conta, int agencia, string senha)
+        public ContaClienteAlteracao GetContaCliente(string conta, int agencia, string senha)
         {
-            return _contaRepositoryDomain.GetContaClienteById(conta,agencia,senha);
+            return _contaRepositoryDomain.GetContaCliente(conta,agencia,senha);
         }
     }
 }

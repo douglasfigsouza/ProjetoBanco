@@ -8,6 +8,7 @@ namespace ProjetoBanco.Application.Interfaces
         void AddCliente(Cliente cliente);
         Cliente GetByClienteId(int id);
         IEnumerable<Cliente> GetAllClientes(int op);
+        Cliente GetClienteByCpf(string cpf);
         void UpdateCliente(Cliente cliente);
         void RemoveCliente(Cliente cliente);
         void Dispose();

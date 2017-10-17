@@ -46,5 +46,10 @@ namespace ProjetoBanco.Domain.Services
         {
             _repository.Dispose();
         }
+
+        public Cliente GetClienteByCpf(string cpf)
+        {
+            return _repository.GetClienteByCpf(cpf);
+        }
     }
 }

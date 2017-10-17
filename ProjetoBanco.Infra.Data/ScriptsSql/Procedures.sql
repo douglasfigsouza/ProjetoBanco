@@ -916,11 +916,11 @@ CREATE PROCEDURE [dbo].[PBSP_ESTORNA]
 	END
 GO
 
-IF EXISTS (SELECT * FROM dbo.sysobjects WHERE id = object_id(N'[dbo].[PBSP_GETCONTACLIENTEBYID]') AND objectproperty(id, N'IsPROCEDURE')=1)
-	DROP PROCEDURE [dbo].[PBSP_GETCONTACLIENTEBYID]
+IF EXISTS (SELECT * FROM dbo.sysobjects WHERE id = object_id(N'[dbo].[PBSP_GETCONTACLIENTE]') AND objectproperty(id, N'IsPROCEDURE')=1)
+	DROP PROCEDURE [dbo].[PBSP_GETCONTACLIENTE]
 GO
 
-CREATE PROCEDURE [dbo].[PBSP_GETCONTACLIENTEBYID]
+CREATE PROCEDURE [dbo].[PBSP_GETCONTACLIENTE]
 	@agencia INT,
 	@conta VARCHAR(20),
 	@senha VARCHAR(20)
@@ -931,18 +931,44 @@ CREATE PROCEDURE [dbo].[PBSP_GETCONTACLIENTEBYID]
 	Objetivo..........: Retorna Conta com os dados do cliente para alteração 
 	Autor.............: SMN - Douglas
  	Data..............: 16/10/2017
-	Ex................: EXEC [dbo].[PBSP_GETCONTACLIENTEBYID]
+	Ex................: EXEC [dbo].[PBSP_GETCONTACLIENTE]
 
 	*/
 
 	BEGIN
-		SELECT  cli.nome, conta.num, conta.senha FROM ContaCliente AS contaCli WITH(NOLOCK)
+		SELECT  cli.Id,cli.nome, conta.num, conta.senha FROM ContaCliente AS contaCli WITH(NOLOCK)
 		INNER JOIN Clientes AS cli	WITH(NOLOCK) ON contaCli.clienteId = cli.Id
 		INNER JOIN Conta AS conta WITH(NOLOCK) ON contaCli.contaId = conta.Id
 		INNER JOIN Agencia AS ag WITH(NOLOCK) ON contaCli.agencia = ag.agencia
-		WHERE conta.Id = @conta AND conta.senha = @senha AND ag.agencia = @agencia
+		WHERE conta.num = @conta AND conta.senha = @senha AND ag.agencia = @agencia
 	END
 GO
+
+IF EXISTS (SELECT * FROM dbo.sysobjects WHERE id = object_id(N'[dbo].[PBSP_GETCLIENTEBYCPF]') AND objectproperty(id, N'IsPROCEDURE')=1)
+	DROP PROCEDURE [dbo].[PBSP_GETCLIENTEBYCPF]
+GO
+
+CREATE PROCEDURE [dbo].[PBSP_GETCLIENTEBYCPF]
+	@cpf VARCHAR(20)
+	AS
+
+	/*
+	Documentação
+	Arquivo Fonte.....: ArquivoFonte.sql
+	Objetivo..........: Obtem o cliente pelo cpf
+	Autor.............: SMN - Douglas
+ 	Data..............: 17/10/2017
+	Ex................: EXEC [dbo].[PBSP_GETCLIENTEBYCPF]
+
+	*/
+
+	BEGIN
+	
+		SELECT cli.Id,cli.nome FROM Clientes AS cli WITH(NOLOCK)
+			WHERE cli.cpf = @cpf AND cli.ativo=1
+	END
+GO
+				
 								
 																		
 --Funções

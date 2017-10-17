@@ -33,6 +33,11 @@ namespace ProjetoBanco.Application
             return _iClienteService.GetAllClientes(op);
         }
 
+        public Cliente GetClienteByCpf(string cpf)
+        {
+            return _clienteRepositoryDomain.GetClienteByCpf(cpf);
+        }
+
         public void UpdateCliente(Cliente cliente)
         {
             _clienteRepositoryDomain.UpdateClientes(cliente);

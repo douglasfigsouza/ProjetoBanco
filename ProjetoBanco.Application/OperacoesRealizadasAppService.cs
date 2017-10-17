@@ -87,5 +87,6 @@ namespace ProjetoBanco.Application
         {
             return _operacoesRealizadasRepositoryDomain.GetAllOperacoesPorContaParaEstorno(conta, senha,agencia);
         }
+
     }
 }

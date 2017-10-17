@@ -1,31 +1,163 @@
-﻿<div class="row">
+﻿<div class="row" id="dadosContaCliente">
     <div class="col s6">
-        @using (Html.BeginForm("Co", "Contas"))
-        {
-            <div class="row">
-                <h5>Digite os Dados</h5>
-                <hr />
+        <div class="row">
+            <h5>Digite os Dados</h5>
+            <hr />
+        </div>
+        <div class="row">
+            <div class="col s4">
+                <label class="col s12">Conta</label>
+                <input type="text" class="col s12" name="conta" id="conta">
             </div>
-            <div class="row">
-                <div class="col s4">
-                    <label class="col s12">Conta</label>
-                    <input type="text" class="col s12" name="conta">
-                </div>
-                <div class="col s4">
-                    <label class="col s12">Agência</label>
-                    <input type="text" class="col s12" name="agencia">
-                </div>
-                <div class="col s4">
-                    <label class="col s12">Senha</label>
-                    <input type="text" class="col s12" name="senha">
-                </div>
+            <div class="col s4">
+                <label class="col s12">Agência</label>
+                <input type="text" class="col s12" name="agencia" id="agencia">
             </div>
-            <div class="row">
-                <button class="btn waves-effect waves-light" type="submit">
-                    Estornar
-                    <i class="material-icons right">send</i>
-                </button>
+            <div class="col s4">
+                <label class="col s12">Senha</label>
+                <input type="text" class="col s12" name="senha" id="senha">
             </div>
-        }
+        </div>
+        <div class="row">
+            <button class="btn waves-effect waves-light" type="button" id="getContaCliente">
+                Buscar
+                <i class="material-icons right">send</i>
+            </button>
+        </div>
     </div>
 </div>
+<div class="row" id="formDadosContaCliente">
+    <div class="row">
+        <div class="col s8">
+            <h5 id="contaCli"></h5>
+            <hr />
+            <div class="row">
+                <table class="responsive-table striped bordered">
+                    <thead>
+                        <tr>
+                            <th>Cliente</th>
+                            <th>Remover</th>
+                        </tr>
+                    </thead>
+                    <tbody id="tbdClientesConta"></tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <form>
+            <div class="col s6">
+                <label for="cpfCli" class="col s12">Adicionar Clientes</label>
+                <input type="text" placeholder="Digite o CPF" class="col s8" id="cpfCli" />
+                <button class="btn-floating btn-large waves-effect waves-light blue" type="button" id="addCliente">
+                    <i class="material-icons">add</i>
+                </button>
+            </div>
+
+        </form>
+    </div>
+    <div class="row">
+        <button class="btn waves-effect waves-light" type="button" id="atualizaConta" name="AtualizarConta">Atualizar Conta
+            <i class="material-icons right">send</i>
+        </button>
+    </div>
+</div>
+<script>
+    $(document).ready(function () {
+        $("#formDadosContaCliente").hide();
+        $("#getContaCliente").click(function () {
+            $.ajax({
+                type: "GET",
+                url: "/Contas/GetContaCliente",
+                dataType: "Json",
+                data: {
+                    conta: $("#conta").val(),
+                    senha: $("#senha").val(),
+                    agencia: $("#agencia").val()
+                },
+                success: function (dados) {
+                    $("#contaCli").text("Conta: " + dados.conta);
+                    for (var i = 0; i < dados.Clientes.length; i++) {
+                        $("#tbdClientesConta").append("<tr id=" + dados.Clientes[i].Id + "><td>" + dados.Clientes[i].nome + "</td>" +
+                            "<td>  " +
+                            "<button class='btn-floating btn-large waves-effect waves-light red removeCliente'type='button'>" +
+                                "<i class='material-icons'>remove_circle_outline</i>" +
+                            "</button>" +
+                            "</td>" +
+                            "</tr>");
+                    }
+                    $("#dadosContaCliente").hide();
+                    $("#formDadosContaCliente").show();
+                },
+                error: function ajaxError(dados) {
+                    alert(dados.status + ' ' + dados.statusText);
+                }
+
+            });
+        });
+        $(document).on("click", ".removeCliente",
+            function () {
+                var id = $(this).closest("tr").attr("id");
+                //faz a confirmação da exclusao do registro
+                var apagar = confirm("Deseja excluir " + $(this).closest("tr").children("td:eq(0)").text());
+                if (apagar) $(this).closest("tr").remove();
+            });
+        $("#addCliente").click(function () {
+            $.ajax({
+                type: "GET",
+                url: "/Clientes/GetClienteByCpf",
+                dataType: "Json",
+                data: {
+                    cpf: $("#cpfCli").val()
+                },
+                success: function (dados) {
+                    var flag = false;
+                    $("#tbdClientesConta").find("tr").each(function (index) {
+                        if ($(this).attr("id") == dados.Id) {
+                            flag = true;
+                        }
+                    });
+                    if (flag == true) alert("Este cliente ja faz parte desta conta!")
+                    else {
+                        cancelarInclusao = confirm("Deseja incluir " + dados.nome + " Na conta?");
+                        if (cancelarInclusao) {
+                            $("#tbdClientesConta").append("<tr id=" +
+                                dados.Id +
+                                "><td>" +
+                                dados.nome +
+                                "</td>" +
+                                "<td>  " +
+                                "<button class='btn-floating btn-large waves-effect waves-light red removeCliente'type='button'>" +
+                                "<i class='material-icons'>remove_circle_outline</i>" +
+                                "</button>" +
+                                "</td>" +
+                                "</tr>");
+                        } else {
+                            alert("Cliente não incluido");
+                        }
+                    }
+                }, error() {
+
+                }
+            });
+        });
+        $("#atualizaConta").click(function () {
+            var clientes = [];
+            debugger;
+            $("#tbdClientesConta").find("tr").each(function (index) {
+                clientes.push($(this).attr("id"));
+            });
+            $.ajax({
+                type: "POST",
+                url: "/Contas/UpdateContaCliente",
+                data: {
+                    clientes:clientes
+                },
+                dataType: "Json",
+                success:function() {
+                    
+                }
+            });
+        });
+    });
+</script>

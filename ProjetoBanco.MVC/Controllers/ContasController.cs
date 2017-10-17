@@ -79,15 +79,22 @@ namespace ProjetoBanco.MVC.Controllers
         }
 
         [HttpPost]
-        public ActionResult UpdateContaCliente()
+        public ActionResult UpdateContaCliente(List<int> clientes)
         {
-            return RedirectToAction("Index", "Success");
+            if (clientes != null)
+            {
+                return RedirectToAction("Index", "Success");
+            }
+            else
+            {
+                return View("ContaEdit");
+            }
         }
 
         [HttpGet]
-        public JsonResult GetContaClienteById(int idConta)
+        public JsonResult GetContaCliente(string conta, int agencia, string senha)
         {
-            return Json()
+            return Json(_contaClienteAppService.GetContaCliente(conta, agencia, senha), JsonRequestBehavior.AllowGet);
         }
     }
 }

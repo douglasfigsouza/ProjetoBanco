@@ -15,6 +15,7 @@ namespace ProjetoBanco.MVC.Controllers
         private readonly IEstadoAppService _estadoAppService;
         private readonly ICidadesAppService _cidadesAppService;
         private Cliente cliente;
+        private ClienteViewModel clienteViewModel;
         private List<Cidade> Cidades;
 
         public ClientesController(IClienteAppService clienteApp, IEstadoAppService estadoApp, ICidadesAppService ICidadeAppService, IBancoAppService IBancoAppService)
@@ -24,6 +25,7 @@ namespace ProjetoBanco.MVC.Controllers
             _cidadesAppService = ICidadeAppService;
             cliente = new Cliente();
             Cidades = new List<Cidade>();
+            clienteViewModel = new ClienteViewModel();
         }
         // GET: Clientes/Create
         public ActionResult CreateCliente()
@@ -84,7 +86,7 @@ namespace ProjetoBanco.MVC.Controllers
             {
                 cliente.Id = clienteViewModel.Id;
                 cliente.nome = clienteViewModel.nome;
-                cliente.cpf = Utilitarios.Utilitarios.retiraMask( clienteViewModel.cpf);
+                cliente.cpf = Utilitarios.Utilitarios.retiraMask(clienteViewModel.cpf);
                 cliente.rg = Utilitarios.Utilitarios.retiraMask(clienteViewModel.rg);
                 cliente.fone = Utilitarios.Utilitarios.retiraMask(clienteViewModel.fone);
                 cliente.bairro = clienteViewModel.bairro;
@@ -109,49 +111,13 @@ namespace ProjetoBanco.MVC.Controllers
             return Json(_clienteApp.GetByClienteId(Id), JsonRequestBehavior.AllowGet);
         }
 
-
-        //// GET: Clientes/Edit/5
-        //public ActionResult Edit(int id)
-        //{
-        //    var cliente = _clienteApp.GetById(id);
-        //    var clienteViewModel = Mapper.Map<Cliente, ClienteViewModel>(cliente);
-        //    return View(clienteViewModel);
-        //}
-
-        //// POST: Clientes/Edit/5
-        //[HttpPost]
-        //public ActionResult Edit(ClienteViewModel clienteViewModel)
-        //{
-        //    if (ModelState.IsValid)
-        //    {
-        //        var clienteDomain = Mapper.Map<ClienteViewModel, Cliente>(clienteViewModel);
-        //        _clienteApp.Update(clienteDomain);
-
-        //        return RedirectToAction("Index");
-        //    }
-        //    else
-        //    {
-        //        return View();
-        //    }
-        //}
-
-        //// GET: Clientes/Delete/5
-        //public ActionResult Delete(int id)
-        //{
-        //    var cliente = _clienteApp.GetById(id);
-        //    var clienteViewModel = Mapper.Map<Cliente, ClienteViewModel>(cliente);
-
-        //    return View(clienteViewModel);
-        //}
-
-        //// POST: Clientes/Delete/5
-        //[HttpPost, ActionName("Delete")]
-        //[ValidateAntiForgeryToken]
-        //public ActionResult Delete(int id, FormCollection f)
-        //{
-        //    var cliente = _clienteApp.GetById(id);
-        //    _clienteApp.Remove(cliente);
-        //    return RedirectToAction("Index");
-        //}
+        [HttpGet]
+        public JsonResult GetClienteByCPF(string cpf)
+        {
+            cliente = _clienteApp.GetClienteByCpf(Utilitarios.Utilitarios.retiraMask(cpf));
+            clienteViewModel.Id = cliente.Id;
+            clienteViewModel.nome = cliente.nome;
+            return Json(cliente, JsonRequestBehavior.AllowGet);
+        }
     }
 }
