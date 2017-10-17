@@ -16,22 +16,22 @@
                 <div class="row">
                     <div class="col s6">
                         <label class="col s12" for="ddlAgencias">Agência</label>
-                        @Html.DropDownList("ddlAgencias", new SelectList(@Model.Agencias, "agencia", "agencia"), "Selecione", new {@class = "col s10"})
+                        @Html.DropDownList("ddlAgencias", new SelectList(@Model.Agencias, "agencia", "agencia"), "Selecione", new { @class = "col s10" })
                     </div>
                     <div class="col s6">
                         <label class="col s12" for="num">N° Conta</label>
-                        <input type="text" class="col s12" id="num" name="num"/>
+                        <input type="text" class="col s12" id="num" name="num" />
                     </div>
                 </div>
 
                 <div class="row">
                     <div class="col s6">
                         <label class="col s12" for="senha">Senha</label>
-                        <input type="password" class="col s12" id="senha" name="senha"/>
+                        <input type="password" class="col s12" id="senha" name="senha" />
                     </div>
                     <div class="col s6">
                         <label class="col s12" for="conf_senha">Confirme sua Senha</label>
-                        <input type="password" class="col s12" id="conf_senha" name="conf_senha"/>
+                        <input type="password" class="col s12" id="conf_senha" name="conf_senha" />
                     </div>
                 </div>
 
@@ -39,11 +39,11 @@
                     <div class="col s12">
                         <label class="col s12">Tipo de Conta</label>
                         <p>
-                            <input class="with-gap col s1" value="c" name="tipoConta" type="radio" id="corrente" checked/>
+                            <input class="with-gap col s1" value="c" name="tipoConta" type="radio" id="corrente" checked />
                             <label for="corrente" class="col s5">C. Corrente</label>
                         </p>
                         <p>
-                            <input class="with-gap col s1" name="tipoConta" value="p" type="radio" id="poupanca"/>
+                            <input class="with-gap col s1" name="tipoConta" value="p" type="radio" id="poupanca" />
                             <label for="poupanca" class="col s5">C. Poupança</label>
                         </p>
                     </div>
@@ -54,7 +54,7 @@
                 <div class="row">
                     <label class='col s12'>Vincular Clientes</label>
                     <div class="col s6">
-                        <button class="waves-effect waves-light modal-trigger btn"type="button" href="#modalCientesConta" id="buscaClienetes">
+                        <button class="waves-effect waves-light modal-trigger btn" type="button" href="#modalCientesConta" id="buscaClienetes">
                             <i class="large material-icons">add_box</i>
                         </button>
 
@@ -69,19 +69,18 @@
                             <div class="col s12">
                                 <table id="clientesConta" class="striped responsive-table centered" cellspacing="0" width="100%">
                                     <thead>
-                                    <tr>
-                                        <th>Nome</th>
-                                        <th>CPF</th>
-                                        <th>RG</th>
-                                        <th>Fone</th>
-                                        <th>Bairro</th>
-                                        <th>Rua</th>
-                                        <th>Num</th>
-                                        <th>Incluir</th>
-                                    </tr>
+                                        <tr>
+                                            <th>Nome</th>
+                                            <th>CPF</th>
+                                            <th>RG</th>
+                                            <th>Fone</th>
+                                            <th>Bairro</th>
+                                            <th>Rua</th>
+                                            <th>Num</th>
+                                            <th>Incluir</th>
+                                        </tr>
                                     </thead>
-                                    <tbody id="tbdClientesConta">
-                                    </tbody>
+                                    <tbody id="tbdClientesConta"></tbody>
                                 </table>
                             </div>
                         </div>
@@ -97,15 +96,13 @@
             <div class="col s12">
                 <table class="striped responsive-table centered">
                     <thead>
-                    <tr>
-                        <th>Nome</th>
-                        <th>CPF</th>
-                        <th>Remover</th>
-                    </tr>
+                        <tr>
+                            <th>Nome</th>
+                            <th>CPF</th>
+                            <th>Remover</th>
+                        </tr>
                     </thead>
-                    <tbody id="clientesSelecionadosConta">
-
-                    </tbody>
+                    <tbody id="clientesSelecionadosConta"></tbody>
                 </table>
             </div>
         </div>
@@ -122,55 +119,65 @@
     $(document).ready(function () {
         //oculta table on de serão inseridos os clientes
         $("#clientesSelecionados").hide();
-        //desabilita o fechamento do modal com clique fora do button 
+        //desabilita o fechamento do modal com clique fora do button
         $('.modal').modal({ dismissible: false });
-        //função que adiciona cliente na tabelas 
+        //função que adiciona cliente na tabelas
         $(document).on("click", ".btnClienteConta", function () {
             var id = $(this).closest('tr').attr('id');
             var nome = $('td#nome' + id).text();
-            var cpf = $('td#cpf'+id).text();
-            $("#clientesSelecionadosConta").append("<tr>" +
-                    "<input type='hidden' name='ClientesSelecionados' value='"+id+"'/>"+
-                    "<td>"+ nome +"</td>" +
-                    "<td>" + cpf + "</td>" +
-                    "<td>" +
-                        "<button type='button' class='btnClienteContaRemove modal-action modal-close btn red'>" +
-                            "<i class='material-icons '>remove</i>" +
-                        "</button>" +
-                    "</td>" +
-                "</tr>");
-            $("#clientesSelecionados").show();
+            var cpf = $('td#cpf' + id).text();
+            var flag = false;
+            debugger;
+            $("#clientesSelecionadosConta").find("input").each(function (index) {
+                if ($(this).val() == id) {
+                    flag = true;
+                }
+            });
+            if (flag == true) alert("Este cliente ja pertence a conta!")
+            else {
+                $("#clientesSelecionadosConta").append("<tr>" +
+                        "<input type='hidden' name='ClientesSelecionados' value='" + id + "'/>" +
+                        "<td>" + nome + "</td>" +
+                        "<td>" + cpf + "</td>" +
+                        "<td>" +
+                            "<button type='button' class='btnClienteContaRemove modal-action modal-close btn red'>" +
+                                "<i class='material-icons '>remove</i>" +
+                            "</button>" +
+                        "</td>" +
+                    "</tr>");
+                $("#clientesSelecionados").show();
+            }
         });
         //remove cliente selecionado
-        $(document).on("click",".btnClienteContaRemove ",function() {
+        $(document).on("click", ".btnClienteContaRemove ", function () {
             $(this).closest('tr').remove();
         });
         //tradução do plugin dataTable
         $("#clientesConta").dataTable({
-            language:{
-            "sEmptyTable": "Nenhum registro encontrado",
-            "sInfo": "Mostrando de _START_ até _END_ de _TOTAL_ registros",
-            "sInfoEmpty": "Mostrando 0 até 0 de 0 registros",
-            "sInfoFiltered": "(Filtrados de _MAX_ registros)",
-            "sInfoPostFix": "",
-            "sInfoThousands": ".",
-            "sLengthMenu": "Exibir _MENU_",
-            "sLoadingRecords": "Carregando...",
-            "sProcessing": "Processando...",
-            "sZeroRecords": "Nenhum registro encontrado",
-            "sSearch": "Pesquisar",
-            "oPaginate": {
-                "sNext": "Próximo",
-                "sPrevious": "Anterior",
-                "sFirst": "Primeiro",
-                "sLast": "Último"
-            },
-            "oAria": {
-                "sSortAscending": ": Ordenar colunas de forma ascendente",
-                "sSortDescending": ": Ordenar colunas de forma descendente"
-            }
+            language: {
+                "sEmptyTable": "Nenhum registro encontrado",
+                "sInfo": "Mostrando de _START_ até _END_ de _TOTAL_ registros",
+                "sInfoEmpty": "Mostrando 0 até 0 de 0 registros",
+                "sInfoFiltered": "(Filtrados de _MAX_ registros)",
+                "sInfoPostFix": "",
+                "sInfoThousands": ".",
+                "sLengthMenu": "Exibir _MENU_",
+                "sLoadingRecords": "Carregando...",
+                "sProcessing": "Processando...",
+                "sZeroRecords": "Nenhum registro encontrado",
+                "sSearch": "Pesquisar",
+                "oPaginate": {
+                    "sNext": "Próximo",
+                    "sPrevious": "Anterior",
+                    "sFirst": "Primeiro",
+                    "sLast": "Último"
+                },
+                "oAria": {
+                    "sSortAscending": ": Ordenar colunas de forma ascendente",
+                    "sSortDescending": ": Ordenar colunas de forma descendente"
                 }
-     
+            }
+
         });
         //função que busca cidades pelo id do estado e seta no combo cidades
         $("#buscaClienetes").click(function () {
@@ -185,8 +192,8 @@
                         $("#tbdClientesConta").empty();
                         $.each(data, function (key, value) {
                             $("#tbdClientesConta").append("<tr id=" + value.Id + ">" +
-                                    "<td id='nome"+value.Id+"'>" + value.nome + "</td>" +
-                                    "<td id='cpf"+value.Id+"'>" + value.cpf + "</td>" +
+                                    "<td id='nome" + value.Id + "'>" + value.nome + "</td>" +
+                                    "<td id='cpf" + value.Id + "'>" + value.cpf + "</td>" +
                                     "<td>" + value.rg + "</td>" +
                                     "<td>" + value.fone + "</td>" +
                                     "<td>" + value.bairro + "</td>" +
@@ -194,7 +201,7 @@
                                     "<td>" + value.num + "</td>" +
                                     "<td><button type='button' class='btnClienteConta modal-action modal-close btn green'>" +
                                         "<i class='material-icons '>add_box</i>" +
-                                        "</button>"+
+                                        "</button>" +
                                     "</td>" +
 
                                 "</tr>");
@@ -205,7 +212,7 @@
 
                 });
         });
-        //faz a validação dos campos 
+        //faz a validação dos campos
         $("form").validate({
             submitHandler: function (form) {
                 form.submit();
@@ -217,14 +224,14 @@
                 },
                 senha: {
                     required: true,
-                    maxlength:20,
+                    maxlength: 20,
                 },
                 conf_senha: {
                     required: true,
-                    equalTo:"#senha"
+                    equalTo: "#senha"
                 },
                 tipoConta: {
-                    required:true
+                    required: true
                 }
             },
             messages: {
@@ -238,10 +245,10 @@
                 },
                 conf_senha: {
                     required: "O campo Confirme sua Senha é Obrigatório! Digite-O",
-                    equalTo:"As senhas nao conferem!"
+                    equalTo: "As senhas nao conferem!"
                 },
                 tipoConta: {
-                    required:"O Tipo de Conta deve ser informado!"
+                    required: "O Tipo de Conta deve ser informado!"
                 }
             }
         });

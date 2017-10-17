@@ -1,4 +1,5 @@
 ﻿@model ProjetoBanco.MVC.ViewModels.ClienteViewModel
+<div class="modal"></div>
 <div class="row"id="divTblClientesEditaveis">
     <div class="col s12">
         <table id="tlbClientesEditaveis" class="striped responsive-table centered" cellspacing="0" width="100%">
@@ -140,6 +141,7 @@
 </div>
 <script>
     $(document).ready(function () {
+        $body = $("body");
         $("#formClienteEditavel").hide();
         $("#tlbClientesEditaveis").dataTable({
             language: {
@@ -168,7 +170,8 @@
 
         });
         //pega o id do cliente selecionado 
-        $(".btnClienteEditavel").click(function() {
+        $(".btnClienteEditavel").click(function () {
+            $body.addClass("loading");
             var id = $(this).closest('tr').attr('id');
             $("#divTblClientesEditaveis").hide();
             $.ajax(
@@ -243,6 +246,7 @@
                                     });
                                 $('#ddlestadoClientes').material_select();
                                 $("#formClienteEditavel").show();
+                                $body.removeClass("loading");
                             },
                             error: function ajaxError(dados) {
                                 alert(dados.status + ' ' + dados.statusText);
