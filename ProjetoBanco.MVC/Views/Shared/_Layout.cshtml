@@ -12,6 +12,7 @@
     @Scripts.Render("~/bundles/jquery")
 </head>
 <body>
+    <div class="modal">    </div>
     <header>
         <ul id="alteracoes" class="dropdown-content">
             @if (Session["nivel"].ToString() == "f")
@@ -62,7 +63,7 @@
 
     </div>
     <footer class="page-footer black">
-       
+
         <div class="footer-copyright">
             <div class="container">
                 © 2014 Copyright SisBank
@@ -72,6 +73,5 @@
 
     @Scripts.Render("~/bundles/bootstrap")
     @RenderSection("scripts", required: false)
-
 </body>
 </html>

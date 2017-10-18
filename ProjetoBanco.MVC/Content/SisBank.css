@@ -18,14 +18,21 @@
     margin-left:-50px;
 }
 .page-footer {
-    width: 80%;
     position: fixed;
-    bottom: 0;
+    width: 80%;
+    bottom:0;
+
     
 }
+nav {
+    position: fixed;
+    width: 80%;
+    top:0;
+}
 .margim-top {
-    padding: 20px;
-    margin-top: 2%;
+    padding: 5%;
+    margin-top: 10%;
+    margin-bottom: 10%;
     box-shadow:5px 5px 5px 5px #000000;
     border-radius: 5px;
 }
@@ -33,14 +40,15 @@
     border-right:1px dashed #000000;
 }
 .modal {
+    padding:    30%;
     display:    none;
     position:   fixed;
     z-index:    1000;
-    top:        0;
+    top:        5%;
     left:       0;
     height:     100%;
-    width:      100%;
-    background: rgba( 255, 255, 255, .8 ) 
+    width:      80%;
+    background: rgba( 0, 0, 0, .6 ) 
                 url('http://i.stack.imgur.com/FhHRx.gif') 
                 50% 50% 
                 no-repeat;
