@@ -17,9 +17,9 @@ namespace ProjetoBanco.Domain.Services
         {
             _IUsuarioRepositoryDomain = IUsuarioRepositoryDomain;
         }
-        public void AddUsuario(Usuario usuario)
+        public string AddUsuario(Usuario usuario)
         {
-            _IUsuarioRepositoryDomain.AddUsuario(usuario);
+            return _IUsuarioRepositoryDomain.AddUsuario(usuario);
         }
 
         public Usuario GetByUsuarioId(int id)

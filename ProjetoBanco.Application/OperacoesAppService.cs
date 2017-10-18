@@ -1,8 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using ProjetoBanco.Application.Interfaces;
 using ProjetoBanco.Domain.Entities;
 using ProjetoBanco.Domain.Interfaces.IRepositories;
@@ -20,9 +17,9 @@ namespace ProjetoBanco.Application
             _OperacaoServiceDomain = OperacaoServiceDomain;
             _OperacaoRepositoryDomain = OperacaoRepositoryDomain;
         }
-        public void AddOperacao(Operacoes op)
+        public string AddOperacao(Operacoes op)
         {
-            _OperacaoRepositoryDomain.AddOperacao(op);
+            return _OperacaoRepositoryDomain.AddOperacao(op);
         }
 
         public void Dispose()

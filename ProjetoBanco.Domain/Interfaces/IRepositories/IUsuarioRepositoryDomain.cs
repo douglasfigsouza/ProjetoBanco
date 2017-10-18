@@ -9,7 +9,7 @@ namespace ProjetoBanco.Domain.Interfaces.IRepositories
 {
     public interface IUsuarioRepositoryDomain
     {
-        void AddUsuario(Usuario usuario);
+        string AddUsuario(Usuario usuario);
         Usuario VerificaLogin(Usuario usuario);
         Usuario GetByUsuarioId(int id);
         IEnumerable<Usuario> GetAllUsuarios();

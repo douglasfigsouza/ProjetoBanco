@@ -38,9 +38,9 @@ namespace ProjetoBanco.Domain.Services
             throw new NotImplementedException();
         }
 
-        public void UpdateClientes(Cliente cliente)
+        public string UpdateClientes(Cliente cliente)
         {
-            _repository.UpdateClientes(cliente);
+            return _repository.UpdateClientes(cliente);
         }
         public void Dispose()
         {

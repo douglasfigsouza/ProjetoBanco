@@ -16,9 +16,9 @@ namespace ProjetoBanco.Domain.Services
         {
             _repository = repository;
         }
-        public void AddOperacao(Operacoes op)
+        public string AddOperacao(Operacoes op)
         {
-            _repository.AddOperacao(op);
+           return _repository.AddOperacao(op);
         }
 
         public Operacoes GetOperacaoById(int id)

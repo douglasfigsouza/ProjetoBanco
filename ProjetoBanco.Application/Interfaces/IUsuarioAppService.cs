@@ -9,7 +9,7 @@ namespace ProjetoBanco.Application.Interfaces
 {
     public interface IUsuarioAppService
     {
-        void AddUsuario(Usuario usuario);
+        string AddUsuario(Usuario usuario);
         Usuario VerificaLogin(Usuario usuario);
         Usuario GetByUsuarioId(int id);
         IEnumerable<Usuario> GetAllUsuarios();

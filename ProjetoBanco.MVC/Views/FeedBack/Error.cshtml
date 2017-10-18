@@ -1,10 +1,14 @@
-﻿<div class="row">
+﻿@model ProjetoBanco.MVC.ViewModels.feedBackViewModel
+ @if (Model == null)
+ {
+ }
+<div class="row">
     <div class="col s6">
         <h4>Ops!</h4>
-        <p>@TempData["menssagem"]</p>
+        <p>@Model.descricao não Realizado(a)!</p>
         <h6>
             Deseja Realizar Outra Operação?
-            <a href=@TempData["outraOp"]>Sim</a>
+            <a href=@Model.url>Sim</a>
             @Html.ActionLink("Não", "Logout", "Usuarios")
         </h6>
     </div>

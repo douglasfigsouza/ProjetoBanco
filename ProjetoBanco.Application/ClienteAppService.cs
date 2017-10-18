@@ -38,9 +38,9 @@ namespace ProjetoBanco.Application
             return _clienteRepositoryDomain.GetClienteByCpf(cpf);
         }
 
-        public void UpdateCliente(Cliente cliente)
+        public string UpdateCliente(Cliente cliente)
         {
-            _clienteRepositoryDomain.UpdateClientes(cliente);
+           return _clienteRepositoryDomain.UpdateClientes(cliente);
         }
 
         public void RemoveCliente(Cliente cliente)

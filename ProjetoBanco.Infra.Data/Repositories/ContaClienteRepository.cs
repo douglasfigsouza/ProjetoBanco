@@ -29,7 +29,7 @@ namespace ProjetoBanco.Infra.Data.Repositories
             contaClienteAlteracao.Clientes = new List<Cliente>();
         }
 
-        public void AddContaCliente(Conta conta, List<Domain.Entities.ContaCliente> contaClientes)
+        public string AddContaCliente(Conta conta, List<Domain.Entities.ContaCliente> contaClientes)
         {
             try
             {
@@ -46,15 +46,15 @@ namespace ProjetoBanco.Infra.Data.Repositories
                     conn.AddParameter("@agencia", item.agencia);
                     conn.ExecuteNonQuery();
                 }
+                return null;
             }
             catch (Exception e)
             {
-                Console.WriteLine(e);
-                throw;
+                return e.ToString();
             }
         }
 
-        public void UpdateConta(Conta conta)
+        public string UpdateConta(Conta conta)
         {
             try
             {
@@ -63,11 +63,11 @@ namespace ProjetoBanco.Infra.Data.Repositories
                 conn.AddParameter("@senha", conta.senha);
                 conn.AddParameter("@ativo", conta.ativo);
                 conn.ExecuteNonQuery();
+                return null;
             }
             catch (Exception e)
             {
-                Console.WriteLine(e);
-                throw;
+                return e.ToString();
             }
         }
 

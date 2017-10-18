@@ -9,7 +9,7 @@ namespace ProjetoBanco.Domain.Interfaces.IServices
 {
     public interface IOperacaoServiceDomain
     {
-        void AddOperacao(Operacoes op);
+        string AddOperacao(Operacoes op);
         Operacoes GetOperacaoById(int id);
         IEnumerable<Operacoes> GetAllOperacoes();
         void UpdateOperacao(Operacoes op);

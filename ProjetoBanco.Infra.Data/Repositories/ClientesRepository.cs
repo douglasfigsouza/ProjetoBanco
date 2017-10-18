@@ -53,7 +53,7 @@ namespace ProjetoBanco.Infra.Data.Repositories
             catch (Exception e)
             {
 
-                return e.ToString();
+                return e.Message;
             }
             
         }
@@ -109,21 +109,30 @@ namespace ProjetoBanco.Infra.Data.Repositories
             return lstClientes.ToList();
         }
 
-        public void UpdateClientes(Cliente cliente)
+        public string  UpdateClientes(Cliente cliente)
         {
-            conn.ExecuteProcedure(Procedures.PBSP_UPDATECLIENTE);
-            conn.AddParameter("@id", cliente.Id);
-            conn.AddParameter("@cidadeId", cliente.cidadeId);
-            conn.AddParameter("@nome", cliente.nome);
-            conn.AddParameter("@cpf", cliente.cpf);
-            conn.AddParameter("@rg", cliente.rg);
-            conn.AddParameter("@fone", cliente.fone);
-            conn.AddParameter("@bairro", cliente.bairro);
-            conn.AddParameter("@rua", cliente.rua);
-            conn.AddParameter("@num", cliente.num);
-            conn.AddParameter("@nivel", cliente.nivel);
-            conn.AddParameter("@ativo", cliente.ativo);
-            conn.ExecuteNonQuery();
+            try
+            {
+                conn.ExecuteProcedure(Procedures.PBSP_UPDATECLIENTE);
+                conn.AddParameter("@id", cliente.Id);
+                conn.AddParameter("@cidadeId", cliente.cidadeId);
+                conn.AddParameter("@nome", cliente.nome);
+                conn.AddParameter("@cpf", cliente.cpf);
+                conn.AddParameter("@rg", cliente.rg);
+                conn.AddParameter("@fone", cliente.fone);
+                conn.AddParameter("@bairro", cliente.bairro);
+                conn.AddParameter("@rua", cliente.rua);
+                conn.AddParameter("@num", cliente.num);
+                conn.AddParameter("@nivel", cliente.nivel);
+                conn.AddParameter("@ativo", cliente.ativo);
+                conn.ExecuteNonQuery();
+                return null;
+            }
+            catch (Exception e)
+            {
+                return e.ToString();
+            }
+
         }
 
         public void RemoveClientes(Cliente obj)

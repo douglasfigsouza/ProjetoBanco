@@ -17,9 +17,9 @@ namespace ProjetoBanco.Application
             _contaClienteServiceDomain = contaClienteServiceDomain;
             _contaClienteRepositoryDomain = contaClienteRepositoryDomain;
         }
-        public void AddContaCliente(Conta conta, List<ContaCliente> contaClientes)
+        public string AddContaCliente(Conta conta, List<ContaCliente> contaClientes)
         {
-           _contaClienteRepositoryDomain.AddContaCliente(conta,contaClientes);
+          return _contaClienteRepositoryDomain.AddContaCliente(conta,contaClientes);
         }
 
         public ContaClienteAlteracao GetConta(string conta, int agencia, string senha)
@@ -27,9 +27,9 @@ namespace ProjetoBanco.Application
             return _contaClienteRepositoryDomain.GetConta(conta,  agencia, senha);
         }
 
-        public void UpdateConta(Conta conta)
+        public string UpdateConta(Conta conta)
         {
-            _contaClienteRepositoryDomain.UpdateConta(conta);
+           return _contaClienteRepositoryDomain.UpdateConta(conta);
         }
 
         public void Dispose()

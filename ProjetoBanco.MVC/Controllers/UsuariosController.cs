@@ -15,6 +15,7 @@ namespace ProjetoBanco.MVC.Controllers
         private readonly IUsuarioAppService _IUsuarioAppService;
         private readonly IClienteAppService _IClienteAppService;
         private Usuario usuario;
+        private string error;
 
         public UsuariosController(IUsuarioAppService IUsuarioAppService, IClienteAppService IClienteAppService)
         {
@@ -75,9 +76,20 @@ namespace ProjetoBanco.MVC.Controllers
                 usuario.clienteId = usuarioViewModel.clienteId;
                 usuario.nome = usuarioViewModel.nome;
                 usuario.senha = usuarioViewModel.senha;
-                _IUsuarioAppService.AddUsuario(usuario);
-                ViewBag.messagem = "Usuário: " + usuarioViewModel.nome + " cadastrado com sucesso!";
-                return RedirectToAction("Index", "Success");
+                error = _IUsuarioAppService.AddUsuario(usuario);
+                if (error == null)
+                {
+                    TempData["outraOp"] = "/Usuarios/CreateUsuario";
+                    TempData["menssagem"] = "Usuário: " + usuarioViewModel.nome + " cadastrado com sucesso!";
+                    return RedirectToAction("Success", "FeedBack");
+                }
+                else
+                {
+                    TempData["outraOp"] = "/Usuarios/CreateUsuario";
+                    TempData["menssagem"] = "Usuário: " + usuarioViewModel.nome + " Não cadastrado! Erro: " + error;
+                    return RedirectToAction("Error", "FeedBack");
+                }
+
             }
             else
             {

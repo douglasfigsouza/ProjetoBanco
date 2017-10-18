@@ -1,8 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.EnterpriseServices;
-using System.Linq;
-using System.Web;
 using System.Web.Mvc;
 using ProjetoBanco.Application.Interfaces;
 using ProjetoBanco.Domain.Entities;
@@ -17,6 +14,7 @@ namespace ProjetoBanco.MVC.Controllers
         private readonly IContaClienteAppService _contaClienteAppService;
         private CombosContaViewModel cmbContaViewModel;
         private Conta conta;
+        private string error;
         private List<ContaCliente> contaClientes;
 
         public ContasController(IAgenciaAppService agenciaAppService, IClienteAppService clienteAppService, IContaClienteAppService contaClienteAppService)
@@ -69,8 +67,19 @@ namespace ProjetoBanco.MVC.Controllers
 
                });
             }
-            _contaClienteAppService.AddContaCliente(conta,contaClientes);
-            return View();
+            error = _contaClienteAppService.AddContaCliente(conta,contaClientes);
+            if (error == null)
+            {
+                TempData["outraOp"] = "/Contas/CreateConta";
+                TempData["menssagem"] = "Conta: " + form["num"]+ " cadastrada com sucesso!";
+                return RedirectToAction("Success", "FeedBack");
+            }
+            else
+            {
+                TempData["outraOp"] = "/Conta/CreateConta";
+                TempData["menssagem"] = "Conta: " + form["num"] + " Não cadastrada! Erro: " + error;
+                return RedirectToAction("Error", "FeedBack");
+            }
         }
 
         public ActionResult EditConta()

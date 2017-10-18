@@ -1,15 +1,11 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.Collections.Generic;
 using ProjetoBanco.Domain.Entities;
 using ProjetoBanco.Domain.Interfaces.IRepositories;
 using ProjetoBanco.Domain.Interfaces.IServices;
 
 namespace ProjetoBanco.Domain.Services
 {
-    public class ContaClienteServiceDomain:IContaClienteServiceDomain
+    public class ContaClienteServiceDomain : IContaClienteServiceDomain
     {
         private readonly IContaClienteRepositoryDomain _contaRepositoryDomain;
 
@@ -17,14 +13,14 @@ namespace ProjetoBanco.Domain.Services
         {
             _contaRepositoryDomain = contaRepositoryDomain;
         }
-        public void AddContaCliente(Conta conta, List<ContaCliente> contaClientes)
+        public string AddContaCliente(Conta conta, List<ContaCliente> contaClientes)
         {
-           _contaRepositoryDomain.AddContaCliente(conta,contaClientes);
+            return _contaRepositoryDomain.AddContaCliente(conta, contaClientes);
         }
 
-        public void UpdateConta(Conta conta)
+        public string UpdateConta(Conta conta)
         {
-            _contaRepositoryDomain.UpdateConta(conta);
+            return _contaRepositoryDomain.UpdateConta(conta);
         }
 
         public void Dispose()
@@ -34,7 +30,7 @@ namespace ProjetoBanco.Domain.Services
 
         public ContaClienteAlteracao GetConta(string conta, int agencia, string senha)
         {
-            return _contaRepositoryDomain.GetConta(conta,agencia,senha);
+            return _contaRepositoryDomain.GetConta(conta, agencia, senha);
         }
     }
 }

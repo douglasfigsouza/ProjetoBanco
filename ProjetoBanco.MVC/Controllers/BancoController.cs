@@ -7,11 +7,12 @@ namespace ProjetoBanco.MVC.Controllers
 {
     public class BancoController : Controller
     {
-        private readonly IBancoAppService _IBancoAppService;
+        private readonly IBancoAppService _bancoAppServiceancoAppService;
         private Banco banco;
-        public BancoController(IBancoAppService IBancoAppService)
+        private string error;
+        public BancoController(IBancoAppService bancoAppService)
         {
-            _IBancoAppService = IBancoAppService;
+            _bancoAppServiceancoAppService = bancoAppService;
             banco = new Banco();
         }
         public ActionResult CreateBanco()
@@ -26,9 +27,19 @@ namespace ProjetoBanco.MVC.Controllers
             {
                 banco.nome = bancoViewModel.nome;
                 banco.ativo = true;
-                _IBancoAppService.AddBanco(banco);
-                ViewBag.messagem = "Banco: " + bancoViewModel.nome + " cadastrado com sucesso!";
-                return RedirectToAction("Index", "Success");
+                error = _bancoAppServiceancoAppService.AddBanco(banco);
+                if (error == null)
+                {
+                    TempData["outraOp"] = "/Banco/CreateBanco";
+                    TempData["menssagem"] = "Banco: " + bancoViewModel.nome + " cadastrado com sucesso!";
+                    return RedirectToAction("Success", "FeedBack");
+                }
+                else
+                {
+                    TempData["outraOp"] = "/Banco/CreateBanco";
+                    TempData["menssagem"] = "Banco: " + bancoViewModel.nome + " Não cadastrado! Erro: " + error;
+                    return RedirectToAction("Error", "FeedBack");
+                }
             }
             else
             {

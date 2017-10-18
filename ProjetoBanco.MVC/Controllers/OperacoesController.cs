@@ -26,6 +26,7 @@ namespace ProjetoBanco.MVC.Controllers
         private List<TransacaoViewModel> lstTransacoesViewModels;
         private List<EstornoViewModel> opsEstornoViewModels;
         private decimal valor;
+        private string error;
 
 
         public OperacoesController(IOperacoesAppService OperacaoAppService, IOperacaoesRealizadasAppService operacaoesRealizadasAppService)
@@ -51,9 +52,19 @@ namespace ProjetoBanco.MVC.Controllers
             if (ModelState.IsValid)
             {
                 op.descricao = opViewModel.descricao;
-                _OperacaoAppService.AddOperacao(op);
-                ViewBag.messagem = "Operação: " + opViewModel.descricao + " cadastrada com sucesso!";
-                return RedirectToAction("Index", "Success");
+                error = _OperacaoAppService.AddOperacao(op);
+                if (error == null)
+                {
+                    TempData["outraOp"] = "/Operacoes/CreateOperacao";
+                    TempData["menssagem"] = "Operação: " + opViewModel.descricao + " cadastrada com sucesso!";
+                    return RedirectToAction("Success", "FeedBack");
+                }
+                else
+                {
+                    TempData["outraOp"] = "/Operacoes/CreateOperacao";
+                    TempData["menssagem"] = "Cliente: " + opViewModel.descricao + " Não cadastrada! Erro: " + error;
+                    return RedirectToAction("Error", "FeedBack");
+                }
             }
             else
             {
@@ -109,7 +120,7 @@ namespace ProjetoBanco.MVC.Controllers
                     ViewBag.operacao = 2;
                 }
 
-                transacao = _OperacaoAppService.VerificaDadosTransacao(transacao,trasacaoViewModel.op);
+                transacao = _OperacaoAppService.VerificaDadosTransacao(transacao, trasacaoViewModel.op);
                 if (transacao.nome != null)
                 {
                     //insere os valores na view no hidden
@@ -157,7 +168,7 @@ namespace ProjetoBanco.MVC.Controllers
             transacao.conta = trasacaoViewModel.conta;
             if (_OperacaoAppService.ConsultaSaldo(transacao) == null)
             {
-                ViewBag.erro ="Conta não encontrada!" ;
+                ViewBag.erro = "Conta não encontrada!";
                 return View("MostraSaldo");
             }
             else
@@ -200,7 +211,7 @@ namespace ProjetoBanco.MVC.Controllers
                 clienteId = cli.Id
             };
             //garante que a primeira conta é a sua própria, para impedir que tranferencia entre conta de terceiros
-            transacao1 = _OperacaoAppService.VerificaDadosTransacao(transacao1,2);
+            transacao1 = _OperacaoAppService.VerificaDadosTransacao(transacao1, 2);
             transacao2 = _OperacaoAppService.VerificaDadosTransferencia(transacao2);
             if (transacao1.nome != null)
             {
@@ -270,12 +281,12 @@ namespace ProjetoBanco.MVC.Controllers
         public ActionResult DadosParaEstorno()
         {
             return View("Estorno");
-    
+
         }
 
         public ActionResult Estorno(FormCollection form)
         {
-            foreach (var op in _operacaoesRealizadasAppService.GetAllOperacoesPorContaParaEstorno(form["conta"],form["senha"],Convert.ToInt32(form["agencia"])))
+            foreach (var op in _operacaoesRealizadasAppService.GetAllOperacoesPorContaParaEstorno(form["conta"], form["senha"], Convert.ToInt32(form["agencia"])))
             {
                 opsEstornoViewModels.Add(new EstornoViewModel
                 {
@@ -287,10 +298,10 @@ namespace ProjetoBanco.MVC.Controllers
                     saldoAnterior = op.saldoAnterior,
                     valorOp = op.valorOp,
                     dataOp = op.dataOp,
-                descricao = op.descricao
+                    descricao = op.descricao
                 });
             }
-            return View("OpRealizadasEstorno",opsEstornoViewModels);
+            return View("OpRealizadasEstorno", opsEstornoViewModels);
         }
 
         [HttpPost]

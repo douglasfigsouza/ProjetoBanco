@@ -26,12 +26,21 @@ namespace ProjetoBanco.Infra.Data.Repositories
             conn = new Conexao();
             lstBancos = new List<Banco>();
         }
-        public void AddBanco(Banco banco)
+        public string AddBanco(Banco banco)
         {
-            conn.ExecuteProcedure(Procedures.PBSP_INSERTBANCO);
-            conn.AddParameter("@nome",banco.nome);
-            conn.AddParameter("@ativo", banco.ativo);
-            conn.ExecuteNonQuery();
+            try
+            {
+                conn.ExecuteProcedure(Procedures.PBSP_INSERTBANCO);
+                conn.AddParameter("@nome", banco.nome);
+                conn.AddParameter("@ativo", banco.ativo);
+                conn.ExecuteNonQuery();
+                return null;
+            }
+            catch (Exception e)
+            {
+                return e.ToString();
+            }
+
         }
 
         public Banco GetByBancoId(int id)
@@ -54,10 +63,11 @@ namespace ProjetoBanco.Infra.Data.Repositories
             return lstBancos.ToList();
         }
 
-        public void UpdateBanco(Banco banco)
+        public string UpdateBanco(Banco banco)
         {
             throw new NotImplementedException();
         }
+
 
         public void RemoveBanco(Banco banco)
         {

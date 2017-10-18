@@ -17,9 +17,9 @@ namespace ProjetoBanco.Domain.Services
         {
             _bancoRepositoryDomain = bancoRepositoryDomain;
         }
-        public void AddBanco(Banco banco)
+        public string AddBanco(Banco banco)
         {
-           _bancoRepositoryDomain.AddBanco(banco);
+           return _bancoRepositoryDomain.AddBanco(banco);
         }
 
         public Banco GetByBancoId(int id)
@@ -32,7 +32,7 @@ namespace ProjetoBanco.Domain.Services
            return _bancoRepositoryDomain.GetAllBancos();
         }
 
-        public void UpdateBanco(Banco banco)
+        public string UpdateBanco(Banco banco)
         {
             throw new NotImplementedException();
         }

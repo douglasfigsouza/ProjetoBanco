@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.Collections.Generic;
 using ProjetoBanco.Domain.Entities;
 
 namespace ProjetoBanco.Domain.Interfaces.IRepositories
@@ -13,8 +9,7 @@ namespace ProjetoBanco.Domain.Interfaces.IRepositories
         Cliente GetByClienteId(int id);
         IEnumerable<Cliente> GetAllClientes(int op);
         Cliente GetClienteByCpf(string cpf);
-        void UpdateClientes(Cliente cliente);
-        void RemoveClientes(Cliente obj);
+        string UpdateClientes(Cliente cliente);
         void Dispose();
     }
 }

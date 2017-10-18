@@ -2,8 +2,6 @@
 using System.Collections.Generic;
 using System.Data.SqlClient;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using ProjetoBanco.Domain.Entities;
 using ProjetoBanco.Domain.Interfaces.IRepositories;
 
@@ -29,7 +27,7 @@ namespace ProjetoBanco.Infra.Data.Repositories
             Agencia = new Agencia();
         }
 
-        public void AddAgencia(Agencia agencia)
+        public string AddAgencia(Agencia agencia)
         {
             try
             {
@@ -38,11 +36,11 @@ namespace ProjetoBanco.Infra.Data.Repositories
                 conn.AddParameter("@bancoId", agencia.bancoId);
                 conn.AddParameter("@agencia", agencia.agencia);
                 conn.ExecuteNonQuery();
+                return null;
             }
             catch (Exception e)
             {
-                Console.WriteLine(e);
-                throw;
+                return e.ToString();
             }
 
         }
@@ -68,30 +66,25 @@ namespace ProjetoBanco.Infra.Data.Repositories
             return Agencias.ToList();
         }
 
-        public void UpdateAgencia(Agencia agencia)
+        public string UpdateAgencia(Agencia agencia)
         {
             try
             {
                 conn.ExecuteProcedure(Procedures.PBSP_UPDATEAGENCIA);
-                conn.AddParameter("@agencia",agencia.agencia);
-                conn.AddParameter("@ativo",agencia.ativo);
+                conn.AddParameter("@agencia", agencia.agencia);
+                conn.AddParameter("@ativo", agencia.ativo);
                 conn.ExecuteNonQuery();
+                return null;
             }
             catch (Exception e)
             {
-                Console.WriteLine(e);
-                throw;
+                return e.ToString();
             }
         }
 
-        public void RemoveAgencia(Agencia agencia)
-        {
-            throw new NotImplementedException();
-        }
 
         public void Dispose()
         {
-            throw new NotImplementedException();
         }
 
         public Agencia GetAgenciaByNum(int agencia)

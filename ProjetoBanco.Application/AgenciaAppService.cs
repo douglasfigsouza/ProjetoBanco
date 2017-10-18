@@ -1,9 +1,5 @@
 ﻿using System;
-using System.CodeDom;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using ProjetoBanco.Application.Interfaces;
 using ProjetoBanco.Domain.Entities;
 using ProjetoBanco.Domain.Interfaces.IRepositories;
@@ -11,7 +7,7 @@ using ProjetoBanco.Domain.Interfaces.IServices;
 
 namespace ProjetoBanco.Application
 {
-    public class AgenciaAppService:IAgenciaAppService
+    public class AgenciaAppService : IAgenciaAppService
     {
         private readonly IAgenciaServiceDomain _agenciaServiceDomain;
         private readonly IAgenciaRepositoryDomain _agenciaRepositoryDomain;
@@ -23,9 +19,9 @@ namespace ProjetoBanco.Application
             _agenciaRepositoryDomain = agenciaRepositoryDomain;
         }
 
-        public void AddAgencia(Agencia agencia)
+        public string AddAgencia(Agencia agencia)
         {
-            _agenciaRepositoryDomain.AddAgencia(agencia);
+            return _agenciaRepositoryDomain.AddAgencia(agencia);
         }
 
         public Agencia GetByAgenciaId(int id)
@@ -38,9 +34,9 @@ namespace ProjetoBanco.Application
             return _agenciaRepositoryDomain.GetAllAgencias();
         }
 
-        public void UpdateAgencia(Agencia agencia)
+        public string UpdateAgencia(Agencia agencia)
         {
-            _agenciaRepositoryDomain.UpdateAgencia(agencia);
+            return _agenciaRepositoryDomain.UpdateAgencia(agencia);
         }
 
         public void RemoveAgencia(Agencia agencia)

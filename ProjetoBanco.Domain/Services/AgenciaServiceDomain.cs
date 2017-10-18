@@ -10,21 +10,22 @@ using ProjetoBanco.Domain.Interfaces.IServices;
 
 namespace ProjetoBanco.Domain.Services
 {
-    public class AgenciaServiceDomain:IAgenciaServiceDomain
+    public class AgenciaServiceDomain : IAgenciaServiceDomain
     {
         private readonly IAgenciaRepositoryDomain _repository;
+
         public AgenciaServiceDomain(IAgenciaRepositoryDomain repository)
         {
             _repository = repository;
         }
-        public void AddAgencia(Agencia agencia)
+        public string AddAgencia(Agencia agencia)
         {
-            _repository.AddAgencia(agencia);
+            return _repository.AddAgencia(agencia);
         }
 
         public Agencia GetByAgenciaId(int id)
         {
-           return _repository.GetByAgenciaId(id);
+            return _repository.GetByAgenciaId(id);
         }
 
         public Agencia GetAgenciaByNum(int agencia)
@@ -37,14 +38,9 @@ namespace ProjetoBanco.Domain.Services
             return _repository.GetAllAgencias();
         }
 
-        public void UpdateAgencia(Agencia agencia)
+        public string UpdateAgencia(Agencia agencia)
         {
-            _repository.UpdateAgencia(agencia);
-        }
-
-        public void RemoveAgencia(Agencia agencia)
-        {
-            _repository.RemoveAgencia(agencia);
+            return _repository.UpdateAgencia(agencia);
         }
 
         public void Dispose()

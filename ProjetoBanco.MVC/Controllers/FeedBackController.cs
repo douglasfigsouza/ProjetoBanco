@@ -1,8 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Web;
-using System.Web.Mvc;
+﻿using System.Web.Mvc;
+using ProjetoBanco.Domain.Entities;
+using ProjetoBanco.MVC.ViewModels;
 
 namespace ProjetoBanco.MVC.Controllers
 {
@@ -18,5 +16,20 @@ namespace ProjetoBanco.MVC.Controllers
         {
             return View();
         }
+        public ActionResult feedBackOperacao(feedBackViewModel feed)
+        {
+            if (feed.error==null)
+            {
+                TempData["outraOp"] = feed.url;
+                TempData["menssagem"] = feed.op+": " + feed.descricao + " cadastrado com sucesso!";
+                return RedirectToAction("Success", "FeedBack");
+            }
+            else
+            {
+                
+                return RedirectToAction("Error", "FeedBack", feed);
+            }
+        }
+
     }
 }

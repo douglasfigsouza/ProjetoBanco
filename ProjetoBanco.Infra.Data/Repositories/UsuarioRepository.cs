@@ -30,13 +30,21 @@ namespace ProjetoBanco.Infra.Data.Repositories
             usuario = new Usuario();
             Usuarios =new List<Usuario>();
         }
-        public void AddUsuario(Usuario usuario)
+        public string AddUsuario(Usuario usuario)
         {
-            conn.ExecuteProcedure(Procedures.PBSP_INSERTUSUARIOS);
-            conn.AddParameter("@clienteId", usuario.clienteId);
-            conn.AddParameter("@nome", usuario.nome);
-            conn.AddParameter("@senha", usuario.senha);
-            conn.ExecuteNonQuery();
+            try
+            {
+                conn.ExecuteProcedure(Procedures.PBSP_INSERTUSUARIOS);
+                conn.AddParameter("@clienteId", usuario.clienteId);
+                conn.AddParameter("@nome", usuario.nome);
+                conn.AddParameter("@senha", usuario.senha);
+                conn.ExecuteNonQuery();
+                return null;
+            }
+            catch (Exception e)
+            {
+                return e.ToString();
+            }
         }
 
         public Usuario VerificaLogin(Usuario usuario)

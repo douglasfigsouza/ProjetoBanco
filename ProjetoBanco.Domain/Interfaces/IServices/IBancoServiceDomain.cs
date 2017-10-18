@@ -9,11 +9,10 @@ namespace ProjetoBanco.Domain.Interfaces.IServices
 {
     public interface IBancoServiceDomain
     {
-        void AddBanco(Banco banco);
+        string AddBanco(Banco banco);
         Banco GetByBancoId(int id);
         IEnumerable<Banco> GetAllBancos();
-        void UpdateBanco(Banco banco);
-        void RemoveBanco(Banco banco);
+        string UpdateBanco(Banco banco);
         void Dispose();
     }
 }

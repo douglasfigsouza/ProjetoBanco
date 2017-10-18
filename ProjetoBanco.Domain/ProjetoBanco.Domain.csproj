@@ -39,6 +39,7 @@
     <Compile Include="Entities\ContaClienteAlteracao.cs" />
     <Compile Include="Entities\Estado.cs" />
     <Compile Include="Entities\Estorno.cs" />
+    <Compile Include="Entities\feedBack.cs" />
     <Compile Include="Entities\OperacaoRealizada.cs" />
     <Compile Include="Entities\Operacoes.cs" />
     <Compile Include="Entities\Transacao.cs" />
@@ -74,6 +75,7 @@
   </ItemGroup>
   <ItemGroup>
     <Reference Include="System" />
+    <Reference Include="System.EnterpriseServices" />
   </ItemGroup>
   <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

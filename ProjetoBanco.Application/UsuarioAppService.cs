@@ -1,10 +1,5 @@
-﻿
-using System;
+﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Runtime.InteropServices.WindowsRuntime;
-using System.Text;
-using System.Threading.Tasks;
 using ProjetoBanco.Application.Interfaces;
 using ProjetoBanco.Domain.Entities;
 using ProjetoBanco.Domain.Interfaces.IRepositories;
@@ -12,7 +7,7 @@ using ProjetoBanco.Domain.Interfaces.IServices;
 
 namespace ProjetoBanco.Application
 {
-    public class UsuarioAppService:IUsuarioAppService
+    public class UsuarioAppService : IUsuarioAppService
     {
         private readonly IUsuariosServiceDomain _UsuarioServiceDomain;
         private readonly IUsuarioRepositoryDomain _UsuarioRepositoryDomain;
@@ -22,14 +17,14 @@ namespace ProjetoBanco.Application
             _UsuarioServiceDomain = IUsuarioServiceDomain;
             _UsuarioRepositoryDomain = UsuarioRepositoryDomain;
         }
-        public void AddUsuario(Usuario usuario)
+        public string AddUsuario(Usuario usuario)
         {
-           _UsuarioRepositoryDomain.AddUsuario(usuario);
+            return _UsuarioRepositoryDomain.AddUsuario(usuario);
         }
 
         public Usuario GetByUsuarioId(int id)
         {
-           return _UsuarioRepositoryDomain.GetByUsuarioId(id);
+            return _UsuarioRepositoryDomain.GetByUsuarioId(id);
         }
 
         public IEnumerable<Usuario> GetAllUsuarios()
@@ -54,7 +49,7 @@ namespace ProjetoBanco.Application
 
         public Usuario VerificaLogin(Usuario usuario)
         {
-           return _UsuarioRepositoryDomain.VerificaLogin(usuario);
+            return _UsuarioRepositoryDomain.VerificaLogin(usuario);
         }
     }
 }

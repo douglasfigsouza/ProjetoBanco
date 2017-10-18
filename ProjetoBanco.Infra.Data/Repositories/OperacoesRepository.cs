@@ -30,17 +30,18 @@ namespace ProjetoBanco.Infra.Data.Repositories
             lstTransacoes = new List<Transacao>();
         }
 
-        public void AddOperacao(Operacoes op)
+        public string AddOperacao(Operacoes op)
         {
             try
             {
                 conn.ExecuteProcedure(Procedures.PBSP_INSERTOPERACAO);
                 conn.AddParameter("@descricao", op.descricao);
                 conn.ExecuteNonQuery();
+                return null;
             }
-            catch (Exception ex)
+            catch (Exception e)
             {
-                throw ex;
+                return e.ToString();
             }
         }
 

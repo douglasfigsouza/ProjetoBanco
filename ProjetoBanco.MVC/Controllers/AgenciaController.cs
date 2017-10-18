@@ -9,9 +9,10 @@ namespace ProjetoBanco.MVC.Controllers
     {
         private readonly IAgenciaAppService _agenciaAppService;
         private readonly IEstadoAppService _estadoAppService;
-
         private readonly IBancoAppService _bancoAppService;
+        private string error;
         private Agencia agencia;
+
         public AgenciaController(IAgenciaAppService agenciaAppService, IBancoAppService bancoAppService, IEstadoAppService estadoAppService)
         {
             _agenciaAppService = agenciaAppService;
@@ -19,6 +20,7 @@ namespace ProjetoBanco.MVC.Controllers
             _bancoAppService = bancoAppService;
             agencia = new Agencia();
         }
+
         // GET: Agencia
         public ActionResult CreateAgencia()
         {
@@ -26,6 +28,7 @@ namespace ProjetoBanco.MVC.Controllers
             ViewBag.bancos = _bancoAppService.GetAllBancos();
             return View();
         }
+
         [HttpPost]
         public ActionResult CreateAgencia(AgenciaViewModel agenciaViewModel)
         {
@@ -35,9 +38,20 @@ namespace ProjetoBanco.MVC.Controllers
                 agencia.bancoId = agenciaViewModel.bancoId;
                 agencia.agencia = agenciaViewModel.agencia;
 
-                _agenciaAppService.AddAgencia(agencia);
-                ViewBag.messagem = "Agência: " + agenciaViewModel.agencia + " cadastrada com sucesso!";
-                return RedirectToAction("Index", "Success");
+                error = _agenciaAppService.AddAgencia(agencia);
+                if (error == null)
+                {
+                    TempData["outraOp"] = "/Agencia/CreateAgencia";
+                    TempData["menssagem"] = "Agência: " + agenciaViewModel.agencia + " cadastrada com sucesso!";
+                    return RedirectToAction("Success", "FeedBack");
+                }
+                else
+                {
+                    TempData["outraOp"] = "/Agencia/CreateAgencia";
+                    TempData["menssagem"] = "Agência: " + agenciaViewModel.agencia + " Não cadastrada! Erro: " + error;
+                    return RedirectToAction("Error", "FeedBack");
+                }
+
             }
             else
             {
@@ -57,8 +71,20 @@ namespace ProjetoBanco.MVC.Controllers
         {
             agencia.agencia = agenciaViewModel.agencia;
             agencia.ativo = agenciaViewModel.ativo;
-            _agenciaAppService.UpdateAgencia(agencia);
-            return RedirectToAction("Index", "Success");
+            error = _agenciaAppService.UpdateAgencia(agencia);
+            if (error == null)
+            {
+                TempData["outraOp"] = "/Agencia/CreateAgencia";
+                TempData["menssagem"] = "Agência: " + agenciaViewModel.agencia + " cadastrada com sucesso!";
+                return RedirectToAction("Success", "FeedBack");
+            }
+            else
+            {
+                TempData["outraOp"] = "/Agencia/CreateAgencia";
+                TempData["menssagem"] = "Agência: " + agenciaViewModel.agencia + " Não cadastrada! Erro: " + error;
+                return RedirectToAction("Error", "FeedBack");
+            }
+
         }
 
         public JsonResult GetAgenciaByNum(int agencia)

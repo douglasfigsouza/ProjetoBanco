@@ -2,9 +2,6 @@
 using ProjetoBanco.Domain.Entities;
 using ProjetoBanco.MVC.ViewModels;
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using ProjetoBanco.MVC.Utilitarios;
 using System.Web.Mvc;
 
 namespace ProjetoBanco.MVC.Controllers
@@ -17,7 +14,8 @@ namespace ProjetoBanco.MVC.Controllers
         private Cliente cliente;
         private string error;
         private ClienteViewModel clienteViewModel;
-        private List<Cidade> Cidades;
+        private feedBackViewModel feed;
+        private FeedBackController feedCtrl;
 
         public ClientesController(IClienteAppService clienteApp, IEstadoAppService estadoApp, ICidadesAppService ICidadeAppService, IBancoAppService IBancoAppService)
         {
@@ -25,8 +23,9 @@ namespace ProjetoBanco.MVC.Controllers
             _estadoAppService = estadoApp;
             _cidadesAppService = ICidadeAppService;
             cliente = new Cliente();
-            Cidades = new List<Cidade>();
             clienteViewModel = new ClienteViewModel();
+            feed = new feedBackViewModel();
+            feedCtrl = new FeedBackController();
         }
         // GET: Clientes/Create
         public ActionResult CreateCliente()
@@ -54,19 +53,13 @@ namespace ProjetoBanco.MVC.Controllers
                 cliente.dataCadastro = DateTime.Now;
                 cliente.ativo = true;
 
-                error = _clienteApp.AddCliente(cliente);
-                if (error == null)
-                {
-                    TempData["outraOp"] = "/Clientes/CreateCliente";
-                    TempData["menssagem"]= "Cliente: " + clienteViewModel.nome + " cadastrado com sucesso!";
-                    return RedirectToAction("Success", "FeedBack");
-                }
-                else
-                {
-                    TempData["outraOp"] = "/Clientes/CreateCliente";
-                    TempData["menssagem"] = "Cliente: " + clienteViewModel.nome + " Não cadastrado! Erro: "+error;
-                    return RedirectToAction("Error", "FeedBack");
-                }
+                feed.error = _clienteApp.AddCliente(cliente);
+                feed.op = "cleinte";
+                feed.descricao = "Cadastro do Cliente:" + clienteViewModel.nome;
+                feed.url = "/Clientes/CreateCliente";
+
+                return feedBackOperacao(feed);
+
             }
             else
             {
@@ -109,10 +102,11 @@ namespace ProjetoBanco.MVC.Controllers
                 cliente.cidadeId = clienteViewModel.cidadeId;
 
 
-                _clienteApp.UpdateCliente(cliente);
-
-                TempData["menssagem"] = "Cliente " + clienteViewModel.nome + " alterado com Sucesso!";
-                return RedirectToAction("Index", "Success");
+                feed.error = _clienteApp.UpdateCliente(cliente);
+                feed.descricao = clienteViewModel.nome;
+                feed.op = "Cliente";
+                feed.url = "/Clientes/CreateCliente";
+                return /*feedBackOperacao(error, "EditCliente")*/ null;
             }
             ViewBag.clientes = _clienteApp.GetAllClientes(0);
             return View(clienteViewModel);
@@ -130,6 +124,20 @@ namespace ProjetoBanco.MVC.Controllers
             clienteViewModel.Id = cliente.Id;
             clienteViewModel.nome = cliente.nome;
             return Json(cliente, JsonRequestBehavior.AllowGet);
+        }
+        private ActionResult feedBackOperacao(feedBackViewModel feed)
+        {
+            if (feed.error == null)
+            {
+                //TempData["outraOp"] = "/Clientes/" + action;
+                //TempData["menssagem"] = "Cliente: " + clienteViewModel.nome + " cadastrado com sucesso!";
+                return RedirectToAction("Success", "FeedBack");
+            }
+            else
+            {
+                
+                return RedirectToAction("Error", "FeedBack",new {feed= feed});
+            }
         }
     }
 }
