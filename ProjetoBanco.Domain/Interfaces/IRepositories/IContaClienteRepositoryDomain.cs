@@ -8,6 +8,7 @@ namespace ProjetoBanco.Domain.Interfaces.IRepositories
     {
         void AddContaCliente(Conta conta, List<ContaCliente>contaClientes);
         ContaClienteAlteracao GetConta(string conta, int agencia, string senha);
+        void UpdateConta(Conta conta);
         void Dispose();
     }
 }

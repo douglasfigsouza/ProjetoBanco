@@ -1,5 +1,5 @@
 ﻿<div class="row" id="dadosContaCliente">
-    <div class="col s6">
+    <div class="col s8">
         <div class="row">
             <h5>Digite os Dados</h5>
             <hr />
@@ -15,7 +15,7 @@
             </div>
             <div class="col s4">
                 <label class="col s12">Senha</label>
-                <input type="text" class="col s12" name="senha" id="senha">
+                <input type="password" class="col s12" name="senha" id="senha">
             </div>
         </div>
         <div class="row">
@@ -26,41 +26,49 @@
         </div>
     </div>
 </div>
-<div class="row">
+<div class="row" id="divDadosDaConta">
     <div class="col s8">
         <h5 id="contaCli"></h5>
         <hr />
-        <div class="row" id="divDadosDaConta">
+        @using (Html.BeginForm("UpdateConta","Contas"))
+        {
             <div class="row">
-                <div class="col s12">
-                    <label>Clientes</label>
-                    <label id="nomeCli" class="col s12"></label>
+                <input type="hidden" name="conta" id="contaAlteracao"/>
+                <div class="row">
+                    <div class="col s12">
+                        <h6 class="col s4">Cliente(s):</h6>
+                        <h6 id="nomeCli" class="col s8"></h6>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col s6">
+                        <label class="col s12">Senha</label>
+                        <input type="password" class="col s12" name="senha"/>
+                    </div>
+                    <div class="col s6">
+                        <label class="col s12">Confirme a Senha</label>
+                        <input type="password" class="col s12" name="confSenha"/>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col s3 ">
+                        <input type="checkbox" id="ativo" name="ativo" checked/>
+                        <label for="ativo">Ativo</label>
+                    </div>
                 </div>
             </div>
             <div class="row">
-                <div class="col s6">
-                    <label class="col s12">Senha</label>
-                    <input type="password" class="col s12" name="senha"/>
-                </div>
+                <button class="btn waves-effect waves-light" type="submit" id="atualizaConta">
+                    Buscar
+                    <i class="material-icons right">send</i>
+                </button>
             </div>
-            <div class="row">
-                <div class="col s6">
-                    <label class="col s12">Confirme a Senha</label>
-                    <input type="password" class="col s12" name="confSenha"/>
-                </div>
-            </div>
-            <div class="row">
-                <div class="col s3 ">
-                    <input type="checkbox" id="ativo" name="ativo" checked/>
-                    <label for="ativo">Ativo</label>
-                </div>
-            </div>
-        </div>
+        }
     </div>
 </div>
 <script>
     $(document).ready(function () {
-        $("#formDadosContaCliente").hide();
+        $("#divDadosDaConta").hide();
         $("#getConta").click(function () {
             $.ajax({
                 type: "GET",
@@ -72,13 +80,20 @@
                     agencia: $("#agencia").val()
                 },
                 success: function (dados) {
-                    debugger;
+                    $("#contaAlteracao").val(dados.conta);
+                    if (dados.ativo == 1) {
+                        $("#ativo").prop('checked', true);
+                        $("#ativo").val(true);
+                    } else {
+                        $("#ativo").prop('checked', false);
+                        $("#ativo").val(false);
+                    }
                     $("#contaCli").text("Conta: " + dados.conta);
                     for (var i = 0; i < dados.Clientes.length; i++) {
                         $("#nomeCli").text(dados.Clientes[i].nome + "/" + $("#nomeCli").text());
                     }
                     $("#dadosContaCliente").hide();
-                    $("#formDadosContaCliente").show();
+                    $("#divDadosDaConta").show();
                 },
                 error: function ajaxError(dados) {
                     alert(dados.status + ' ' + dados.statusText);
@@ -86,69 +101,13 @@
 
             });
         });
-        $(document).on("click", ".removeCliente",
-            function () {
-                var id = $(this).closest("tr").attr("id");
-                //faz a confirmação da exclusao do registro
-                var apagar = confirm("Deseja excluir " + $(this).closest("tr").children("td:eq(0)").text());
-                if (apagar) $(this).closest("tr").remove();
-            });
-        $("#addCliente").click(function () {
-            $.ajax({
-                type: "GET",
-                url: "/Clientes/GetClienteByCpf",
-                dataType: "Json",
-                data: {
-                    cpf: $("#cpfCli").val()
-                },
-                success: function (dados) {
-                    var flag = false;
-                    $("#tbdClientesConta").find("tr").each(function (index) {
-                        if ($(this).attr("id") == dados.Id) {
-                            flag = true;
-                        }
-                    });
-                    if (flag == true) alert("Este cliente ja faz parte desta conta!")
-                    else {
-                        cancelarInclusao = confirm("Deseja incluir " + dados.nome + " Na conta?");
-                        if (cancelarInclusao) {
-                            $("#tbdClientesConta").append("<tr id=" +
-                                dados.Id +
-                                "><td>" +
-                                dados.nome +
-                                "</td>" +
-                                "<td>  " +
-                                "<button class='btn-floating btn-large waves-effect waves-light red removeCliente'type='button'>" +
-                                "<i class='material-icons'>remove_circle_outline</i>" +
-                                "</button>" +
-                                "</td>" +
-                                "</tr>");
-                        } else {
-                            alert("Cliente não incluido");
-                        }
-                    }
-                }, error() {
-
-                }
-            });
-        });
-        $("#atualizaConta").click(function () {
-            var clientes = [];
+        $("#ativo").change(function () {
             debugger;
-            $("#tbdClientesConta").find("tr").each(function (index) {
-                clientes.push($(this).attr("id"));
-            });
-            $.ajax({
-                type: "POST",
-                url: "/Contas/UpdateContaCliente",
-                data: {
-                    clientes: clientes
-                },
-                dataType: "Json",
-                success: function () {
-
-                }
-            });
+            if ($("#ativo").is(':checked')) {
+                $("#ativo").val(true);
+            } else {
+                $("#ativo").val(false);
+            }
         });
     });
 </script>

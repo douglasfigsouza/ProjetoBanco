@@ -27,6 +27,11 @@ namespace ProjetoBanco.Application
             return _contaClienteRepositoryDomain.GetConta(conta,  agencia, senha);
         }
 
+        public void UpdateConta(Conta conta)
+        {
+            _contaClienteRepositoryDomain.UpdateConta(conta);
+        }
+
         public void Dispose()
         {
            _contaClienteRepositoryDomain.Dispose();

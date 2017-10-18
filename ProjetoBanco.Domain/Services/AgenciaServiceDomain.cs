@@ -27,6 +27,11 @@ namespace ProjetoBanco.Domain.Services
            return _repository.GetByAgenciaId(id);
         }
 
+        public Agencia GetAgenciaByNum(int agencia)
+        {
+            return _repository.GetAgenciaByNum(agencia);
+        }
+
         public IEnumerable<Agencia> GetAllAgencias()
         {
             return _repository.GetAllAgencias();

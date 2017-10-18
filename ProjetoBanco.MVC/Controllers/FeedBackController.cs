@@ -6,10 +6,10 @@ using System.Web.Mvc;
 
 namespace ProjetoBanco.MVC.Controllers
 {
-    public class SuccessController : Controller
+    public class FeedBackController : Controller
     {
         // GET: Success
-        public ActionResult Index()
+        public ActionResult Success()
         {
             return View();
         }

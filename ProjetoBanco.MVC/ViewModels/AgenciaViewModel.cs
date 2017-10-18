@@ -10,5 +10,6 @@ namespace ProjetoBanco.MVC.ViewModels
         public int agencia { get; set; }
         public int bancoId { get; set; }
         public int CidadeId { get; set; }
+        public bool ativo { get; set; }
     }
 }

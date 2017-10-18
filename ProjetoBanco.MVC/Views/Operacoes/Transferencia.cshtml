@@ -23,21 +23,21 @@
                         <div class="row">
                             <div class="col s5">
                                 <label for="transacaoConta1.agencia" class="col s12">Agência</label>
-                                <input type="text" name="transacaoConta1.agencia" class="col s12"/>
+                                <input type="text" name="transacaoConta1.agencia" class="col s12 agencia" />
                             </div>
                             <div class="col s5">
                                 <label for="transacaoConta1.conta" class="col s12">Conta</label>
-                                <input type="text" name="transacaoConta1.conta" class="col s12"/>
+                                <input type="text" name="transacaoConta1.conta" class="col s12 conta" />
                             </div>
                         </div>
                         <div class="row">
                             <div class="col s2">
                                 <label for="transacaoConta1.valor" class="col s12">Valor</label>
-                                <input type="text" name="transacaoConta1.valor" class="col s12"/>
+                                <input type="text" name="transacaoConta1.valor" class="col s12" />
                             </div>
                             <div class="col s3">
                                 <label for="transacaoConta1.senhaCli" class="col s12">Senha</label>
-                                <input type="text" name="transacaoConta1.senhaCli" class="col s12"/>
+                                <input type="text" name="transacaoConta1.senhaCli" class="col s12" />
                             </div>
                         </div>
                     </div>
@@ -51,11 +51,11 @@
 
                             <div class="col s5">
                                 <label for="transacaoConta2.agencia" class="col s12">Agência</label>
-                                <input type="text" name="transacaoConta2.agencia" class="col s12"/>
+                                <input type="text" name="transacaoConta2.agencia" class="col s12 agencia" />
                             </div>
                             <div class="col s6">
                                 <label for="transacaoConta2.conta" class="col s12">Conta</label>
-                                <input type="text" name="transacaoConta2.conta" class="col s12"/>
+                                <input type="text" name="transacaoConta2.conta" class="col s12 conta" />
                             </div>
                         </div>
                     </div>
@@ -74,4 +74,74 @@
     }
 
 </div>
+<script>
+    $(document).ready(function () {
 
+
+        $("form").validate({
+            submitHandler: function (form) {
+                form.submit();
+            },
+            rules: {
+            
+                
+            },
+            messages: {
+                nome: {
+                    required: "O campo Nome é Obrigatório! Digite-O",
+                    minlength: "O campo Nome deve conter no mínimo 5 caracteres!",
+                    maxlength: "O campo Nome deve conter no máximo 100 caracteres!"
+                },
+                cpf: {
+                    required: "O campo CPF é Obrigatório! Digite-O"
+                },
+                rg: {
+                    required: "O campo RG é Obrigatório! Digite-O"
+                },
+                fone: {
+                    required: "O campo Fone é Obrigatório! Digite-O"
+                },
+                bairro: {
+                    required: "O campo Bairro é Obrigatório! Digite-O"
+                },
+                rua: {
+                    required: "O campo Rua é Obrigatório! Digite-O"
+                },
+                num: {
+                    required: "O campo N° é Obrigatório! Digite-O"
+
+                },
+                nivel: {
+                    required: "O campo Nível é Obrigatório! Digite-O"
+
+                },
+                cidadeId: {
+                    required: "Selecione a cidade!"
+                },
+                senha: {
+                    required: "O campo senha á obrigatório! Digite-o",
+                    minlength: "A senha deve conter no minimo 8 caracteres!",
+                    maxlength: "A senha deve conter no máximo 8 caracteres!"
+                },
+                senhaCli: {
+                    required: "O campo senha á obrigatório! Digite-o",
+                    minlength: "A senha deve conter no minimo 8 caracteres!",
+                    maxlength: "A senha deve conter no máximo 8 caracteres!"
+                },
+                conf_senha: {
+                    required: "O campo Confirme sua Senha é Obrigatório! Digite-O",
+                    equalTo: "As senhas não conferem"
+                },
+                agencia: {
+                    required: "O campo agência é obrigatório! Digite-o."
+                },
+                conta: {
+                    required: "O campo conta é obrigatório! Digite-o."
+                },
+                valor: {
+                    required: "O Campo valor é obrigatório! Digite-o."
+                }
+            }
+        });
+    });
+</script>

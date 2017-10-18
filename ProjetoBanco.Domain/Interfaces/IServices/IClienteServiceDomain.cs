@@ -5,7 +5,7 @@ namespace ProjetoBanco.Domain.Interfaces.IServices
 {
     public interface IClienteServiceDomain
     {
-        void AddCliente(Cliente cliente);
+        string AddCliente(Cliente cliente);
         Cliente GetByClienteId(int id);
         IEnumerable<Cliente> GetAllClientes(int op);
         Cliente GetClienteByCpf(string cpf);

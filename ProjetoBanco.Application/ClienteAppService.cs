@@ -18,9 +18,9 @@ namespace ProjetoBanco.Application
             _clienteRepositoryDomain = clienteRepositoryDomain;
         }
 
-        public void AddCliente(Cliente cliente)
+        public string AddCliente(Cliente cliente)
         {
-            _iClienteService.AddCliente(cliente);
+            return _iClienteService.AddCliente(cliente);
         }
 
         public Cliente GetByClienteId(int id)

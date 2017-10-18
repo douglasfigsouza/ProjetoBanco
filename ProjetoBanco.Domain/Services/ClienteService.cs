@@ -18,9 +18,9 @@ namespace ProjetoBanco.Domain.Services
             _repository = repository;
         }
 
-        public void AddCliente(Cliente cliente)
+        public string AddCliente(Cliente cliente)
         {
-            _repository.AddCliente(cliente);
+           return _repository.AddCliente(cliente);
         }
 
         public IEnumerable<Cliente> GetAllClientes(int op)

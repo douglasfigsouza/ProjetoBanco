@@ -18,7 +18,8 @@ namespace ProjetoBanco.Infra.Data.Repositories
         {
             PBSP_INSERTCONTA,
             PBSP_INSERTCONTACLIENTE,
-            PBSP_GETCONTA
+            PBSP_GETCONTA,
+            PBSP_UPDATECONTA
         }
 
         public ContaClienteRepository()
@@ -45,6 +46,23 @@ namespace ProjetoBanco.Infra.Data.Repositories
                     conn.AddParameter("@agencia", item.agencia);
                     conn.ExecuteNonQuery();
                 }
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine(e);
+                throw;
+            }
+        }
+
+        public void UpdateConta(Conta conta)
+        {
+            try
+            {
+                conn.ExecuteProcedure(Procedure.PBSP_UPDATECONTA);
+                conn.AddParameter("@conta", conta.num);
+                conn.AddParameter("@senha", conta.senha);
+                conn.AddParameter("@ativo", conta.ativo);
+                conn.ExecuteNonQuery();
             }
             catch (Exception e)
             {

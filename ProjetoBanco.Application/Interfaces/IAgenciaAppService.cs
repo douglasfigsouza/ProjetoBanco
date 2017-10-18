@@ -1,8 +1,5 @@
-﻿using System;
+﻿
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using ProjetoBanco.Domain.Entities;
 
 namespace ProjetoBanco.Application.Interfaces
@@ -11,6 +8,7 @@ namespace ProjetoBanco.Application.Interfaces
     {
         void AddAgencia(Agencia agencia);
         Agencia GetByAgenciaId(int id);
+        Agencia GetAgenciaByNum(int agencia);
         IEnumerable<Agencia> GetAllAgencias();
         void UpdateAgencia(Agencia agencia);
         void RemoveAgencia(Agencia agencia);

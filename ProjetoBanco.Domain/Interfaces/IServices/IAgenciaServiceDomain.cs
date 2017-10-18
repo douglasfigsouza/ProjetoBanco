@@ -11,6 +11,7 @@ namespace ProjetoBanco.Domain.Interfaces.IServices
     {
         void AddAgencia(Agencia agencia);
         Agencia GetByAgenciaId(int id);
+        Agencia GetAgenciaByNum(int agencia);
         IEnumerable<Agencia> GetAllAgencias();
         void UpdateAgencia(Agencia agencia);
         void RemoveAgencia(Agencia agencia);

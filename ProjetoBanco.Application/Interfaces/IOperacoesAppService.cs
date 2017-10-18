@@ -16,7 +16,7 @@ namespace ProjetoBanco.Application.Interfaces
         void RemoveOperacao(Operacoes op);
         Transacao VerificaDadosTransacao(Transacao transacao, int op);
         Transacao VerificaDadosTransferencia(Transacao transacao);
-        String ConsultaSaldo(Transacao transacao);
+        string ConsultaSaldo(Transacao transacao);
         void Dispose();
     }
 }

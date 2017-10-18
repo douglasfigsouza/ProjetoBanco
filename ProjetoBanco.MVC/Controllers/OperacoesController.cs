@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.Web.Mvc;
 using ProjetoBanco.Application.Interfaces;
 using ProjetoBanco.Domain.Entities;
@@ -161,7 +162,8 @@ namespace ProjetoBanco.MVC.Controllers
             }
             else
             {
-                ViewBag.saldo = _OperacaoAppService.ConsultaSaldo(transacao);
+                ViewBag.saldo = String.Format(CultureInfo.GetCultureInfo("pt-BR"), "{0:C}",
+                   decimal.Parse(_OperacaoAppService.ConsultaSaldo(transacao)));
                 return View("MostraSaldo");
             }
 

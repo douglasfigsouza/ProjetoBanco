@@ -1,0 +1,11 @@
+﻿<div class="row">
+    <div class="col s6">
+        <h4>Parabéns</h4>
+        <h5>@TempData["menssagem"]</h5>
+        <h6>
+            Deseja Realizar Outra Operação?
+            <a href=@TempData["outraOp"]>Sim</a>
+            @Html.ActionLink("Não", "Logout", "Usuarios")
+        </h6>
+    </div>
+</div>

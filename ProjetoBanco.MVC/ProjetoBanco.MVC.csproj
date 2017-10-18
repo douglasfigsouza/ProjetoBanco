@@ -172,7 +172,7 @@
     <Compile Include="Controllers\EstadosCidadesController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\OperacoesController.cs" />
-    <Compile Include="Controllers\SuccessController.cs" />
+    <Compile Include="Controllers\FeedBackController.cs" />
     <Compile Include="Controllers\UsuariosController.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
@@ -255,8 +255,7 @@
     <Content Include="Views\Operacoes\Confirmacao.cshtml" />
     <Content Include="Views\Operacoes\MostraSaldo.cshtml" />
     <Content Include="Views\Operacoes\Saque.cshtml" />
-    <Content Include="Views\Success\Index.cshtml" />
-    <Content Include="Views\Success\Error.cshtml" />
+    <Content Include="Views\FeedBack\Success.cshtml" />
     <Content Include="Views\Operacoes\Transferencia.cshtml" />
     <Content Include="Views\Operacoes\ConfirmTransferencia.cshtml" />
     <Content Include="Views\Clientes\CreateCliente.cshtml" />
@@ -266,6 +265,8 @@
     <Content Include="Views\Operacoes\OpRealizadasEstorno.cshtml" />
     <Content Include="Views\Operacoes\ContaEstorno.cshtml" />
     <Content Include="Views\Contas\ContaEdit.cshtml" />
+    <Content Include="Views\Agencia\UpdateAgencia.cshtml" />
+    <Content Include="Views\FeedBack\Error.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

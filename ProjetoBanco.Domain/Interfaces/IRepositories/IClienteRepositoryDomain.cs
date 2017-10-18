@@ -9,7 +9,7 @@ namespace ProjetoBanco.Domain.Interfaces.IRepositories
 {
     public interface IClienteRepositoryDomain
     {
-        void AddCliente(Cliente cliente);
+        string AddCliente(Cliente cliente);
         Cliente GetByClienteId(int id);
         IEnumerable<Cliente> GetAllClientes(int op);
         Cliente GetClienteByCpf(string cpf);

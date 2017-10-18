@@ -969,8 +969,84 @@ CREATE PROCEDURE [dbo].[PBSP_GETCLIENTEBYCPF]
 	END
 GO
 				
-								
-																		
+
+IF EXISTS (SELECT * FROM dbo.sysobjects WHERE id = object_id(N'[dbo].[PBSP_UPDATECONTA]') AND objectproperty(id, N'IsPROCEDURE')=1)
+	DROP PROCEDURE [dbo].[PBSP_UPDATECONTA]
+GO
+
+CREATE PROCEDURE [dbo].[PBSP_UPDATECONTA]
+	@conta VARCHAR(20),
+	@senha VARCHAR(20),
+	@ativo BIT
+	AS
+
+	/*
+	Documentação
+	Arquivo Fonte.....: ArquivoFonte.sql
+	Objetivo..........: Atualizar uma conta
+	Autor.............: SMN - Douglas
+ 	Data..............: 18/10/2017
+	Ex................: EXEC [dbo].[PBSP_UPDATECONTA]
+
+	*/
+
+	BEGIN
+		UPDATE Conta SET senha=@senha, ativo=@ativo
+			WHERE Conta.num = @conta;
+	END
+GO
+
+IF EXISTS (SELECT * FROM dbo.sysobjects WHERE id = object_id(N'[dbo].[PBSP_GETAGENCIABYNUM]') AND objectproperty(id, N'IsPROCEDURE')=1)
+	DROP PROCEDURE [dbo].[PBSP_GETAGENCIABYNUM]
+GO
+
+CREATE PROCEDURE [dbo].[PBSP_GETAGENCIABYNUM]
+	@agencia INT
+	AS
+
+	/*
+	Documentação
+	Arquivo Fonte.....: ArquivoFonte.sql
+	Objetivo..........: Obtem agencia pelo numero
+	Autor.............: SMN - Douglas
+ 	Data..............: 18/10/2017
+	Ex................: EXEC [dbo].[PBSP_GETAGENCIABYNUM]
+
+	*/
+
+	BEGIN
+		SELECT ag.agencia, banco.nome,ag.ativo FROM Agencia	AS ag WITH(NOLOCK)
+		INNER JOIN Banco AS banco WITH(NOLOCK) ON ag.bancoId = banco.Id
+		WHERE ag.agencia=@agencia;
+	END
+GO
+														
+
+IF EXISTS (SELECT * FROM dbo.sysobjects WHERE id = object_id(N'[dbo].[PBSP_UPDATEAGENCIA]') AND objectproperty(id, N'IsPROCEDURE')=1)
+	DROP PROCEDURE [dbo].[PBSP_UPDATEAGENCIA]
+GO
+
+CREATE PROCEDURE [dbo].[PBSP_UPDATEAGENCIA]
+	@agencia INT,
+	@ativo BIT
+	AS
+
+	/*
+	Documentação
+	Arquivo Fonte.....: ArquivoFonte.sql
+	Objetivo..........: Altera agencia
+	Autor.............: SMN - Douglas
+ 	Data..............: 18/10/2017
+	Ex................: EXEC [dbo].[PBSP_UPDATEAGENCIA]
+
+	*/
+
+	BEGIN
+		UPDATE Agencia SET ativo = @ativo
+		WHERE agencia = @agencia;
+	END
+GO
+																					
 --Funções
 --função que retorna o Saldo
 CREATE FUNCTION dbo.RetornaSaldo(@contaId SMALLINT)

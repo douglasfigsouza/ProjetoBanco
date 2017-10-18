@@ -15,6 +15,7 @@ namespace ProjetoBanco.MVC.Controllers
         private readonly IEstadoAppService _estadoAppService;
         private readonly ICidadesAppService _cidadesAppService;
         private Cliente cliente;
+        private string error;
         private ClienteViewModel clienteViewModel;
         private List<Cidade> Cidades;
 
@@ -52,9 +53,20 @@ namespace ProjetoBanco.MVC.Controllers
                 cliente.nivel = clienteViewModel.nivel;
                 cliente.dataCadastro = DateTime.Now;
                 cliente.ativo = true;
-                _clienteApp.AddCliente(cliente);
-                ViewBag.messagem = "Cliente: " + clienteViewModel.nome + " cadastrado com sucesso!";
-                return RedirectToAction("Index", "Success");
+
+                error = _clienteApp.AddCliente(cliente);
+                if (error == null)
+                {
+                    TempData["outraOp"] = "/Clientes/CreateCliente";
+                    TempData["menssagem"]= "Cliente: " + clienteViewModel.nome + " cadastrado com sucesso!";
+                    return RedirectToAction("Success", "FeedBack");
+                }
+                else
+                {
+                    TempData["outraOp"] = "/Clientes/CreateCliente";
+                    TempData["menssagem"] = "Cliente: " + clienteViewModel.nome + " Não cadastrado! Erro: "+error;
+                    return RedirectToAction("Error", "FeedBack");
+                }
             }
             else
             {

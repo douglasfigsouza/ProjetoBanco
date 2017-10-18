@@ -22,6 +22,11 @@ namespace ProjetoBanco.Domain.Services
            _contaRepositoryDomain.AddContaCliente(conta,contaClientes);
         }
 
+        public void UpdateConta(Conta conta)
+        {
+            _contaRepositoryDomain.UpdateConta(conta);
+        }
+
         public void Dispose()
         {
             _contaRepositoryDomain.Dispose();

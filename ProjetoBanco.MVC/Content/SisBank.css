@@ -30,6 +30,7 @@ nav {
     top:0;
 }
 .margim-top {
+    clear: both;
     padding: 5%;
     margin-top: 10%;
     margin-bottom: 10%;
@@ -61,4 +62,7 @@ body.loading {
 /* a partir do momento em que o body estiver com a classe loading,  o modal aparecerá */
 body.loading .modal {
     display: block;
+}
+.clearBoth {
+    clear: both;
 }

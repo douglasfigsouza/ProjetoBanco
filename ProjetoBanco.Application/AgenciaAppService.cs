@@ -40,7 +40,7 @@ namespace ProjetoBanco.Application
 
         public void UpdateAgencia(Agencia agencia)
         {
-            throw new NotImplementedException();
+            _agenciaRepositoryDomain.UpdateAgencia(agencia);
         }
 
         public void RemoveAgencia(Agencia agencia)
@@ -51,6 +51,11 @@ namespace ProjetoBanco.Application
         public void Dispose()
         {
             throw new NotImplementedException();
+        }
+
+        public Agencia GetAgenciaByNum(int agencia)
+        {
+            return _agenciaRepositoryDomain.GetAgenciaByNum(agencia);
         }
     }
 }

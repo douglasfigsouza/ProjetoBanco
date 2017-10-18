@@ -7,6 +7,7 @@ namespace ProjetoBanco.Application.Interfaces
     {
         void AddContaCliente(Conta conta, List<ContaCliente> contaCliente);
         ContaClienteAlteracao GetConta(string conta, int agencia, string senha);
+        void UpdateConta(Conta conta);
         void Dispose();
     }
 }

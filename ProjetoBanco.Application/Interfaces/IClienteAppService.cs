@@ -5,7 +5,7 @@ namespace ProjetoBanco.Application.Interfaces
 {
     public interface IClienteAppService
     {
-        void AddCliente(Cliente cliente);
+        string AddCliente(Cliente cliente);
         Cliente GetByClienteId(int id);
         IEnumerable<Cliente> GetAllClientes(int op);
         Cliente GetClienteByCpf(string cpf);

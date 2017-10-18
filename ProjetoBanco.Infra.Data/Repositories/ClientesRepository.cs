@@ -31,22 +31,31 @@ namespace ProjetoBanco.Infra.Data.Repositories
             PBSP_GETCLIENTEBYCPF
         }
 
-        public void AddCliente(Cliente cliente)
+        public string AddCliente(Cliente cliente)
         {
-            conn.ExecuteProcedure(Procedures.PBSP_INSERTCLIENTE);
-            conn.AddParameter("@cidadeId", cliente.cidadeId);
-            conn.AddParameter("@nome", cliente.nome);
-            conn.AddParameter("@cpf", cliente.cpf);
-            conn.AddParameter("@rg", cliente.rg);
-            conn.AddParameter("@fone", cliente.fone);
-            conn.AddParameter("@bairro", cliente.bairro);
-            conn.AddParameter("@rua", cliente.rua);
-            conn.AddParameter("@num", cliente.num);
-            conn.AddParameter("@dataCadastro", cliente.dataCadastro);
-            conn.AddParameter("@nivel", cliente.nivel);
-            conn.AddParameter("@ativo", cliente.ativo);
+            try
+            {
+                conn.ExecuteProcedure(Procedures.PBSP_INSERTCLIENTE);
+                conn.AddParameter("@cidadeId", cliente.cidadeId);
+                conn.AddParameter("@nome", cliente.nome);
+                conn.AddParameter("@cpf", cliente.cpf);
+                conn.AddParameter("@rg", cliente.rg);
+                conn.AddParameter("@fone", cliente.fone);
+                conn.AddParameter("@bairro", cliente.bairro);
+                conn.AddParameter("@rua", cliente.rua);
+                conn.AddParameter("@num", cliente.num);
+                conn.AddParameter("@dataCadastro", cliente.dataCadastro);
+                conn.AddParameter("@nivel", cliente.nivel);
+                conn.AddParameter("@ativo", cliente.ativo);
+                conn.ExecuteNonQuery();
+                return null;
+            }
+            catch (Exception e)
+            {
 
-            conn.ExecuteNonQuery();
+                return e.ToString();
+            }
+            
         }
 
         public Cliente GetByClienteId(int id)

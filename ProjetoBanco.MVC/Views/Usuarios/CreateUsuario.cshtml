@@ -42,40 +42,7 @@
 </div>
 <script>
     $(document).ready(function() {
-        $("form").validate({
-            submitHandler: function (form) {
-                form.submit();
-            },
-            rules: {
-                nome: {
-                    required: true,
-                    maxlength: 20
-                },
-                senha: {
-                    required:true,
-                    maxlength:8
-                },
-                conf_senha: {
-                    required: true,
-                    equalTo:"#senha"
-                }
-            },
-            messages: {
-                nome: {
-                    required: "O campo nome é Obrigatório! Digite-O",
-                    maxlength: "O campo Nome deve conter no máximo 8 caracteres!"
-                },
-                senha: {
-                    required: "O campo senha é Obrigatório! Digite-O",
-                    maxlength:"o campo senha deve conter no máximo 8 caracteres!"
-                },
-                conf_senha: {
-                    required: "O campo Confirme sua Senha é Obrigatório! Digite-O",
-                    equalTo:"As senhas não conferem"
-                }
 
-            }
-        });
     });
 </script>
 

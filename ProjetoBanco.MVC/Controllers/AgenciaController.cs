@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Web;
-using System.Web.Mvc;
+﻿using System.Web.Mvc;
 using ProjetoBanco.Application.Interfaces;
 using ProjetoBanco.Domain.Entities;
 using ProjetoBanco.MVC.ViewModels;
@@ -12,12 +8,11 @@ namespace ProjetoBanco.MVC.Controllers
     public class AgenciaController : Controller
     {
         private readonly IAgenciaAppService _agenciaAppService;
-
         private readonly IEstadoAppService _estadoAppService;
 
         private readonly IBancoAppService _bancoAppService;
         private Agencia agencia;
-        public AgenciaController(IAgenciaAppService agenciaAppService,IBancoAppService bancoAppService, IEstadoAppService estadoAppService)
+        public AgenciaController(IAgenciaAppService agenciaAppService, IBancoAppService bancoAppService, IEstadoAppService estadoAppService)
         {
             _agenciaAppService = agenciaAppService;
             _estadoAppService = estadoAppService;
@@ -49,6 +44,32 @@ namespace ProjetoBanco.MVC.Controllers
                 ViewBag.estados = _estadoAppService.GetAllEstados();
                 ViewBag.bancos = _bancoAppService.GetAllBancos();
                 return View(agenciaViewModel);
+            }
+        }
+
+        public ActionResult UpdateAgencia()
+        {
+            return View();
+        }
+
+        [HttpPost]
+        public ActionResult UpdateAgencia(AgenciaViewModel agenciaViewModel)
+        {
+            agencia.agencia = agenciaViewModel.agencia;
+            agencia.ativo = agenciaViewModel.ativo;
+            _agenciaAppService.UpdateAgencia(agencia);
+            return RedirectToAction("Index", "Success");
+        }
+
+        public JsonResult GetAgenciaByNum(int agencia)
+        {
+            if (agencia != null)
+            {
+                return Json(_agenciaAppService.GetAgenciaByNum(agencia), JsonRequestBehavior.AllowGet);
+            }
+            else
+            {
+                return null;
             }
         }
     }
