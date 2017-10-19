@@ -879,6 +879,7 @@ CREATE PROCEDURE [dbo].[PBSP_GETOPREALIZADASPORCONTA]
 		INNER JOIN Conta AS conta WITH(NOLOCK) ON opReal.contaId = conta.Id
 		INNER JOIN Clientes AS cli WITH(NOLOCK) ON opReal.clienteId = cli.Id
 		WHERE conta.num=@conta AND ag.agencia=@agencia AND conta.senha=@senha
+			AND conta.ativo=1 AND ag.ativo=1 AND cli.ativo=1;
 	END
 GO
 
@@ -943,15 +944,15 @@ CREATE PROCEDURE [dbo].[PBSP_ESTORNA]
 
 								SET @cliente2Id = (SELECT opReal.clienteId FROM OperacoesRealizadas AS opReal WITH(NOLOCK) 
 									INNER JOIN  Clientes as cli WITH(NOLOCK) on opReal.clienteId=cli.Id
-									WHERE opReal.Id = @id+1);
+									WHERE opReal.Id = @id+1 AND cli.ativo=1);
 
 								SET @conta2Id = (SELECT opReal.contaId FROM OperacoesRealizadas AS opReal WITH(NOLOCK)
 									INNER JOIN Conta AS conta WITH(NOLOCK) ON opReal.contaId= conta.Id
-									WHERE opReal.Id = @id+1);
+									WHERE opReal.Id = @id+1 AND conta.ativo=1);
 
 								SET @agencia2 = (SELECT opReal.agencia FROM OperacoesRealizadas  AS opReal WITH(NOLOCK)
 												INNER JOIN Agencia AS ag WITH(NOLOCK) ON opReal.agencia =  ag.agencia
-												WHERE opReal.Id = @id+1);
+												WHERE opReal.Id = @id+1 AND ag.ativo=1);
 
 								SET @banco2Id = dbo.RetornaIdBanco(@agencia);
 								SET @saldoAnterior2 = dbo.RetornaSaldo(@contaId);
