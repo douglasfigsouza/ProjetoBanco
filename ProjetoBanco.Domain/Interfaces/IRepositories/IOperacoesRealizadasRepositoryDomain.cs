@@ -14,7 +14,7 @@ namespace ProjetoBanco.Domain.Interfaces.IRepositories
         int Transferencia(OperacaoRealizada opConta1, OperacaoRealizada opConta2);
         IEnumerable<Estorno> GetAllOperacoesPorContaParaEstorno(string conta, string senha, int agencia);
         IEnumerable<Estorno> GetAllOperacoesEstorno();
-        void ConfirmEstorno(int id);
+        string ConfirmEstorno(int id);
         void Dispose();
     }
 }

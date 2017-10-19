@@ -96,12 +96,21 @@ namespace ProjetoBanco.Infra.Data.Repositories
             return OpsEstorno;
         }
 
-        public void ConfirmEstorno(int id)
+        public string ConfirmEstorno(int id)
         {
             conn.ExecuteProcedure(Procedure.PBSP_ESTORNA);
-            conn.AddParameter("@id",id);
+            conn.AddParameter("@id", id);
             conn.AddParameter("@opId", 104);
-            conn.ExecuteNonQuery();
+            try
+            {
+                conn.ExecuteNonQuery();
+                return null;
+            }
+            catch (Exception e)
+            {
+                return e.Message;
+            }
+
         }
 
         public void Dispose()

@@ -50,7 +50,7 @@
                         </div>
                         <div class="col s4">
                             <label for="nome" class="col s12">Confirme sua Senha</label>
-                            <input type="password" class="col s12" name="conf_senha"/>
+                            <input type="password" class="col s12" name="conf_senha" id="conf_senha"/>
                         </div>
                     </div>
                     <div class="row">
@@ -113,6 +113,7 @@
                         $("#clienteId").val(dados.clienteId);
                         $("#nome").val(dados.nome);
                         $("#senha").val(dados.senha);
+                        $("#conf_senha").val(dados.senha);
                         $("#formUsuarioEditavel").show();
                         if (dados.ativo == 1) {
                             $("#ativo").prop('checked', true);

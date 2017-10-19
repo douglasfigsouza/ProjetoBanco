@@ -53,9 +53,9 @@ namespace ProjetoBanco.MVC.Controllers
         [HttpPost]
         public ActionResult CreateConta(List<int> ClientesSelecionados, FormCollection form)
         {
-            conta.num = form["num"];
+            conta.num = Utilitarios.Utilitarios.retiraMask(form["num"]);
             conta.senha = form["senha"];
-            conta.tipo = form["tipoConta"];
+            conta.tipo = Utilitarios.Utilitarios.retiraMask(form["tipoConta"]);
             int agencia = int.Parse(form["ddlAgencias"]);
 
             foreach (var item in ClientesSelecionados)
@@ -94,9 +94,11 @@ namespace ProjetoBanco.MVC.Controllers
         }
 
         [HttpGet]
-        public JsonResult GetConta(string conta, int agencia, string senha)
+        public JsonResult GetConta(string conta, string agencia, string senha)
         {
-            return Json(_contaClienteAppService.GetConta(conta, agencia, senha), JsonRequestBehavior.AllowGet);
+            conta = Utilitarios.Utilitarios.retiraMask(conta);
+            agencia= Utilitarios.Utilitarios.retiraMask(agencia);
+            return Json(_contaClienteAppService.GetConta(conta, int.Parse(agencia), senha), JsonRequestBehavior.AllowGet);
         }
         private ActionResult feedBackOperacao(string action, string error)
         {

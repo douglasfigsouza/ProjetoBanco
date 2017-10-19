@@ -62,9 +62,9 @@ namespace ProjetoBanco.Application
             return est;
         }
 
-        public void ConfirmEstorno(int id)
+        public string ConfirmEstorno(int id)
         {
-            _operacoesRealizadasRepositoryDomain.ConfirmEstorno(id);
+           return _operacoesRealizadasRepositoryDomain.ConfirmEstorno(id);
         }
 
         public IEnumerable<Estorno> GetAllOperacoesEstorno()

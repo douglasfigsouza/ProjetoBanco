@@ -33,9 +33,9 @@ namespace ProjetoBanco.Domain.Services
             }
         }
 
-        public void ConfirmEstorno(int id)
+        public string ConfirmEstorno(int id)
         {
-            _operacoesRealizadasRepositoryDomain.ConfirmEstorno(id);
+           return _operacoesRealizadasRepositoryDomain.ConfirmEstorno(id);
         }
 
         public void Dispose()

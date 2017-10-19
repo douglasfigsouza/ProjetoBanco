@@ -292,7 +292,12 @@ namespace ProjetoBanco.MVC.Controllers
 
         public ActionResult Estorno(FormCollection form)
         {
-            foreach (var op in _operacaoesRealizadasAppService.GetAllOperacoesPorContaParaEstorno(form["conta"], form["senha"], Convert.ToInt32(form["agencia"])))
+            string conta, senha;
+            int agencia;
+            conta = Utilitarios.Utilitarios.retiraMask(form["conta"]);
+            senha = Utilitarios.Utilitarios.retiraMask(form["senha"]);
+            agencia = int.Parse(Utilitarios.Utilitarios.retiraMask(form["agencia"]));
+            foreach (var op in _operacaoesRealizadasAppService.GetAllOperacoesPorContaParaEstorno(conta,senha,agencia))
             {
                 opsEstornoViewModels.Add(new EstornoViewModel
                 {
@@ -313,9 +318,19 @@ namespace ProjetoBanco.MVC.Controllers
         [HttpPost]
         public ActionResult ConfirmEstorno(int id)
         {
-            _operacaoesRealizadasAppService.ConfirmEstorno(id);
-            TempData["menssagem"] = "Estorno realizado com sucesso!";
-            return RedirectToAction("Index", "Success");
+            error = _operacaoesRealizadasAppService.ConfirmEstorno(id);
+            if (error == null)
+            {
+                TempData["menssagem"] = "Estorno realizado com sucesso!";
+                TempData["outraOp"] = "/Operacoes/Estorno";
+                return View("FeedBackOp");
+            }
+            else
+            {
+                TempData["menssagem"] = "Estorno não Realizado!";
+                TempData["outraOp"] = "/Operacoes/Estorno";
+                return View("FeedBackOp");
+            }
         }
         [HttpGet]
         public JsonResult GetOpRealizadaEstornoById(int id)

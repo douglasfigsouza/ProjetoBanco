@@ -11,7 +11,7 @@ namespace ProjetoBanco.Application.Interfaces
         string Transferencia(OperacaoRealizada opConta1, OperacaoRealizada opConta2);
         IEnumerable<Estorno> GetAllOperacoesPorContaParaEstorno(string conta, string senha, int agencia);
         Estorno GetOpRealizadaEstornoById(int Id);
-        void ConfirmEstorno(int id);
+        string ConfirmEstorno(int id);
         IEnumerable<Estorno> GetAllOperacoesEstorno();
         void Dispose();
     }
