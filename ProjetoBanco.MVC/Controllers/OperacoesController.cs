@@ -103,7 +103,7 @@ namespace ProjetoBanco.MVC.Controllers
                 Cliente cli = (Cliente)Session["cliente"];
 
                 transacao.clienteId = cli.Id;
-                valor = trasacaoViewModel.valor;
+                valor = decimal.Parse(Utilitarios.Utilitarios.retiraMaskMoney(trasacaoViewModel.valor));
                 transacao.agencia = int.Parse(Utilitarios.Utilitarios.retiraMask(trasacaoViewModel.agencia));
                 transacao.conta = Utilitarios.Utilitarios.retiraMask(trasacaoViewModel.conta);
                 transacao.senhaCli = trasacaoViewModel.senhaCli;
@@ -128,7 +128,7 @@ namespace ProjetoBanco.MVC.Controllers
                     trasacaoViewModel.contaId = transacao.contaId;
                     trasacaoViewModel.agencia = transacao.agencia+"";
                     trasacaoViewModel.nome = transacao.nome;
-                    trasacaoViewModel.valor = valor;
+                    trasacaoViewModel.valor = valor+"";
 
                     return View("Confirmacao", trasacaoViewModel);
                 }
@@ -151,7 +151,7 @@ namespace ProjetoBanco.MVC.Controllers
             operacaoRealizada.clienteId = trasacaoViewModel.clienteId;
             operacaoRealizada.contaId = trasacaoViewModel.contaId;
             operacaoRealizada.dataOp = DateTime.Now;
-            operacaoRealizada.valorOp = trasacaoViewModel.valor;
+            operacaoRealizada.valorOp = decimal.Parse(Utilitarios.Utilitarios.retiraMaskMoney(trasacaoViewModel.valor));
 
             TempData["menssagem"] = "Depósito Realizado com sucesso!";
             TempData["outraOp"] = "/Operacoes/Deposito";
@@ -188,7 +188,7 @@ namespace ProjetoBanco.MVC.Controllers
             operacaoRealizada.clienteId = trasacaoViewModel.clienteId;
             operacaoRealizada.contaId = trasacaoViewModel.contaId;
             operacaoRealizada.dataOp = DateTime.Now;
-            operacaoRealizada.valorOp = trasacaoViewModel.valor;
+            operacaoRealizada.valorOp = decimal.Parse(Utilitarios.Utilitarios.retiraMaskMoney(trasacaoViewModel.valor));
 
             TempData["menssagem"]= _operacaoesRealizadasAppService.Saque(operacaoRealizada, 2);
             TempData["outraOp"] = "/Operacoes/Saque";
@@ -267,8 +267,7 @@ namespace ProjetoBanco.MVC.Controllers
             operacaoRealizada.clienteId = Transacoes[0].clienteId;
             operacaoRealizada.contaId = Transacoes[0].contaId;
             operacaoRealizada.dataOp = DateTime.Now;
-            operacaoRealizada.valorOp = Transacoes[0].valor;
-
+            operacaoRealizada.valorOp = decimal.Parse(Utilitarios.Utilitarios.retiraMaskMoney(Transacoes[0].valor));
             operacaoRealizada1.agencia = int.Parse(Transacoes[1].agencia);
             operacaoRealizada1.clienteId = Transacoes[1].clienteId;
             operacaoRealizada1.contaId = Transacoes[1].contaId;
@@ -277,10 +276,6 @@ namespace ProjetoBanco.MVC.Controllers
             TempData["menssagem"] = _operacaoesRealizadasAppService.Transferencia(operacaoRealizada, operacaoRealizada1);
             TempData["outraOp"] = "/Operacoes/Transferencia";
             return View("FeedBackOp");
-
-            //TempData["menssagem"] = _operacaoesRealizadasAppService.Transferencia(operacaoRealizada, operacaoRealizada1);
-
-            //return RedirectToAction("Index", "Success");
 
         }
 
@@ -294,6 +289,7 @@ namespace ProjetoBanco.MVC.Controllers
         {
             string conta, senha;
             int agencia;
+
             conta = Utilitarios.Utilitarios.retiraMask(form["conta"]);
             senha = Utilitarios.Utilitarios.retiraMask(form["senha"]);
             agencia = int.Parse(Utilitarios.Utilitarios.retiraMask(form["agencia"]));
@@ -312,7 +308,17 @@ namespace ProjetoBanco.MVC.Controllers
                     descricao = op.descricao
                 });
             }
-            return View("OpRealizadasEstorno", opsEstornoViewModels);
+            if (opsEstornoViewModels == null || opsEstornoViewModels.Count==0)
+            {
+                TempData["menssagem"] = "Estorno não realizado! Alguns dos dados fornecidos podem ser inválidos.";
+                TempData["outraOp"] = "/Operacoes/DadosParaEstorno";
+                return View("FeedBackOp");
+            }
+            else
+            {
+                return View("OpRealizadasEstorno", opsEstornoViewModels);
+            }
+
         }
 
         [HttpPost]

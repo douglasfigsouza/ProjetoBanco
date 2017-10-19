@@ -1,15 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Data.SqlClient;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using ProjetoBanco.Domain.Entities;
 using ProjetoBanco.Domain.Interfaces.IRepositories;
 
 namespace ProjetoBanco.Infra.Data.Repositories
 {
-    public class OperacaoRealizadaRepository:IOperacoesRealizadasRepositoryDomain
+    public class OperacaoRealizadaRepository : IOperacoesRealizadasRepositoryDomain
     {
         private Conexao conn;
         private SqlDataReader result;
@@ -26,13 +23,13 @@ namespace ProjetoBanco.Infra.Data.Repositories
 
         public OperacaoRealizadaRepository()
         {
-            conn= new Conexao();
+            conn = new Conexao();
             OpsEstorno = new List<Estorno>();
         }
         public void Deposito(OperacaoRealizada operacaoRealizada, int op)
         {
             conn.ExecuteProcedure(Procedure.PBSP_DEPOSITO);
-            conn.AddParameter("@operacaoId",op);
+            conn.AddParameter("@operacaoId", op);
             conn.AddParameter("@agencia", operacaoRealizada.agencia);
             conn.AddParameter("@contaId", operacaoRealizada.contaId);
             conn.AddParameter("@clienteId", operacaoRealizada.clienteId);
@@ -45,7 +42,7 @@ namespace ProjetoBanco.Infra.Data.Repositories
         public int Transferencia(OperacaoRealizada opConta1, OperacaoRealizada opConta2)
         {
             conn.ExecuteProcedure(Procedure.PBSP_SAQUE);
-            conn.AddParameter("operacaoId",2);
+            conn.AddParameter("operacaoId", 2);
             conn.AddParameter("@agencia", opConta1.agencia);
             conn.AddParameter("@contaId", opConta1.contaId);
             conn.AddParameter("@clienteId", opConta1.clienteId);
@@ -73,27 +70,35 @@ namespace ProjetoBanco.Infra.Data.Repositories
         public IEnumerable<Estorno> GetAllOperacoesPorContaParaEstorno(string conta, string senha, int agencia)
         {
             conn.ExecuteProcedure(Procedure.PBSP_GETOPREALIZADASPORCONTA);
-            conn.AddParameter("@conta",conta);
+            conn.AddParameter("@conta", conta);
             conn.AddParameter("@senha", senha);
             conn.AddParameter("@agencia", agencia);
-            result = conn.ExecuteReader();
-
-            while (result.Read())
+            try
             {
-                OpsEstorno.Add( new Estorno
+                result = conn.ExecuteReader();
+                while (result.Read())
                 {
-                    Id = Convert.ToInt32(result["Id"].ToString()),
-                    opId = Convert.ToInt32(result["operacaoId"].ToString()),
-                    dataOp = Convert.ToDateTime(result["dataOp"].ToString()),
-                    valorOp = Convert.ToDecimal(result["valorOp"].ToString()),
-                    saldoAnterior = Convert.ToDecimal(result["saldoAnterior"].ToString()),
-                    descricao = result["descricao"].ToString(),
-                    agencia = Convert.ToInt32(result["agencia"].ToString()),
-                    conta = result["num"].ToString(),
-                    cliente =result["nome"].ToString()
-                });
+                    OpsEstorno.Add(new Estorno
+                    {
+                        Id = Convert.ToInt32(result["Id"].ToString()),
+                        opId = Convert.ToInt32(result["operacaoId"].ToString()),
+                        dataOp = Convert.ToDateTime(result["dataOp"].ToString()),
+                        valorOp = Convert.ToDecimal(result["valorOp"].ToString()),
+                        saldoAnterior = Convert.ToDecimal(result["saldoAnterior"].ToString()),
+                        descricao = result["descricao"].ToString(),
+                        agencia = Convert.ToInt32(result["agencia"].ToString()),
+                        conta = result["num"].ToString(),
+                        cliente = result["nome"].ToString()
+                    });
+                }
+                return OpsEstorno;
             }
-            return OpsEstorno;
+            catch (Exception e)
+            {
+                return null;
+            }
+
+
         }
 
         public string ConfirmEstorno(int id)

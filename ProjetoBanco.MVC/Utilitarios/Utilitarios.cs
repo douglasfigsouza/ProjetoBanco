@@ -1,4 +1,6 @@
-﻿namespace ProjetoBanco.MVC.Utilitarios
+﻿using System.Text.RegularExpressions;
+
+namespace ProjetoBanco.MVC.Utilitarios
 {
     public class Utilitarios
     {
@@ -6,5 +8,10 @@
         {
             return campo.Replace(".", "").Replace("-", "").Replace("(", "").Replace(")", "").Replace(" ","");
         }
+        public static string retiraMaskMoney(string campo)
+        {
+            return Regex.Replace(campo, "[^0-9,]", "");
+        }
+
     }
 }
