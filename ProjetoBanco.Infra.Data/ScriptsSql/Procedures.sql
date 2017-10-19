@@ -324,9 +324,9 @@ IF EXISTS (SELECT * FROM dbo.sysobjects WHERE id = object_id(N'[dbo].[PBSP_INSER
 GO
 
 CREATE PROCEDURE [dbo].[PBSP_INSERTCONTA]
-	@num[VARCHAR](15),
-	@senha[VARCHAR](6),
-	@tipo[CHAR](1)
+	@num[VARCHAR](15)='1110191',
+	@senha[VARCHAR](6)='123',
+	@tipo[CHAR](1)='f'
 	AS
 
 	/*
@@ -338,12 +338,15 @@ CREATE PROCEDURE [dbo].[PBSP_INSERTCONTA]
 	Ex................: EXEC [dbo].[PBSP_INSERTCONTA]
 
 	*/
-	BEGIN
+	BEGIN TRY
 		DECLARE @contaId INT=0;
 		INSERT INTO [dbo].[Conta](num,tipo,senha)
 			VALUES(@num,@tipo,@senha);
 			RETURN SCOPE_IDENTITY();
-	END
+	END TRY
+	BEGIN CATCH
+		RETURN ERROR_MESSAGE();
+	END CATCH
 GO
 
 --insere na contacliente

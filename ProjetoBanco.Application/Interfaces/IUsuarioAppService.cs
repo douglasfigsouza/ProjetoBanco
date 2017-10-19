@@ -13,7 +13,7 @@ namespace ProjetoBanco.Application.Interfaces
         Usuario VerificaLogin(Usuario usuario);
         Usuario GetByUsuarioId(int id);
         IEnumerable<Usuario> GetAllUsuarios();
-        void UpdateUsuario(Usuario usuario);
+        string UpdateUsuario(Usuario usuario);
         void RemoveUsuario(Usuario usuario);
         void Dispose();
     }

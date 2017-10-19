@@ -37,9 +37,9 @@ namespace ProjetoBanco.Domain.Services
             throw new NotImplementedException();
         }
 
-        public void UpdateUsuario(Usuario usuario)
+        public string UpdateUsuario(Usuario usuario)
         {
-            _IUsuarioRepositoryDomain.UpdateUsuario(usuario);
+           return _IUsuarioRepositoryDomain.UpdateUsuario(usuario);
         }
 
         public void RemoveUsuario(Usuario usuario)

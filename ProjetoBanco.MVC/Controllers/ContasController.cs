@@ -68,18 +68,7 @@ namespace ProjetoBanco.MVC.Controllers
                });
             }
             error = _contaClienteAppService.AddContaCliente(conta,contaClientes);
-            if (error == null)
-            {
-                TempData["outraOp"] = "/Contas/CreateConta";
-                TempData["menssagem"] = "Conta: " + form["num"]+ " cadastrada com sucesso!";
-                return RedirectToAction("Success", "FeedBack");
-            }
-            else
-            {
-                TempData["outraOp"] = "/Conta/CreateConta";
-                TempData["menssagem"] = "Conta: " + form["num"] + " Não cadastrada! Erro: " + error;
-                return RedirectToAction("Error", "FeedBack");
-            }
+            return feedBackOperacao("CreateConta", error);
         }
 
         public ActionResult EditConta()
@@ -95,8 +84,8 @@ namespace ProjetoBanco.MVC.Controllers
                 conta.num = form["conta"];
                 conta.senha = form["senha"];
                 conta.ativo = Convert.ToBoolean(form["ativo"]);
-                _contaClienteAppService.UpdateConta(conta);
-                return RedirectToAction("Index", "Success");
+                error = _contaClienteAppService.UpdateConta(conta);
+                return feedBackOperacao("UpdateConta", error);
             }
             else
             {
@@ -108,6 +97,22 @@ namespace ProjetoBanco.MVC.Controllers
         public JsonResult GetConta(string conta, int agencia, string senha)
         {
             return Json(_contaClienteAppService.GetConta(conta, agencia, senha), JsonRequestBehavior.AllowGet);
+        }
+        private ActionResult feedBackOperacao(string action, string error)
+        {
+            if (error == null)
+            {
+                TempData["outraOp"] = "/Contas/" + action;
+                TempData["menssagem"] = "Conta: " + conta.num + " cadastrada com sucesso!";
+                return RedirectToAction("Success", "FeedBack");
+            }
+            else
+            {
+                TempData["outraOp"] = "/Contas/" + action;
+                TempData["menssagem"] = "Conta: " + conta.num + " Não cadastrada! Erro: " + error;
+                return RedirectToAction("Error", "FeedBack");
+            }
+
         }
     }
 }

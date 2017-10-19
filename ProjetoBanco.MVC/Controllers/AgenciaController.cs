@@ -39,19 +39,8 @@ namespace ProjetoBanco.MVC.Controllers
                 agencia.agencia = agenciaViewModel.agencia;
 
                 error = _agenciaAppService.AddAgencia(agencia);
-                if (error == null)
-                {
-                    TempData["outraOp"] = "/Agencia/CreateAgencia";
-                    TempData["menssagem"] = "Agência: " + agenciaViewModel.agencia + " cadastrada com sucesso!";
-                    return RedirectToAction("Success", "FeedBack");
-                }
-                else
-                {
-                    TempData["outraOp"] = "/Agencia/CreateAgencia";
-                    TempData["menssagem"] = "Agência: " + agenciaViewModel.agencia + " Não cadastrada! Erro: " + error;
-                    return RedirectToAction("Error", "FeedBack");
-                }
 
+                return feedBackOperacao("CreateAgencia", error);
             }
             else
             {
@@ -71,19 +60,10 @@ namespace ProjetoBanco.MVC.Controllers
         {
             agencia.agencia = agenciaViewModel.agencia;
             agencia.ativo = agenciaViewModel.ativo;
+
             error = _agenciaAppService.UpdateAgencia(agencia);
-            if (error == null)
-            {
-                TempData["outraOp"] = "/Agencia/CreateAgencia";
-                TempData["menssagem"] = "Agência: " + agenciaViewModel.agencia + " cadastrada com sucesso!";
-                return RedirectToAction("Success", "FeedBack");
-            }
-            else
-            {
-                TempData["outraOp"] = "/Agencia/CreateAgencia";
-                TempData["menssagem"] = "Agência: " + agenciaViewModel.agencia + " Não cadastrada! Erro: " + error;
-                return RedirectToAction("Error", "FeedBack");
-            }
+
+            return feedBackOperacao("UpdateAgencia", error);
 
         }
 
@@ -97,6 +77,22 @@ namespace ProjetoBanco.MVC.Controllers
             {
                 return null;
             }
+        }
+        private ActionResult feedBackOperacao(string action, string error)
+        {
+            if (error == null)
+            {
+                TempData["outraOp"] = "/Agencia/"+action;
+                TempData["menssagem"] = "Agência: " + agencia.agencia + " cadastrada com sucesso!";
+                return RedirectToAction("Success", "FeedBack");
+            }
+            else
+            {
+                TempData["outraOp"] = "/Agencia/"+action;
+                TempData["menssagem"] = "Agência: " + agencia.agencia + " Não cadastrada! Erro: " + error;
+                return RedirectToAction("Error", "FeedBack");
+            }
+            
         }
     }
 }

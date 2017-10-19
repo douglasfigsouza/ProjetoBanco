@@ -26,6 +26,7 @@ namespace ProjetoBanco.MVC.Controllers
 
         public ActionResult Login()
         {
+            Session.Abandon();
             return View();
         }
 
@@ -77,18 +78,7 @@ namespace ProjetoBanco.MVC.Controllers
                 usuario.nome = usuarioViewModel.nome;
                 usuario.senha = usuarioViewModel.senha;
                 error = _IUsuarioAppService.AddUsuario(usuario);
-                if (error == null)
-                {
-                    TempData["outraOp"] = "/Usuarios/CreateUsuario";
-                    TempData["menssagem"] = "Usuário: " + usuarioViewModel.nome + " cadastrado com sucesso!";
-                    return RedirectToAction("Success", "FeedBack");
-                }
-                else
-                {
-                    TempData["outraOp"] = "/Usuarios/CreateUsuario";
-                    TempData["menssagem"] = "Usuário: " + usuarioViewModel.nome + " Não cadastrado! Erro: " + error;
-                    return RedirectToAction("Error", "FeedBack");
-                }
+                return feedBackOperacao("CreateUsuario", error);
 
             }
             else
@@ -113,9 +103,9 @@ namespace ProjetoBanco.MVC.Controllers
                 usuario.senha = usuarioViewModel.senha;
                 usuario.nome = usuarioViewModel.nome;
                 usuario.ativo = usuarioViewModel.ativo;
-                _IUsuarioAppService.UpdateUsuario(usuario);
-                TempData["menssagem"] = "Usuário " + usuarioViewModel.nome + " Cadastrado com Sucesso!";
-                return RedirectToAction("Index", "Success");
+                error =_IUsuarioAppService.UpdateUsuario(usuario);
+
+                return feedBackOperacao("EditUsuario", error);
             }
             else
             {
@@ -129,6 +119,22 @@ namespace ProjetoBanco.MVC.Controllers
         public JsonResult GetByUsuarioId(int clienteId)
         {
            return Json(_IUsuarioAppService.GetByUsuarioId(clienteId), JsonRequestBehavior.AllowGet);
+        }
+        private ActionResult feedBackOperacao(string action, string error)
+        {
+            if (error == null)
+            {
+                TempData["outraOp"] = "/Usuarios/" + action;
+                TempData["menssagem"] = "Usuario: " + usuario.nomeCli + " cadastrado com sucesso!";
+                return RedirectToAction("Success", "FeedBack");
+            }
+            else
+            {
+                TempData["outraOp"] = "/Usuarios/" + action;
+                TempData["menssagem"] = "Usuario: " + usuario.nomeCli + " Não cadastrada! Erro: " + error;
+                return RedirectToAction("Error", "FeedBack");
+            }
+
         }
     }
 }

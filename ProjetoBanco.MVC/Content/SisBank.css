@@ -42,7 +42,7 @@ nav {
 .border-right {
     border-right:1px dashed #000000;
 }
-.modal {
+/*.modal {
     padding:    30%;
     display:    none;
     position:   fixed;
@@ -56,15 +56,12 @@ nav {
                 50% 50% 
                 no-repeat;
 }
-/* enquanto estiver carregando, o scroll da página estará desativado */
+ enquanto estiver carregando, o scroll da página estará desativado 
 body.loading {
     overflow: hidden;   
 }
 
-/* a partir do momento em que o body estiver com a classe loading,  o modal aparecerá */
+ a partir do momento em que o body estiver com a classe loading,  o modal aparecerá 
 body.loading .modal {
-    display: block;
-}
-.clearBoth {
-    clear: both;
-}
+    display: block;*/
+

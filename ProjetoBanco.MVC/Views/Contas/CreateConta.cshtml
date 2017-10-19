@@ -3,16 +3,17 @@
     ViewBag.Title = "CreateConta";
 }
 
+@using (Html.BeginForm())
+{
+    @Html.AntiForgeryToken()
+    @Html.ValidationSummary(true)
+    {
 <h5>Cadastro de Conta</h5>
 <div class="row">
     <hr>
+
     <div class="col s6 border-right">
 
-        @using (Html.BeginForm())
-        {
-            @Html.AntiForgeryToken()
-            @Html.ValidationSummary(true)
-            {
                 <div class="row">
                     <div class="col s6">
                         <label class="col s12" for="ddlAgencias">Agência</label>
@@ -88,8 +89,7 @@
                 </div>
 
 
-            }
-        }
+     
     </div>
     <div class="col s6">
         <div class="row" id="clientesSelecionados">
@@ -115,6 +115,8 @@
         <i class="material-icons right">send</i>
     </button>
 </div>
+    }
+}
 <script>
     $(document).ready(function () {
         //oculta table on de serão inseridos os clientes

@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Data;
 using System.Data.SqlClient;
+using System.Globalization;
 using ProjetoBanco.Domain.Entities;
 using ProjetoBanco.Domain.Interfaces.IRepositories;
 
@@ -50,7 +51,9 @@ namespace ProjetoBanco.Infra.Data.Repositories
             }
             catch (Exception e)
             {
-                return e.ToString();
+                return e.Message;
+
+
             }
         }
 

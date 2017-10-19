@@ -53,12 +53,10 @@ namespace ProjetoBanco.MVC.Controllers
                 cliente.dataCadastro = DateTime.Now;
                 cliente.ativo = true;
 
-                feed.error = _clienteApp.AddCliente(cliente);
-                feed.op = "cleinte";
-                feed.descricao = "Cadastro do Cliente:" + clienteViewModel.nome;
-                feed.url = "/Clientes/CreateCliente";
+                error = _clienteApp.AddCliente(cliente);
+          
 
-                return feedBackOperacao(feed);
+                return feedBackOperacao("CreateCliente",error);
 
             }
             else
@@ -102,11 +100,8 @@ namespace ProjetoBanco.MVC.Controllers
                 cliente.cidadeId = clienteViewModel.cidadeId;
 
 
-                feed.error = _clienteApp.UpdateCliente(cliente);
-                feed.descricao = clienteViewModel.nome;
-                feed.op = "Cliente";
-                feed.url = "/Clientes/CreateCliente";
-                return /*feedBackOperacao(error, "EditCliente")*/ null;
+                error = _clienteApp.UpdateCliente(cliente);
+                return feedBackOperacao("EditCliente",error);
             }
             ViewBag.clientes = _clienteApp.GetAllClientes(0);
             return View(clienteViewModel);
@@ -125,18 +120,20 @@ namespace ProjetoBanco.MVC.Controllers
             clienteViewModel.nome = cliente.nome;
             return Json(cliente, JsonRequestBehavior.AllowGet);
         }
-        private ActionResult feedBackOperacao(feedBackViewModel feed)
+        private ActionResult feedBackOperacao(string action, string error)
         {
-            if (feed.error == null)
+            if (error == null)
             {
-                //TempData["outraOp"] = "/Clientes/" + action;
-                //TempData["menssagem"] = "Cliente: " + clienteViewModel.nome + " cadastrado com sucesso!";
+                TempData["outraOp"] = "/Clientes/" + action;
+                TempData["menssagem"] = "Cliente: " + clienteViewModel.nome + " cadastrado com sucesso!";
                 return RedirectToAction("Success", "FeedBack");
             }
             else
             {
-                
-                return RedirectToAction("Error", "FeedBack",new {feed= feed});
+
+                TempData["outraOp"] = "/Clientes/" + action;
+                TempData["menssagem"] = "Cliente: " + clienteViewModel.nome + " não cadastrado!"+error;
+                return RedirectToAction("Error", "FeedBack");
             }
         }
     }

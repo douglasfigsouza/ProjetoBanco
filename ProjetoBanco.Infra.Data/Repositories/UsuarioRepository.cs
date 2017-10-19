@@ -98,7 +98,7 @@ namespace ProjetoBanco.Infra.Data.Repositories
             return Usuarios;
         }
 
-        public void UpdateUsuario(Usuario usuario)
+        public string UpdateUsuario(Usuario usuario)
         {
             try
             {
@@ -108,11 +108,11 @@ namespace ProjetoBanco.Infra.Data.Repositories
                 conn.AddParameter("@senha", usuario.senha);
                 conn.AddParameter("@ativo", usuario.ativo);
                 conn.ExecuteNonQuery();
+                return null;
             }
             catch (Exception e)
             {
-                Console.WriteLine(e);
-                throw;
+                return e.Message;
             }
         }
 

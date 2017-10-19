@@ -9,7 +9,7 @@ namespace ProjetoBanco.Domain.Interfaces.IServices
         Usuario GetByUsuarioId(int id);
         Usuario VerificaLogin(Usuario usuario);
         IEnumerable<Usuario> GetAllUsuarios();
-        void UpdateUsuario(Usuario usuario);
+        string UpdateUsuario(Usuario usuario);
         void RemoveUsuario(Usuario usuario);
         void Dispose();
     }

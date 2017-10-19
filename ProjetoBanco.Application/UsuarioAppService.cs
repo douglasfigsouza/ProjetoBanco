@@ -32,9 +32,9 @@ namespace ProjetoBanco.Application
             return _UsuarioRepositoryDomain.GetAllUsuarios();
         }
 
-        public void UpdateUsuario(Usuario usuario)
+        public string UpdateUsuario(Usuario usuario)
         {
-            _UsuarioRepositoryDomain.UpdateUsuario(usuario);
+           return _UsuarioRepositoryDomain.UpdateUsuario(usuario);
         }
 
         public void RemoveUsuario(Usuario usuario)
