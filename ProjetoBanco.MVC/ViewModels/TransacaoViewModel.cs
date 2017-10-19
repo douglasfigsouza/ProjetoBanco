@@ -11,7 +11,7 @@ namespace ProjetoBanco.MVC.ViewModels
         [Required]
         public string conta { get; set; }
         [Required]
-        public int agencia { get; set; }
+        public string agencia { get; set; }
         public int clienteId { get; set; }
         [Required]
         public decimal valor { get; set; }

@@ -35,6 +35,7 @@ namespace ProjetoBanco.Infra.Data.Repositories
                 conn.AddParameter("@cidadeId", agencia.CidadeId);
                 conn.AddParameter("@bancoId", agencia.bancoId);
                 conn.AddParameter("@agencia", agencia.agencia);
+                conn.AddParameter("@ativo", agencia.agencia);
                 conn.ExecuteNonQuery();
                 return null;
             }
@@ -52,15 +53,24 @@ namespace ProjetoBanco.Infra.Data.Repositories
 
         public IEnumerable<Agencia> GetAllAgencias()
         {
-            conn.ExecuteProcedure(Procedures.PBSP_GETALLAGENCIAS);
-            result = conn.ExecuteReader();
+            try
+            {
+                conn.ExecuteProcedure(Procedures.PBSP_GETALLAGENCIAS);
+                result = conn.ExecuteReader();
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine(e);
+                throw;
+            }
             while (result.Read())
             {
                 Agencias.Add(new Agencia
                 {
                     bancoId = Convert.ToInt32(result["bancoId"].ToString()),
                     agencia = Convert.ToInt32(result["agencia"].ToString()),
-                    CidadeId = Convert.ToInt32(result["CidadeId"].ToString())
+                    CidadeId = Convert.ToInt32(result["CidadeId"].ToString()),
+                    ativo = Convert.ToBoolean(result["ativo"].ToString())                 
                 });
             }
             return Agencias.ToList();

@@ -12,7 +12,7 @@ namespace ProjetoBanco.Application.Interfaces
         void RemoveOperacao(Operacoes op);
         Transacao VerificaDadosTransacao(Transacao transacao, int op);
         Transacao VerificaDadosTransferencia(Transacao transacao);
-        string ConsultaSaldo(Transacao transacao);
+        decimal ConsultaSaldo(Transacao transacao);
         void Dispose();
     }
 }

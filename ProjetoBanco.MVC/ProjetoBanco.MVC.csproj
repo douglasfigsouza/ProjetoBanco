@@ -268,6 +268,7 @@
     <Content Include="Views\Contas\ContaEdit.cshtml" />
     <Content Include="Views\Agencia\UpdateAgencia.cshtml" />
     <Content Include="Views\FeedBack\Error.cshtml" />
+    <Content Include="Views\Operacoes\FeedBackOp.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

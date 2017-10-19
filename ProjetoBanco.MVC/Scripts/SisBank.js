@@ -1,18 +1,22 @@
 ﻿$(document).ready(function () {
+    //verifica checked
+    $(document).on("change",
+        "#ativo",
+        function () {
+            debugger;
+            if ($("#ativo").is(':checked')) {
+                $("#ativo").val(true);
+            } else {
+                $("#ativo").val(false);
+            }
+        });
+
     $(".agencia").mask("9999-9");
     $(".conta").mask("99.999-9");
     $(".cpf").mask("999.999.999-99");
     $(".rg").mask("99.999.999");
     $(".fone").mask("(99) 9 9999-9999");
 
-    //verifica checked
-    $("#ativo").change(function () {
-        if ($("#ativo").is(':checked')) {
-            $("#ativo").val(true);
-        } else {
-            $("#ativo").val(false);
-        }
-    });
     $("form").validate({
         submitHandler: function (form) {
             form.submit();
@@ -62,13 +66,13 @@
                 equalTo: "#senha"
             },
             agencia: {
-                required:true
+                required: true
             },
             conta: {
-                required:true
+                required: true
             },
             valor: {
-                required:true
+                required: true
             }
         },
         messages: {
@@ -124,7 +128,7 @@
                 required: "O campo conta é obrigatório! Digite-o."
             },
             valor: {
-                required:"O Campo valor é obrigatório! Digite-o."
+                required: "O Campo valor é obrigatório! Digite-o."
             }
         }
     });

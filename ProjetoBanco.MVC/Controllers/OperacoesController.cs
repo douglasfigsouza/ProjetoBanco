@@ -104,8 +104,8 @@ namespace ProjetoBanco.MVC.Controllers
 
                 transacao.clienteId = cli.Id;
                 valor = trasacaoViewModel.valor;
-                transacao.agencia = trasacaoViewModel.agencia;
-                transacao.conta = trasacaoViewModel.conta;
+                transacao.agencia = int.Parse(Utilitarios.Utilitarios.retiraMask(trasacaoViewModel.agencia));
+                transacao.conta = Utilitarios.Utilitarios.retiraMask(trasacaoViewModel.conta);
                 transacao.senhaCli = trasacaoViewModel.senhaCli;
                 transacao.nivel = cli.nivel;
 
@@ -126,7 +126,7 @@ namespace ProjetoBanco.MVC.Controllers
                     //insere os valores na view no hidden
                     trasacaoViewModel.clienteId = transacao.clienteId;
                     trasacaoViewModel.contaId = transacao.contaId;
-                    trasacaoViewModel.agencia = transacao.agencia;
+                    trasacaoViewModel.agencia = transacao.agencia+"";
                     trasacaoViewModel.nome = transacao.nome;
                     trasacaoViewModel.valor = valor;
 
@@ -147,15 +147,17 @@ namespace ProjetoBanco.MVC.Controllers
         //confirma os dados do deposito
         public ActionResult ConfirmDeposito(TransacaoViewModel trasacaoViewModel)
         {
-            operacaoRealizada.agencia = trasacaoViewModel.agencia;
+            operacaoRealizada.agencia = int.Parse(Utilitarios.Utilitarios.retiraMask(trasacaoViewModel.agencia));
             operacaoRealizada.clienteId = trasacaoViewModel.clienteId;
             operacaoRealizada.contaId = trasacaoViewModel.contaId;
             operacaoRealizada.dataOp = DateTime.Now;
             operacaoRealizada.valorOp = trasacaoViewModel.valor;
 
+            TempData["menssagem"] = "Depósito Realizado com sucesso!";
+            TempData["outraOp"] = "/Operacoes/Deposito";
 
             _operacaoesRealizadasAppService.Deposito(operacaoRealizada, 1);
-            return View();
+            return View("FeedBackOp");
         }
 
         public ActionResult ConsultaSaldo(TransacaoViewModel trasacaoViewModel)
@@ -164,17 +166,17 @@ namespace ProjetoBanco.MVC.Controllers
             transacao.nivel = cli.nivel;
             transacao.senhaCli = trasacaoViewModel.senhaCli;
             transacao.clienteId = cli.Id;
-            transacao.agencia = trasacaoViewModel.agencia;
-            transacao.conta = trasacaoViewModel.conta;
-            if (_OperacaoAppService.ConsultaSaldo(transacao) == null)
+            transacao.agencia = int.Parse(Utilitarios.Utilitarios.retiraMask(trasacaoViewModel.agencia));
+            transacao.conta = Utilitarios.Utilitarios.retiraMask(trasacaoViewModel.conta);
+            decimal saldo = _OperacaoAppService.ConsultaSaldo(transacao);
+            if ( saldo == -1)
             {
                 ViewBag.erro = "Conta não encontrada!";
                 return View("MostraSaldo");
             }
             else
             {
-                ViewBag.saldo = String.Format(CultureInfo.GetCultureInfo("pt-BR"), "{0:C}",
-                   decimal.Parse(_OperacaoAppService.ConsultaSaldo(transacao)));
+                ViewBag.saldo = String.Format(CultureInfo.GetCultureInfo("pt-BR"), "{0:C}",saldo);
                 return View("MostraSaldo");
             }
 
@@ -182,15 +184,15 @@ namespace ProjetoBanco.MVC.Controllers
         //confirma os dados do saque
         public ActionResult ConfirmSaque(TransacaoViewModel trasacaoViewModel)
         {
-            operacaoRealizada.agencia = trasacaoViewModel.agencia;
+            operacaoRealizada.agencia = int.Parse(Utilitarios.Utilitarios.retiraMask(trasacaoViewModel.agencia));
             operacaoRealizada.clienteId = trasacaoViewModel.clienteId;
             operacaoRealizada.contaId = trasacaoViewModel.contaId;
             operacaoRealizada.dataOp = DateTime.Now;
             operacaoRealizada.valorOp = trasacaoViewModel.valor;
 
-
-            TempData["menssagem"] = _operacaoesRealizadasAppService.Saque(operacaoRealizada, 2);
-            return RedirectToAction("Index", "Success");
+            TempData["menssagem"]= _operacaoesRealizadasAppService.Saque(operacaoRealizada, 2);
+            TempData["outraOp"] = "/Operacoes/Saque";
+            return View("FeedBackOp");
         }
         [HttpPost]
         public ActionResult Transferencia(TransacaoViewModel transacaoConta1, TransacaoViewModel transacaoConta2)
@@ -200,14 +202,14 @@ namespace ProjetoBanco.MVC.Controllers
             {
                 nivel = cli.nivel,
                 senhaCli = transacaoConta1.senhaCli,
-                agencia = transacaoConta1.agencia,
-                conta = transacaoConta1.conta,
+                agencia = int.Parse(Utilitarios.Utilitarios.retiraMask(transacaoConta1.agencia)),
+                conta = Utilitarios.Utilitarios.retiraMask(transacaoConta1.conta),
                 clienteId = cli.Id
             };
             Transacao transacao2 = new Transacao
             {
-                agencia = transacaoConta2.agencia,
-                conta = transacaoConta2.conta,
+                agencia = int.Parse(Utilitarios.Utilitarios.retiraMask(transacaoConta2.agencia)),
+                conta = Utilitarios.Utilitarios.retiraMask(transacaoConta2.conta),
                 clienteId = cli.Id
             };
             //garante que a primeira conta é a sua própria, para impedir que tranferencia entre conta de terceiros
@@ -219,7 +221,7 @@ namespace ProjetoBanco.MVC.Controllers
                 //insere os valores na view no hidden
                 transacao1ViewModel.clienteId = transacao1.clienteId;
                 transacao1ViewModel.contaId = transacao1.contaId;
-                transacao1ViewModel.agencia = transacao1.agencia;
+                transacao1ViewModel.agencia = transacao1.agencia+"";
                 transacao1ViewModel.nome = transacao1.nome;
                 transacao1ViewModel.valor = transacaoConta1.valor;
 
@@ -228,7 +230,7 @@ namespace ProjetoBanco.MVC.Controllers
                     TransacaoViewModel transacao2ViewModel = new TransacaoViewModel();
                     transacao2ViewModel.clienteId = transacao2.clienteId;
                     transacao2ViewModel.contaId = transacao2.contaId;
-                    transacao2ViewModel.agencia = transacao2.agencia;
+                    transacao2ViewModel.agencia = transacao2.agencia+"";
                     transacao2ViewModel.nome = transacao2.nome;
                     transacao2ViewModel.valor = transacaoConta2.valor;
                     lstTransacoesViewModels.Add(transacao1ViewModel);
@@ -261,20 +263,24 @@ namespace ProjetoBanco.MVC.Controllers
         {
 
 
-            operacaoRealizada.agencia = Transacoes[0].agencia;
+            operacaoRealizada.agencia = int.Parse(Transacoes[0].agencia);
             operacaoRealizada.clienteId = Transacoes[0].clienteId;
             operacaoRealizada.contaId = Transacoes[0].contaId;
             operacaoRealizada.dataOp = DateTime.Now;
             operacaoRealizada.valorOp = Transacoes[0].valor;
 
-            operacaoRealizada1.agencia = Transacoes[1].agencia;
+            operacaoRealizada1.agencia = int.Parse(Transacoes[1].agencia);
             operacaoRealizada1.clienteId = Transacoes[1].clienteId;
             operacaoRealizada1.contaId = Transacoes[1].contaId;
             operacaoRealizada1.dataOp = DateTime.Now;
 
             TempData["menssagem"] = _operacaoesRealizadasAppService.Transferencia(operacaoRealizada, operacaoRealizada1);
+            TempData["outraOp"] = "/Operacoes/Transferencia";
+            return View("FeedBackOp");
 
-            return RedirectToAction("Index", "Success");
+            //TempData["menssagem"] = _operacaoesRealizadasAppService.Transferencia(operacaoRealizada, operacaoRealizada1);
+
+            //return RedirectToAction("Index", "Success");
 
         }
 

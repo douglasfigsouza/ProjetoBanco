@@ -82,6 +82,13 @@ namespace ProjetoBanco.Infra.Data.Repositories
             _command.ExecuteNonQuery();
             return int.Parse(_command.Parameters["@RETURN_VALUE"].Value.ToString());
         }
+        // Método para executar procedure que tem retorno decimal (Insert,Delete)
+        public decimal ExecuteNonQueryWithReturnDecimal()
+        {
+            AddParameterReturn();
+            _command.ExecuteNonQuery();
+            return decimal.Parse(_command.Parameters["@RETURN_VALUE"].Value.ToString());
+        }
         // Metodo exclusivo para procedure que retorna valores (Select)
         public SqlDataReader ExecuteReader()
         {

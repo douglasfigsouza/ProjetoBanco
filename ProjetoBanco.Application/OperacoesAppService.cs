@@ -58,15 +58,16 @@ namespace ProjetoBanco.Application
         }
 
 
-        public string ConsultaSaldo(Transacao transacao)
+        public decimal ConsultaSaldo(Transacao transacao)
         {
-            if( _OperacaoRepositoryDomain.ConsultaSaldo(transacao)==(-1))
+            decimal saldo= _OperacaoRepositoryDomain.ConsultaSaldo(transacao);
+            if( saldo==(-1))
             {
-                return null;
+                return -1;
             }
             else
             {
-                return _OperacaoRepositoryDomain.ConsultaSaldo(transacao)+"";
+                return saldo;
             }
         }
     }

@@ -37,6 +37,7 @@ namespace ProjetoBanco.MVC.Controllers
                 agencia.CidadeId = agenciaViewModel.CidadeId;
                 agencia.bancoId = agenciaViewModel.bancoId;
                 agencia.agencia = agenciaViewModel.agencia;
+                agencia.ativo = agenciaViewModel.ativo;
 
                 error = _agenciaAppService.AddAgencia(agencia);
 
@@ -56,7 +57,7 @@ namespace ProjetoBanco.MVC.Controllers
         }
 
         [HttpPost]
-        public ActionResult UpdateAgencia(AgenciaViewModel agenciaViewModel)
+        public ActionResult AtualizaAgencia(AgenciaViewModel agenciaViewModel)
         {
             agencia.agencia = agenciaViewModel.agencia;
             agencia.ativo = agenciaViewModel.ativo;
@@ -64,8 +65,19 @@ namespace ProjetoBanco.MVC.Controllers
             error = _agenciaAppService.UpdateAgencia(agencia);
 
             return feedBackOperacao("UpdateAgencia", error);
-
         }
+
+        //[HttpPost]
+        //public ActionResult AtualizaAgencia(AgenciaViewModel agenciaViewModel)
+        //{
+        //    agencia.agencia = agenciaViewModel.agencia;
+        //    agencia.ativo = agenciaViewModel.ativo;
+
+        //    error = _agenciaAppService.UpdateAgencia(agencia);
+
+        //    return feedBackOperacao("UpdateAgencia", error);
+
+        //}
 
         public JsonResult GetAgenciaByNum(int agencia)
         {

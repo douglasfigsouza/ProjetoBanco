@@ -121,9 +121,13 @@ namespace ProjetoBanco.Infra.Data.Repositories
                 conn.AddParameter("@conta", transacao.conta);
                 conn.AddParameter("@agencia", transacao.agencia);
                 conn.AddParameter("@clienteId", transacao.clienteId);
-
-                return conn.ExecuteNonQueryWithReturn();
-
+                decimal saldo = 0;
+                result = conn.ExecuteReader();
+                while (result.Read())
+                {
+                    saldo = decimal.Parse(result["saldo"].ToString());
+                }
+                return saldo;
             }
             catch (Exception ex)
             {

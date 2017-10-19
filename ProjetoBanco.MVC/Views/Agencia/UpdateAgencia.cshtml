@@ -1,8 +1,10 @@
-﻿<div class="row" id="divAlterAgencia">
+﻿
+@model ProjetoBanco.MVC.ViewModels.AgenciaViewModel
+<div class="row" id="divAlterAgencia">
     <h5>Alteração de Agência</h5>
     <hr />
     <div class="6">
-        <form>
+
             <div class="row">
                 <div class="col s4">
                     <label for="agencia" class="col s12">Agencia</label>
@@ -13,7 +15,7 @@
                     </button>
                 </div>
             </div>
-        </form>
+
     </div>
 </div>
 <div class="row" id="divAgenciaEditavel">
@@ -26,11 +28,12 @@
             <h6 class="col s6">Agencia:</h6>
             <h6 class="col s6" id="numAgencia"></h6>
         </div>
-        @using (Html.BeginForm("UpdateAgencia", "Agencia"))
+        @using (Html.BeginForm("AtualizaAgencia","Agencia"))
         {
-            <input type="hidden" id="agenciaEditavel" name="agencia"/>
+            @Html.ValidationSummary(true)
             <div class="row">
-                <input type="checkbox" id="ativo" name="ativo" checked/>
+                <input type="hidden" id="agenciaEditavel" name="agencia" />
+                <input type="checkbox" id="ativo" name="ativo" checked />
                 <label for="ativo">Ativo</label>
             </div>
             <div class="row">
