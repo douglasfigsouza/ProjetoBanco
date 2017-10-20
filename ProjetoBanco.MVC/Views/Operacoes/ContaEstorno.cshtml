@@ -1,5 +1,5 @@
 ﻿<div class="row">
-    <div class="col s6">
+    <div class="col s12">
         @using (Html.BeginForm("Estorno","Operacoes"))
         {
             <div class="row">
@@ -7,17 +7,17 @@
                 <hr/>
             </div>
             <div class="row">
-                <div class="col s4 input-field">
+                <div class="col s4">
                     <label class="col s12">Conta</label>
-                    <input type="text" class="col s12 conta" name="conta">
+                    <input type="text" class="col s12 conta" name="conta" required>
                 </div>
-                <div class="col s4 input-field">
+                <div class="col s4 ">
                     <label class="col s12">Agência</label>
-                    <input type="text" class="col s12 agencia" name="agencia">
+                    <input type="text" class="col s12 agencia" name="agencia" required>
                 </div>
-                <div class="col s4 input-field">
+                <div class="col s4">
                     <label class="col s12">Senha</label>
-                    <input type="password" class="col s12" name="senha">
+                    <input type="password" class="col s12" name="senha" required>
                 </div>
             </div>
             <div class="row">
@@ -28,3 +28,8 @@
         }
     </div>
 </div>
+<script>
+    $(document).ready(function() {
+        $(".container").addClass("diminuicao40");
+    });
+</script>

@@ -1,4 +1,3 @@
-
 IF EXISTS (SELECT * FROM dbo.sysobjects WHERE id = object_id(N'[dbo].[PBSP_GETALLESTADOS]') AND objectproperty(id, N'IsPROCEDURE')=1)
 DROP PROCEDURE [dbo].[PBSP_GETALLESTADOS]
 GO
@@ -27,7 +26,7 @@ DROP PROCEDURE [dbo].[PBSP_GETCIDADESBYIDESTADO]
 GO
 
 CREATE PROCEDURE [dbo].[PBSP_GETCIDADESBYIDESTADO]
-@id[SMALLINT]
+@id SMALLINT
 AS
 
 /*
@@ -55,17 +54,17 @@ DROP PROCEDURE [dbo].[PBSP_INSERTCLIENTE]
 GO
 
 CREATE PROCEDURE [dbo].[PBSP_INSERTCLIENTE]
-@cidadeId[INT],
-@nome[VARCHAR](200),
-@cpf[VARCHAR](20),
-@rg[VARCHAR](20),
-@fone[VARCHAR](20),
-@rua[VARCHAR](100),
-@bairro[VARCHAR](200),
-@num[INT],
-@dataCadastro[DATETIME],
-@nivel[CHAR](1),
-@ativo[BIT]
+@cidadeId INT,
+@nome VARCHAR (200),
+@cpf VARCHAR(20),
+@rg VARCHAR(20),
+@fone VARCHAR(20),
+@rua VARCHAR(100),
+@bairro VARCHAR(200),
+@num INT,
+@dataCadastro DATETIME,
+@nivel CHAR(1),
+@ativo BIT
 AS
 
 /*
@@ -125,8 +124,8 @@ DROP PROCEDURE [dbo].[PBSP_INSERTBANCO]
 GO
 
 CREATE PROCEDURE [dbo].[PBSP_INSERTBANCO]
-@nome[VARCHAR](200),
-@ativo[BIT]
+@nome VARCHAR(200),
+@ativo BIT
 AS
 
 /*
@@ -182,9 +181,9 @@ DROP PROCEDURE [dbo].[PBSP_INSERTUSUARIOS]
 GO
 
 CREATE PROCEDURE [dbo].[PBSP_INSERTUSUARIOS]
-@clienteId[SMALLINT],
-@nome[VARCHAR](20),
-@senha[VARCHAR](20),
+@clienteId SMALLINT,
+@nome VARCHAR(20),
+@senha VARCHAR(20),
 @ativo BIT
 AS
 
@@ -213,8 +212,8 @@ DROP PROCEDURE [dbo].[PBSP_AUTENTICA]
 GO
 
 CREATE PROCEDURE [dbo].[PBSP_AUTENTICA]
-@nome[VARCHAR](20),
-@senha[VARCHAR](8)
+@nome VARCHAR(20),
+@senha VARCHAR(8)
 AS
 
 /*
@@ -242,7 +241,7 @@ DROP PROCEDURE [dbo].[PBSP_INSERTOPERACAO]
 GO
 
 CREATE PROCEDURE [dbo].[PBSP_INSERTOPERACAO]
-@descricao[VARCHAR](200)
+@descricao VARCHAR(200)
 AS
 
 /*
@@ -269,9 +268,9 @@ DROP PROCEDURE [dbo].[PBSP_INSERTAGENCIA]
 GO
 
 CREATE PROCEDURE [dbo].[PBSP_INSERTAGENCIA]
-@cidadeId[INT],
-@bancoId[SMALLINT],
-@agencia[INT],
+@cidadeId INT,
+@bancoId SMALLINT,
+@agencia INT,
 @ativo BIT
 AS
 
@@ -327,9 +326,9 @@ DROP PROCEDURE [dbo].[PBSP_INSERTCONTA]
 GO
 
 CREATE PROCEDURE [dbo].[PBSP_INSERTCONTA]
-@num[VARCHAR](15),
-@senha[VARCHAR](6),
-@tipo[CHAR](1),
+@num VARCHAR(20),
+@senha VARCHAR(8),
+@tipo CHAR(3),
 @ativo BIT
 AS
 
@@ -360,9 +359,9 @@ DROP PROCEDURE [dbo].[PBSP_INSERTCONTACLIENTE]
 GO
 
 CREATE PROCEDURE [dbo].[PBSP_INSERTCONTACLIENTE]
-@contaId[SMALLINT],
-@agencia[SMALLINT],
-@clienteId[SMALLINT]
+@contaId SMALLINT ,
+@agencia SMALLINT,
+@clienteId SMALLINT
 AS
 
 /*
@@ -521,7 +520,7 @@ DECLARE @bancoId SMALLINT,
 SET	@bancoId = dbo.RetornaIdBanco(@agencia);
 SET @saldoAnterior = dbo.RetornaSaldo(@contaId);
 
-INSERT INTO OperacoesRealizadas(operacaoId,clienteId,contaId,agencia,bancoId,dataOP,saldoAnterior,valorOp)
+INSERT INTO OperacoesRealizadas(codTipoOp,clienteId,contaId,agencia,bancoId,dataOP,saldoAnterior,valorOp)
 VALUES(@operacaoId,@clienteId,@contaId,@agencia,@bancoId,@dataOp,@saldoAnterior,@valorOp)
 
 END
@@ -559,7 +558,7 @@ SET	@bancoId = dbo.RetornaIdBanco(@agencia);
 SET @saldoAnterior = dbo.RetornaSaldo(@contaId);
 IF((@saldoAnterior - @valorOp) >= 0)
 BEGIN
-INSERT INTO OperacoesRealizadas(operacaoId,clienteId,contaId,agencia,bancoId,dataOP,saldoAnterior,valorOp)
+INSERT INTO OperacoesRealizadas(codTipoOp,clienteId,contaId,agencia,bancoId,dataOP,saldoAnterior,valorOp)
 VALUES(@operacaoId,@clienteId,@contaId,@agencia,@bancoId,@dataOp,@saldoAnterior,@valorOp*(-1))
 RETURN 1;
 END
@@ -697,7 +696,7 @@ SET	@bancoId = dbo.RetornaIdBanco(@agencia);
 SET @saldoAnterior = dbo.RetornaSaldo(@contaId);
 SET @clienteId = dbo.RetornaIdClienteConta(@contaId);
 BEGIN
-INSERT INTO OperacoesRealizadas(operacaoId,clienteId,contaId,agencia,bancoId,dataOP,saldoAnterior,valorOp)
+INSERT INTO OperacoesRealizadas(codTipoOp,clienteId,contaId,agencia,bancoId,dataOP,saldoAnterior,valorOp)
 VALUES(103,@clienteId,@contaId,@agencia,@bancoId,@dataOp,@saldoAnterior,@valorOp);
 END
 END
@@ -837,11 +836,11 @@ Ex................: EXEC [dbo].[PBSP_GETALLOPERACOESESTORNO]
 
 BEGIN
 
-SELECT opReal.Id,opReal.operacaoId, opReal.dataOP,opReal.valorOp,
+SELECT opReal.Id,opReal.codTipoOp, opReal.dataOP,opReal.valorOp,
 opReal.saldoAnterior, op.descricao, ag.agencia,
 conta.num , cli.nome
 FROM OperacoesRealizadas AS opReal WITH(NOLOCK)
-INNER JOIN Operacoes AS op WITH(NOLOCK) on opReal.operacaoId = op.Id
+INNER JOIN Operacoes AS op WITH(NOLOCK) on opReal.codTipoOp = op.Id
 INNER JOIN Agencia AS ag WITH(NOLOCK) ON opReal.agencia = ag.agencia
 INNER JOIN Conta AS conta WITH(NOLOCK) ON opReal.contaId = conta.Id
 INNER JOIN Clientes AS cli WITH(NOLOCK) ON opReal.clienteId = cli.Id
@@ -872,11 +871,11 @@ Ex................: EXEC [dbo].[PBSP_GETOPREALIZADASPORCONTA]
 */
 
 BEGIN
-SELECT opReal.Id,opReal.operacaoId, opReal.dataOP,opReal.valorOp,
+SELECT opReal.Id,opReal.codTipoOp, opReal.dataOP,opReal.valorOp,
 opReal.saldoAnterior, op.descricao, ag.agencia,
 conta.num , cli.nome
 FROM OperacoesRealizadas AS opReal WITH(NOLOCK)
-INNER JOIN Operacoes AS op WITH(NOLOCK) on opReal.operacaoId = op.Id
+INNER JOIN Operacoes AS op WITH(NOLOCK) on opReal.codTipoOp = op.Id
 INNER JOIN Agencia AS ag WITH(NOLOCK) ON opReal.agencia = ag.agencia
 INNER JOIN Conta AS conta WITH(NOLOCK) ON opReal.contaId = conta.Id
 INNER JOIN Clientes AS cli WITH(NOLOCK) ON opReal.clienteId = cli.Id
@@ -960,23 +959,23 @@ IF(@valorUltOp < 0)
 								SET @saldoAnterior2 = dbo.RetornaSaldo(@contaId);
 
 								--estorna conta1
-								INSERT INTO OperacoesRealizadas(operacaoId,clienteId,contaId,agencia,bancoId,dataOP,saldoAnterior,valorOp)
+								INSERT INTO OperacoesRealizadas(codTipoOp,clienteId,contaId,agencia,bancoId,dataOP,saldoAnterior,valorOp)
 								VALUES(@opId,@clienteId,@contaId,@agencia,@bancoId,GETDATE(),@saldoAnterior,@valorOp);
 								
 								--estorna conta 2
-								INSERT INTO OperacoesRealizadas(operacaoId,clienteId,contaId,agencia,bancoId,dataOP,saldoAnterior,valorOp)
+								INSERT INTO OperacoesRealizadas(codTipoOp,clienteId,contaId,agencia,bancoId,dataOP,saldoAnterior,valorOp)
 								VALUES(@opId,@cliente2Id,@conta2Id,@agencia2,@banco2Id,GETDATE(),@saldoAnterior2,@valorUltOp);
 							END
 						ELSE
 							BEGIN
-								INSERT INTO OperacoesRealizadas(operacaoId,clienteId,contaId,agencia,bancoId,dataOP,saldoAnterior,valorOp)
+								INSERT INTO OperacoesRealizadas(codTipoOp,clienteId,contaId,agencia,bancoId,dataOP,saldoAnterior,valorOp)
 								VALUES(@opId,@clienteId,@contaId,@agencia,@bancoId,GETDATE(),@saldoAnterior,@valorOp);
 							END
 					END	
 
 					ELSE
 						BEGIN
-							INSERT INTO OperacoesRealizadas(operacaoId,clienteId,contaId,agencia,bancoId,dataOP,saldoAnterior,valorOp)
+							INSERT INTO OperacoesRealizadas(codTipoOp,clienteId,contaId,agencia,bancoId,dataOP,saldoAnterior,valorOp)
 							VALUES(@opId,@clienteId,@contaId,@agencia,@bancoId,GETDATE(),@saldoAnterior,@valorOp);
 						END
 	END
@@ -1169,7 +1168,7 @@ CREATE FUNCTION dbo.RetornaIdProxOpRealizada(@idOpReal SMALLINT)
 	RETURNS SMALLINT
 	BEGIN
 		DECLARE @opProxOpReal SMALLINT;
-		SET @opProxOpReal = (SELECT operacaoId FROM OperacoesRealizadas WITH(NOLOCK)
+		SET @opProxOpReal = (SELECT codTipoOp FROM OperacoesRealizadas WITH(NOLOCK)
 						WHERE Id=@idOpReal+1);
 		IF(@opProxOpReal IS NULL)
 			BEGIN

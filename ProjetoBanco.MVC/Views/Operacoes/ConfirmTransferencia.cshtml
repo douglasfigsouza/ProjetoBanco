@@ -19,19 +19,19 @@
                 <h4>
                     Transferência de:
                 </h4>
-                <h4>
+                <h5>
                     Cliente: @Model[0].nome
-                </h4>
-                <h4>
+                </h5>
+                <h5>
                     Valor: @Model[0].valor
-                </h4>
+                </h5>
                 <hr />
                 <h4>
                     Para:
                 </h4>
-                <h4>
+                <h5>
                     Cliente: @Model[1].nome
-                </h4>
+                </h5>
             </div>
 
         </div>
@@ -45,10 +45,14 @@
     }
     else
     {
-        <h4>@ViewBag.erroTransacao</h4>
+        <h5>@ViewBag.erroTransacao</h5>
         <div class="col s6">
-            @Html.ActionLink("Realizar outra Operacao", "Transferencia", "Operacoes")
+            @Html.ActionLink("Deseja Realizar outra Operacao?", "Transferencia", "Operacoes")
         </div>
     }
 }
-
+<script>
+    $(document).ready(function() {
+        $(".container").addClass("diminuicao50");
+    });
+</script>

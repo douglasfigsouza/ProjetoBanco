@@ -11,7 +11,7 @@ namespace ProjetoBanco.Domain.Entities
         public int Id { get; set; }
         public string  num { get; set; }
         public string senha { get; set; }
-        public string tipo { get; set; }
+        public char tipo { get; set; }
         public bool ativo { get; set; }
     }
 }

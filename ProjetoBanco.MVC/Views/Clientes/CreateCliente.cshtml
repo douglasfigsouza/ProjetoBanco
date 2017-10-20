@@ -16,7 +16,7 @@
             @Html.ValidationSummary(true)
             {
                 <div class="row">
-                    <div class="col s6 input-field">
+                    <div class="col s6 ">
                         <label for="nome" class="col s12">Nome</label>
                         @Html.TextBoxFor(model => model.nome, new { htmlAttributes = new { @class = "col s12" } })
                         @Html.ValidationMessageFor(model => model.nome, "", new { @class = "text-danger" })
@@ -24,19 +24,19 @@
                 </div>
 
                 <div class="row">
-                    <div class="col s6 input-field">
+                    <div class="col s6 ">
                         <label for="cpf" class="col s12">CPF</label>
                         @Html.EditorFor(model => model.cpf, new { htmlAttributes = new { @class = "col s12 cpf" } })
                         @Html.ValidationMessageFor(model => model.cpf, "", new { @class = "text-danger" })
                     </div>
-                    <div class="col s6 input-field">
+                    <div class="col s6 ">
                         <label for="rg" class="col s12">RG</label>
                         @Html.EditorFor(model => model.rg, new { htmlAttributes = new { @class = "col s12 rg" } })
                     </div>
                 </div>
 
                 <div class="row">
-                    <div class="col s6 input-field">
+                    <div class="col s6 ">
                         <label for="fone" class="col s12">Fone</label>
                         @Html.EditorFor(model => model.fone, new { htmlAttributes = new { @class = "col s12 fone" } })
                         @Html.ValidationMessageFor(model => model.fone, "", new { @class = "text-danger" })
@@ -67,7 +67,7 @@
                     </div>
                 </div>
 
-                <div class="row input-field">
+                <div class="row ">
                     <div class="col s4">
                         <label for="bairro" class="col s12">Bairro</label>
                         @Html.EditorFor(model => model.bairro, new { htmlAttributes = new { @class = "col s12" } })

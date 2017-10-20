@@ -14,26 +14,19 @@
 <body>
     <header>
         <ul id="alteracoes" class="dropdown-content">
-            @if (Session["nivel"].ToString() == "f")
-            {
-                <li>@Html.ActionLink("Agência", "UpdateAgencia", "Agencia")</li>
-                <li>@Html.ActionLink("Clientes", "EditCliente", "Clientes")</li>
-                <li>@Html.ActionLink("Conta", "EditConta", "Contas")</li>
-                <li>@Html.ActionLink("Estorno", "DadosParaEstorno", "Operacoes")</li>
-                <li>@Html.ActionLink("Usuários", "EditUsuario", "Usuarios")</li>
-
-            }
+            <li>@Html.ActionLink("Agência", "UpdateAgencia", "Agencia")</li>
+            <li>@Html.ActionLink("Clientes", "EditCliente", "Clientes")</li>
+            <li>@Html.ActionLink("Conta", "EditConta", "Contas")</li>
+            <li>@Html.ActionLink("Estorno", "DadosParaEstorno", "Operacoes")</li>
+            <li>@Html.ActionLink("Usuários", "EditUsuario", "Usuarios")</li>
         </ul>
         <ul id="cadastros" class="dropdown-content">
-            @if (Session["nivel"].ToString() == "f")
-            {
-                <li>@Html.ActionLink("Agências", "CreateAgencia", "Agencia")</li>
-                <li>@Html.ActionLink("Bancos", "CreateBanco", "Banco")</li>
-                <li>@Html.ActionLink("Contas", "CreateConta", "Contas")</li>
-                <li>@Html.ActionLink("Clientes", "CreateCliente", "Clientes")</li>
-                <li>@Html.ActionLink("Operações", "CreateOperacao", "Operacoes")</li>
-                <li>@Html.ActionLink("Usuários", "CreateUsuario", "Usuarios")</li>
-            }
+            <li>@Html.ActionLink("Agências", "CreateAgencia", "Agencia")</li>
+            <li>@Html.ActionLink("Bancos", "CreateBanco", "Banco")</li>
+            <li>@Html.ActionLink("Contas", "CreateConta", "Contas")</li>
+            <li>@Html.ActionLink("Clientes", "CreateCliente", "Clientes")</li>
+            <li>@Html.ActionLink("Operações", "CreateOperacao", "Operacoes")</li>
+            <li>@Html.ActionLink("Usuários", "CreateUsuario", "Usuarios")</li>
         </ul>
         <ul id="operacoes" class="dropdown-content">
             <li>@Html.ActionLink("Deposito", "Deposito", "Operacoes")</li>
@@ -41,14 +34,21 @@
             <li>@Html.ActionLink("Saque", "Saque", "Operacoes")</li>
             <li>@Html.ActionLink("Transferência", "Transferencia", "Operacoes")</li>
         </ul>
-        <nav class="fixed" id="menu">
-            <div class="nav-wrapper">
+        <nav class="fixed " id="menu">
+            <div class="nav-wrapper #42a5f5 blue lighten-1">
                 <a href="/Usuarios/Logout" class="brand-logo"><i class="material-icons right" title="Deseja sair do sistema?">highlight_off</i></a>
                 <a href="/Home/Index" class="brand-logo center" title="Ir para página inicial?"><i class="material-icons">home</i></a>
                 <ul class="right hide-on-med-and-down">
-                    <li><a class="dropdown-button" href="#!" data-activates="alteracoes">Alteracões<i class="material-icons right">arrow_drop_down</i></a></li>
-                    <li><a class="dropdown-button" href="#!" data-activates="cadastros">Cadastros<i class="material-icons right">arrow_drop_down</i></a></li>
-                    <li><a class="dropdown-button" href="#!" data-activates="operacoes">Operações<i class="material-icons right">arrow_drop_down</i></a></li>
+                    @if (Session["nivel"].ToString() == "f")
+                    {
+                        <li><a class="dropdown-button" href="#!" data-activates="alteracoes">Alteracões<i class="material-icons right">arrow_drop_down</i></a></li>
+                        <li><a class="dropdown-button" href="#!" data-activates="cadastros">Cadastros<i class="material-icons right">arrow_drop_down</i></a></li>
+                        <li><a class="dropdown-button" href="#!" data-activates="operacoes">Operações<i class="material-icons right">arrow_drop_down</i></a></li>
+                    }
+                    @if (Session["nivel"].ToString() == "c")
+                    {
+                        <li><a class="dropdown-button" href="#!" data-activates="operacoes">Operações<i class="material-icons right">arrow_drop_down</i></a></li>
+                    }
                 </ul>
 
             </div>
@@ -56,17 +56,11 @@
     </header>
     <div class="container margim-top">
         @RenderBody()
-
     </div>
-    <footer class="page-footer black">
+    <footer class="page-footer #42a5f5 blue lighten-1 center-align">
 
-        <div class="footer-copyright">
-            <div class="container">
-                © 2014 Copyright SisBank
-            </div>
-        </div>
+        SisBank - © 2017 Copyright SMN
     </footer>
-
     @Scripts.Render("~/bundles/bootstrap")
     @RenderSection("scripts", required: false)
 </body>

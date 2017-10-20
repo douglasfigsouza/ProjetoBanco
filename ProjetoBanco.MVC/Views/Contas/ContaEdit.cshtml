@@ -1,7 +1,7 @@
 ﻿<div class="row" id="dadosContaCliente">
-    <div class="col s8">
+    <div class="col s12">
         <div class="row">
-            <h6>Informe os Dados para recuperar a conta a ser alterada</h6>
+            <h5>Informe os Dados para recuperar a conta a ser alterada</h5>
             <hr />
         </div>
         <div class="row">
@@ -68,6 +68,7 @@
 </div>
 <script>
     $(document).ready(function () {
+        $(".container").addClass("diminuicao50");
         $("#divDadosDaConta").hide();
         $("#getConta").click(function () {
             $.ajax({

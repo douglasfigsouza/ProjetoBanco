@@ -1,23 +1,3 @@
-SET NOCOUNT ON
-
-CREATE TABLE [Estado](
-[EstadoId] [tinyint] NOT NULL,
-[Sigla] [char](2) NOT NULL,
-CONSTRAINT [PK_Estado] PRIMARY KEY ([EstadoId])
-)
-
-GO
-
-CREATE TABLE [Cidade](
-[CidadeId] [int] NOT NULL,
-[Nome] [varchar](38) NOT NULL,
-[EstadoId] [tinyint] NULL,
-[Capital] [bit] NOT NULL,
-CONSTRAINT [PK_Cidade] PRIMARY KEY ([CidadeId])
-)
-
-GO
-
 INSERT INTO [dbo].[Estado] ([EstadoId],[Sigla]) VALUES (1,'AC')
 INSERT INTO [dbo].[Estado] ([EstadoId],[Sigla]) VALUES (2,'AL')
 INSERT INTO [dbo].[Estado] ([EstadoId],[Sigla]) VALUES (3,'AM')

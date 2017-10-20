@@ -29,7 +29,7 @@ namespace ProjetoBanco.Infra.Data.Repositories
         public void Deposito(OperacaoRealizada operacaoRealizada, int op)
         {
             conn.ExecuteProcedure(Procedure.PBSP_DEPOSITO);
-            conn.AddParameter("@operacaoId", op);
+            conn.AddParameter("@codTipoOp", op);
             conn.AddParameter("@agencia", operacaoRealizada.agencia);
             conn.AddParameter("@contaId", operacaoRealizada.contaId);
             conn.AddParameter("@clienteId", operacaoRealizada.clienteId);
@@ -41,7 +41,7 @@ namespace ProjetoBanco.Infra.Data.Repositories
         public int Transferencia(OperacaoRealizada opConta1, OperacaoRealizada opConta2)
         {
             conn.ExecuteProcedure(Procedure.PBSP_SAQUE);
-            conn.AddParameter("operacaoId", 2);
+            conn.AddParameter("codTipoOp", 2);
             conn.AddParameter("@agencia", opConta1.agencia);
             conn.AddParameter("@contaId", opConta1.contaId);
             conn.AddParameter("@clienteId", opConta1.clienteId);
@@ -51,7 +51,7 @@ namespace ProjetoBanco.Infra.Data.Repositories
             {
                 conn = new Conexao();
                 conn.ExecuteProcedure(Procedure.PBSP_TRANSFERENCIA);
-                conn.AddParameter("operacaoId", 4);
+                conn.AddParameter("codTipoOp", 4);
                 conn.AddParameter("@agencia", opConta2.agencia);
                 conn.AddParameter("@contaId", opConta2.contaId);
                 conn.AddParameter("@dataOp", opConta2.dataOp);
@@ -79,7 +79,7 @@ namespace ProjetoBanco.Infra.Data.Repositories
                     OpsEstorno.Add(new Estorno
                     {
                         Id = Convert.ToInt32(result["Id"].ToString()),
-                        opId = Convert.ToInt32(result["operacaoId"].ToString()),
+                        opId = Convert.ToInt32(result["codTipoOp"].ToString()),
                         dataOp = Convert.ToDateTime(result["dataOp"].ToString()),
                         valorOp = Convert.ToDecimal(result["valorOp"].ToString()),
                         saldoAnterior = Convert.ToDecimal(result["saldoAnterior"].ToString()),
@@ -121,7 +121,7 @@ namespace ProjetoBanco.Infra.Data.Repositories
         public int Saque(OperacaoRealizada operacaoRealizada, int op)
         {
             conn.ExecuteProcedure(Procedure.PBSP_SAQUE);
-            conn.AddParameter("@operacaoId", op);
+            conn.AddParameter("@codTipoOp", op);
             conn.AddParameter("@agencia", operacaoRealizada.agencia);
             conn.AddParameter("@contaId", operacaoRealizada.contaId);
             conn.AddParameter("@clienteId", operacaoRealizada.clienteId);
@@ -140,7 +140,7 @@ namespace ProjetoBanco.Infra.Data.Repositories
                 OpsEstorno.Add(new Estorno
                 {
                     Id = Convert.ToInt32(result["Id"].ToString()),
-                    opId = Convert.ToInt32(result["operacaoId"].ToString()),
+                    opId = Convert.ToInt32(result["codTipoOp"].ToString()),
                     dataOp = Convert.ToDateTime(result["dataOp"].ToString()),
                     valorOp = Convert.ToDecimal(result["valorOp"].ToString()),
                     saldoAnterior = Convert.ToDecimal(result["saldoAnterior"].ToString()),

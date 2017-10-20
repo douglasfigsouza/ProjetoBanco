@@ -6,7 +6,11 @@ namespace ProjetoBanco.MVC.Utilitarios
     {
         public static string retiraMask(string campo)
         {
-            return campo.Replace(".", "").Replace("-", "").Replace("(", "").Replace(")", "").Replace(" ","");
+            if (campo == null) return null;
+            else
+            {
+                return campo.Replace(".", "").Replace("-", "").Replace("(", "").Replace(")", "").Replace(" ", "");
+            }
         }
         public static string retiraMaskMoney(string campo)
         {

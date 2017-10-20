@@ -1,4 +1,6 @@
 ﻿$(document).ready(function () {
+
+    $(".button-collapse").sideNav();
     //verifica checked
     $(document).on("change",
         "#ativo",

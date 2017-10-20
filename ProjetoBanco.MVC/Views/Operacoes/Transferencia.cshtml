@@ -2,11 +2,11 @@
 
 <div class="row">
     <div class="row">
-        <h6>
-            Bem Vindo(a): <label class="6">@ViewBag.cliente.nome</label>
+        <h6 class="right">
+            Bem Vindo(a): @ViewBag.cliente.nome
         </h6>
         <div class="col s12">
-            <h6>Transferência</h6>
+            <h5>Transferência</h5>
             <hr />
         </div>
     </div>
@@ -24,23 +24,23 @@
                             </div>
                         </div>
                         <div class="row">
-                            <div class="col s5 input-field">
-                                <label for="transacaoConta1.agencia" class="col s12 agencia">Agência</label>
-                                <input type="text" name="transacaoConta1.agencia" class="col s12 agencia" />
+                            <div class="col s5 ">
+                                <label for="agenciaCont1" class="col s12 agencia">Agência</label>
+                                <input type="text" name="agenciaCont1" class="col s12 agencia" />
                             </div>
-                            <div class="col s5 input-field">
-                                <label for="transacaoConta1.conta" class="col s12 conta">Conta</label>
-                                <input type="text" name="transacaoConta1.conta" class="col s12 conta" />
+                            <div class="col s5 ">
+                                <label for="numCont1" class="col s12 conta">Conta</label>
+                                <input type="text" name="numCont1" class="col s12 conta" />
                             </div>
                         </div>
                         <div class="row">
-                            <div class="col s5 input-field">
-                                <label for="transacaoConta1.valor" class="col s12">Valor</label>
-                                <input type="text" name="transacaoConta1.valor" class="col s12 money" />
+                            <div class="col s5 ">
+                                <label for="valorCont1" class="col s12">Valor</label>
+                                <input type="text" name="valor" pattern="[0-9]+$" class="col s12 money" />
                             </div>
-                            <div class="col s5 input-field">
-                                <label for="transacaoConta1.senhaCli" class="col s12 ">Senha</label>
-                                <input type="password" name="transacaoConta1.senhaCli" class="col s12" />
+                            <div class="col s5 ">
+                                <label for="senha" class="col s12 ">Senha</label>
+                                <input type="password" name="senha" class="col s12" />
                             </div>
                         </div>
                     </div>
@@ -52,13 +52,13 @@
                         </div>
                         <div class="row">
 
-                            <div class="col s5 input-field">
-                                <label for="transacaoConta2.agencia" class="col s12 agencia">Agência</label>
-                                <input type="text" name="transacaoConta2.agencia" class="col s12 agencia" />
+                            <div class="col s5 ">
+                                <label for="agenciaCont2" class="col s12 agencia">Agência</label>
+                                <input type="text" name="agenciaCont2" class="col s12 agencia" />
                             </div>
-                            <div class="col s6 input-field">
-                                <label for="transacaoConta2.conta" class="col s12 conta">Conta</label>
-                                <input type="text" name="transacaoConta2.conta" class="col s12 conta" />
+                            <div class="col s6 ">
+                                <label for="numCont2" class="col s12 conta">Conta</label>
+                                <input type="text" name="numCont2" class="col s12 conta" />
                             </div>
                         </div>
                     </div>
@@ -84,40 +84,45 @@
                 form.submit();
             },
             rules: {
-
-
+                agenciaCont1: {
+                    required: true
+                },
+                numCont1: {
+                    required: true
+                },
+                senha: {
+                    required: true,
+                    minlength: 8
+                },
+                valor: {
+                    required: true
+                },
+                agenciaCont2: {
+                    required: true
+                },
+                numCont2: {
+                    required: true
+                }
             },
             messages: {
-                nome: {
-                    required: "O campo Nome é Obrigatório! Digite-O",
-                    minlength: "O campo Nome deve conter no mínimo 5 caracteres!",
-                    maxlength: "O campo Nome deve conter no máximo 100 caracteres!"
+                agenciaCont1: {
+                    required: "O campo agência é obrigatório! Digite-o"
                 },
-                cpf: {
-                    required: "O campo CPF é Obrigatório! Digite-O"
+                numCont1: {
+                    required: "O campo Conta é obrigatório! Digite-o"
                 },
-                rg: {
-                    required: "O campo RG é Obrigatório! Digite-O"
+                senha: {
+                    required: "O campo senha é obrigatório! Digite-o",
+                    minlength: "A senha deve conter {0} digitos"
                 },
-                fone: {
-                    required: "O campo Fone é Obrigatório! Digite-O"
+                valor: {
+                    required: "O campo Valor é obrigatório! Digite-o"
                 },
-                bairro: {
-                    required: "O campo Bairro é Obrigatório! Digite-O"
+                agenciaCont2: {
+                    required: "O campo Conta é obrigatório! Digite-o"
                 },
-                rua: {
-                    required: "O campo Rua é Obrigatório! Digite-O"
-                },
-                num: {
-                    required: "O campo N° é Obrigatório! Digite-O"
-
-                },
-                nivel: {
-                    required: "O campo Nível é Obrigatório! Digite-O"
-
-                },
-                cidadeId: {
-                    required: "Selecione a cidade!"
+                numCont2: {
+                    required: "O campo senha é obrigatório! Digite-o"
                 }
             }
         });

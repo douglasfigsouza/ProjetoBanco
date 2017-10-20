@@ -193,21 +193,22 @@ namespace ProjetoBanco.MVC.Controllers
             return View("FeedBackOp");
         }
         [HttpPost]
-        public ActionResult Transferencia(TransacaoViewModel transacaoConta1, TransacaoViewModel transacaoConta2)
+        public ActionResult Transferencia(FormCollection transacao)
         {
             Cliente cli = (Cliente)Session["cliente"];
+
             Transacao transacao1 = new Transacao
             {
                 nivel = cli.nivel,
-                senhaCli = transacaoConta1.senhaCli,
-                agencia = int.Parse(Utilitarios.Utilitarios.retiraMask(transacaoConta1.agencia)),
-                conta = Utilitarios.Utilitarios.retiraMask(transacaoConta1.conta),
+                senhaCli = transacao["senha"],
+                agencia = int.Parse(Utilitarios.Utilitarios.retiraMask(transacao["agenciaCont1"])),
+                conta = Utilitarios.Utilitarios.retiraMask(transacao["numCont1"]),
                 clienteId = cli.Id
             };
             Transacao transacao2 = new Transacao
             {
-                agencia = int.Parse(Utilitarios.Utilitarios.retiraMask(transacaoConta2.agencia)),
-                conta = Utilitarios.Utilitarios.retiraMask(transacaoConta2.conta),
+                agencia = int.Parse(Utilitarios.Utilitarios.retiraMask(transacao["agenciaCont2"])),
+                conta = Utilitarios.Utilitarios.retiraMask(transacao["numCont2"]),
                 clienteId = cli.Id
             };
             //garante que a primeira conta é a sua própria, para impedir que tranferencia entre conta de terceiros
@@ -221,7 +222,7 @@ namespace ProjetoBanco.MVC.Controllers
                 transacao1ViewModel.contaId = transacao1.contaId;
                 transacao1ViewModel.agencia = transacao1.agencia + "";
                 transacao1ViewModel.nome = transacao1.nome;
-                transacao1ViewModel.valor = transacaoConta1.valor;
+                transacao1ViewModel.valor = transacao["valor"];
 
                 if (transacao2.nome != null)
                 {
@@ -230,7 +231,7 @@ namespace ProjetoBanco.MVC.Controllers
                     transacao2ViewModel.contaId = transacao2.contaId;
                     transacao2ViewModel.agencia = transacao2.agencia + "";
                     transacao2ViewModel.nome = transacao2.nome;
-                    transacao2ViewModel.valor = transacaoConta2.valor;
+                    transacao2ViewModel.valor =transacao["valor"];
                     lstTransacoesViewModels.Add(transacao1ViewModel);
                     lstTransacoesViewModels.Add(transacao2ViewModel);
                     if (transacao1ViewModel.contaId == transacao2ViewModel.contaId)

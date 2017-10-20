@@ -19,25 +19,25 @@
                         <label class="col s12" for="ddlAgencias">Agência</label>
                         @Html.DropDownList("ddlAgencias", new SelectList(@Model.Agencias, "agencia", "agencia"), "Selecione", new { @class = "col s10" })
                     </div>
-                    <div class="col s6 input-field">
+                    <div class="col s6 ">
                         <label class="col s12" for="num">N° Conta</label>
                         <input type="text" class="col s12 conta" id="num" name="num" />
                     </div>
                 </div>
 
                 <div class="row">
-                    <div class="col s6 input-field">
+                    <div class="col s6 ">
                         <label class="col s12" for="senha">Senha</label>
                         <input type="password" class="col s12" id="senha" name="senha" class="senha" />
                     </div>
-                    <div class="col s6 input-field">
+                    <div class="col s6 ">
                         <label class="col s12" for="conf_senha">Confirme sua Senha</label>
                         <input type="password" class="col s12" id="conf_senha" name="conf_senha" class="conf_senha"/>
                     </div>
                 </div>
 
                 <div class="row">
-                    <div class="col s12 input-field">
+                    <div class="col s12 ">
                         <h6 class="col s12">Tipo de Conta</h6>
                         <hr/>
                         <p>
@@ -54,8 +54,9 @@
                 <!-- Modal Trigger -->
                 @*<button id="abremodal" type="button">abre</button>*@
                 <div class="row">
-                    <label class='col s12'>Vincular Clientes</label>
                     <div class="col s6">
+                        <h6>Vincular Clientes</h6>
+                        <hr/>
                         <button class="waves-effect waves-light modal-trigger btn" type="button" href="#modalCientesConta" id="buscaClienetes">
                             <i class="large material-icons">add_box</i>
                         </button>
@@ -224,7 +225,8 @@
                 },
                 senha: {
                     required: true,
-                    maxlength: 20,
+                    maxlength: 8,
+                    mainlength: 8
                 },
                 conf_senha: {
                     required: true,
@@ -241,7 +243,9 @@
                     maxlength: "O campo num deve conter no máximo {0} caracteres!"
                 },
                 senha: {
-                    required: "O campo senha é Obrigatório! Digite-O"
+                    required: "O campo senha é Obrigatório! Digite-O",
+                    mainlength:"O campo Senha deve conter no mínimo {0} caracteres!",
+                    maaxlength:"O campo Senha deve conter no máximo {0} caracteres!"
                 },
                 conf_senha: {
                     required: "O campo Confirme sua Senha é Obrigatório! Digite-O",

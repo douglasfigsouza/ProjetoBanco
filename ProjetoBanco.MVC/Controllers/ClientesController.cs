@@ -14,7 +14,6 @@ namespace ProjetoBanco.MVC.Controllers
         private Cliente cliente;
         private string error;
         private ClienteViewModel clienteViewModel;
-        private feedBackViewModel feed;
         private FeedBackController feedCtrl;
 
         public ClientesController(IClienteAppService clienteApp, IEstadoAppService estadoApp, ICidadesAppService ICidadeAppService, IBancoAppService IBancoAppService)
@@ -24,7 +23,6 @@ namespace ProjetoBanco.MVC.Controllers
             _cidadesAppService = ICidadeAppService;
             cliente = new Cliente();
             clienteViewModel = new ClienteViewModel();
-            feed = new feedBackViewModel();
             feedCtrl = new FeedBackController();
         }
         // GET: Clientes/Create
@@ -56,7 +54,7 @@ namespace ProjetoBanco.MVC.Controllers
                 error = _clienteApp.AddCliente(cliente);
           
 
-                return feedBackOperacao("CreateCliente",error,clienteViewModel.nome);
+                return feedBackOperacao("CreateCliente",error,clienteViewModel.nome,"Cadastrado com sucesso!");
 
             }
             else
@@ -101,7 +99,7 @@ namespace ProjetoBanco.MVC.Controllers
 
 
                 error = _clienteApp.UpdateCliente(cliente);
-                return feedBackOperacao("EditCliente",error,clienteViewModel.nome);
+                return feedBackOperacao("EditCliente",error,clienteViewModel.nome,"Atualizado com sucesso!");
             }
             ViewBag.clientes = _clienteApp.GetAllClientes(0);
             return View(clienteViewModel);
@@ -120,19 +118,19 @@ namespace ProjetoBanco.MVC.Controllers
             clienteViewModel.nome = cliente.nome;
             return Json(cliente, JsonRequestBehavior.AllowGet);
         }
-        private ActionResult feedBackOperacao(string action, string error,string nome)
+        private ActionResult feedBackOperacao(string action, string error,string nome, string op)
         {
             if (error == null)
             {
                 TempData["outraOp"] = "/Clientes/" + action;
-                TempData["menssagem"] = "Cliente: " + nome+ " cadastrado com sucesso!";
+                TempData["menssagem"] = "Cliente: " + nome+ " "+op;
                 return RedirectToAction("Success", "FeedBack");
             }
             else
             {
 
                 TempData["outraOp"] = "/Clientes/" + action;
-                TempData["menssagem"] = "Cliente: " + nome + " não cadastrado!"+error;
+                TempData["menssagem"] = "Cliente: " + nome +" "+ op+" Erro:"+error;
                 return RedirectToAction("Error", "FeedBack");
             }
         }

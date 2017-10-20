@@ -33,7 +33,7 @@
                         <label class="col s12" for="ddlestadoAgencia">Banco</label>
                         @Html.DropDownListFor(a => a.bancoId, new SelectList(ViewBag.bancos, "Id", "Nome"), "Selecione", new { @class = "col s10" })
                     </div>
-                    <div class="col s6 input-field">
+                    <div class="col s6 ">
                         <label for="agencia" class="col s12">N° Agência</label>
                         @Html.TextBoxFor(a => a.agencia ,new { @class = "col s5 agencia" })
                     </div>
@@ -51,6 +51,7 @@
 </div>
 <script>
     $(document).ready(function () {
+        $(".container").addClass("diminuicao50");
         //função que busca cidades pelo id do estado e seta no combo cidades
         $("#ddlestadoAgencia").change(function () {
             var id = $("#ddlestadoAgencia").val();

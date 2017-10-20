@@ -35,7 +35,7 @@ namespace ProjetoBanco.Infra.Data.Repositories
                 conn.AddParameter("@num", conta.num);
                 conn.AddParameter("@senha", conta.senha);
                 conn.AddParameter("@tipo", conta.tipo);
-                conn.AddParameter("@ativo", conta.tipo);
+                conn.AddParameter("@ativo", conta.ativo);
                 contaId = conn.ExecuteNonQueryWithReturn();
                 foreach (var item in contaClientes)
                 {

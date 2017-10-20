@@ -24,21 +24,25 @@
     position: fixed;
     width: 80%;
     bottom:0;
+    height: 80px;
+    text-align: center;
+    padding-right: 20px;
+    box-shadow: 5px 5px 25px  grey;
 
-    
 }
 nav {
     z-index: 100;
     position: fixed;
     width: 80%;
     top:0;
+    box-shadow: 5px 5px 25px  grey;
 }
 .margim-top {
 
     padding: 5%;
     margin-top: 10%;
     margin-bottom: 10%;
-    box-shadow:5px 5px 5px 5px #000000;
+    box-shadow: 5px 5px 25px  grey;
     border-radius: 5px;
 }
 .border-right {
@@ -74,4 +78,19 @@ body.loading .modal {
     height: 80px;
     text-align: center;
     margin-bottom: 5px;
+}
+.aumento {
+    width: 100% !important;
+}
+.diminuicao30 {
+    width: 30%;
+}
+.diminuicao40 {
+    width: 40%;
+}
+.diminuicao50 {
+    width: 50%;
+}
+.btn {
+    background-color: #42a5f5;
 }

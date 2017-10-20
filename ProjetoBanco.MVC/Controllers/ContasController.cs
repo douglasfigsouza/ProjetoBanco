@@ -55,7 +55,7 @@ namespace ProjetoBanco.MVC.Controllers
         {
             conta.num = Utilitarios.Utilitarios.retiraMask(form["num"]);
             conta.senha = form["senha"];
-            conta.tipo = Utilitarios.Utilitarios.retiraMask(form["tipoConta"]);
+            conta.tipo = char.Parse(Utilitarios.Utilitarios.retiraMask(form["tipoConta"]));
             conta.ativo = true;
             int agencia = int.Parse(form["ddlAgencias"]);
 
@@ -97,17 +97,25 @@ namespace ProjetoBanco.MVC.Controllers
         [HttpGet]
         public JsonResult GetConta(string conta, string agencia, string senha)
         {
-            ContaClienteAlteracao contaCliAlter = new ContaClienteAlteracao();
-            conta = Utilitarios.Utilitarios.retiraMask(conta);
-            agencia= Utilitarios.Utilitarios.retiraMask(agencia);
-            contaCliAlter = _contaClienteAppService.GetConta(conta, int.Parse(agencia), senha);
-            if (contaCliAlter.conta == null)
+            if (conta != "" && agencia != "" && senha != "")
             {
-                feedBackOperacao("EditConta", null);
-                return null;
+                ContaClienteAlteracao contaCliAlter = new ContaClienteAlteracao();
+                conta = Utilitarios.Utilitarios.retiraMask(conta);
+                agencia = Utilitarios.Utilitarios.retiraMask(agencia);
+                contaCliAlter = _contaClienteAppService.GetConta(conta, int.Parse(agencia), senha);
+                if (contaCliAlter.conta == null)
+                {
+                    feedBackOperacao("EditConta", null);
+                    return null;
+                }
+                else
+                {
+                    return Json(contaCliAlter, JsonRequestBehavior.AllowGet);
+                }
             }
-            else { 
-                return Json(contaCliAlter, JsonRequestBehavior.AllowGet);
+            else
+            {
+                return null;
             }
         }
         private ActionResult feedBackOperacao(string action, string error)

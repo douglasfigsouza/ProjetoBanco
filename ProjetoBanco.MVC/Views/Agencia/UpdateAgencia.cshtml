@@ -3,23 +3,23 @@
 <div class="row" id="divAlterAgencia">
     <h5>Alteração de Agência</h5>
     <hr />
-    <div class="6">
-
-            <div class="row">
-                <div class="col s4">
-                    <label for="agencia" class="col s12">Agencia</label>
-                    <input type="text" name="agencia" id="agencia" class="col s12">
-                    <button class="btn waves-effect waves-light col s12" type="button" name="getAgencia" id="btnGetAgencia">
-                        Buscar
-                        <i class="material-icons right">send</i>
-                    </button>
-                </div>
+    <div class="col s12">
+        <div class="row">
+            <div class="col s10">
+                <label for="agencia" class="col s12">Agencia</label>
+                <input type="text" class="col s12 agencia" id="agencia" />
+                <button class="btn waves-effect waves-light col s12" type="button" name="getAgencia" id="btnGetAgencia">
+                    Buscar
+                    <i class="material-icons right">send</i>
+                </button>
             </div>
-
+        </div>
     </div>
 </div>
 <div class="row" id="divAgenciaEditavel">
-    <div class="col s6">
+    <div class="col s10">
+        <h6>Agência</h6>
+        <hr/>
         <div class="row">
             <h6 class="col s6">Banco:</h6>
             <h6 class="col s6" id="banco"></h6>
@@ -28,12 +28,12 @@
             <h6 class="col s6">Agencia:</h6>
             <h6 class="col s6" id="numAgencia"></h6>
         </div>
-        @using (Html.BeginForm("AtualizaAgencia","Agencia"))
+        @using (Html.BeginForm("AtualizaAgencia", "Agencia"))
         {
             @Html.ValidationSummary(true)
             <div class="row">
-                <input type="hidden" id="agenciaEditavel" name="agencia" />
-                <input type="checkbox" id="ativo" name="ativo" checked />
+                <input type="hidden" id="agenciaEditavel" name="agencia"/>
+                <input type="checkbox" id="ativo" name="ativo" checked/>
                 <label for="ativo">Ativo</label>
             </div>
             <div class="row">
@@ -47,30 +47,42 @@
 </div>
 <script>
     $(document).ready(function () {
+        $(".container").addClass("diminuicao30");
         $("#divAgenciaEditavel").hide();
         $("#btnGetAgencia").click(function () {
+            debugger;
             $("#divAlterAgencia").hide();
             var agencia = $("#agencia").val();
+            if (agencia == "") agencia = null;
             $.ajax({
                 type: "GET",
                 url: "/Agencia/GetAgenciaByNum",
                 data: {
-                    agencia: agencia
+                    numAg: agencia
                 },
                 success: function (dados) {
-                    $("#agenciaEditavel").val(dados.agencia);
-                    $("#banco").text(dados.banco);
-                    $("#numAgencia").text(dados.agencia);
-                    if (dados.ativo == 1) {
-                        $("#ativo").prop('checked', true);
-                        $("#ativo").val(true);
-                    } else {
-                        $("#ativo").prop('checked', false);
-                        $("#ativo").val(false);
+                    if (dados == "") {
+                        $("#divAlterAgencia").show();
+                        $("#agenciaEditavel").val("");
+                        $("#banco").text("");
+                        $("#numAgencia").text("");
+                        alert("Ops! Agência não encontrada!");
                     }
-                    $("#divAgenciaEditavel").show();
+                    else {
+                        $("#agenciaEditavel").val(dados.agencia);
+                        $("#banco").text(dados.banco);
+                        $("#numAgencia").text(dados.agencia);
+                        if (dados.ativo == 1) {
+                            $("#ativo").prop('checked', true);
+                            $("#ativo").val(true);
+                        } else {
+                            $("#ativo").prop('checked', false);
+                            $("#ativo").val(false);
+                        }
+                        $("#divAgenciaEditavel").show();
+                    }
                 }, error() {
-
+                    alert("Ops! algo deu errado!");
                 }
             });
         });

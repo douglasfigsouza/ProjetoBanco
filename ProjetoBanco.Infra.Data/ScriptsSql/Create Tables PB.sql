@@ -13,9 +13,9 @@ CREATE TABLE [Cidade]
 CREATE TABLE [Conta]
 (
 	Id [SMALLINT] NOT NULL PRIMARY KEY IDENTITY,
-	num [VARCHAR](15) NOT NULL UNIQUE,
-	senha [VARCHAR](6) NOT NULL,
-	tipo [CHAR](1) NOT NULL, 
+	num [VARCHAR](20) NOT NULL UNIQUE,
+	senha [VARCHAR](8) NOT NULL,
+	tipo [CHAR](3) NOT NULL, 
 	ativo [BIT]
 )
 CREATE TABLE Banco
@@ -40,7 +40,7 @@ CREATE TABLE [Clientes]
 	ativo [BIT],
 	CONSTRAINT FK_Cidade_Clientes FOREIGN KEY(CidadeId) REFERENCES Cidade,
 )
-CREATE TABLE [USUARIO]
+CREATE TABLE [Usuario]
 (
 	clienteId[SMALLINT] NOT NULL,
 	nome[VARCHAR](20) NOT NULL UNIQUE, 
@@ -65,7 +65,6 @@ CREATE TABLE ContaCliente
 	contaId[SMALLINT] NOT NULL,
 	agencia[SMALLINT] NOT NULL,
 	bancoId[SMALLINT] NOT NULL,
-	ativo[BIT],
 	CONSTRAINT FK_Cliente_ContaCliente FOREIGN KEY(clienteId) REFERENCES Clientes,
 	CONSTRAINT FK_Conta_ContaCliente FOREIGN KEY(contaId)REFERENCES Conta,
 	CONSTRAINT FK_Agencia_ContaCliente FOREIGN KEY(agencia,bancoId) REFERENCES Agencia,
@@ -81,7 +80,7 @@ GO
 CREATE TABLE OperacoesRealizadas
 (
 	Id SMALLINT NOT NULL PRIMARY KEY IDENTITY,
-	operacaoId[SMALLINT] NOT NULL,
+	codTipoOp[SMALLINT] NOT NULL,
 	clienteId[SMALLINT] NOT NULL, 
 	agencia[SMALLINT] NOT NULL,
 	bancoId[SMALLINT] NOT NULL,
@@ -89,8 +88,11 @@ CREATE TABLE OperacoesRealizadas
 	dataOp[DATETIME] NOT NULL,
 	SaldoAnterior DECIMAL(18,2) NOT NULL,
 	valorOp DECIMAL(18,2) NOT NULL
-	CONSTRAINT FK_Opercoes_OpRealizadas FOREIGN KEY(operacaoId) REFERENCES Operacoes,
+	CONSTRAINT FK_Opercoes_OpRealizadas FOREIGN KEY(codTipoOp) REFERENCES Operacoes,
 	CONSTRAINT FK_Clientes_OpRealizadas FOREIGN KEY(clienteId) REFERENCES Clientes,
 	CONSTRAINT FK_Agencia_OpRealizadas FOREIGN KEY(agencia,bancoId) REFERENCES Agencia,
 	CONSTRAINT FK_Conta_OpRealizadas FOREIGN KEY(contaId) REFERENCES Operacoes
 );
+GO
+INSERT INTO Clientes VALUES(1,'Admin','00000000000','0000000','0000000000','default','default',0,CONVERT(datetime,GETDATE()),'f',1);
+INSERT INTO Usuario VALUES(4,'Admin','Admin',1);

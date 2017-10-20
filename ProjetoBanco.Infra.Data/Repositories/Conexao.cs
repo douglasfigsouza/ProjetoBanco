@@ -12,7 +12,7 @@ namespace ProjetoBanco.Infra.Data.Repositories
             _connection = Connect();
         }
         // Pega a minha connection string que esta no webConfig
-        private string _connectionString => ConfigurationManager.ConnectionStrings["DbBanco"].ToString();
+        private string _connectionString => ConfigurationManager.ConnectionStrings["SisBankDb"].ToString();
         private readonly SqlConnection _connection;
         private SqlCommand _command;
         // Testa a conexão com o banco se ela estiver quebrada entao fecha e abre denovo e se a conexao

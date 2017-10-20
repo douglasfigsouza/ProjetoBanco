@@ -1,7 +1,7 @@
 ﻿@model ProjetoBanco.MVC.ViewModels.ClienteViewModel
-<div class="row"id="divTblClientesEditaveis">
-    <div class="col s12">
-        <table id="tlbClientesEditaveis" class="striped responsive-table centered" cellspacing="0" width="100%">
+<div id="divTblClientesEditaveis">
+    <div class="">
+        <table id="tlbClientesEditaveis" class="striped responsive-table centered">
             <thead>
             <tr>
                 <th>Nome</th>
@@ -51,7 +51,7 @@
                 {
                     <input type="hidden" name="Id" id="id"/>
                     <div class="row">
-                        <div class="col s6 input-field">
+                        <div class="col s6">
                             <label for="nome" class="col s12">Nome</label>
                             @Html.EditorFor(model => model.nome, new { htmlAttributes = new { @class = "col s12" } })
                             @Html.ValidationMessageFor(model => model.nome, "", new { @class = "text-danger" })
@@ -59,19 +59,19 @@
                     </div>
 
                     <div class="row">
-                        <div class="col s6 input-field">
+                        <div class="col s6">
                             <label for="cpf" class="col s12">CPF</label>
                             @Html.EditorFor(model => model.cpf, new { htmlAttributes = new { @class = "col s12 cpf" } })
                             @Html.ValidationMessageFor(model => model.cpf, "", new { @class = "text-danger" })
                         </div>
-                        <div class="col s6 input-field">
+                        <div class="col s6 ">
                             <label for="rg" class="col s12">RG</label>
                             @Html.EditorFor(model => model.rg, new { htmlAttributes = new { @class = "col s12 rg" } })
                         </div>
                     </div>
 
                     <div class="row">
-                        <div class="col s6 input-field">
+                        <div class="col s6 ">
                             <label for="fone" class="col s12">Fone</label>
                             @Html.EditorFor(model => model.fone, new { htmlAttributes = new { @class = "col s12 fone" } })
                             @Html.ValidationMessageFor(model => model.fone, "", new { @class = "text-danger" })
@@ -105,24 +105,24 @@
                     </div>
 
                     <div class="row">
-                        <div class="col s4 input-field">
+                        <div class="col s4">
                             <label for="bairro" class="col s12">Bairro</label>
                             @Html.EditorFor(model => model.bairro, new { htmlAttributes = new { @class = "col s12" } })
                             @Html.ValidationMessageFor(model => model.bairro, "", new { @class = "text-danger" })
                         </div>
-                        <div class="col s5 input-field">
+                        <div class="col s5 ">
                             <label for="rua" class="col s12">Rua</label>
                             @Html.EditorFor(model => model.rua, new { htmlAttributes = new { @class = "col s12" } })
                             @Html.ValidationMessageFor(model => model.rua, "", new { @class = "text-danger" })
                         </div>
-                        <div class="col s3 input-field">
+                        <div class="col s3 ">
                             <label for="num" class="col s12">N°</label>
                             @Html.EditorFor(model => model.num, new { htmlAttributes = new { @class = "col s6" } })
                             @Html.ValidationMessageFor(model => model.num, "", new { @class = "text-danger" })
                         </div>
                     </div>
                     <div class="row">
-                        <div class="col s3 input-field">
+                        <div class="col s3 ">
                             <input type="checkbox" id="ativo" name="ativo" checked/>
                             <label for="ativo">Ativo</label>
                         </div>
@@ -140,6 +140,7 @@
 </div>
 <script>
     $(document).ready(function () {
+        $(".container").addClass("aumento");
         $body = $("body");
         $("#formClienteEditavel").hide();
         $("#tlbClientesEditaveis").dataTable({
@@ -181,7 +182,7 @@
                     cache: false,
                     async: true,
                     success: function (data) {
-
+                        $(".container").removeClass("aumento");
                         $("#id").val(data.Id);
                         $("#nome").val(data.nome);
                         $("#cpf").val(data.cpf).mask("999.999.999-99");
