@@ -14,6 +14,7 @@ namespace ProjetoBanco.MVC.Controllers
         2 - Saque
         3 - Saldo
         4 - Transferencia
+        5 - Estorno
     */
     public class OperacoesController : Controller
     {

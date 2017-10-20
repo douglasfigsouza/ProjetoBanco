@@ -496,7 +496,7 @@ DROP PROCEDURE [dbo].[PBSP_DEPOSITO]
 GO
 
 CREATE PROCEDURE [dbo].[PBSP_DEPOSITO]
-@operacaoId SMALLINT,
+@codTipoOp SMALLINT,
 @clienteId SMALLINT,
 @contaId SMALLINT,
 @agencia INT,
@@ -521,7 +521,7 @@ SET	@bancoId = dbo.RetornaIdBanco(@agencia);
 SET @saldoAnterior = dbo.RetornaSaldo(@contaId);
 
 INSERT INTO OperacoesRealizadas(codTipoOp,clienteId,contaId,agencia,bancoId,dataOP,saldoAnterior,valorOp)
-VALUES(@operacaoId,@clienteId,@contaId,@agencia,@bancoId,@dataOp,@saldoAnterior,@valorOp)
+VALUES(@codTipoOp,@clienteId,@contaId,@agencia,@bancoId,@dataOp,@saldoAnterior,@valorOp)
 
 END
 GO
@@ -532,7 +532,7 @@ DROP PROCEDURE [dbo].[PBSP_SAQUE]
 GO
 
 CREATE PROCEDURE [dbo].[PBSP_SAQUE]
-@operacaoId SMALLINT,
+@codTipoOp SMALLINT,
 @clienteId SMALLINT,
 @contaId SMALLINT,
 @agencia INT,
@@ -559,7 +559,7 @@ SET @saldoAnterior = dbo.RetornaSaldo(@contaId);
 IF((@saldoAnterior - @valorOp) >= 0)
 BEGIN
 INSERT INTO OperacoesRealizadas(codTipoOp,clienteId,contaId,agencia,bancoId,dataOP,saldoAnterior,valorOp)
-VALUES(@operacaoId,@clienteId,@contaId,@agencia,@bancoId,@dataOp,@saldoAnterior,@valorOp*(-1))
+VALUES(@codTipoOp,@clienteId,@contaId,@agencia,@bancoId,@dataOp,@saldoAnterior,@valorOp*(-1))
 RETURN 1;
 END
 ELSE
@@ -671,7 +671,7 @@ DROP PROCEDURE [dbo].[PBSP_TRANSFERENCIA]
 GO
 
 CREATE PROCEDURE [dbo].[PBSP_TRANSFERENCIA]
-@operacaoId SMALLINT,
+@codTipoOp SMALLINT,
 @contaId SMALLINT,
 @agencia INT,
 @dataOp DATETIME,
@@ -697,7 +697,7 @@ SET @saldoAnterior = dbo.RetornaSaldo(@contaId);
 SET @clienteId = dbo.RetornaIdClienteConta(@contaId);
 BEGIN
 INSERT INTO OperacoesRealizadas(codTipoOp,clienteId,contaId,agencia,bancoId,dataOP,saldoAnterior,valorOp)
-VALUES(103,@clienteId,@contaId,@agencia,@bancoId,@dataOp,@saldoAnterior,@valorOp);
+VALUES(@codTipoOp,@clienteId,@contaId,@agencia,@bancoId,@dataOp,@saldoAnterior,@valorOp);
 END
 END
 GO
@@ -933,7 +933,7 @@ IF(@valorUltOp < 0)
 						DECLARE @op SMALLINT
 						SET @op=dbo.RetornaIdProxOpRealizada(@id);
 						--lembrar de mudar caso mude o id da operação
-						IF(@op=103)
+						IF(@op=4)
 							BEGIN 
 								DECLARE @cliente2Id SMALLINT,
 										@conta2Id SMALLINT,

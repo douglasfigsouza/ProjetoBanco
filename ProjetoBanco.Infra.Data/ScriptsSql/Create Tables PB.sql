@@ -96,3 +96,9 @@ CREATE TABLE OperacoesRealizadas
 GO
 INSERT INTO Clientes VALUES(1,'Admin','00000000000','0000000','0000000000','default','default',0,CONVERT(datetime,GETDATE()),'f',1);
 INSERT INTO Usuario VALUES(4,'Admin','Admin',1);
+
+insert into Operacoes values('Depósito',1)
+insert into Operacoes values('Saque',1)
+insert into Operacoes values('Saldo',1)
+insert into Operacoes values('Transferência',1)
+insert into Operacoes values('Estorno',1)

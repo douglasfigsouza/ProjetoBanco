@@ -102,7 +102,8 @@ namespace ProjetoBanco.Infra.Data.Repositories
         {
             conn.ExecuteProcedure(Procedure.PBSP_ESTORNA);
             conn.AddParameter("@id", id);
-            conn.AddParameter("@opId", 104);
+            conn.AddParameter("@opId", 4);
+
             try
             {
                 conn.ExecuteNonQuery();
