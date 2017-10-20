@@ -36,7 +36,7 @@ namespace ProjetoBanco.MVC.Controllers
             {
                 agencia.CidadeId = agenciaViewModel.CidadeId;
                 agencia.bancoId = agenciaViewModel.bancoId;
-                agencia.agencia = agenciaViewModel.agencia;
+                agencia.agencia = int.Parse(Utilitarios.Utilitarios.retiraMask(agenciaViewModel.agencia));
                 agencia.ativo = agenciaViewModel.ativo;
 
                 error = _agenciaAppService.AddAgencia(agencia);
@@ -59,25 +59,13 @@ namespace ProjetoBanco.MVC.Controllers
         [HttpPost]
         public ActionResult AtualizaAgencia(AgenciaViewModel agenciaViewModel)
         {
-            agencia.agencia = agenciaViewModel.agencia;
+            agencia.agencia = int.Parse(Utilitarios.Utilitarios.retiraMask(agenciaViewModel.agencia));
             agencia.ativo = agenciaViewModel.ativo;
 
             error = _agenciaAppService.UpdateAgencia(agencia);
 
             return feedBackOperacao("UpdateAgencia", error);
         }
-
-        //[HttpPost]
-        //public ActionResult AtualizaAgencia(AgenciaViewModel agenciaViewModel)
-        //{
-        //    agencia.agencia = agenciaViewModel.agencia;
-        //    agencia.ativo = agenciaViewModel.ativo;
-
-        //    error = _agenciaAppService.UpdateAgencia(agencia);
-
-        //    return feedBackOperacao("UpdateAgencia", error);
-
-        //}
 
         public JsonResult GetAgenciaByNum(int agencia)
         {
@@ -94,17 +82,17 @@ namespace ProjetoBanco.MVC.Controllers
         {
             if (error == null)
             {
-                TempData["outraOp"] = "/Agencia/"+action;
+                TempData["outraOp"] = "/Agencia/" + action;
                 TempData["menssagem"] = "Agência: " + agencia.agencia + " cadastrada com sucesso!";
                 return RedirectToAction("Success", "FeedBack");
             }
             else
             {
-                TempData["outraOp"] = "/Agencia/"+action;
+                TempData["outraOp"] = "/Agencia/" + action;
                 TempData["menssagem"] = "Agência: " + agencia.agencia + " Não cadastrada! Erro: " + error;
                 return RedirectToAction("Error", "FeedBack");
             }
-            
+
         }
     }
 }

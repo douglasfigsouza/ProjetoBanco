@@ -3,44 +3,32 @@
 }
 <div id="login-page" class="row login">
     <div class="col s12 z-depth-4 card-panel">
-       @using (Html.BeginForm())
-       {
-           <div class="row">
-               <div class="input-field col s12 center">
-                   <p class="center login-form-text">Login - SisBank</p>
-               </div>
-           </div>
-           <div class="row margin">
-               <div class="input-field col s12">
-                   <i class="large material-icons prefix">account_box</i>
-                   <input id="usuario" type="text" name="usuario">
-                   <label for="usuario" class="center-align">Usuário</label>
-               </div>
-           </div>
-           <div class="row margin">
-               <div class="input-field col s12">
-                   <i class="material-icons prefix">enhanced_encryption</i>
-                   <input id="senha" type="password" name="senha">
-                   <label for="senha">Password</label>
-               </div>
-           </div>
-           <div class="row">
-               <div class="input-field col s12 m12 l12  login-text">
-                   <input type="checkbox" id="remember-me"/>
-                   <label for="remember-me">Remember me</label>
-               </div>
-           </div>
-           <div class="row">
-               <div class="input-field col s12">
-                   <button class="btn waves-effect waves-light col s12">Login</button>
-               </div>
-           </div>
-           <div class="row">
-               <div class="input-field col s6 m6 l6">
-                   <p class="margin right-align medium-small"><a href="page-forgot-password.html">Esqueceu sua senha?</a>
-                   </p>
-               </div>
-           </div>
-       }
+        @using (Html.BeginForm())
+        {
+            <div class="row">
+                <div class="input-field col s12 center">
+                    <p class="center login-form-text">Login - SisBank</p>
+                </div>
+            </div>
+            <div class="row margin">
+                <div class="input-field col s12">
+                    <i class="large material-icons prefix">account_box</i>
+                    <input id="usuario" type="text" name="usuario">
+                    <label for="usuario" class="center-align">Usuário</label>
+                </div>
+            </div>
+            <div class="row margin">
+                <div class="input-field col s12">
+                    <i class="material-icons prefix">enhanced_encryption</i>
+                    <input id="senha" type="password" name="senha">
+                    <label for="senha">Password</label>
+                </div>
+            </div>
+            <div class="row">
+                <div class="input-field col s12">
+                    <button class="btn waves-effect waves-light col s12">Login</button>
+                </div>
+            </div>
+        }
     </div>
 </div>

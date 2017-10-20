@@ -33,9 +33,9 @@
                         <label class="col s12" for="ddlestadoAgencia">Banco</label>
                         @Html.DropDownListFor(a => a.bancoId, new SelectList(ViewBag.bancos, "Id", "Nome"), "Selecione", new { @class = "col s10" })
                     </div>
-                    <div class="col s6">
+                    <div class="col s6 input-field">
                         <label for="agencia" class="col s12">N° Agência</label>
-                        @Html.EditorFor(a => a.agencia, new { htmlAttributes = new { @class = "col s5" } })
+                        @Html.TextBoxFor(a => a.agencia ,new { @class = "col s5 agencia" })
                     </div>
                 </div>
 

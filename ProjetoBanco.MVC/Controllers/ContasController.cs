@@ -37,7 +37,7 @@ namespace ProjetoBanco.MVC.Controllers
                 cmbContaViewModel.Agencias.Add(new AgenciaViewModel
                 {
                     bancoId = agencia.bancoId,
-                    agencia = agencia.agencia
+                    agencia = agencia.agencia+""
                 });
             }
             foreach (var cliente in _clienteAppService.GetAllClientes(1))
@@ -56,6 +56,7 @@ namespace ProjetoBanco.MVC.Controllers
             conta.num = Utilitarios.Utilitarios.retiraMask(form["num"]);
             conta.senha = form["senha"];
             conta.tipo = Utilitarios.Utilitarios.retiraMask(form["tipoConta"]);
+            conta.ativo = true;
             int agencia = int.Parse(form["ddlAgencias"]);
 
             foreach (var item in ClientesSelecionados)
@@ -81,7 +82,7 @@ namespace ProjetoBanco.MVC.Controllers
         {
             if (form!= null)
             {
-                conta.num = form["conta"];
+                conta.num = Utilitarios.Utilitarios.retiraMask(form["conta"]);
                 conta.senha = form["senha"];
                 conta.ativo = Convert.ToBoolean(form["ativo"]);
                 error = _contaClienteAppService.UpdateConta(conta);
@@ -96,9 +97,18 @@ namespace ProjetoBanco.MVC.Controllers
         [HttpGet]
         public JsonResult GetConta(string conta, string agencia, string senha)
         {
+            ContaClienteAlteracao contaCliAlter = new ContaClienteAlteracao();
             conta = Utilitarios.Utilitarios.retiraMask(conta);
             agencia= Utilitarios.Utilitarios.retiraMask(agencia);
-            return Json(_contaClienteAppService.GetConta(conta, int.Parse(agencia), senha), JsonRequestBehavior.AllowGet);
+            contaCliAlter = _contaClienteAppService.GetConta(conta, int.Parse(agencia), senha);
+            if (contaCliAlter.conta == null)
+            {
+                feedBackOperacao("EditConta", null);
+                return null;
+            }
+            else { 
+                return Json(contaCliAlter, JsonRequestBehavior.AllowGet);
+            }
         }
         private ActionResult feedBackOperacao(string action, string error)
         {

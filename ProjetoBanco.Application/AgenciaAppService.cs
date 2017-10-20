@@ -23,12 +23,6 @@ namespace ProjetoBanco.Application
         {
             return _agenciaRepositoryDomain.AddAgencia(agencia);
         }
-
-        public Agencia GetByAgenciaId(int id)
-        {
-            throw new NotImplementedException();
-        }
-
         public IEnumerable<Agencia> GetAllAgencias()
         {
             return _agenciaRepositoryDomain.GetAllAgencias();
@@ -39,16 +33,10 @@ namespace ProjetoBanco.Application
             return _agenciaRepositoryDomain.UpdateAgencia(agencia);
         }
 
-        public void RemoveAgencia(Agencia agencia)
-        {
-            throw new NotImplementedException();
-        }
-
         public void Dispose()
         {
-            throw new NotImplementedException();
+            _agenciaRepositoryDomain.Dispose();
         }
-
         public Agencia GetAgenciaByNum(int agencia)
         {
             return _agenciaRepositoryDomain.GetAgenciaByNum(agencia);

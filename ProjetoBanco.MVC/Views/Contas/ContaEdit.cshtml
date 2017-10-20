@@ -99,7 +99,10 @@
                     $("#divDadosDaConta").show();
                 },
                 error: function ajaxError(dados) {
-                    alert(dados.status + ' ' + dados.statusText);
+                    alert("Ops! Conta não encontrada!");
+                    $("#conta").val("");
+                    $("#senha").val("");
+                    $("#agencia").val("");
                 }
 
             });

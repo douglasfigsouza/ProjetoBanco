@@ -1,9 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Data.SqlClient;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using ProjetoBanco.Domain.Entities;
 using ProjetoBanco.Domain.Interfaces.IRepositories;
 
@@ -28,7 +25,7 @@ namespace ProjetoBanco.Infra.Data.Repositories
         {
             conn = new Conexao();
             usuario = new Usuario();
-            Usuarios =new List<Usuario>();
+            Usuarios = new List<Usuario>();
         }
         public string AddUsuario(Usuario usuario)
         {
@@ -50,8 +47,8 @@ namespace ProjetoBanco.Infra.Data.Repositories
         public Usuario VerificaLogin(Usuario usuario)
         {
             conn.ExecuteProcedure(Procedures.PBSP_AUTENTICA);
-            conn.AddParameter("@nome",usuario.nome);
-            conn.AddParameter("@senha",usuario.senha);
+            conn.AddParameter("@nome", usuario.nome);
+            conn.AddParameter("@senha", usuario.senha);
             result = conn.ExecuteReader();
             while (result.Read())
             {
@@ -66,7 +63,7 @@ namespace ProjetoBanco.Infra.Data.Repositories
         public Usuario GetByUsuarioId(int id)
         {
             conn.ExecuteProcedure(Procedures.PBSP_GETBYUSUARIOID);
-            conn.AddParameter("@id",id);
+            conn.AddParameter("@id", id);
             result = conn.ExecuteReader();
             while (result.Read())
             {
@@ -80,7 +77,6 @@ namespace ProjetoBanco.Infra.Data.Repositories
             }
             return usuario;
         }
-
         public IEnumerable<Usuario> GetAllUsuarios()
         {
             conn.ExecuteProcedure(Procedures.PBSP_GETALLUSERS);
@@ -97,7 +93,6 @@ namespace ProjetoBanco.Infra.Data.Repositories
             }
             return Usuarios;
         }
-
         public string UpdateUsuario(Usuario usuario)
         {
             try
@@ -115,12 +110,10 @@ namespace ProjetoBanco.Infra.Data.Repositories
                 return e.Message;
             }
         }
-
         public void RemoveUsuario(Usuario usuario)
         {
             throw new NotImplementedException();
         }
-
         public void Dispose()
         {
             throw new NotImplementedException();

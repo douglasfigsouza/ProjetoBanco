@@ -48,7 +48,7 @@
                 required: true
             },
             num: {
-                required: true
+                required: true,
             },
             nivel: {
                 required: true
@@ -68,7 +68,8 @@
             },
             conf_senha: {
                 required: true,
-                equalTo: "#senha"
+                equalTo: "#senha",
+                maxlength:8
             },
             agencia: {
                 required: true
@@ -102,7 +103,7 @@
                 required: "O campo Rua é Obrigatório! Digite-O"
             },
             num: {
-                required: "O campo N° é Obrigatório! Digite-O"
+                required: "O campo N° é Obrigatório! Digite-O",
 
             },
             nivel: {

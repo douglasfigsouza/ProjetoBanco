@@ -3,6 +3,8 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Web;
 using System.Web.Mvc;
+using ProjetoBanco.Domain.Entities;
+using ProjetoBanco.MVC.ViewModels;
 
 namespace ProjetoBanco.MVC.Controllers
 {
@@ -10,6 +12,7 @@ namespace ProjetoBanco.MVC.Controllers
     {
         public ActionResult Index()
         {
+            ViewBag.cliente = (Cliente) Session["cliente"];
             return View();
         }
 

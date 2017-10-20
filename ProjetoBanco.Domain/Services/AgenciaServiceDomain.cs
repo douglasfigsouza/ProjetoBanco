@@ -1,9 +1,4 @@
-﻿using System;
-using System.CodeDom;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.Collections.Generic;
 using ProjetoBanco.Domain.Entities;
 using ProjetoBanco.Domain.Interfaces.IRepositories;
 using ProjetoBanco.Domain.Interfaces.IServices;
@@ -21,11 +16,6 @@ namespace ProjetoBanco.Domain.Services
         public string AddAgencia(Agencia agencia)
         {
             return _repository.AddAgencia(agencia);
-        }
-
-        public Agencia GetByAgenciaId(int id)
-        {
-            return _repository.GetByAgenciaId(id);
         }
 
         public Agencia GetAgenciaByNum(int agencia)

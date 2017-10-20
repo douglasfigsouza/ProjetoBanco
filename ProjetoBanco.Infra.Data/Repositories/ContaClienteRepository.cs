@@ -1,8 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Data;
 using System.Data.SqlClient;
-using System.Globalization;
 using ProjetoBanco.Domain.Entities;
 using ProjetoBanco.Domain.Interfaces.IRepositories;
 
@@ -29,7 +27,6 @@ namespace ProjetoBanco.Infra.Data.Repositories
             contaClienteAlteracao = new ContaClienteAlteracao();
             contaClienteAlteracao.Clientes = new List<Cliente>();
         }
-
         public string AddContaCliente(Conta conta, List<Domain.Entities.ContaCliente> contaClientes)
         {
             try
@@ -38,6 +35,7 @@ namespace ProjetoBanco.Infra.Data.Repositories
                 conn.AddParameter("@num", conta.num);
                 conn.AddParameter("@senha", conta.senha);
                 conn.AddParameter("@tipo", conta.tipo);
+                conn.AddParameter("@ativo", conta.tipo);
                 contaId = conn.ExecuteNonQueryWithReturn();
                 foreach (var item in contaClientes)
                 {
@@ -56,7 +54,6 @@ namespace ProjetoBanco.Infra.Data.Repositories
 
             }
         }
-
         public string UpdateConta(Conta conta)
         {
             try
@@ -78,7 +75,6 @@ namespace ProjetoBanco.Infra.Data.Repositories
         {
             throw new NotImplementedException();
         }
-
         public ContaClienteAlteracao GetConta(string conta, int agencia, string senha)
         {
             try

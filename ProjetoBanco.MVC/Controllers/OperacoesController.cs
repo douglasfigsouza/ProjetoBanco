@@ -71,7 +71,6 @@ namespace ProjetoBanco.MVC.Controllers
                 return View(opViewModel);
             }
         }
-
         public ActionResult Deposito()
         {
             ViewBag.cliente = (Cliente)Session["cliente"];
@@ -90,12 +89,11 @@ namespace ProjetoBanco.MVC.Controllers
             TempData["operacao"] = 3;
             return View("Operacoes");
         }
-
         public ActionResult Transferencia()
         {
+            ViewBag.cliente = (Cliente)Session["cliente"];
             return View();
         }
-
         public ActionResult VerificaDados(TransacaoViewModel trasacaoViewModel)
         {
             if (ModelState.IsValid)
@@ -126,9 +124,9 @@ namespace ProjetoBanco.MVC.Controllers
                     //insere os valores na view no hidden
                     trasacaoViewModel.clienteId = transacao.clienteId;
                     trasacaoViewModel.contaId = transacao.contaId;
-                    trasacaoViewModel.agencia = transacao.agencia+"";
+                    trasacaoViewModel.agencia = transacao.agencia + "";
                     trasacaoViewModel.nome = transacao.nome;
-                    trasacaoViewModel.valor = valor+"";
+                    trasacaoViewModel.valor = valor + "";
 
                     return View("Confirmacao", trasacaoViewModel);
                 }
@@ -169,14 +167,14 @@ namespace ProjetoBanco.MVC.Controllers
             transacao.agencia = int.Parse(Utilitarios.Utilitarios.retiraMask(trasacaoViewModel.agencia));
             transacao.conta = Utilitarios.Utilitarios.retiraMask(trasacaoViewModel.conta);
             decimal saldo = _OperacaoAppService.ConsultaSaldo(transacao);
-            if ( saldo == -1)
+            if (saldo == -1)
             {
                 ViewBag.erro = "Conta não encontrada!";
                 return View("MostraSaldo");
             }
             else
             {
-                ViewBag.saldo = String.Format(CultureInfo.GetCultureInfo("pt-BR"), "{0:C}",saldo);
+                ViewBag.saldo = String.Format(CultureInfo.GetCultureInfo("pt-BR"), "{0:C}", saldo);
                 return View("MostraSaldo");
             }
 
@@ -190,7 +188,7 @@ namespace ProjetoBanco.MVC.Controllers
             operacaoRealizada.dataOp = DateTime.Now;
             operacaoRealizada.valorOp = decimal.Parse(Utilitarios.Utilitarios.retiraMaskMoney(trasacaoViewModel.valor));
 
-            TempData["menssagem"]= _operacaoesRealizadasAppService.Saque(operacaoRealizada, 2);
+            TempData["menssagem"] = _operacaoesRealizadasAppService.Saque(operacaoRealizada, 2);
             TempData["outraOp"] = "/Operacoes/Saque";
             return View("FeedBackOp");
         }
@@ -221,7 +219,7 @@ namespace ProjetoBanco.MVC.Controllers
                 //insere os valores na view no hidden
                 transacao1ViewModel.clienteId = transacao1.clienteId;
                 transacao1ViewModel.contaId = transacao1.contaId;
-                transacao1ViewModel.agencia = transacao1.agencia+"";
+                transacao1ViewModel.agencia = transacao1.agencia + "";
                 transacao1ViewModel.nome = transacao1.nome;
                 transacao1ViewModel.valor = transacaoConta1.valor;
 
@@ -230,7 +228,7 @@ namespace ProjetoBanco.MVC.Controllers
                     TransacaoViewModel transacao2ViewModel = new TransacaoViewModel();
                     transacao2ViewModel.clienteId = transacao2.clienteId;
                     transacao2ViewModel.contaId = transacao2.contaId;
-                    transacao2ViewModel.agencia = transacao2.agencia+"";
+                    transacao2ViewModel.agencia = transacao2.agencia + "";
                     transacao2ViewModel.nome = transacao2.nome;
                     transacao2ViewModel.valor = transacaoConta2.valor;
                     lstTransacoesViewModels.Add(transacao1ViewModel);
@@ -278,13 +276,11 @@ namespace ProjetoBanco.MVC.Controllers
             return View("FeedBackOp");
 
         }
-
         public ActionResult DadosParaEstorno()
         {
             return View("Estorno");
 
         }
-
         public ActionResult Estorno(FormCollection form)
         {
             string conta, senha;
@@ -293,7 +289,7 @@ namespace ProjetoBanco.MVC.Controllers
             conta = Utilitarios.Utilitarios.retiraMask(form["conta"]);
             senha = Utilitarios.Utilitarios.retiraMask(form["senha"]);
             agencia = int.Parse(Utilitarios.Utilitarios.retiraMask(form["agencia"]));
-            foreach (var op in _operacaoesRealizadasAppService.GetAllOperacoesPorContaParaEstorno(conta,senha,agencia))
+            foreach (var op in _operacaoesRealizadasAppService.GetAllOperacoesPorContaParaEstorno(conta, senha, agencia))
             {
                 opsEstornoViewModels.Add(new EstornoViewModel
                 {
@@ -308,7 +304,7 @@ namespace ProjetoBanco.MVC.Controllers
                     descricao = op.descricao
                 });
             }
-            if (opsEstornoViewModels == null || opsEstornoViewModels.Count==0)
+            if (opsEstornoViewModels == null || opsEstornoViewModels.Count == 0)
             {
                 TempData["menssagem"] = "Estorno não realizado! Alguns dos dados fornecidos podem ser inválidos.";
                 TempData["outraOp"] = "/Operacoes/DadosParaEstorno";

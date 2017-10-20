@@ -22,26 +22,10 @@ namespace ProjetoBanco.Domain.Services
            return _bancoRepositoryDomain.AddBanco(banco);
         }
 
-        public Banco GetByBancoId(int id)
-        {
-            throw new NotImplementedException();
-        }
-
         public IEnumerable<Banco> GetAllBancos()
         {
            return _bancoRepositoryDomain.GetAllBancos();
         }
-
-        public string UpdateBanco(Banco banco)
-        {
-            throw new NotImplementedException();
-        }
-
-        public void RemoveBanco(Banco banco)
-        {
-            throw new NotImplementedException();
-        }
-
         public void Dispose()
         {
             throw new NotImplementedException();

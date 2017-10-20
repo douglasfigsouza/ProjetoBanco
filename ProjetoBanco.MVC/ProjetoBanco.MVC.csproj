@@ -187,7 +187,6 @@
     <Compile Include="ViewModels\ContaClienteViewModel.cs" />
     <Compile Include="ViewModels\ContaViewModel.cs" />
     <Compile Include="ViewModels\EstornoViewModel.cs" />
-    <Compile Include="ViewModels\feedBackViewModel.cs" />
     <Compile Include="ViewModels\OperacaoViewModel.cs" />
     <Compile Include="ViewModels\OperacoesRealizadasViewModel.cs" />
     <Compile Include="ViewModels\TransacaoViewModel.cs" />
@@ -221,7 +220,6 @@
     <Content Include="Scripts\jquery.validate.min.js" />
     <Content Include="Scripts\jquery.validate.unobtrusive.js" />
     <Content Include="Scripts\jquery.validate.unobtrusive.min.js" />
-    <Content Include="Scripts\Mascaras.js" />
     <Content Include="Scripts\materialize\materialize.js" />
     <Content Include="Scripts\materialize\materialize.min.js" />
     <Content Include="Scripts\modernizr-2.6.2.js" />

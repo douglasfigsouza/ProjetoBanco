@@ -6,7 +6,6 @@ namespace ProjetoBanco.Domain.Interfaces.IRepositories
     public interface IAgenciaRepositoryDomain
     {
         string AddAgencia(Agencia agencia);
-        Agencia GetByAgenciaId(int id);
         Agencia GetAgenciaByNum(int agencia);
         IEnumerable<Agencia> GetAllAgencias();
         string UpdateAgencia(Agencia agencia);

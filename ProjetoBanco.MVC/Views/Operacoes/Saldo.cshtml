@@ -6,25 +6,25 @@
         {
             <h4>Consulta Saldo</h4>
             <div class="row">
-                <div class="col s4">
+                <div class="col s4 input-field">
                     <label class="col s12" for="conta">Conta</label>
                     @Html.TextBoxFor(t=>t.conta,new {@class="col s12 conta"})
                 </div>
-                <div class="col s4">
+                <div class="col s4 input-field">
                     <label class="col s12" for="agencia">Agência</label>
                     @Html.TextBoxFor(t=>t.agencia,new {@class="col s12 agencia"})
                 </div>
 
             </div>
-            <div class="row">
-                <div class="col s4">
+            <div class="row"> 
+                <div class="col s4 input-field">
                     <label class="col s12" for="senhaCli">Senha</label>
                     @Html.TextBoxFor(t => t.senhaCli, new { @class = "col s12", @type="password" })
                 </div>
              </div>
 
             <div class="row">
-                <div class="col s6">
+                <div class="col s6 ">
                     <button class="btn waves-effect waves-light" type="submit" name="ConsultaSaldo">
                         Consultar
                         <i class="material-icons right">send</i>

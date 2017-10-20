@@ -38,7 +38,6 @@ namespace ProjetoBanco.Infra.Data.Repositories
             conn.ExecuteNonQuery();
 
         }
-
         public int Transferencia(OperacaoRealizada opConta1, OperacaoRealizada opConta2)
         {
             conn.ExecuteProcedure(Procedure.PBSP_SAQUE);
@@ -66,7 +65,6 @@ namespace ProjetoBanco.Infra.Data.Repositories
                 return 0;
             }
         }
-
         public IEnumerable<Estorno> GetAllOperacoesPorContaParaEstorno(string conta, string senha, int agencia)
         {
             conn.ExecuteProcedure(Procedure.PBSP_GETOPREALIZADASPORCONTA);
@@ -100,7 +98,6 @@ namespace ProjetoBanco.Infra.Data.Repositories
 
 
         }
-
         public string ConfirmEstorno(int id)
         {
             conn.ExecuteProcedure(Procedure.PBSP_ESTORNA);
@@ -117,12 +114,10 @@ namespace ProjetoBanco.Infra.Data.Repositories
             }
 
         }
-
         public void Dispose()
         {
             throw new NotImplementedException();
         }
-
         public int Saque(OperacaoRealizada operacaoRealizada, int op)
         {
             conn.ExecuteProcedure(Procedure.PBSP_SAQUE);
@@ -135,7 +130,6 @@ namespace ProjetoBanco.Infra.Data.Repositories
 
             return conn.ExecuteNonQueryWithReturn();
         }
-
         public IEnumerable<Estorno> GetAllOperacoesEstorno()
         {
             conn.ExecuteProcedure(Procedure.PBSP_GETALLOPERACOESESTORNO);

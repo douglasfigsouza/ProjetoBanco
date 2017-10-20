@@ -46,11 +46,6 @@ namespace ProjetoBanco.Infra.Data.Repositories
 
         }
 
-        public Agencia GetByAgenciaId(int id)
-        {
-            throw new NotImplementedException();
-        }
-
         public IEnumerable<Agencia> GetAllAgencias()
         {
             try
@@ -75,7 +70,6 @@ namespace ProjetoBanco.Infra.Data.Repositories
             }
             return Agencias.ToList();
         }
-
         public string UpdateAgencia(Agencia agencia)
         {
             try
@@ -91,10 +85,9 @@ namespace ProjetoBanco.Infra.Data.Repositories
                 return e.ToString();
             }
         }
-
-
         public void Dispose()
         {
+
         }
 
         public Agencia GetAgenciaByNum(int agencia)

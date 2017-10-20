@@ -2,84 +2,84 @@
 @if (ViewBag.operacao == 1)
 {
     using (Html.BeginForm("ConfirmDeposito", "Operacoes"))
-     {
-         if (ViewBag.erroTransacao == null)
-         {
-             if (Model != null)
-             {
-                 @Html.HiddenFor(t => t.agencia)
-                 @Html.HiddenFor(t => t.contaId)
-                 @Html.HiddenFor(t => t.clienteId)
-                 @Html.HiddenFor(t => t.valor)
-             }
-             <div class="row">
-                 <div class="col s12">
-                     <h4>
-                         @ViewBag.descOp
-                     </h4>
-                     <h4>
-                         Cliente: @Model.nome
-                     </h4>
-                     <h4>
-                         Valor: @Model.valor
-                     </h4>
-                 </div>
-                 <div class="col s6">
-                     <button class="btn waves-effect waves-light right" type="submit" name="ConfirmDeposito">
-                         Confirmar
-                         <i class="material-icons right">send</i>
-                     </button>
-                 </div>
-             </div>
-         }
-         else
-         {
-             <h4>@ViewBag.erroTransacao</h4>
-             <div class="col s6">
-               @Html.ActionLink("Realizar outra Operacao","Deposito","Operacoes")
-             </div>
-         }
-     }
-}
-else if(ViewBag.operacao == 2)
-{   
-    using (Html.BeginForm("ConfirmSaque", "Operacoes"))
-     {
-         if (ViewBag.erroTransacao == null)
-         {
-             if (Model != null)
-             {
-                 @Html.HiddenFor(t => t.agencia)
-                 @Html.HiddenFor(t => t.contaId)
-                 @Html.HiddenFor(t => t.clienteId)
-                 @Html.HiddenFor(t => t.valor)
-             }
-             <div class="row">
-                 <div class="col s12">
-                     <h4>
-                         @ViewBag.descOp
-                     </h4>
-                     <h4>
-                         Cliente: @Model.nome
-                     </h4>
-                     <h4>
-                         Valor: @Model.valor
-                     </h4>
-                 </div>
-                 <div class="col s6">
-                     <button class="btn waves-effect waves-light right" type="submit" name="ConfirmDeposito">
+    {
+        if (ViewBag.erroTransacao == null)
+        {
+            if (Model != null)
+            {
+                @Html.HiddenFor(t => t.agencia)
+                @Html.HiddenFor(t => t.contaId)
+                @Html.HiddenFor(t => t.clienteId)
+                @Html.HiddenFor(t => t.valor)
+            }
+            <div class="row">
+                <div class="col s12">
+                    <h4>
+                        @ViewBag.descOp
+                    </h4>
+                    <h4>
+                        Cliente: @Model.nome
+                    </h4>
+                    <h4>
+                        Valor: @Model.valor
+                    </h4>
+                </div>
+                <div class="col s6">
+                    <button class="btn waves-effect waves-light right" type="submit" name="ConfirmDeposito">
                         Confirmar
-                         <i class="material-icons right">send</i>
-                     </button>
-                 </div>
-             </div>
-         }
-         else
-         {
-             <h4>@ViewBag.erroTransacao</h4>
-             <div class="col s6">
-                 @Html.ActionLink("Realizar outra Operacao","Saque","Operacoes")
-             </div>
-         }
-     }
+                        <i class="material-icons right">send</i>
+                    </button>
+                </div>
+            </div>
+        }
+        else
+        {
+            <h4>@ViewBag.erroTransacao</h4>
+            <div class="col s6">
+                @Html.ActionLink("Realizar outra Operacao", "Deposito", "Operacoes")
+            </div>
+        }
+    }
+}
+else if (ViewBag.operacao == 2)
+{
+    using (Html.BeginForm("ConfirmSaque", "Operacoes"))
+    {
+        if (ViewBag.erroTransacao == null)
+        {
+            if (Model != null)
+            {
+                @Html.HiddenFor(t => t.agencia)
+                @Html.HiddenFor(t => t.contaId)
+                @Html.HiddenFor(t => t.clienteId)
+                @Html.HiddenFor(t => t.valor)
+            }
+            <div class="row">
+                <div class="col s12">
+                    <h4>
+                        @ViewBag.descOp
+                    </h4>
+                    <h4>
+                        Cliente: @Model.nome
+                    </h4>
+                    <h4>
+                        Valor: @Model.valor
+                    </h4>
+                </div>
+                <div class="col s6">
+                    <button class="btn waves-effect waves-light right" type="submit" name="ConfirmDeposito">
+                        Confirmar
+                        <i class="material-icons right">send</i>
+                    </button>
+                </div>
+            </div>
+        }
+        else
+        {
+            <h4>@ViewBag.erroTransacao</h4>
+            <div class="col s6">
+                @Html.ActionLink("Realizar outra Operacao", "Saque", "Operacoes")
+            </div>
+        }
+    }
 }
