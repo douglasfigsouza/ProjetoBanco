@@ -1,9 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Web.Http;
 using ProjetoBanco.Application.Interfaces;
 using ProjetoBanco.Domain.Entities;
 using ProjetoBanco.Domain.Interfaces.IRepositories;
 using ProjetoBanco.Domain.Interfaces.IServices;
+using Web_Api.Controllers;
 
 namespace ProjetoBanco.Application
 {
@@ -11,15 +13,18 @@ namespace ProjetoBanco.Application
     {
         private readonly IOperacaoServiceDomain _OperacaoServiceDomain;
         private readonly IOperacoesRepositoryDomain _OperacaoRepositoryDomain;
+        private readonly OperacoesController opController;
 
         public OperacoesAppService(IOperacaoServiceDomain OperacaoServiceDomain, IOperacoesRepositoryDomain OperacaoRepositoryDomain)
         {
             _OperacaoServiceDomain = OperacaoServiceDomain;
             _OperacaoRepositoryDomain = OperacaoRepositoryDomain;
+            opController = new OperacoesController(OperacaoRepositoryDomain);
         }
-        public string AddOperacao(Operacoes op)
+        public IHttpActionResult AddOperacao(Operacoes op)
         {
-            return _OperacaoRepositoryDomain.AddOperacao(op);
+            return opController.AddOperacao(op);
+            //return _OperacaoRepositoryDomain.AddOperacao(op);
         }
 
         public void Dispose()

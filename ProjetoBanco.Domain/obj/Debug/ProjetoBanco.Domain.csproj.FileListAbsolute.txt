@@ -9,5 +9,6 @@ D:\ProjetoBanco\ProjetoBanco.Domain\obj\Debug\ProjetoBanco.Domain.dll
 D:\ProjetoBanco\ProjetoBanco.Domain\obj\Debug\ProjetoBanco.Domain.pdb
 C:\Users\Douglas\ProjetoBanco\ProjetoBanco.Domain\bin\Debug\ProjetoBanco.Domain.dll
 C:\Users\Douglas\ProjetoBanco\ProjetoBanco.Domain\bin\Debug\ProjetoBanco.Domain.pdb
+C:\Users\Douglas\ProjetoBanco\ProjetoBanco.Domain\obj\Debug\ProjetoBanco.Domain.csprojResolveAssemblyReference.cache
 C:\Users\Douglas\ProjetoBanco\ProjetoBanco.Domain\obj\Debug\ProjetoBanco.Domain.dll
 C:\Users\Douglas\ProjetoBanco\ProjetoBanco.Domain\obj\Debug\ProjetoBanco.Domain.pdb

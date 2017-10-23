@@ -1,5 +1,6 @@
 using ProjetoBanco.Domain.Interfaces.IRepositories;
 using ProjetoBanco.Domain.Interfaces.IServices;
+using Web_Api.Controllers;
 
 [assembly: WebActivatorEx.PreApplicationStartMethod(typeof(ProjetoBanco.MVC.App_Start.NinjectWebCommon), "Start")]
 [assembly: WebActivatorEx.ApplicationShutdownMethodAttribute(typeof(ProjetoBanco.MVC.App_Start.NinjectWebCommon), "Stop")]
@@ -39,7 +40,6 @@ namespace ProjetoBanco.MVC.App_Start
         {
             bootstrapper.ShutDown();
         }
-        
         /// <summary>
         /// Creates the kernel that will manage your application.
         /// </summary>

@@ -61,11 +61,6 @@ namespace ProjetoBanco.Domain.Services
         }
 
 
-        public void Dispose()
-        {
-            _repository.Dispose();
-        }
-
         public decimal ConsultaSaldo(Transacao transacao)
         {
            return _repository.ConsultaSaldo(transacao);

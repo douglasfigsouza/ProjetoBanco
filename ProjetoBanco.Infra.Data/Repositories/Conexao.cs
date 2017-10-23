@@ -94,5 +94,16 @@ namespace ProjetoBanco.Infra.Data.Repositories
         {
             return _command.ExecuteReader();
         }
+
+
+
+        // Cria o metodo para executar procedure 
+        public void ExecuteCommand(string command)
+        {
+            _command = new SqlCommand(command, _connection)
+            {
+                CommandType = CommandType.Text
+            };
+        }
     }
 }

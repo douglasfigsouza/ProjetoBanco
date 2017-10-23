@@ -10,7 +10,7 @@ using ProjetoBanco.Domain.Interfaces.IRepositories;
 
 namespace ProjetoBanco.Infra.Data.Repositories
 {
-    public class OperacoesRepository:IOperacoesRepositoryDomain, IDisposable
+    public class OperacoesRepository : IOperacoesRepository
     {
         private Conexao conn;
         private SqlDataReader result;
@@ -135,10 +135,6 @@ namespace ProjetoBanco.Infra.Data.Repositories
 
             }
  
-        }
-        public void Dispose()
-        {
-            throw new NotImplementedException();
         }
     }
 }

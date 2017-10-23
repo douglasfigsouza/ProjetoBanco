@@ -1,11 +1,12 @@
 ﻿using System.Collections.Generic;
+using System.Web.Http;
 using ProjetoBanco.Domain.Entities;
 
 namespace ProjetoBanco.Application.Interfaces
 {
     public interface IOperacoesAppService
     {
-        string AddOperacao(Operacoes op);
+        IHttpActionResult AddOperacao(Operacoes op);
         Operacoes GetOperacaoById(int id);
         IEnumerable<Operacoes> GetAllOperacoes();
         void UpdateOperacao(Operacoes op);

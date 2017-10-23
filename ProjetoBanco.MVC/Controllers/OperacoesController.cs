@@ -1,10 +1,14 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Globalization;
+using System.Web.Http;
 using System.Web.Mvc;
 using ProjetoBanco.Application.Interfaces;
 using ProjetoBanco.Domain.Entities;
+using ProjetoBanco.Domain.Interfaces.IRepositories;
+using ProjetoBanco.Domain.Interfaces.IServices;
 using ProjetoBanco.MVC.ViewModels;
+using Web_Api.Controllers;
 
 namespace ProjetoBanco.MVC.Controllers
 {
@@ -27,10 +31,13 @@ namespace ProjetoBanco.MVC.Controllers
         private List<TransacaoViewModel> lstTransacoesViewModels;
         private List<EstornoViewModel> opsEstornoViewModels;
         private decimal valor;
-        private string error;
+        private readonly Web_Api.Controllers.OperacoesController opControllerApi;
+        
+
+        private IHttpActionResult error;
 
 
-        public OperacoesController(IOperacoesAppService OperacaoAppService, IOperacaoesRealizadasAppService operacaoesRealizadasAppService)
+        public OperacoesController(IOperacoesAppService OperacaoAppService, IOperacaoesRealizadasAppService operacaoesRealizadasAppService, IOperacoesRepositoryDomain operacoesRepositoryDomain)
         {
             _OperacaoAppService = OperacaoAppService;
             _operacaoesRealizadasAppService = operacaoesRealizadasAppService;
@@ -40,6 +47,7 @@ namespace ProjetoBanco.MVC.Controllers
             lstTransacoesViewModels = new List<TransacaoViewModel>();
             op = new Operacoes();
             opsEstornoViewModels = new List<EstornoViewModel>();
+            opControllerApi = new Web_Api.Controllers.OperacoesController(operacoesRepositoryDomain);
         }
         // GET: Operacoes
         public ActionResult CreateOperacao()
@@ -47,13 +55,14 @@ namespace ProjetoBanco.MVC.Controllers
             return View();
         }
 
-        [HttpPost]
+        [System.Web.Mvc.HttpPost]
         public ActionResult CreateOperacao(OperacaoViewModel opViewModel)
         {
             if (ModelState.IsValid)
             {
                 op.descricao = opViewModel.descricao;
-                error = _OperacaoAppService.AddOperacao(op);
+                op.ativo = true;
+                error = opControllerApi.AddOperacao(op);
                 if (error == null)
                 {
                     TempData["outraOp"] = "/Operacoes/CreateOperacao";
@@ -193,7 +202,7 @@ namespace ProjetoBanco.MVC.Controllers
             TempData["outraOp"] = "/Operacoes/Saque";
             return View("FeedBackOp");
         }
-        [HttpPost]
+        [System.Web.Mvc.HttpPost]
         public ActionResult Transferencia(FormCollection transacao)
         {
             Cliente cli = (Cliente)Session["cliente"];
@@ -319,24 +328,24 @@ namespace ProjetoBanco.MVC.Controllers
 
         }
 
-        [HttpPost]
-        public ActionResult ConfirmEstorno(int id)
-        {
-            error = _operacaoesRealizadasAppService.ConfirmEstorno(id);
-            if (error == null)
-            {
-                TempData["menssagem"] = "Estorno realizado com sucesso!";
-                TempData["outraOp"] = "/Operacoes/Estorno";
-                return View("FeedBackOp");
-            }
-            else
-            {
-                TempData["menssagem"] = "Estorno não Realizado!";
-                TempData["outraOp"] = "/Operacoes/Estorno";
-                return View("FeedBackOp");
-            }
-        }
-        [HttpGet]
+        //[System.Web.Mvc.HttpPost]
+        //public ActionResult ConfirmEstorno(int id)
+        //{
+        //    error = _operacaoesRealizadasAppService.ConfirmEstorno(id);
+        //    if (error == null)
+        //    {
+        //        TempData["menssagem"] = "Estorno realizado com sucesso!";
+        //        TempData["outraOp"] = "/Operacoes/Estorno";
+        //        return View("FeedBackOp");
+        //    }
+        //    else
+        //    {
+        //        TempData["menssagem"] = "Estorno não Realizado!";
+        //        TempData["outraOp"] = "/Operacoes/Estorno";
+        //        return View("FeedBackOp");
+        //    }
+        //}
+        [System.Web.Mvc.HttpGet]
         public JsonResult GetOpRealizadaEstornoById(int id)
         {
             return Json(_operacaoesRealizadasAppService.GetOpRealizadaEstornoById(id), JsonRequestBehavior.AllowGet);

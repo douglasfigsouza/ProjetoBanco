@@ -13,6 +13,5 @@ namespace ProjetoBanco.Domain.Interfaces.IRepositories
         Transacao VerificaDadosTransacao(Transacao transacao, int op);
         Transacao VerificaDadosTransferencia(Transacao transacao);
         decimal ConsultaSaldo(Transacao transacao);
-        void Dispose();
     }
 }
