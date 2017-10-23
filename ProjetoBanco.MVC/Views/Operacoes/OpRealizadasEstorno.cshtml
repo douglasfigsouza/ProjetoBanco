@@ -80,8 +80,21 @@
         </div>
     </div>
 </div>
+<div class="row" id="feedBackEstorno">
+    <div class="col s6">
+        <h4>Parabéns</h4>
+        <h5>Estorno realizado com sucesso!</h5>
+        <h6>
+            Deseja Realizar Outra Operação?
+            @Html.ActionLink("Sim", "DadosParaEstorno", "Operacoes")
+            @Html.ActionLink("Não", "Logout", "Usuarios")
+        </h6>
+    </div>
+</div>
+
 <script>
     $(document).ready(function () {
+        $("#feedBackEstorno").hide();
         $("#opSelecionada").hide();
         var id = 0;
         $(".addEstorno").click(function () {
@@ -121,10 +134,10 @@
                     id: id
                 },
                 success: function (dados) {
-                    console.log("carregando...");
                 },
                 error: function ajaxError(dados) {
-                    alert(dados.status + ' ' + dados.statusText);
+                    $("#feedBackEstorno").show();
+                    $("#opSelecionada").hide();
                 }
             });
         });

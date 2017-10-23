@@ -884,79 +884,85 @@ AND conta.ativo=1 AND ag.ativo=1 AND cli.ativo=1;
 END
 GO
 
+
 IF EXISTS (SELECT * FROM dbo.sysobjects WHERE id = object_id(N'[dbo].[PBSP_ESTORNA]') AND objectproperty(id, N'IsPROCEDURE')=1)
 DROP PROCEDURE [dbo].[PBSP_ESTORNA]
 GO
 
-CREATE PROCEDURE [dbo].[PBSP_ESTORNA]
-@id SMALLINT,
-@opId SMALLINT
-AS
+	CREATE PROCEDURE [dbo].[PBSP_ESTORNA]
+	@id SMALLINT,
+	@opId SMALLINT
+	AS
 
-/*
-Documentação
-Arquivo Fonte.....: ArquivoFonte.sql
-Objetivo..........: Grava o estorno
-Autor.............: SMN - Douglas
-Data..............: 16/10/2017
-Ex................: EXEC [dbo].[PBSP_ESTORNA]
+	/*
+	Documentação
+	Arquivo Fonte.....: ArquivoFonte.sql
+	Objetivo..........: Grava o estorno
+	Autor.............: SMN - Douglas
+	Data..............: 16/10/2017
+	Ex................: EXEC [dbo].[PBSP_ESTORNA]
 
-*/
+	*/
 
-BEGIN
-DECLARE @clienteId SMALLINT,
-@contaId SMALLINT,
-@agencia INT,
-@bancoId SMALLINT,
-@saldoAnterior DECIMAL(18,2),
-@valorOp DECIMAL(18,2),
-@valorUltOp DECIMAL(18,2)
+	BEGIN
+		DECLARE @clienteId SMALLINT,
+				@contaId SMALLINT,
+				@agencia INT,
+				@bancoId SMALLINT,
+				@saldoAnterior DECIMAL(18,2),
+				@valorOp DECIMAL(18,2),
+				@valorUltOp DECIMAL(18,2),
+				@op SMALLINT,
+				@cliente2Id SMALLINT,
+				@conta2Id SMALLINT,
+				@agencia2 INT,
+				@banco2Id SMALLINT,
+				@saldoAnterior2 DECIMAL(18,2),
+				@valorOp2 DECIMAL(18,2),
+				@valorUltOp2 DECIMAL(18,2)
 
-SET @clienteId = (SELECT opReal.clienteId FROM OperacoesRealizadas AS opReal WITH(NOLOCK)
-INNER JOIN  Clientes as cli WITH(NOLOCK) on opReal.clienteId=cli.Id
-WHERE opReal.Id = @id);
-SET @contaId = (SELECT opReal.contaId FROM OperacoesRealizadas AS opReal WITH(NOLOCK)
-INNER JOIN Conta AS conta WITH(NOLOCK) ON opReal.contaId= conta.Id
-WHERE opReal.Id = @id);
-SET @agencia = (SELECT opReal.agencia FROM OperacoesRealizadas  AS opReal WITH(NOLOCK)
-INNER JOIN Agencia AS ag WITH(NOLOCK) ON opReal.agencia =  ag.agencia
-WHERE opReal.Id = @id);
-SET @bancoId = dbo.RetornaIdBanco(@agencia);
-SET @saldoAnterior = dbo.RetornaSaldo(@contaId);
-SET @valorOp = (SELECT opReal.valorOp FROM OperacoesRealizadas AS opReal WITH(NOLOCK)
-WHERE opReal.Id = @id)*(-1);
+				SET @clienteId = (SELECT opReal.clienteId FROM OperacoesRealizadas AS opReal WITH(NOLOCK)
+				INNER JOIN  Clientes as cli WITH(NOLOCK) on opReal.clienteId=cli.Id
+				WHERE opReal.Id = @id);
 
-SET @valorUltOp =dbo.RetornaValorUltOp(@id);
---recupera o valor da op da primeira opercão
-IF(@valorUltOp < 0)
+				SET @contaId = (SELECT opReal.contaId FROM OperacoesRealizadas AS opReal WITH(NOLOCK)
+				INNER JOIN Conta AS conta WITH(NOLOCK) ON opReal.contaId= conta.Id
+				WHERE opReal.Id = @id);
+
+				SET @agencia = (SELECT opReal.agencia FROM OperacoesRealizadas  AS opReal WITH(NOLOCK)
+				INNER JOIN Agencia AS ag WITH(NOLOCK) ON opReal.agencia =  ag.agencia
+				WHERE opReal.Id = @id);
+
+				SET @bancoId = dbo.RetornaIdBanco(@agencia);
+
+				SET @op=dbo.RetornaIdProxOpRealizada(@id);
+
+				SET @saldoAnterior = dbo.RetornaSaldo(@contaId);
+				SET @valorOp = (SELECT opReal.valorOp FROM OperacoesRealizadas AS opReal WITH(NOLOCK)
+				WHERE opReal.Id = @id)*(-1);
+
+				SET @valorUltOp =dbo.RetornaValorUltOp(@id);
+				--recupera o valor da op da primeira opercão
+				IF(@valorUltOp < 0)
 					BEGIN
-						DECLARE @op SMALLINT
 						SET @op=dbo.RetornaIdProxOpRealizada(@id);
 						--lembrar de mudar caso mude o id da operação
 						IF(@op=4)
 							BEGIN 
-								DECLARE @cliente2Id SMALLINT,
-										@conta2Id SMALLINT,
-										@agencia2 INT,
-										@banco2Id SMALLINT,
-										@saldoAnterior2 DECIMAL(18,2),
-										@valorOp2 DECIMAL(18,2),
-										@valorUltOp2 DECIMAL(18,2)
-
 								SET @cliente2Id = (SELECT opReal.clienteId FROM OperacoesRealizadas AS opReal WITH(NOLOCK) 
-									INNER JOIN  Clientes as cli WITH(NOLOCK) on opReal.clienteId=cli.Id
-									WHERE opReal.Id = @id+1 AND cli.ativo=1);
+								INNER JOIN  Clientes as cli WITH(NOLOCK) on opReal.clienteId=cli.Id
+								WHERE opReal.Id = @id+1 AND cli.ativo=1);
 
 								SET @conta2Id = (SELECT opReal.contaId FROM OperacoesRealizadas AS opReal WITH(NOLOCK)
-									INNER JOIN Conta AS conta WITH(NOLOCK) ON opReal.contaId= conta.Id
-									WHERE opReal.Id = @id+1 AND conta.ativo=1);
+								INNER JOIN Conta AS conta WITH(NOLOCK) ON opReal.contaId= conta.Id
+								WHERE opReal.Id = @id+1 AND conta.ativo=1);
 
 								SET @agencia2 = (SELECT opReal.agencia FROM OperacoesRealizadas  AS opReal WITH(NOLOCK)
-												INNER JOIN Agencia AS ag WITH(NOLOCK) ON opReal.agencia =  ag.agencia
-												WHERE opReal.Id = @id+1 AND ag.ativo=1);
+								INNER JOIN Agencia AS ag WITH(NOLOCK) ON opReal.agencia =  ag.agencia
+								WHERE opReal.Id = @id+1 AND ag.ativo=1);
 
 								SET @banco2Id = dbo.RetornaIdBanco(@agencia);
-								SET @saldoAnterior2 = dbo.RetornaSaldo(@contaId);
+								SET @saldoAnterior2 = dbo.RetornaSaldo(@conta2Id);
 
 								--estorna conta1
 								INSERT INTO OperacoesRealizadas(codTipoOp,clienteId,contaId,agencia,bancoId,dataOP,saldoAnterior,valorOp)
@@ -966,20 +972,50 @@ IF(@valorUltOp < 0)
 								INSERT INTO OperacoesRealizadas(codTipoOp,clienteId,contaId,agencia,bancoId,dataOP,saldoAnterior,valorOp)
 								VALUES(@opId,@cliente2Id,@conta2Id,@agencia2,@banco2Id,GETDATE(),@saldoAnterior2,@valorUltOp);
 							END
-						ELSE
-							BEGIN
-								INSERT INTO OperacoesRealizadas(codTipoOp,clienteId,contaId,agencia,bancoId,dataOP,saldoAnterior,valorOp)
-								VALUES(@opId,@clienteId,@contaId,@agencia,@bancoId,GETDATE(),@saldoAnterior,@valorOp);
-							END
-					END	
+							ELSE
+								BEGIN
+									INSERT INTO OperacoesRealizadas(codTipoOp,clienteId,contaId,agencia,bancoId,dataOP,saldoAnterior,valorOp)
+									VALUES(@opId,@clienteId,@contaId,@agencia,@bancoId,GETDATE(),@saldoAnterior,@valorOp);
+								END
+						END	
 
-					ELSE
-						BEGIN
-							INSERT INTO OperacoesRealizadas(codTipoOp,clienteId,contaId,agencia,bancoId,dataOP,saldoAnterior,valorOp)
-							VALUES(@opId,@clienteId,@contaId,@agencia,@bancoId,GETDATE(),@saldoAnterior,@valorOp);
-						END
+						ELSE
+							BEGIN 
+								SET @op=dbo.RetornaIdProxOpRealizada(@id);
+								IF(@op=4)
+									BEGIN
+										SET @cliente2Id = (SELECT opReal.clienteId FROM OperacoesRealizadas AS opReal WITH(NOLOCK) 
+										INNER JOIN  Clientes as cli WITH(NOLOCK) on opReal.clienteId=cli.Id
+										WHERE opReal.Id = @id-1 AND cli.ativo=1);
+
+										SET @conta2Id = (SELECT opReal.contaId FROM OperacoesRealizadas AS opReal WITH(NOLOCK)
+										INNER JOIN Conta AS conta WITH(NOLOCK) ON opReal.contaId= conta.Id
+										WHERE opReal.Id = @id-1 AND conta.ativo=1);
+
+										SET @agencia2 = (SELECT opReal.agencia FROM OperacoesRealizadas  AS opReal WITH(NOLOCK)
+										INNER JOIN Agencia AS ag WITH(NOLOCK) ON opReal.agencia =  ag.agencia
+										WHERE opReal.Id = @id-1 AND ag.ativo=1);
+
+										SET @banco2Id = dbo.RetornaIdBanco(@agencia);
+										SET @saldoAnterior2 = dbo.RetornaSaldo(@conta2Id);
+
+										--estorna conta1
+										INSERT INTO OperacoesRealizadas(codTipoOp,clienteId,contaId,agencia,bancoId,dataOP,saldoAnterior,valorOp)
+										VALUES(@opId,@clienteId,@contaId,@agencia,@bancoId,GETDATE(),@saldoAnterior,@valorOp);
+								
+										--estorna conta 2
+										INSERT INTO OperacoesRealizadas(codTipoOp,clienteId,contaId,agencia,bancoId,dataOP,saldoAnterior,valorOp)
+										VALUES(@opId,@cliente2Id,@conta2Id,@agencia2,@banco2Id,GETDATE(),@saldoAnterior2,@valorUltOp);
+									END
+									ELSE
+										BEGIN
+											INSERT INTO OperacoesRealizadas(codTipoOp,clienteId,contaId,agencia,bancoId,dataOP,saldoAnterior,valorOp)
+											VALUES(@opId,@clienteId,@contaId,@agencia,@bancoId,GETDATE(),@saldoAnterior,@valorOp);
+										END
+							END
 	END
 GO
+
 IF EXISTS (SELECT * FROM dbo.sysobjects WHERE id = object_id(N'[dbo].[PBSP_GETCONTA]') AND objectproperty(id, N'IsPROCEDURE')=1)
 	DROP PROCEDURE [dbo].[PBSP_GETCONTA]
 GO
@@ -1172,7 +1208,8 @@ CREATE FUNCTION dbo.RetornaIdProxOpRealizada(@idOpReal SMALLINT)
 						WHERE Id=@idOpReal+1);
 		IF(@opProxOpReal IS NULL)
 			BEGIN
-				SET @opProxOpReal=0;
+				SET @opProxOpReal=(SELECT codTipoOp FROM OperacoesRealizadas WITH(NOLOCK)
+						WHERE Id=@idOpReal);
 			END
 		RETURN @opProxOpReal;
 	END

@@ -53,7 +53,7 @@ namespace ProjetoBanco.Application
                         conta = op.conta,
                         agencia = op.agencia,
                         valorOp = op.valorOp,
-                        dataFormatada = String.Format("{0:MM/dd/yyyy}", op.dataOp),
+                        dataOp = op.dataOp,
                         descricao = op.descricao,
                         saldoAnterior = op.saldoAnterior
                     };
