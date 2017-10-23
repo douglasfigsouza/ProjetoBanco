@@ -50,10 +50,8 @@
     <Compile Include="Interfaces\IRepositories\IClienteRepositoryDomain.cs" />
     <Compile Include="Interfaces\IRepositories\IContaClienteRepositoryDomain.cs" />
     <Compile Include="Interfaces\IRepositories\IEstadoRepositoryDomain.cs" />
-    <Compile Include="Interfaces\IRepositories\IOlaRepository.cs" />
     <Compile Include="Interfaces\IRepositories\IOperacoesRealizadasRepositoryDomain.cs" />
     <Compile Include="Interfaces\IRepositories\IOperacoesRepository.cs" />
-    <Compile Include="Interfaces\IRepositories\IOperacoesRepositoryDomain.cs" />
     <Compile Include="Interfaces\IRepositories\IUsuarioRepositoryDomain.cs" />
     <Compile Include="Interfaces\IServices\IAgenciaServiceDomain.cs" />
     <Compile Include="Interfaces\IServices\IBancoServiceDomain.cs" />

@@ -16,8 +16,7 @@ namespace Web_Api.App_Start
             //container.Register<IOperacaoServiceDomain, OpercoesServiceDomain>();
 
             container.Register<IOlaRepository, OlaRepository>();
-            container.Register<IOperacoesRepository, Operacoes2Repository>();
-            container.Register<IOperacoesRepositoryDomain, OperacoesRepository>();
+            container.Register<IOperacoesRepository, OperacoesRepository>();
 
             container.Verify();
 

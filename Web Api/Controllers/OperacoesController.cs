@@ -1,29 +1,18 @@
 ﻿using System.Web.Http;
-
-using ProjetoBanco.Domain.Entities;
 using ProjetoBanco.Domain.Interfaces.IRepositories;
 
 namespace Web_Api.Controllers
 {
     public class OperacoesController : ApiController
     {
-        private readonly IOperacoesRepositoryDomain _operacoesRepositoryDomain;
+        private readonly IOperacoesRepository _operacoesRepository;
 
-        public OperacoesController(IOperacoesRepositoryDomain operacoesRepositoryDomain)
+        public OperacoesController(IOperacoesRepository operacoesRepository)
         {
-            _operacoesRepositoryDomain = operacoesRepositoryDomain;
+            _operacoesRepository = operacoesRepository;
         }
 
-        public OperacoesController()
-        {
-            
-        }
-        [HttpPost]
-        public IHttpActionResult AddOperacao(Operacoes op)
-        {
-            return Ok(_operacoesRepositoryDomain.AddOperacao(op));
-        }
-        public IHttpActionResult Get()
+        public IHttpActionResult AddOperacao()
         {
             return Ok();
         }

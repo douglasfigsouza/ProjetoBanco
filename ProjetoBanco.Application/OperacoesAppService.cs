@@ -1,60 +1,36 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Web.Http;
+using System.Net;
+using System.Net.Http;
+using System.Net.Http.Headers;
+using Newtonsoft.Json;
 using ProjetoBanco.Application.Interfaces;
 using ProjetoBanco.Domain.Entities;
-using ProjetoBanco.Domain.Interfaces.IRepositories;
-using ProjetoBanco.Domain.Interfaces.IServices;
-using Web_Api.Controllers;
 
 namespace ProjetoBanco.Application
 {
     public class OperacoesAppService : IOperacoesAppService
     {
-        private readonly IOperacaoServiceDomain _OperacaoServiceDomain;
-        private readonly IOperacoesRepositoryDomain _OperacaoRepositoryDomain;
-        private readonly OperacoesController opController;
+   
+        public HttpResponseMessage AddOperacao(Operacoes op)
+        {
+            var HttpClient = new HttpClient();
+            var url= new  Uri("api/Operacoes/AddOperacao");
+            var result = HttpClient.GetAsync(url).GetAwaiter().GetResult();
+            HttpClient.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
+            HttpClient.Timeout = new TimeSpan(60000000000);
+            var resultContent = result.Content.ReadAsStringAsync().GetAwaiter().GetResult();
 
-        public OperacoesAppService(IOperacaoServiceDomain OperacaoServiceDomain, IOperacoesRepositoryDomain OperacaoRepositoryDomain)
-        {
-            _OperacaoServiceDomain = OperacaoServiceDomain;
-            _OperacaoRepositoryDomain = OperacaoRepositoryDomain;
-            opController = new OperacoesController(OperacaoRepositoryDomain);
-        }
-        public IHttpActionResult AddOperacao(Operacoes op)
-        {
-            return opController.AddOperacao(op);
-            //return _OperacaoRepositoryDomain.AddOperacao(op);
-        }
+            if (result.StatusCode != HttpStatusCode.OK)
+            {
 
-        public void Dispose()
-        {
-            throw new NotImplementedException();
-        }
-
-        public IEnumerable<Operacoes> GetAllOperacoes()
-        {
-            throw new NotImplementedException();
-        }
-
-        public Operacoes GetOperacaoById(int id)
-        {
-            throw new NotImplementedException();
-        }
-
-        public void RemoveOperacao(Operacoes op)
-        {
-            throw new NotImplementedException();
-        }
-
-        public void UpdateOperacao(Operacoes op)
-        {
-            throw new NotImplementedException();
+                return null;
+            }
+            return JsonConvert.DeserializeObject<Operacoes>(resultContent);
         }
 
         public Transacao VerificaDadosTransacao(Transacao transacao, int op)
         {
-            return _OperacaoServiceDomain.VerificaDadosTransacao(transacao,op);
+            return/* _OperacaoServiceDomain.VerificaDadosTransacao(transacao,op)*/;
         }
 
         public Transacao VerificaDadosTransferencia(Transacao transacao)

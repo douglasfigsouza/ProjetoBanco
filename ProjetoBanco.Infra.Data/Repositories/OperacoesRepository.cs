@@ -1,10 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Data.SqlClient;
-using System.Linq;
-using System.Runtime.CompilerServices;
-using System.Text;
-using System.Threading.Tasks;
 using ProjetoBanco.Domain.Entities;
 using ProjetoBanco.Domain.Interfaces.IRepositories;
 
@@ -44,27 +40,6 @@ namespace ProjetoBanco.Infra.Data.Repositories
                 return e.ToString();
             }
         }
-
-        public Operacoes GetOperacaoById(int id)
-        {
-            throw new NotImplementedException();
-        }
-
-        public IEnumerable<Operacoes> GetAllOperacoes()
-        {
-            throw new NotImplementedException();
-        }
-
-        public void UpdateOperacao(Operacoes op)
-        {
-            throw new NotImplementedException();
-        }
-
-        public void RemoveOperacao(Operacoes op)
-        {
-            throw new NotImplementedException();
-        }
-
         public Transacao VerificaDadosTransacao(Transacao transacao, int op)
         {
             conn = new Conexao();

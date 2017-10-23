@@ -14,7 +14,7 @@ namespace Web_Api.Controllers
 
         public IHttpActionResult GetAll()
         {
-            return Ok(_operacoesRepository.GetAllOperacoes());
+            return Ok();
         }
     }
 }
