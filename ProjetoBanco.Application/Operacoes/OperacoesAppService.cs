@@ -1,27 +1,16 @@
-﻿using System;
-using System.Net;
-using System.Net.Http;
-using System.Net.Http.Headers;
-using System.Web.Http;
-using Newtonsoft.Json;
+﻿using System.Net.Http;
 using ProjetoBanco.Application.Interfaces;
-using ProjetoBanco.Domain.Entities;
+using ProjetoBanco.Domain.Operacoes;
+using Web_Api.Utilitarios;
 
 namespace ProjetoBanco.Application
 {
     public class OperacoesAppService : IOperacoesAppService
     {
-   
         public HttpResponseMessage AddOperacao(Operacoes op)
         {
-            var HttpClient = new HttpClient();
-            HttpClient.BaseAddress = new Uri("api/Operacoes/AddOperacao");
-            HttpClient.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
-       
-            HttpResponseMessage response = HttpClient.PostAsJsonAsync("operacao", op).Result;
-
+            HttpResponseMessage response = HttpClientConf.HttpClientConfig("Operacoes").PostAsJsonAsync("AddOperacao", op).Result;
             return response;
-
         }
 
         public Transacao VerificaDadosTransacao(Transacao transacao, int op)

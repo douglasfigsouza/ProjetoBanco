@@ -128,6 +128,7 @@ D:\ProjetoBanco\ProjetoBanco.MVC\obj\Debug\ProjetoBanco.MVC.dll
 D:\ProjetoBanco\ProjetoBanco.MVC\obj\Debug\ProjetoBanco.MVC.pdb
 D:\ProjetoBanco\ProjetoBanco.MVC\bin\ProjetoBanco.Infra.Data.dll
 D:\ProjetoBanco\ProjetoBanco.MVC\bin\ProjetoBanco.Infra.Data.pdb
+C:\Users\Douglas\ProjetoBanco\ProjetoBanco.MVC\obj\Debug\ProjetoBanco.MVC.csprojResolveAssemblyReference.cache
 C:\Users\Douglas\ProjetoBanco\ProjetoBanco.MVC\bin\roslyn\csc.exe
 C:\Users\Douglas\ProjetoBanco\ProjetoBanco.MVC\bin\roslyn\Microsoft.Build.Tasks.CodeAnalysis.dll
 C:\Users\Douglas\ProjetoBanco\ProjetoBanco.MVC\bin\roslyn\Microsoft.CodeAnalysis.CSharp.dll
@@ -155,13 +156,11 @@ C:\Users\Douglas\ProjetoBanco\ProjetoBanco.MVC\bin\Microsoft.ApplicationInsights
 C:\Users\Douglas\ProjetoBanco\ProjetoBanco.MVC\bin\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.dll
 C:\Users\Douglas\ProjetoBanco\ProjetoBanco.MVC\bin\Microsoft.Web.Infrastructure.dll
 C:\Users\Douglas\ProjetoBanco\ProjetoBanco.MVC\bin\Newtonsoft.Json.dll
-C:\Users\Douglas\ProjetoBanco\ProjetoBanco.MVC\bin\Ninject.dll
-C:\Users\Douglas\ProjetoBanco\ProjetoBanco.MVC\bin\Ninject.Web.Common.dll
-C:\Users\Douglas\ProjetoBanco\ProjetoBanco.MVC\bin\Ninject.Web.Mvc.dll
 C:\Users\Douglas\ProjetoBanco\ProjetoBanco.MVC\bin\ProjetoBanco.Application.dll
 C:\Users\Douglas\ProjetoBanco\ProjetoBanco.MVC\bin\ProjetoBanco.Domain.dll
 C:\Users\Douglas\ProjetoBanco\ProjetoBanco.MVC\bin\ProjetoBanco.Infra.Data.dll
 C:\Users\Douglas\ProjetoBanco\ProjetoBanco.MVC\bin\SimpleInjector.dll
+C:\Users\Douglas\ProjetoBanco\ProjetoBanco.MVC\bin\SimpleInjector.Integration.Web.Mvc.dll
 C:\Users\Douglas\ProjetoBanco\ProjetoBanco.MVC\bin\System.Net.Http.Formatting.dll
 C:\Users\Douglas\ProjetoBanco\ProjetoBanco.MVC\bin\System.Web.Helpers.dll
 C:\Users\Douglas\ProjetoBanco\ProjetoBanco.MVC\bin\System.Web.Http.dll
@@ -186,10 +185,8 @@ C:\Users\Douglas\ProjetoBanco\ProjetoBanco.MVC\bin\Microsoft.AI.Web.xml
 C:\Users\Douglas\ProjetoBanco\ProjetoBanco.MVC\bin\Microsoft.AI.WindowsServer.xml
 C:\Users\Douglas\ProjetoBanco\ProjetoBanco.MVC\bin\Microsoft.ApplicationInsights.xml
 C:\Users\Douglas\ProjetoBanco\ProjetoBanco.MVC\bin\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.xml
-C:\Users\Douglas\ProjetoBanco\ProjetoBanco.MVC\bin\Ninject.xml
-C:\Users\Douglas\ProjetoBanco\ProjetoBanco.MVC\bin\Ninject.Web.Common.xml
-C:\Users\Douglas\ProjetoBanco\ProjetoBanco.MVC\bin\Ninject.Web.Mvc.xml
 C:\Users\Douglas\ProjetoBanco\ProjetoBanco.MVC\bin\SimpleInjector.xml
+C:\Users\Douglas\ProjetoBanco\ProjetoBanco.MVC\bin\SimpleInjector.Integration.Web.Mvc.xml
 C:\Users\Douglas\ProjetoBanco\ProjetoBanco.MVC\bin\System.Net.Http.Formatting.xml
 C:\Users\Douglas\ProjetoBanco\ProjetoBanco.MVC\bin\System.Web.Http.xml
 C:\Users\Douglas\ProjetoBanco\ProjetoBanco.MVC\bin\System.Web.Helpers.xml
@@ -203,8 +200,5 @@ C:\Users\Douglas\ProjetoBanco\ProjetoBanco.MVC\bin\Antlr3.Runtime.pdb
 C:\Users\Douglas\ProjetoBanco\ProjetoBanco.MVC\bin\Newtonsoft.Json.xml
 C:\Users\Douglas\ProjetoBanco\ProjetoBanco.MVC\bin\System.Web.Http.WebHost.xml
 C:\Users\Douglas\ProjetoBanco\ProjetoBanco.MVC\bin\SimpleInjector.Integration.WebApi.xml
-C:\Users\Douglas\ProjetoBanco\ProjetoBanco.MVC\obj\Debug\ProjetoBanco.MVC.csprojResolveAssemblyReference.cache
 C:\Users\Douglas\ProjetoBanco\ProjetoBanco.MVC\obj\Debug\ProjetoBanco.MVC.dll
 C:\Users\Douglas\ProjetoBanco\ProjetoBanco.MVC\obj\Debug\ProjetoBanco.MVC.pdb
-C:\Users\Douglas\ProjetoBanco\ProjetoBanco.MVC\bin\SimpleInjector.Integration.Web.Mvc.dll
-C:\Users\Douglas\ProjetoBanco\ProjetoBanco.MVC\bin\SimpleInjector.Integration.Web.Mvc.xml

@@ -3,10 +3,11 @@ using System.Collections.Generic;
 using System.Data.SqlClient;
 using ProjetoBanco.Domain.Entities;
 using ProjetoBanco.Domain.Interfaces.IRepositories;
+using ProjetoBanco.Domain.Operacoes;
 
 namespace ProjetoBanco.Infra.Data.Repositories
 {
-    public class OperacaoRealizadaRepository : IOperacoesRealizadasRepositoryDomain
+    public class OperacaoRealizadaRepository : IOperacoesRealizadasRepository
     {
         private Conexao conn;
         private SqlDataReader result;
@@ -26,7 +27,7 @@ namespace ProjetoBanco.Infra.Data.Repositories
             conn = new Conexao();
             OpsEstorno = new List<Estorno>();
         }
-        public void Deposito(OperacaoRealizada operacaoRealizada, int op)
+        public void Deposito(OperacoesRealizadas operacaoRealizada, int op)
         {
             conn.ExecuteProcedure(Procedure.PBSP_DEPOSITO);
             conn.AddParameter("@codTipoOp", op);
@@ -38,7 +39,7 @@ namespace ProjetoBanco.Infra.Data.Repositories
             conn.ExecuteNonQuery();
 
         }
-        public int Transferencia(OperacaoRealizada opConta1, OperacaoRealizada opConta2)
+        public int Transferencia(OperacoesRealizadas opConta1, OperacoesRealizadas opConta2)
         {
             conn.ExecuteProcedure(Procedure.PBSP_SAQUE);
             conn.AddParameter("codTipoOp", 2);
@@ -119,7 +120,7 @@ namespace ProjetoBanco.Infra.Data.Repositories
         {
             throw new NotImplementedException();
         }
-        public int Saque(OperacaoRealizada operacaoRealizada, int op)
+        public int Saque(OperacoesRealizadas operacaoRealizada, int op)
         {
             conn.ExecuteProcedure(Procedure.PBSP_SAQUE);
             conn.AddParameter("@codTipoOp", op);

@@ -12,6 +12,7 @@ D:\ProjetoBanco\ProjetoBanco.Application\bin\Debug\ProjetoBanco.Domain.pdb
 D:\ProjetoBanco\ProjetoBanco.Application\obj\Debug\ProjetoBanco.Application.csprojResolveAssemblyReference.cache
 D:\ProjetoBanco\ProjetoBanco.Application\obj\Debug\ProjetoBanco.Application.dll
 D:\ProjetoBanco\ProjetoBanco.Application\obj\Debug\ProjetoBanco.Application.pdb
+C:\Users\Douglas\ProjetoBanco\ProjetoBanco.Application\obj\Debug\ProjetoBanco.Application.csprojResolveAssemblyReference.cache
 C:\Users\Douglas\ProjetoBanco\ProjetoBanco.Application\bin\Debug\roslyn\csc.exe
 C:\Users\Douglas\ProjetoBanco\ProjetoBanco.Application\bin\Debug\roslyn\Microsoft.Build.Tasks.CodeAnalysis.dll
 C:\Users\Douglas\ProjetoBanco\ProjetoBanco.Application\bin\Debug\roslyn\Microsoft.CodeAnalysis.CSharp.dll
@@ -45,6 +46,5 @@ C:\Users\Douglas\ProjetoBanco\ProjetoBanco.Application\bin\Debug\SimpleInjector.
 C:\Users\Douglas\ProjetoBanco\ProjetoBanco.Application\bin\Debug\System.Web.Http.WebHost.xml
 C:\Users\Douglas\ProjetoBanco\ProjetoBanco.Application\bin\Debug\SimpleInjector.Integration.WebApi.xml
 C:\Users\Douglas\ProjetoBanco\ProjetoBanco.Application\bin\Debug\ProjetoBanco.Infra.Data.pdb
-C:\Users\Douglas\ProjetoBanco\ProjetoBanco.Application\obj\Debug\ProjetoBanco.Application.csprojResolveAssemblyReference.cache
 C:\Users\Douglas\ProjetoBanco\ProjetoBanco.Application\obj\Debug\ProjetoBanco.Application.dll
 C:\Users\Douglas\ProjetoBanco\ProjetoBanco.Application\obj\Debug\ProjetoBanco.Application.pdb

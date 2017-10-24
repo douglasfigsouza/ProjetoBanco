@@ -1,6 +1,6 @@
 ﻿using System.Web.Http;
-using ProjetoBanco.Domain.Entities;
 using ProjetoBanco.Domain.Interfaces.IRepositories;
+using ProjetoBanco.Domain.Operacoes;
 
 namespace Web_Api.Controllers
 {

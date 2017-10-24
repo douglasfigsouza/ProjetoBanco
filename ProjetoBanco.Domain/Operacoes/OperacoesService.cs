@@ -1,26 +1,22 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Net.Http;
-using System.Text;
-using System.Threading.Tasks;
-using ProjetoBanco.Domain.Entities;
+﻿using System.Net.Http;
 using ProjetoBanco.Domain.Interfaces.IRepositories;
 using ProjetoBanco.Domain.Interfaces.IServices;
+using ProjetoBanco.Domain.Operacoes;
 
 namespace ProjetoBanco.Domain.Services
 {
-    public class OpercoesServiceDomain:IOperacaoServiceDomain
+    public class OperacoesService:IOperacaoService
     {
         private readonly IOperacoesRepository _repository;
-        public OpercoesServiceDomain(IOperacoesRepository repository)
+        public OperacoesService(IOperacoesRepository repository)
         {
             _repository = repository;
         }
-        public HttpResponseMessage AddOperacao(Operacoes op)
+        public HttpResponseMessage AddOperacao(Operacoes.Operacoes op)
         {
            return _repository.AddOperacao(op);
         }
+
 
         public Transacao VerificaDadosTransacao(Transacao transacao, int op)
         {
@@ -35,7 +31,6 @@ namespace ProjetoBanco.Domain.Services
                 return null;
             }
         }
-
         public Transacao VerificaDadosTransferencia(Transacao transacao)
         {
            return _repository.VerificaDadosTransferencia(transacao);

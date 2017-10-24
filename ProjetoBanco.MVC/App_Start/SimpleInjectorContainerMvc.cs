@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections;
-using System.Collections.Generic;
-using System.Linq;
-using System.Web.Http.Dependencies;
-using ProjetoBanco.Application;
+﻿using ProjetoBanco.Application;
 using ProjetoBanco.Application.Interfaces;
 using ProjetoBanco.Domain.Interfaces.IRepositories;
 using ProjetoBanco.Domain.Interfaces.IServices;
@@ -47,11 +42,11 @@ namespace ProjetoBanco.MVC.App_Start
 
             container.Register<IOperacoesRepository, OperacoesRepository>();
             container.Register<IOperacoesAppService, OperacoesAppService>();
-            container.Register<IOperacaoServiceDomain, OpercoesServiceDomain>();
+            container.Register<IOperacaoService, OperacoesService>();
 
             container.Register<IOperacaoesRealizadasAppService, OperacoesRealizadasAppService>();
-            container.Register<IOperacoeRealizadaServiceDomain, OperacoesRealizadasServiceDomain>();
-            container.Register<IOperacoesRealizadasRepositoryDomain, OperacaoRealizadaRepository>();
+            container.Register<IOperacoeRealizadaService, OperacoesRealizadasService>();
+            container.Register<IOperacoesRealizadasRepository, OperacaoRealizadaRepository>();
 
             container.Register<IUsuarioRepositoryDomain, UsuarioRepository>();
             container.Register<IUsuarioAppService, UsuarioAppService>();

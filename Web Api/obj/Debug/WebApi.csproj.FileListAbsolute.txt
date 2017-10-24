@@ -1,3 +1,4 @@
+C:\Users\Douglas\ProjetoBanco\Web Api\obj\Debug\WebApi.csprojResolveAssemblyReference.cache
 C:\Users\Douglas\ProjetoBanco\Web Api\bin\roslyn\csc.exe
 C:\Users\Douglas\ProjetoBanco\Web Api\bin\roslyn\Microsoft.Build.Tasks.CodeAnalysis.dll
 C:\Users\Douglas\ProjetoBanco\Web Api\bin\roslyn\Microsoft.CodeAnalysis.CSharp.dll
@@ -57,6 +58,5 @@ C:\Users\Douglas\ProjetoBanco\Web Api\bin\Newtonsoft.Json.xml
 C:\Users\Douglas\ProjetoBanco\Web Api\bin\System.Net.Http.Formatting.xml
 C:\Users\Douglas\ProjetoBanco\Web Api\bin\System.Web.Http.xml
 C:\Users\Douglas\ProjetoBanco\Web Api\bin\System.Web.Http.WebHost.xml
-C:\Users\Douglas\ProjetoBanco\Web Api\obj\Debug\WebApi.csprojResolveAssemblyReference.cache
 C:\Users\Douglas\ProjetoBanco\Web Api\obj\Debug\Web Api.dll
 C:\Users\Douglas\ProjetoBanco\Web Api\obj\Debug\Web Api.pdb

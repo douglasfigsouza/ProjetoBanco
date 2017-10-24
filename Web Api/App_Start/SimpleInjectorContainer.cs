@@ -34,10 +34,10 @@ namespace Web_Api.App_Start
 
 
             container.Register<IOperacoesRepository, OperacoesRepository>();
-            container.Register<IOperacaoServiceDomain, OpercoesServiceDomain>();
+            container.Register<IOperacaoService, OperacoesService>();
 
-            container.Register<IOperacoeRealizadaServiceDomain, OperacoesRealizadasServiceDomain>();
-            container.Register<IOperacoesRealizadasRepositoryDomain, OperacaoRealizadaRepository>();
+            container.Register<IOperacoeRealizadaService, OperacoesRealizadasService>();
+            container.Register<IOperacoesRealizadasRepository, OperacaoRealizadaRepository>();
 
             container.Register<IUsuarioRepositoryDomain, UsuarioRepository>();
             container.Register<IUsuariosServiceDomain, UsuarioSeviceDomain>();

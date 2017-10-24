@@ -1,9 +1,8 @@
 ﻿using System;
-using System.Security.AccessControl;
 
-namespace ProjetoBanco.Domain.Entities
+namespace ProjetoBanco.Domain.Operacoes
 {
-    public class OperacaoRealizada
+    public class OperacoesRealizadas
     {
         public int operacaoId { get; set; }
         public int clienteId { get; set; }

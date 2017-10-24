@@ -1,10 +1,9 @@
-﻿using System.Collections.Generic;
-using System.Net.Http;
-using ProjetoBanco.Domain.Entities;
+﻿using System.Net.Http;
+using ProjetoBanco.Domain.Operacoes;
 
-namespace ProjetoBanco.Domain.Interfaces.IRepositories
+namespace ProjetoBanco.Application.Interfaces
 {
-    public interface IOperacoesRepository
+    public interface IOperacoesAppService
     {
         HttpResponseMessage AddOperacao(Operacoes op);
         Transacao VerificaDadosTransacao(Transacao transacao, int op);

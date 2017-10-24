@@ -5,6 +5,7 @@ using System.Net.Http;
 using System.Web.Mvc;
 using ProjetoBanco.Application.Interfaces;
 using ProjetoBanco.Domain.Entities;
+using ProjetoBanco.Domain.Operacoes;
 using ProjetoBanco.MVC.ViewModels;
 
 namespace ProjetoBanco.MVC.Controllers
@@ -21,36 +22,34 @@ namespace ProjetoBanco.MVC.Controllers
     {
         private readonly IOperacoesAppService _OperacaoAppService;
         private readonly IOperacaoesRealizadasAppService _operacaoesRealizadasAppService;
-        private OperacaoRealizada operacaoRealizada;
-        private OperacaoRealizada operacaoRealizada1;
+        private OperacoesRealizadas operacaoRealizada;
+        private OperacoesRealizadas operacaoRealizada1;
         private Operacoes op;
         private Transacao transacao;
         private List<TransacaoViewModel> lstTransacoesViewModels;
         private List<EstornoViewModel> opsEstornoViewModels;
         private decimal valor;
-        
-
         private HttpResponseMessage error;
-
-
+        
         public OperacoesController(IOperacoesAppService OperacaoAppService, IOperacaoesRealizadasAppService operacaoesRealizadasAppService)
         {
             _OperacaoAppService = OperacaoAppService;
             _operacaoesRealizadasAppService = operacaoesRealizadasAppService;
-            operacaoRealizada = new OperacaoRealizada();
-            operacaoRealizada1 = new OperacaoRealizada();
+            operacaoRealizada = new OperacoesRealizadas();
+            operacaoRealizada1 = new OperacoesRealizadas();
             transacao = new Transacao();
             lstTransacoesViewModels = new List<TransacaoViewModel>();
             op = new Operacoes();
             opsEstornoViewModels = new List<EstornoViewModel>();
         }
+
         // GET: Operacoes
         public ActionResult CreateOperacao()
         {
             return View();
         }
 
-        [System.Web.Mvc.HttpPost]
+        [HttpPost]
         public ActionResult CreateOperacao(OperacaoViewModel opViewModel)
         {
             if (ModelState.IsValid)
@@ -76,29 +75,34 @@ namespace ProjetoBanco.MVC.Controllers
                 return View(opViewModel);
             }
         }
+
         public ActionResult Deposito()
         {
             ViewBag.cliente = (Cliente)Session["cliente"];
             TempData["operacao"] = 1;
             return View("Operacoes");
         }
+
         public ActionResult Saque()
         {
             TempData["operacao"] = 2;
             ViewBag.cliente = (Cliente)Session["cliente"];
             return View("Operacoes");
         }
+
         public ActionResult Saldo()
         {
             ViewBag.cliente = (Cliente)Session["cliente"];
             TempData["operacao"] = 3;
             return View("Operacoes");
         }
+
         public ActionResult Transferencia()
         {
             ViewBag.cliente = (Cliente)Session["cliente"];
             return View();
         }
+
         public ActionResult VerificaDados(TransacaoViewModel trasacaoViewModel)
         {
             if (ModelState.IsValid)
@@ -147,6 +151,7 @@ namespace ProjetoBanco.MVC.Controllers
                 return View("Deposito", trasacaoViewModel);
             }
         }
+
         //confirma os dados do deposito
         public ActionResult ConfirmDeposito(TransacaoViewModel trasacaoViewModel)
         {
@@ -197,7 +202,7 @@ namespace ProjetoBanco.MVC.Controllers
             TempData["outraOp"] = "/Operacoes/Saque";
             return View("FeedBackOp");
         }
-        [System.Web.Mvc.HttpPost]
+        [HttpPost]
         public ActionResult Transferencia(FormCollection transacao)
         {
             Cliente cli = (Cliente)Session["cliente"];
@@ -265,8 +270,6 @@ namespace ProjetoBanco.MVC.Controllers
 
         public ActionResult ConfirmTransferencia(List<TransacaoViewModel> Transacoes)
         {
-
-
             operacaoRealizada.agencia = int.Parse(Transacoes[0].agencia);
             operacaoRealizada.clienteId = Transacoes[0].clienteId;
             operacaoRealizada.contaId = Transacoes[0].contaId;
@@ -282,11 +285,13 @@ namespace ProjetoBanco.MVC.Controllers
             return View("FeedBackOp");
 
         }
+
         public ActionResult DadosParaEstorno()
         {
             return View("Estorno");
 
         }
+
         public ActionResult Estorno(FormCollection form)
         {
             string conta, senha;
@@ -340,7 +345,7 @@ namespace ProjetoBanco.MVC.Controllers
         //        return View("FeedBackOp");
         //    }
         //}
-        [System.Web.Mvc.HttpGet]
+        [HttpGet]
         public JsonResult GetOpRealizadaEstornoById(int id)
         {
             return Json(_operacaoesRealizadasAppService.GetOpRealizadaEstornoById(id), JsonRequestBehavior.AllowGet);

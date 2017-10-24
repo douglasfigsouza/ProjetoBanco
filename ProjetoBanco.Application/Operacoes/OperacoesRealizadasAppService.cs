@@ -1,32 +1,29 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.Collections.Generic;
 using ProjetoBanco.Application.Interfaces;
 using ProjetoBanco.Domain.Entities;
 using ProjetoBanco.Domain.Interfaces.IRepositories;
 using ProjetoBanco.Domain.Interfaces.IServices;
+using ProjetoBanco.Domain.Operacoes;
 
 namespace ProjetoBanco.Application
 {
     public class OperacoesRealizadasAppService:IOperacaoesRealizadasAppService
     {
-        private readonly IOperacoesRealizadasRepositoryDomain _operacoesRealizadasRepositoryDomain;
-        private readonly IOperacoeRealizadaServiceDomain _operacoesRealizadaServiceDomain;
-        public OperacoesRealizadasAppService(IOperacoeRealizadaServiceDomain operacoesRealizadaServiceDomain, IOperacoesRealizadasRepositoryDomain operacoesRealizadasRepositoryDomain)
+        private readonly IOperacoesRealizadasRepository _operacoesRealizadasRepository;
+        private readonly IOperacoeRealizadaService _operacoesRealizadaService;
+        public OperacoesRealizadasAppService(IOperacoeRealizadaService operacoesRealizadaService, IOperacoesRealizadasRepository operacoesRealizadasRepository)
         {
-            _operacoesRealizadaServiceDomain = operacoesRealizadaServiceDomain;
-            _operacoesRealizadasRepositoryDomain = operacoesRealizadasRepositoryDomain;
+            _operacoesRealizadaService = operacoesRealizadaService;
+            _operacoesRealizadasRepository = operacoesRealizadasRepository;
         }
-        public void Deposito(OperacaoRealizada operacaoRealizada, int op)
+        public void Deposito(OperacoesRealizadas operacaoRealizada, int op)
         {
-           _operacoesRealizadasRepositoryDomain.Deposito(operacaoRealizada,op);
+           _operacoesRealizadasRepository.Deposito(operacaoRealizada,op);
         }
 
-        public string Transferencia(OperacaoRealizada opConta1, OperacaoRealizada opConta2)
+        public string Transferencia(OperacoesRealizadas opConta1, OperacoesRealizadas opConta2)
         {
-            if (_operacoesRealizadaServiceDomain.Transferencia(opConta1, opConta2)==1)
+            if (_operacoesRealizadaService.Transferencia(opConta1, opConta2)==1)
             {
                 return "Transferência Realizada com sucesso";
             }
@@ -41,7 +38,7 @@ namespace ProjetoBanco.Application
         public Estorno GetOpRealizadaEstornoById(int Id)
         {
             Estorno est= null;
-            foreach (var op in _operacoesRealizadasRepositoryDomain.GetAllOperacoesEstorno())
+            foreach (var op in _operacoesRealizadasRepository.GetAllOperacoesEstorno())
             {
                 if (op.Id == Id)
                 {
@@ -64,28 +61,28 @@ namespace ProjetoBanco.Application
 
         public string ConfirmEstorno(int id)
         {
-           return _operacoesRealizadasRepositoryDomain.ConfirmEstorno(id);
+           return _operacoesRealizadasRepository.ConfirmEstorno(id);
         }
 
         public IEnumerable<Estorno> GetAllOperacoesEstorno()
         {
-           return _operacoesRealizadasRepositoryDomain.GetAllOperacoesEstorno();
+           return _operacoesRealizadasRepository.GetAllOperacoesEstorno();
         }
 
         public void Dispose()
         {
-            _operacoesRealizadasRepositoryDomain.Dispose();
-            _operacoesRealizadaServiceDomain.Dispose();
+            _operacoesRealizadasRepository.Dispose();
+            _operacoesRealizadaService.Dispose();
         }
 
-        public string Saque(OperacaoRealizada operacaoRealizada, int op)
+        public string Saque(OperacoesRealizadas operacaoRealizada, int op)
         {
-           return _operacoesRealizadaServiceDomain.Saque(operacaoRealizada,op);
+           return _operacoesRealizadaService.Saque(operacaoRealizada,op);
         }
 
         public IEnumerable<Estorno> GetAllOperacoesPorContaParaEstorno(string conta, string senha, int agencia)
         {
-            return _operacoesRealizadasRepositoryDomain.GetAllOperacoesPorContaParaEstorno(conta, senha,agencia);
+            return _operacoesRealizadasRepository.GetAllOperacoesPorContaParaEstorno(conta, senha,agencia);
         }
 
     }

@@ -1,9 +1,8 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Data.SqlClient;
-using ProjetoBanco.Domain.Entities;
 using ProjetoBanco.Domain.Interfaces.IRepositories;
 using System.Net.Http;
+using ProjetoBanco.Domain.Operacoes;
 
 namespace ProjetoBanco.Infra.Data.Repositories
 {
@@ -11,7 +10,6 @@ namespace ProjetoBanco.Infra.Data.Repositories
     {
         private Conexao conn;
         private SqlDataReader result;
-        private List<Transacao> lstTransacoes;
 
         public enum Procedures
         {
@@ -24,7 +22,6 @@ namespace ProjetoBanco.Infra.Data.Repositories
         public OperacoesRepository()
         {
             conn = new Conexao();
-            lstTransacoes = new List<Transacao>();
         }
 
         public HttpResponseMessage AddOperacao(Operacoes op)
