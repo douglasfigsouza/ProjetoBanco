@@ -40,8 +40,9 @@
     <Compile Include="Entities\Estado.cs" />
     <Compile Include="Entities\Estorno.cs" />
     <Compile Include="Entities\feedBack.cs" />
+    <Compile Include="Entities\Notifications.cs" />
     <Compile Include="Operacoes\Transacao.cs" />
-    <Compile Include="Entities\Usuario.cs" />
+    <Compile Include="Usuarios\Usuario.cs" />
     <Compile Include="Interfaces\IRepositories\IAgenciaRepositoryDomain.cs" />
     <Compile Include="Interfaces\IRepositories\IBancoRepositoryDomain.cs" />
     <Compile Include="Interfaces\IRepositories\ICidadeRepositoryDomain.cs" />
@@ -50,7 +51,7 @@
     <Compile Include="Interfaces\IRepositories\IEstadoRepositoryDomain.cs" />
     <Compile Include="Operacoes\IOperacoesRealizadasRepository.cs" />
     <Compile Include="Operacoes\IOperacoesRepository.cs" />
-    <Compile Include="Interfaces\IRepositories\IUsuarioRepositoryDomain.cs" />
+    <Compile Include="Usuarios\IUsuarioRepository.cs" />
     <Compile Include="Interfaces\IServices\IAgenciaServiceDomain.cs" />
     <Compile Include="Interfaces\IServices\IBancoServiceDomain.cs" />
     <Compile Include="Interfaces\IServices\ICidadeServiceDomain.cs" />
@@ -59,7 +60,7 @@
     <Compile Include="Interfaces\IServices\IEstadoServiceDomain.cs" />
     <Compile Include="Operacoes\IOperacaoService.cs" />
     <Compile Include="Operacoes\IOperacoeRealizadaService.cs" />
-    <Compile Include="Interfaces\IServices\IUsuariosServiceDomain.cs" />
+    <Compile Include="Usuarios\IUsuariosService.cs" />
     <Compile Include="Operacoes\Operacoes.cs" />
     <Compile Include="Operacoes\OperacoesRealizadas.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -71,7 +72,7 @@
     <Compile Include="Services\EstadoServiceDomain.cs" />
     <Compile Include="Operacoes\OperacoesRealizadasService.cs" />
     <Compile Include="Operacoes\OperacoesService.cs" />
-    <Compile Include="Services\UsuarioSeviceDomain.cs" />
+    <Compile Include="Usuarios\UsuarioSevice.cs" />
   </ItemGroup>
   <ItemGroup>
     <Reference Include="System" />

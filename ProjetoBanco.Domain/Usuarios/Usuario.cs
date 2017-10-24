@@ -1,10 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace ProjetoBanco.Domain.Entities
+﻿
+namespace ProjetoBanco.Domain.Usuarios
 {
     public class Usuario
     {

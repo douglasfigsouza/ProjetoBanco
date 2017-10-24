@@ -6,6 +6,7 @@ using System.Web.Mvc;
 using System.Web.Security;
 using ProjetoBanco.Application.Interfaces;
 using ProjetoBanco.Domain.Entities;
+using ProjetoBanco.Domain.Usuarios;
 using ProjetoBanco.MVC.ViewModels;
 
 namespace ProjetoBanco.MVC.Controllers

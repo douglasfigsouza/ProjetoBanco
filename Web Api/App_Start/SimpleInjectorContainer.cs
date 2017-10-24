@@ -1,4 +1,5 @@
-﻿using ProjetoBanco.Domain.Interfaces.IRepositories;
+﻿using ProjetoBanco.Domain.Entities;
+using ProjetoBanco.Domain.Interfaces.IRepositories;
 using ProjetoBanco.Domain.Interfaces.IServices;
 using ProjetoBanco.Domain.Services;
 using ProjetoBanco.Infra.Data.Repositories;
@@ -39,8 +40,10 @@ namespace Web_Api.App_Start
             container.Register<IOperacoeRealizadaService, OperacoesRealizadasService>();
             container.Register<IOperacoesRealizadasRepository, OperacaoRealizadaRepository>();
 
-            container.Register<IUsuarioRepositoryDomain, UsuarioRepository>();
-            container.Register<IUsuariosServiceDomain, UsuarioSeviceDomain>();
+            container.Register<IUsuarioRepository, UsuarioRepository>();
+            container.Register<IUsuariosService, UsuarioSeviceDomain>();
+
+            container.Register<Notifications>(Lifestyle.Singleton);
 
             container.Verify();
 

@@ -6,7 +6,7 @@ namespace ProjetoBanco.Application.Interfaces
     public interface IOperacoesAppService
     {
         HttpResponseMessage AddOperacao(Operacoes op);
-        Transacao VerificaDadosTransacao(Transacao transacao, int op);
+        HttpResponseMessage VerificaDadosTransacao(Transacao transacao);
         Transacao VerificaDadosTransferencia(Transacao transacao);
         decimal ConsultaSaldo(Transacao transacao);
     }

@@ -3,6 +3,7 @@ namespace ProjetoBanco.Domain.Operacoes
 {
     public class Transacao
     {
+        public int op { get; set; }
         public string conta { get; set; }
         public int agencia  { get; set; }
         public int clienteId { get; set; }

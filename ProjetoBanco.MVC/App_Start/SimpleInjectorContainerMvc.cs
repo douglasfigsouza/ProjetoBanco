@@ -48,9 +48,9 @@ namespace ProjetoBanco.MVC.App_Start
             container.Register<IOperacoeRealizadaService, OperacoesRealizadasService>();
             container.Register<IOperacoesRealizadasRepository, OperacaoRealizadaRepository>();
 
-            container.Register<IUsuarioRepositoryDomain, UsuarioRepository>();
+            container.Register<IUsuarioRepository, UsuarioRepository>();
             container.Register<IUsuarioAppService, UsuarioAppService>();
-            container.Register<IUsuariosServiceDomain, UsuarioSeviceDomain>();
+            container.Register<IUsuariosService, UsuarioSeviceDomain>();
 
             container.Verify();
 

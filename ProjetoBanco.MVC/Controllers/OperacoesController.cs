@@ -2,7 +2,9 @@
 using System.Collections.Generic;
 using System.Globalization;
 using System.Net.Http;
+using System.Net.Http.Formatting;
 using System.Web.Mvc;
+using Newtonsoft.Json;
 using ProjetoBanco.Application.Interfaces;
 using ProjetoBanco.Domain.Entities;
 using ProjetoBanco.Domain.Operacoes;
@@ -29,7 +31,7 @@ namespace ProjetoBanco.MVC.Controllers
         private List<TransacaoViewModel> lstTransacoesViewModels;
         private List<EstornoViewModel> opsEstornoViewModels;
         private decimal valor;
-        private HttpResponseMessage error;
+        private HttpResponseMessage statusCode;
         
         public OperacoesController(IOperacoesAppService OperacaoAppService, IOperacaoesRealizadasAppService operacaoesRealizadasAppService)
         {
@@ -56,8 +58,8 @@ namespace ProjetoBanco.MVC.Controllers
             {
                 op.descricao = opViewModel.descricao;
                 op.ativo = true;
-                error = _OperacaoAppService.AddOperacao(op);
-                if (error.IsSuccessStatusCode)
+                statusCode = _OperacaoAppService.AddOperacao(op);
+                if (statusCode.IsSuccessStatusCode)
                 {
                     TempData["outraOp"] = "/Operacoes/CreateOperacao";
                     TempData["menssagem"] = "Operação: " + opViewModel.descricao + " cadastrada com sucesso!";
@@ -66,7 +68,7 @@ namespace ProjetoBanco.MVC.Controllers
                 else
                 {
                     TempData["outraOp"] = "/Operacoes/CreateOperacao";
-                    TempData["menssagem"] = "Cliente: " + opViewModel.descricao + " Não cadastrada! Erro: " + error;
+                    TempData["menssagem"] = "Cliente: " + opViewModel.descricao + " Não cadastrada! Erro: " + statusCode;
                     return RedirectToAction("Error", "FeedBack");
                 }
             }
@@ -115,6 +117,7 @@ namespace ProjetoBanco.MVC.Controllers
                 transacao.conta = Utilitarios.Utilitarios.retiraMask(trasacaoViewModel.conta);
                 transacao.senhaCli = trasacaoViewModel.senhaCli;
                 transacao.nivel = cli.nivel;
+                transacao.op = trasacaoViewModel.op;
 
                 if (trasacaoViewModel.op == 1)
                 {
@@ -127,9 +130,10 @@ namespace ProjetoBanco.MVC.Controllers
                     ViewBag.operacao = 2;
                 }
 
-                transacao = _OperacaoAppService.VerificaDadosTransacao(transacao, trasacaoViewModel.op);
-                if (transacao.nome != null)
+                statusCode = _OperacaoAppService.VerificaDadosTransacao(transacao);
+                if (statusCode.IsSuccessStatusCode)
                 {
+                   var t = statusCode.Content.ReadAsAsync<Transacao>(new[] { new JsonMediaTypeFormatter() });
                     //insere os valores na view no hidden
                     trasacaoViewModel.clienteId = transacao.clienteId;
                     trasacaoViewModel.contaId = transacao.contaId;
@@ -222,7 +226,7 @@ namespace ProjetoBanco.MVC.Controllers
                 clienteId = cli.Id
             };
             //garante que a primeira conta é a sua própria, para impedir que tranferencia entre conta de terceiros
-            transacao1 = _OperacaoAppService.VerificaDadosTransacao(transacao1, 2);
+            transacao1 =null ;_OperacaoAppService.VerificaDadosTransacao(transacao1);
             transacao2 = _OperacaoAppService.VerificaDadosTransferencia(transacao2);
             if (transacao1.nome != null)
             {
@@ -331,8 +335,8 @@ namespace ProjetoBanco.MVC.Controllers
         //[System.Web.Mvc.HttpPost]
         //public ActionResult ConfirmEstorno(int id)
         //{
-        //    error = _operacaoesRealizadasAppService.ConfirmEstorno(id);
-        //    if (error == null)
+        //    statusCode = _operacaoesRealizadasAppService.ConfirmEstorno(id);
+        //    if (statusCode == null)
         //    {
         //        TempData["menssagem"] = "Estorno realizado com sucesso!";
         //        TempData["outraOp"] = "/Operacoes/Estorno";

@@ -2,12 +2,15 @@
 using System.Data.SqlClient;
 using ProjetoBanco.Domain.Interfaces.IRepositories;
 using System.Net.Http;
+using ProjetoBanco.Domain.Entities;
 using ProjetoBanco.Domain.Operacoes;
+using Convert = System.Convert;
 
 namespace ProjetoBanco.Infra.Data.Repositories
 {
     public class OperacoesRepository : IOperacoesRepository
     {
+        private Notifications _notifications;
         private Conexao conn;
         private SqlDataReader result;
 
@@ -19,8 +22,9 @@ namespace ProjetoBanco.Infra.Data.Repositories
             PBSP_CONSULTASALDO
         }
 
-        public OperacoesRepository()
+        public OperacoesRepository(Notifications notifications)
         {
+            _notifications = notifications;
             conn = new Conexao();
         }
 
@@ -39,16 +43,17 @@ namespace ProjetoBanco.Infra.Data.Repositories
                 return null;
             }
         }
-        public Transacao VerificaDadosTransacao(Transacao transacao, int op)
+        public Transacao VerificaDadosTransacao(Transacao transacao)
         {
             conn = new Conexao();
             conn.ExecuteProcedure(Procedures.PBSP_VERIFICADADOSTRASACAO);
-            conn.AddParameter("@op", op);
+            conn.AddParameter("@op", transacao.op);
             conn.AddParameter("@nivel",transacao.nivel);
             conn.AddParameter("@senhaCli", transacao.senhaCli);
             conn.AddParameter("@agencia", transacao.agencia);
             conn.AddParameter("@clienteId", transacao.clienteId);
             conn.AddParameter("@conta", transacao.conta);
+            transacao = null;
             result = conn.ExecuteReader();
             while (result.Read())
             {
@@ -60,6 +65,10 @@ namespace ProjetoBanco.Infra.Data.Repositories
                     agencia = Convert.ToInt32(result["agencia"].ToString()),
                     contaId = Convert.ToInt32(result["contaId"].ToString()),
                 };
+            }
+            if (transacao == null)
+            {
+                _notifications.Notificacoes.Add("Cliente não existente");
             }
             return transacao;
         }

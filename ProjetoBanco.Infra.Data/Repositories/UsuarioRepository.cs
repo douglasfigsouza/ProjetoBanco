@@ -1,12 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Data.SqlClient;
-using ProjetoBanco.Domain.Entities;
 using ProjetoBanco.Domain.Interfaces.IRepositories;
+using ProjetoBanco.Domain.Usuarios;
 
 namespace ProjetoBanco.Infra.Data.Repositories
 {
-    public class UsuarioRepository : IUsuarioRepositoryDomain
+    public class UsuarioRepository : IUsuarioRepository
     {
         private Conexao conn;
         private SqlDataReader result;
@@ -109,14 +109,6 @@ namespace ProjetoBanco.Infra.Data.Repositories
             {
                 return e.Message;
             }
-        }
-        public void RemoveUsuario(Usuario usuario)
-        {
-            throw new NotImplementedException();
-        }
-        public void Dispose()
-        {
-            throw new NotImplementedException();
         }
     }
 }

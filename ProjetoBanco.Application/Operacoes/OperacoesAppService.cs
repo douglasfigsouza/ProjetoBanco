@@ -1,5 +1,10 @@
-﻿using System.Net.Http;
+﻿using System.Net;
+using System.Net.Http;
+using System.Web.Http;
+using System.Web.Http.Results;
+using Newtonsoft.Json;
 using ProjetoBanco.Application.Interfaces;
+using ProjetoBanco.Domain.Entities;
 using ProjetoBanco.Domain.Operacoes;
 using Web_Api.Utilitarios;
 
@@ -7,15 +12,25 @@ namespace ProjetoBanco.Application
 {
     public class OperacoesAppService : IOperacoesAppService
     {
-        public HttpResponseMessage AddOperacao(Operacoes op)
+        private HttpResponseMessage response;
+        private readonly Notifications _notifications;
+
+        public OperacoesAppService(Notifications notifications)
         {
-            HttpResponseMessage response = HttpClientConf.HttpClientConfig("Operacoes").PostAsJsonAsync("AddOperacao", op).Result;
-            return response;
+            _notifications = notifications;
         }
 
-        public Transacao VerificaDadosTransacao(Transacao transacao, int op)
+        public HttpResponseMessage AddOperacao(Operacoes op)
         {
-            return null/* _OperacaoServiceDomain.VerificaDadosTransacao(transacao,op)*/;
+            response = HttpClientConf.HttpClientConfig("Operacoes").PostAsJsonAsync("AddOperacao", op).Result;
+            return response;
+        }
+        [HttpGet]
+        public HttpResponseMessage VerificaDadosTransacao(Transacao transacao)
+        {
+            response = HttpClientConf.HttpClientConfig("Operacoes")
+                .PostAsJsonAsync("VerificaDadosTransacao", transacao).Result;
+            return response;
         }
 
         public Transacao VerificaDadosTransferencia(Transacao transacao)
