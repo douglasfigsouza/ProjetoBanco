@@ -2,6 +2,7 @@
 using System.Net;
 using System.Net.Http;
 using System.Net.Http.Headers;
+using System.Web.Http;
 using Newtonsoft.Json;
 using ProjetoBanco.Application.Interfaces;
 using ProjetoBanco.Domain.Entities;
@@ -14,34 +15,29 @@ namespace ProjetoBanco.Application
         public HttpResponseMessage AddOperacao(Operacoes op)
         {
             var HttpClient = new HttpClient();
-            var url= new  Uri("api/Operacoes/AddOperacao");
-            var result = HttpClient.GetAsync(url).GetAwaiter().GetResult();
+            HttpClient.BaseAddress = new Uri("api/Operacoes/AddOperacao");
             HttpClient.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
-            HttpClient.Timeout = new TimeSpan(60000000000);
-            var resultContent = result.Content.ReadAsStringAsync().GetAwaiter().GetResult();
+       
+            HttpResponseMessage response = HttpClient.PostAsJsonAsync("operacao", op).Result;
 
-            if (result.StatusCode != HttpStatusCode.OK)
-            {
+            return response;
 
-                return null;
-            }
-            return JsonConvert.DeserializeObject<Operacoes>(resultContent);
         }
 
         public Transacao VerificaDadosTransacao(Transacao transacao, int op)
         {
-            return/* _OperacaoServiceDomain.VerificaDadosTransacao(transacao,op)*/;
+            return null/* _OperacaoServiceDomain.VerificaDadosTransacao(transacao,op)*/;
         }
 
         public Transacao VerificaDadosTransferencia(Transacao transacao)
         {
-           return _OperacaoServiceDomain.VerificaDadosTransferencia(transacao);
+            return null; /*_OperacaoServiceDomain.VerificaDadosTransferencia(transacao);*/
         }
 
 
         public decimal ConsultaSaldo(Transacao transacao)
         {
-            decimal saldo= _OperacaoRepositoryDomain.ConsultaSaldo(transacao);
+            decimal saldo = 0; /*_OperacaoRepositoryDomain.ConsultaSaldo(transacao);*/
             if( saldo==(-1))
             {
                 return -1;
@@ -51,5 +47,6 @@ namespace ProjetoBanco.Application
                 return saldo;
             }
         }
+
     }
 }

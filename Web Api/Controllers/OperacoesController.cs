@@ -1,4 +1,5 @@
 ﻿using System.Web.Http;
+using ProjetoBanco.Domain.Entities;
 using ProjetoBanco.Domain.Interfaces.IRepositories;
 
 namespace Web_Api.Controllers
@@ -12,9 +13,9 @@ namespace Web_Api.Controllers
             _operacoesRepository = operacoesRepository;
         }
 
-        public IHttpActionResult AddOperacao()
+        public IHttpActionResult AddOperacao(Operacoes op)
         {
-            return Ok();
+            return Ok(_operacoesRepository.AddOperacao(op));
         }
     }
 }

@@ -71,9 +71,9 @@
       <Project>{0248E1B9-F06C-434D-9D81-04C4BF0EB61A}</Project>
       <Name>ProjetoBanco.Domain</Name>
     </ProjectReference>
-    <ProjectReference Include="..\Web Api\Web Api.csproj">
+    <ProjectReference Include="..\Web Api\WebApi.csproj">
       <Project>{010DB0B3-5F10-4D38-B356-F2FA16133043}</Project>
-      <Name>Web Api</Name>
+      <Name>WebApi</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>

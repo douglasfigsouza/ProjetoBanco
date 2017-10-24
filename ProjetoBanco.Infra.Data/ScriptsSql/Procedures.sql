@@ -241,7 +241,8 @@ DROP PROCEDURE [dbo].[PBSP_INSERTOPERACAO]
 GO
 
 CREATE PROCEDURE [dbo].[PBSP_INSERTOPERACAO]
-@descricao VARCHAR(200)
+@descricao VARCHAR(200),
+@ativo BIT
 AS
 
 /*
@@ -256,8 +257,8 @@ Ex................: EXEC [dbo].[PBSP_INSERTOPERACAO]
 
 BEGIN
 
-INSERT INTO [dbo].[Operacoes](descricao)
-VALUES(@descricao)
+INSERT INTO [dbo].[Operacoes](descricao,ativo)
+VALUES(@descricao,@ativo)
 
 END
 GO

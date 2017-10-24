@@ -23,7 +23,7 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ProjetoBanco.Infra.Data", "
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "1.5 - Api", "1.5 - Api", "{F55C11CB-E34A-46F7-A667-31F89CB72E5E}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Web Api", "Web Api\Web Api.csproj", "{010DB0B3-5F10-4D38-B356-F2FA16133043}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WebApi", "Web Api\WebApi.csproj", "{010DB0B3-5F10-4D38-B356-F2FA16133043}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

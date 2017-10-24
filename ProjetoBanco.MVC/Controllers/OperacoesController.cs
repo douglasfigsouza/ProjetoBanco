@@ -1,14 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Globalization;
-using System.Web.Http;
+using System.Net.Http;
 using System.Web.Mvc;
 using ProjetoBanco.Application.Interfaces;
 using ProjetoBanco.Domain.Entities;
-using ProjetoBanco.Domain.Interfaces.IRepositories;
-using ProjetoBanco.Domain.Interfaces.IServices;
 using ProjetoBanco.MVC.ViewModels;
-using Web_Api.Controllers;
 
 namespace ProjetoBanco.MVC.Controllers
 {
@@ -31,13 +28,12 @@ namespace ProjetoBanco.MVC.Controllers
         private List<TransacaoViewModel> lstTransacoesViewModels;
         private List<EstornoViewModel> opsEstornoViewModels;
         private decimal valor;
-        private readonly Web_Api.Controllers.OperacoesController opControllerApi;
         
 
-        private IHttpActionResult error;
+        private HttpResponseMessage error;
 
 
-        public OperacoesController(IOperacoesAppService OperacaoAppService, IOperacaoesRealizadasAppService operacaoesRealizadasAppService, IOperacoesRepositoryDomain operacoesRepositoryDomain)
+        public OperacoesController(IOperacoesAppService OperacaoAppService, IOperacaoesRealizadasAppService operacaoesRealizadasAppService)
         {
             _OperacaoAppService = OperacaoAppService;
             _operacaoesRealizadasAppService = operacaoesRealizadasAppService;
@@ -47,7 +43,6 @@ namespace ProjetoBanco.MVC.Controllers
             lstTransacoesViewModels = new List<TransacaoViewModel>();
             op = new Operacoes();
             opsEstornoViewModels = new List<EstornoViewModel>();
-            opControllerApi = new Web_Api.Controllers.OperacoesController(operacoesRepositoryDomain);
         }
         // GET: Operacoes
         public ActionResult CreateOperacao()
@@ -62,8 +57,8 @@ namespace ProjetoBanco.MVC.Controllers
             {
                 op.descricao = opViewModel.descricao;
                 op.ativo = true;
-                error = opControllerApi.AddOperacao(op);
-                if (error == null)
+                error = _OperacaoAppService.AddOperacao(op);
+                if (error.IsSuccessStatusCode)
                 {
                     TempData["outraOp"] = "/Operacoes/CreateOperacao";
                     TempData["menssagem"] = "Operação: " + opViewModel.descricao + " cadastrada com sucesso!";

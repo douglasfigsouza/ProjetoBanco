@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Data.SqlClient;
 using ProjetoBanco.Domain.Entities;
 using ProjetoBanco.Domain.Interfaces.IRepositories;
+using System.Net.Http;
 
 namespace ProjetoBanco.Infra.Data.Repositories
 {
@@ -26,18 +27,19 @@ namespace ProjetoBanco.Infra.Data.Repositories
             lstTransacoes = new List<Transacao>();
         }
 
-        public string AddOperacao(Operacoes op)
+        public HttpResponseMessage AddOperacao(Operacoes op)
         {
             try
             {
                 conn.ExecuteProcedure(Procedures.PBSP_INSERTOPERACAO);
                 conn.AddParameter("@descricao", op.descricao);
+                conn.AddParameter("@ativo", op.ativo);
                 conn.ExecuteNonQuery();
                 return null;
             }
             catch (Exception e)
             {
-                return e.ToString();
+                return null;
             }
         }
         public Transacao VerificaDadosTransacao(Transacao transacao, int op)

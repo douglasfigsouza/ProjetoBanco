@@ -12,11 +12,35 @@ namespace Web_Api.App_Start
         {
             var container = new Container();
 
-            //container.Register<IOperacoesRepositoryDomain, OperacoesRepository>();
-            //container.Register<IOperacaoServiceDomain, OpercoesServiceDomain>();
+            container.Register<IAgenciaServiceDomain, AgenciaServiceDomain>();
+            container.Register<IAgenciaRepositoryDomain, AgenciaRepository>();
 
-            container.Register<IOlaRepository, OlaRepository>();
+            container.Register<IBancoServiceDomain, BancoServiceDomain>();
+            container.Register<IBancoRepositoryDomain, BancoRepository>();
+
+
+            container.Register<ICidadeServiceDomain, CidadeServiceDomain>();
+            container.Register<ICidadeRepositoryDomain, CidadeRepository>();
+
+
+            container.Register<IClienteServiceDomain, ClienteService>();
+            container.Register<IClienteRepositoryDomain, ClientesRepository>();
+
+            container.Register<IContaClienteServiceDomain, ContaClienteServiceDomain>();
+            container.Register<IContaClienteRepositoryDomain, ContaClienteRepository>();
+
+            container.Register<IEstadoServiceDomain, EstadoServiceDomain>();
+            container.Register<IEstadoRepositoryDomain, EstadoRepository>();
+
+
             container.Register<IOperacoesRepository, OperacoesRepository>();
+            container.Register<IOperacaoServiceDomain, OpercoesServiceDomain>();
+
+            container.Register<IOperacoeRealizadaServiceDomain, OperacoesRealizadasServiceDomain>();
+            container.Register<IOperacoesRealizadasRepositoryDomain, OperacaoRealizadaRepository>();
+
+            container.Register<IUsuarioRepositoryDomain, UsuarioRepository>();
+            container.Register<IUsuariosServiceDomain, UsuarioSeviceDomain>();
 
             container.Verify();
 

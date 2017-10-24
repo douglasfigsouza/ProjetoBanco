@@ -155,7 +155,6 @@
   <ItemGroup>
     <Compile Include="App_Start\SimpleInjectorContainer.cs" />
     <Compile Include="App_Start\WebApiConfig.cs" />
-    <Compile Include="Controllers\OlaController.cs" />
     <Compile Include="Controllers\Operacoes2Controller.cs" />
     <Compile Include="Controllers\OperacoesController.cs" />
     <Compile Include="Global.asax.cs">
