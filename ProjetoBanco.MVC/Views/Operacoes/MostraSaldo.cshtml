@@ -2,15 +2,17 @@
     <div class="col s12">
         @if (ViewBag.erro == null)
         {
+            <h6>Conta: @ViewBag.saldo.conta / Cliente: @ViewBag.saldo.nome</h6>
+            <hr/>
             <h5>
-                Seu saldo é de:
-                @ViewBag.saldo Reais
+                Seu saldo é de:R$
+                @ViewBag.saldo.valor Reais
             </h5>
         }
         else
         {
             <h5>
-                @ViewBag.erro;
+                @ViewBag.erro
             </h5>
             <div class="col s6">
                 @Html.ActionLink("Realizar outra Operacao", "Saldo", "Operacoes")

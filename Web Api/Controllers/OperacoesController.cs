@@ -9,6 +9,7 @@ namespace Web_Api.Controllers
     {
         private readonly IOperacoesRepository _operacoesRepository;
         private readonly Notifications _notifications;
+        private Transacao transact;
 
         public OperacoesController(IOperacoesRepository operacoesRepository, Notifications notifications)
         {
@@ -24,6 +25,8 @@ namespace Web_Api.Controllers
 
         public IHttpActionResult VerificaDadosTransacao(Transacao transacao)
         {
+            transact = new Transacao();
+            transact =_operacoesRepository.VerificaDadosTransacao(transacao);
             if (_notifications.Notificacoes.Count > 0)
             {
                 string erros = "";
@@ -35,7 +38,26 @@ namespace Web_Api.Controllers
             }
             else
             {
-                return Ok(_operacoesRepository.VerificaDadosTransacao(transacao));
+                return Ok(transact);
+            }
+        }
+
+        public IHttpActionResult ConsultaSaldo(Transacao transacao)
+        {
+            transact = new Transacao();
+            transact = _operacoesRepository.ConsultaSaldo(transacao);
+            if (_notifications.Notificacoes.Count > 0)
+            {
+                string erros = "";
+                foreach (var erro in _notifications.Notificacoes)
+                {
+                    erros = erros + " " + erro;
+                }
+                return BadRequest(erros);
+            }
+            else
+            {
+                return Ok(transact);
             }
         }
     }

@@ -4,6 +4,7 @@ using ProjetoBanco.Domain.Interfaces.IServices;
 using ProjetoBanco.Domain.Services;
 using ProjetoBanco.Infra.Data.Repositories;
 using SimpleInjector;
+using SimpleInjector.Lifestyles;
 
 namespace Web_Api.App_Start
 {
@@ -12,7 +13,7 @@ namespace Web_Api.App_Start
         public static Container RegisterServices()
         {
             var container = new Container();
-
+            container.Options.DefaultScopedLifestyle = new AsyncScopedLifestyle();
             container.Register<IAgenciaServiceDomain, AgenciaServiceDomain>();
             container.Register<IAgenciaRepositoryDomain, AgenciaRepository>();
 
@@ -43,7 +44,7 @@ namespace Web_Api.App_Start
             container.Register<IUsuarioRepository, UsuarioRepository>();
             container.Register<IUsuariosService, UsuarioSeviceDomain>();
 
-            container.Register<Notifications>(Lifestyle.Singleton);
+            container.Register<Notifications>(Lifestyle.Scoped);
 
             container.Verify();
 

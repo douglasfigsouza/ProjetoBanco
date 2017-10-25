@@ -8,6 +8,6 @@ namespace ProjetoBanco.Domain.Interfaces.IServices
         HttpResponseMessage AddOperacao(Operacoes.Operacoes op);
         Transacao VerificaDadosTransacao(Transacao transacao);
         Transacao VerificaDadosTransferencia(Transacao transacao);
-        decimal ConsultaSaldo(Transacao transacao);
+        Transacao ConsultaSaldo(Transacao transacao);
     }
 }

@@ -1,4 +1,5 @@
-﻿using System.Text.RegularExpressions;
+﻿using System;
+using System.Text.RegularExpressions;
 
 namespace ProjetoBanco.MVC.Utilitarios
 {
@@ -17,5 +18,10 @@ namespace ProjetoBanco.MVC.Utilitarios
             return Regex.Replace(campo, "[^0-9,]", "");
         }
 
+        public static string limpaMenssagemErro(string msgm)
+        {
+            return msgm.Replace("{", "").Replace("}", "").Replace("Message", "")
+                .Replace(":", "").Replace("\"", "");
+        }
     }
 }

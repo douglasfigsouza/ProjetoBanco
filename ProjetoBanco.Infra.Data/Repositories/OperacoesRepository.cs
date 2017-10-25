@@ -94,7 +94,7 @@ namespace ProjetoBanco.Infra.Data.Repositories
             return transacao;
         }
 
-        public decimal ConsultaSaldo(Transacao transacao)
+        public Transacao ConsultaSaldo(Transacao transacao)
         {
             try
             {
@@ -104,17 +104,26 @@ namespace ProjetoBanco.Infra.Data.Repositories
                 conn.AddParameter("@conta", transacao.conta);
                 conn.AddParameter("@agencia", transacao.agencia);
                 conn.AddParameter("@clienteId", transacao.clienteId);
-                decimal saldo = 0;
                 result = conn.ExecuteReader();
+                transacao = null;
                 while (result.Read())
                 {
-                    saldo = decimal.Parse(result["saldo"].ToString());
+                    transacao = new Transacao();
+                    transacao.valor  = decimal.Parse(result["saldo"].ToString());
+                    transacao.nome = result["nome"].ToString();
+                    transacao.conta = result["num"].ToString();
+
                 }
-                return saldo;
+                if (transacao == null)
+                {
+                    _notifications.Notificacoes.Add("Conta não encontrada e ou não existe saldo nessa conta!");
+                }
+                return transacao;
             }
             catch (Exception ex)
             {
-                return -1;
+                _notifications.Notificacoes.Add("Conta não encontrada!");
+                return null;
 
             }
  

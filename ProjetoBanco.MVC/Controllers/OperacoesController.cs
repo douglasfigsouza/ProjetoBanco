@@ -2,9 +2,8 @@
 using System.Collections.Generic;
 using System.Globalization;
 using System.Net.Http;
-using System.Net.Http.Formatting;
+using System.Threading.Tasks;
 using System.Web.Mvc;
-using Newtonsoft.Json;
 using ProjetoBanco.Application.Interfaces;
 using ProjetoBanco.Domain.Entities;
 using ProjetoBanco.Domain.Operacoes;
@@ -32,7 +31,9 @@ namespace ProjetoBanco.MVC.Controllers
         private List<EstornoViewModel> opsEstornoViewModels;
         private decimal valor;
         private HttpResponseMessage statusCode;
-        
+        private dynamic transact;
+
+
         public OperacoesController(IOperacoesAppService OperacaoAppService, IOperacaoesRealizadasAppService operacaoesRealizadasAppService)
         {
             _OperacaoAppService = OperacaoAppService;
@@ -105,7 +106,7 @@ namespace ProjetoBanco.MVC.Controllers
             return View();
         }
 
-        public ActionResult VerificaDados(TransacaoViewModel trasacaoViewModel)
+        public async Task<ActionResult> VerificaDados(TransacaoViewModel trasacaoViewModel)
         {
             if (ModelState.IsValid)
             {
@@ -133,12 +134,12 @@ namespace ProjetoBanco.MVC.Controllers
                 statusCode = _OperacaoAppService.VerificaDadosTransacao(transacao);
                 if (statusCode.IsSuccessStatusCode)
                 {
-                   var t = statusCode.Content.ReadAsAsync<Transacao>(new[] { new JsonMediaTypeFormatter() });
+                    transact = await statusCode.Content.ReadAsAsync<Transacao>();
                     //insere os valores na view no hidden
-                    trasacaoViewModel.clienteId = transacao.clienteId;
-                    trasacaoViewModel.contaId = transacao.contaId;
-                    trasacaoViewModel.agencia = transacao.agencia + "";
-                    trasacaoViewModel.nome = transacao.nome;
+                    trasacaoViewModel.clienteId = transact.clienteId;
+                    trasacaoViewModel.contaId = transact.contaId;
+                    trasacaoViewModel.agencia = transact.agencia + "";
+                    trasacaoViewModel.nome = transact.nome;
                     trasacaoViewModel.valor = valor + "";
 
                     return View("Confirmacao", trasacaoViewModel);
@@ -172,7 +173,7 @@ namespace ProjetoBanco.MVC.Controllers
             return View("FeedBackOp");
         }
 
-        public ActionResult ConsultaSaldo(TransacaoViewModel trasacaoViewModel)
+        public async Task<ActionResult> ConsultaSaldo(TransacaoViewModel trasacaoViewModel)
         {
             Cliente cli = (Cliente)Session["cliente"];
             transacao.nivel = cli.nivel;
@@ -180,16 +181,20 @@ namespace ProjetoBanco.MVC.Controllers
             transacao.clienteId = cli.Id;
             transacao.agencia = int.Parse(Utilitarios.Utilitarios.retiraMask(trasacaoViewModel.agencia));
             transacao.conta = Utilitarios.Utilitarios.retiraMask(trasacaoViewModel.conta);
-            decimal saldo = _OperacaoAppService.ConsultaSaldo(transacao);
-            if (saldo == -1)
+
+            statusCode = _OperacaoAppService.ConsultaSaldo(transacao);
+            if (statusCode.IsSuccessStatusCode)
             {
-                ViewBag.erro = "Conta não encontrada!";
+                transact = await statusCode.Content.ReadAsAsync<Transacao>();
+                ViewBag.saldo = transact;/*String.Format(CultureInfo.GetCultureInfo("pt-BR"), "{0:C}", saldo);*/
                 return View("MostraSaldo");
             }
             else
             {
-                ViewBag.saldo = String.Format(CultureInfo.GetCultureInfo("pt-BR"), "{0:C}", saldo);
+                transact = await statusCode.Content.ReadAsStringAsync();
+                ViewBag.erro = Utilitarios.Utilitarios.limpaMenssagemErro(transact+"");
                 return View("MostraSaldo");
+
             }
 
         }

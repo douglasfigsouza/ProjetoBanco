@@ -1,4 +1,5 @@
-﻿using System.Net.Http;
+﻿using System;
+using System.Net.Http;
 using ProjetoBanco.Domain.Entities;
 using ProjetoBanco.Domain.Interfaces.IRepositories;
 using ProjetoBanco.Domain.Interfaces.IServices;
@@ -40,9 +41,11 @@ namespace ProjetoBanco.Domain.Services
         }
 
 
-        public decimal ConsultaSaldo(Transacao transacao)
+        public Transacao ConsultaSaldo(Transacao transacao)
         {
-           return _repository.ConsultaSaldo(transacao);
+            return _repository.ConsultaSaldo(transacao);
         }
+
+
     }
 }

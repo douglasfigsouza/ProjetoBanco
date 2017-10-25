@@ -25,6 +25,7 @@ namespace ProjetoBanco.Application
             response = HttpClientConf.HttpClientConfig("Operacoes").PostAsJsonAsync("AddOperacao", op).Result;
             return response;
         }
+
         [HttpGet]
         public HttpResponseMessage VerificaDadosTransacao(Transacao transacao)
         {
@@ -39,18 +40,12 @@ namespace ProjetoBanco.Application
         }
 
 
-        public decimal ConsultaSaldo(Transacao transacao)
+        public HttpResponseMessage ConsultaSaldo(Transacao transacao)
         {
-            decimal saldo = 0; /*_OperacaoRepositoryDomain.ConsultaSaldo(transacao);*/
-            if( saldo==(-1))
-            {
-                return -1;
-            }
-            else
-            {
-                return saldo;
-            }
-        }
+            response = HttpClientConf.HttpClientConfig("Operacoes")
+                .PostAsJsonAsync("ConsultaSaldo", transacao).Result;
+            return response;
 
+        }
     }
 }
