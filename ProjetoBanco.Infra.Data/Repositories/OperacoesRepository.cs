@@ -1,10 +1,8 @@
 ﻿using System;
 using System.Data.SqlClient;
 using ProjetoBanco.Domain.Interfaces.IRepositories;
-using System.Net.Http;
 using ProjetoBanco.Domain.Entities;
 using ProjetoBanco.Domain.Operacoes;
-using Convert = System.Convert;
 
 namespace ProjetoBanco.Infra.Data.Repositories
 {
@@ -28,7 +26,7 @@ namespace ProjetoBanco.Infra.Data.Repositories
             conn = new Conexao();
         }
 
-        public HttpResponseMessage AddOperacao(Operacoes op)
+        public void AddOperacao(Operacoes op)
         {
             try
             {
@@ -36,11 +34,10 @@ namespace ProjetoBanco.Infra.Data.Repositories
                 conn.AddParameter("@descricao", op.descricao);
                 conn.AddParameter("@ativo", op.ativo);
                 conn.ExecuteNonQuery();
-                return null;
             }
             catch (Exception e)
             {
-                return null;
+                _notifications.Notificacoes.Add("Operação não cadastrada!");
             }
         }
         public Transacao VerificaDadosTransacao(Transacao transacao)
@@ -79,7 +76,16 @@ namespace ProjetoBanco.Infra.Data.Repositories
             conn.ExecuteProcedure(Procedures.PBSP_VERIFICADADOSDATRANSFERENCIA);
             conn.AddParameter("@agencia", transacao.agencia);
             conn.AddParameter("@conta", transacao.conta);
-            result = conn.ExecuteReader();
+            try
+            {
+                result = conn.ExecuteReader();
+            }
+            catch (Exception e)
+            {
+                _notifications.Notificacoes.Add("Impossível realizar a transferência!");
+                Console.WriteLine(e);
+                throw;
+            }
             while (result.Read())
             {
                 transacao = new Transacao

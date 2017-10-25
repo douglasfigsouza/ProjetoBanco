@@ -1,8 +1,5 @@
-﻿using System.Net;
-using System.Net.Http;
+﻿using System.Net.Http;
 using System.Web.Http;
-using System.Web.Http.Results;
-using Newtonsoft.Json;
 using ProjetoBanco.Application.Interfaces;
 using ProjetoBanco.Domain.Entities;
 using ProjetoBanco.Domain.Operacoes;
@@ -22,7 +19,8 @@ namespace ProjetoBanco.Application
 
         public HttpResponseMessage AddOperacao(Operacoes op)
         {
-            response = HttpClientConf.HttpClientConfig("Operacoes").PostAsJsonAsync("AddOperacao", op).Result;
+            response = HttpClientConf.HttpClientConfig("Operacoes")
+                .PostAsJsonAsync("AddOperacao", op).Result;
             return response;
         }
 
@@ -34,9 +32,11 @@ namespace ProjetoBanco.Application
             return response;
         }
 
-        public Transacao VerificaDadosTransferencia(Transacao transacao)
+        public HttpResponseMessage VerificaDadosTransferencia(Transacao transacao)
         {
-            return null; /*_OperacaoServiceDomain.VerificaDadosTransferencia(transacao);*/
+            response = HttpClientConf.HttpClientConfig("Operacoes")
+                .PostAsJsonAsync("VerificaDadosTransferencia", transacao).Result;
+            return response;
         }
 
 

@@ -577,62 +577,54 @@ IF EXISTS (SELECT * FROM dbo.sysobjects WHERE id = object_id(N'[dbo].[PBSP_CONSU
 DROP PROCEDURE [dbo].[PBSP_CONSULTASALDO]
 GO
 
-CREATE PROCEDURE [dbo].[PBSP_CONSULTASALDO]
-@agencia INT,
-@nivel CHAR,
-@senhaCli VARCHAR(20)='',
-@clienteId SMALLINT,
-@conta VARCHAR(20)
-AS
+	CREATE PROCEDURE [dbo].[PBSP_CONSULTASALDO]
+	@agencia INT,
+	@nivel CHAR,
+	@senhaCli VARCHAR(20)='',
+	@clienteId SMALLINT,
+	@conta VARCHAR(20)
+	AS
 
-/*
-Documentação
-Arquivo Fonte.....: ArquivoFonte.sql
-Objetivo..........: Consultar o saldo
-Autor.............: SMN - Douglas
-Data..............: 06/10/2017
-Ex................: EXEC [dbo].[PBSP_CONSULTASALDO]
+	/*
+	Documentação
+	Arquivo Fonte.....: ArquivoFonte.sql
+	Objetivo..........: Consultar o saldo
+	Autor.............: SMN - Douglas
+	Data..............: 06/10/2017
+	Ex................: EXEC [dbo].[PBSP_CONSULTASALDO]
 
-*/
-BEGIN
-DECLARE @contaId SMALLINT,
-@saldoConta DECIMAL(18,2);
-IF(@nivel='c')
-BEGIN
-SET @contaId = (SELECT Conta.Id FROM Conta WITH(NOLOCK)
-INNER JOIN ContaCliente WITH(NOLOCK) ON Conta.Id = ContaCliente.contaId
-INNER JOIN Clientes WITH(NOLOCK) ON ContaCliente.clienteId = Clientes.Id
-INNER JOIN Agencia WITH(NOLOCK) ON ContaCliente.agencia = Agencia.agencia
-WHERE Conta.num = @conta AND Clientes.Id =@clienteId
-AND Conta.senha=@senhaCli AND Conta.ativo=1
-AND agencia.ativo=1 AND Clientes.ativo=1);
-END
+	*/
+	BEGIN
+		DECLARE @contaId SMALLINT,
+		@saldoConta DECIMAL(18,2);
+		IF(@nivel='c')
+			BEGIN
+				SET @contaId = (SELECT Conta.Id FROM Conta WITH(NOLOCK)
+				INNER JOIN ContaCliente WITH(NOLOCK) ON Conta.Id = ContaCliente.contaId
+				INNER JOIN Clientes WITH(NOLOCK) ON ContaCliente.clienteId = Clientes.Id
+				INNER JOIN Agencia WITH(NOLOCK) ON ContaCliente.agencia = Agencia.agencia
+				WHERE Conta.num = @conta AND Clientes.Id =@clienteId
+				AND Conta.senha=@senhaCli AND Conta.ativo=1
+				AND agencia.ativo=1 AND Clientes.ativo=1);
+			END
 
-ELSE IF(@nivel='f')
-BEGIN
-SET @contaId =	(SELECT TOP(1) Conta.Id FROM Conta WITH(NOLOCK)
-INNER JOIN ContaCliente WITH(NOLOCK) ON Conta.Id = ContaCliente.contaId
-INNER JOIN Clientes WITH(NOLOCK) ON ContaCliente.clienteId = Clientes.Id
-INNER JOIN Agencia WITH(NOLOCK) ON ContaCliente.agencia = Agencia.agencia
-WHERE Conta.num = @conta AND Conta.senha=@senhaCli AND Conta.ativo=1 AND Agencia.ativo=1
-AND Clientes.ativo=1);
-END
-
-IF(@contaId IS NULL)
-BEGIN
-SET @saldoConta =-1;
-END
-
-ELSE
-BEGIN
-SET @saldoConta =dbo.RetornaSaldo(@contaId)
-END
-IF(@saldoConta IS NULL)
-BEGIN
-SET @saldoConta=0;
-END
-SELECT @saldoConta AS saldo;
-END
+		ELSE IF(@nivel='f')
+			BEGIN
+				SET @contaId =	(SELECT TOP(1) Conta.Id FROM Conta WITH(NOLOCK)
+				INNER JOIN ContaCliente WITH(NOLOCK) ON Conta.Id = ContaCliente.contaId
+				INNER JOIN Clientes WITH(NOLOCK) ON ContaCliente.clienteId = Clientes.Id
+				INNER JOIN Agencia WITH(NOLOCK) ON ContaCliente.agencia = Agencia.agencia
+				WHERE Conta.num = @conta AND Conta.senha=@senhaCli AND Conta.ativo=1 AND Agencia.ativo=1
+				AND Clientes.ativo=1);
+			END
+			SELECT	dbo.RetornaSaldo(@contaId) AS saldo, Clientes.nome AS nome, Conta.num AS num, 
+						OperacoesRealizadas.Id AS opId
+						FROM OperacoesRealizadas WITH(NOLOCK)
+						INNER JOIN Conta WITH(NOLOCK) ON Conta.ID = OperacoesRealizadas.contaId
+						INNER JOIN ContaCliente WITH(NOLOCK) ON Conta.Id = ContaCliente.contaId
+						INNER JOIN Clientes WITH(NOLOCK) ON ContaCliente.clienteId = Clientes.Id
+						WHERE Conta.Id = @contaId
+		END
 GO
 
 
@@ -640,31 +632,31 @@ IF EXISTS (SELECT * FROM dbo.sysobjects WHERE id = object_id(N'[dbo].[PBSP_VERIF
 DROP PROCEDURE [dbo].[PBSP_VERIFICADADOSDATRANSFERENCIA]
 GO
 
-CREATE PROCEDURE [dbo].[PBSP_VERIFICADADOSDATRANSFERENCIA]
-@conta VARCHAR(16),
-@agencia INT
-AS
+	CREATE PROCEDURE [dbo].[PBSP_VERIFICADADOSDATRANSFERENCIA]
+	@conta VARCHAR(16),
+	@agencia INT
+	AS
 
-/*
-Documentação
-Arquivo Fonte.....: ArquivoFonte.sql
-Objetivo..........: Verifica se existem as duas contas informadas para transação
-Autor.............: SMN - Douglas
-Data..............: 10/10/2017
-Ex................: EXEC [dbo].[PBSP_VERIFICADADOSDATRANSFERENCIA]
+	/*
+	Documentação
+	Arquivo Fonte.....: ArquivoFonte.sql
+	Objetivo..........: Verifica se existem as duas contas informadas para transação
+	Autor.............: SMN - Douglas
+	Data..............: 10/10/2017
+	Ex................: EXEC [dbo].[PBSP_VERIFICADADOSDATRANSFERENCIA]
 
-*/
+	*/
 
 
-BEGIN
-SELECT Clientes.Id AS clienteId, Clientes.nome,Banco.Id AS bancoId, Agencia.agencia, Conta.Id as contaId FROM ContaCliente
-INNER JOIN Clientes ON ContaCliente.clienteId = Clientes.Id
-INNER JOIN Conta ON ContaCliente.contaId = Conta.Id
-INNER JOIN Agencia ON ContaCliente.agencia = Agencia.agencia
-INNER JOIN Banco ON ContaCliente.bancoId = Banco.Id
-WHERE Conta.num = @conta AND Agencia.agencia = @agencia AND Agencia.ativo=1
-AND Conta.ativo=1 AND Clientes.ativo=1;
-END
+	BEGIN
+		SELECT Clientes.Id AS clienteId, Clientes.nome,Banco.Id AS bancoId, Agencia.agencia, Conta.Id as contaId FROM ContaCliente
+		INNER JOIN Clientes ON ContaCliente.clienteId = Clientes.Id
+		INNER JOIN Conta ON ContaCliente.contaId = Conta.Id
+		INNER JOIN Agencia ON ContaCliente.agencia = Agencia.agencia
+		INNER JOIN Banco ON ContaCliente.bancoId = Banco.Id
+		WHERE Conta.num = @conta AND Agencia.agencia = @agencia AND Agencia.ativo=1
+		AND Conta.ativo=1 AND Clientes.ativo=1;
+	END
 GO
 
 IF EXISTS (SELECT * FROM dbo.sysobjects WHERE id = object_id(N'[dbo].[PBSP_TRANSFERENCIA]') AND objectproperty(id, N'IsPROCEDURE')=1)

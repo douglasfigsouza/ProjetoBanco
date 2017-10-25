@@ -1,4 +1,6 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
+using System.Net.Http;
 using ProjetoBanco.Domain.Entities;
 using ProjetoBanco.Domain.Interfaces.IRepositories;
 using ProjetoBanco.Domain.Interfaces.IServices;
@@ -9,36 +11,27 @@ namespace ProjetoBanco.Domain.Services
     public class OperacoesRealizadasService:IOperacoeRealizadaService
     {
         private readonly IOperacoesRealizadasRepository _operacoesRealizadasRepository;
+        private HttpResponseMessage response;
+        private readonly Notifications _notifications;
 
-        public OperacoesRealizadasService(IOperacoesRealizadasRepository operacoesRealizadasRepositoryDomain)
+        public OperacoesRealizadasService(IOperacoesRealizadasRepository operacoesRealizadasRepositoryDomain, Notifications notifications)
         {
             _operacoesRealizadasRepository = operacoesRealizadasRepositoryDomain;
+            _notifications = notifications;
         }
-        public void Deposito(OperacoesRealizadas operacaoRealizada,int op)
+        public void Deposito(OperacoesRealizadas operacaoRealizada)
         {
-           _operacoesRealizadasRepository.Deposito(operacaoRealizada,op);
+            _operacoesRealizadasRepository.Deposito(operacaoRealizada);
         }
 
-        public string Saque(OperacoesRealizadas operacaoRealizada, int op)
+        public void Saque(OperacoesRealizadas operacaoRealizada)
         {
-            if (_operacoesRealizadasRepository.Saque(operacaoRealizada, op) == 0)
-            {
-                return "Não foi possivel realizar o saque, pois você não possui saldo suficiente";
-            }
-            else
-            {
-                return "Saque realizado com sucesso";
-            }
+            _operacoesRealizadasRepository.Saque(operacaoRealizada);
         }
 
         public string ConfirmEstorno(int id)
         {
            return _operacoesRealizadasRepository.ConfirmEstorno(id);
-        }
-
-        public void Dispose()
-        {
-            _operacoesRealizadasRepository.Dispose();
         }
 
         public int Transferencia(OperacoesRealizadas opConta1, OperacoesRealizadas opConta2)

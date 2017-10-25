@@ -1,9 +1,11 @@
 ﻿using System.Collections.Generic;
+using System.Net.Http;
 using ProjetoBanco.Application.Interfaces;
 using ProjetoBanco.Domain.Entities;
 using ProjetoBanco.Domain.Interfaces.IRepositories;
 using ProjetoBanco.Domain.Interfaces.IServices;
 using ProjetoBanco.Domain.Operacoes;
+using Web_Api.Utilitarios;
 
 namespace ProjetoBanco.Application
 {
@@ -11,14 +13,20 @@ namespace ProjetoBanco.Application
     {
         private readonly IOperacoesRealizadasRepository _operacoesRealizadasRepository;
         private readonly IOperacoeRealizadaService _operacoesRealizadaService;
-        public OperacoesRealizadasAppService(IOperacoeRealizadaService operacoesRealizadaService, IOperacoesRealizadasRepository operacoesRealizadasRepository)
+        private readonly Notifications _notifications;
+        private HttpResponseMessage response;
+
+        public OperacoesRealizadasAppService(IOperacoeRealizadaService operacoesRealizadaService, IOperacoesRealizadasRepository operacoesRealizadasRepository, Notifications notifications)
         {
             _operacoesRealizadaService = operacoesRealizadaService;
             _operacoesRealizadasRepository = operacoesRealizadasRepository;
+            _notifications = notifications;
         }
-        public void Deposito(OperacoesRealizadas operacaoRealizada, int op)
+        public HttpResponseMessage Deposito(OperacoesRealizadas operacaoRealizada)
         {
-           _operacoesRealizadasRepository.Deposito(operacaoRealizada,op);
+            response = HttpClientConf.HttpClientConfig("Operacoes")
+                .PostAsJsonAsync("Deposito", operacaoRealizada).Result;
+            return response;
         }
 
         public string Transferencia(OperacoesRealizadas opConta1, OperacoesRealizadas opConta2)
@@ -69,15 +77,11 @@ namespace ProjetoBanco.Application
            return _operacoesRealizadasRepository.GetAllOperacoesEstorno();
         }
 
-        public void Dispose()
+        public HttpResponseMessage Saque(OperacoesRealizadas operacaoRealizada)
         {
-            _operacoesRealizadasRepository.Dispose();
-            _operacoesRealizadaService.Dispose();
-        }
-
-        public string Saque(OperacoesRealizadas operacaoRealizada, int op)
-        {
-           return _operacoesRealizadaService.Saque(operacaoRealizada,op);
+            response = HttpClientConf.HttpClientConfig("Operacoes")
+                .PostAsJsonAsync("Saque", operacaoRealizada).Result;
+            return response;
         }
 
         public IEnumerable<Estorno> GetAllOperacoesPorContaParaEstorno(string conta, string senha, int agencia)

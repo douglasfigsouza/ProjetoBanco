@@ -1,5 +1,4 @@
-﻿using System;
-using System.Net.Http;
+﻿using System.Net.Http;
 using ProjetoBanco.Domain.Entities;
 using ProjetoBanco.Domain.Interfaces.IRepositories;
 using ProjetoBanco.Domain.Interfaces.IServices;
@@ -11,29 +10,21 @@ namespace ProjetoBanco.Domain.Services
     {
         private readonly IOperacoesRepository _repository;
         private readonly Notifications _notifications;
+        private Transacao transact;
         public OperacoesService(IOperacoesRepository repository, Notifications notifications)
         {
             _repository = repository;
             _notifications = notifications;
         }
-        public HttpResponseMessage AddOperacao(Operacoes.Operacoes op)
+        public void AddOperacao(Operacoes.Operacoes op)
         {
-           return _repository.AddOperacao(op);
+            _repository.AddOperacao(op);
         }
 
 
         public Transacao VerificaDadosTransacao(Transacao transacao)
         {
-            transacao = _repository.VerificaDadosTransacao(transacao);
-
-            if (transacao!=null)
-            {
-                return transacao; 
-            }
-            else
-            {
-                return null;
-            }
+            return _repository.VerificaDadosTransacao(transacao);
         }
         public Transacao VerificaDadosTransferencia(Transacao transacao)
         {

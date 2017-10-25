@@ -10,6 +10,7 @@ namespace ProjetoBanco.Infra.Data.Repositories
     public class OperacaoRealizadaRepository : IOperacoesRealizadasRepository
     {
         private Conexao conn;
+        private Notifications _notifications;
         private SqlDataReader result;
         private List<Estorno> OpsEstorno;
         private enum Procedure
@@ -22,21 +23,31 @@ namespace ProjetoBanco.Infra.Data.Repositories
             PBSP_ESTORNA
         }
 
-        public OperacaoRealizadaRepository()
+        public OperacaoRealizadaRepository(Notifications notifications)
         {
+            _notifications = notifications;
             conn = new Conexao();
             OpsEstorno = new List<Estorno>();
         }
-        public void Deposito(OperacoesRealizadas operacaoRealizada, int op)
+        public void Deposito(OperacoesRealizadas operacaoRealizada)
         {
             conn.ExecuteProcedure(Procedure.PBSP_DEPOSITO);
-            conn.AddParameter("@codTipoOp", op);
+            conn.AddParameter("@codTipoOp",operacaoRealizada.operacaoId);
             conn.AddParameter("@agencia", operacaoRealizada.agencia);
             conn.AddParameter("@contaId", operacaoRealizada.contaId);
             conn.AddParameter("@clienteId", operacaoRealizada.clienteId);
             conn.AddParameter("@dataOp", operacaoRealizada.dataOp);
             conn.AddParameter("@valorOp", operacaoRealizada.valorOp);
-            conn.ExecuteNonQuery();
+            try
+            {
+                conn.ExecuteNonQuery();
+            }
+            catch (Exception e)
+            {
+                _notifications.Notificacoes.Add("Conta não encontrada!");
+                Console.WriteLine(e);
+                throw;
+            }
 
         }
         public int Transferencia(OperacoesRealizadas opConta1, OperacoesRealizadas opConta2)
@@ -116,21 +127,26 @@ namespace ProjetoBanco.Infra.Data.Repositories
             }
 
         }
-        public void Dispose()
-        {
-            throw new NotImplementedException();
-        }
-        public int Saque(OperacoesRealizadas operacaoRealizada, int op)
+        public void Saque(OperacoesRealizadas operacaoRealizada)
         {
             conn.ExecuteProcedure(Procedure.PBSP_SAQUE);
-            conn.AddParameter("@codTipoOp", op);
+            conn.AddParameter("@codTipoOp", operacaoRealizada.operacaoId);
             conn.AddParameter("@agencia", operacaoRealizada.agencia);
             conn.AddParameter("@contaId", operacaoRealizada.contaId);
             conn.AddParameter("@clienteId", operacaoRealizada.clienteId);
             conn.AddParameter("@dataOp", operacaoRealizada.dataOp);
             conn.AddParameter("@valorOp", operacaoRealizada.valorOp);
-
-            return conn.ExecuteNonQueryWithReturn();
+            try
+            {
+                if(conn.ExecuteNonQueryWithReturn()==0)
+                    _notifications.Notificacoes.Add("Você não possui saldo suficiente!");
+            }
+            catch (Exception e)
+            {
+                _notifications.Notificacoes.Add("Impossível realizar saque!");
+                Console.WriteLine(e);
+                throw;
+            }
         }
         public IEnumerable<Estorno> GetAllOperacoesEstorno()
         {

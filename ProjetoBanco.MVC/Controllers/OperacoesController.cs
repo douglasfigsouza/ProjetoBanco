@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Globalization;
 using System.Net.Http;
 using System.Threading.Tasks;
 using System.Web.Mvc;
@@ -53,7 +52,7 @@ namespace ProjetoBanco.MVC.Controllers
         }
 
         [HttpPost]
-        public ActionResult CreateOperacao(OperacaoViewModel opViewModel)
+        public async Task<ActionResult> CreateOperacao(OperacaoViewModel opViewModel)
         {
             if (ModelState.IsValid)
             {
@@ -68,8 +67,9 @@ namespace ProjetoBanco.MVC.Controllers
                 }
                 else
                 {
+                    transact = await statusCode.Content.ReadAsStringAsync();
                     TempData["outraOp"] = "/Operacoes/CreateOperacao";
-                    TempData["menssagem"] = "Cliente: " + opViewModel.descricao + " Não cadastrada! Erro: " + statusCode;
+                    TempData["menssagem"] = Utilitarios.Utilitarios.limpaMenssagemErro(transact + "");
                     return RedirectToAction("Error", "FeedBack");
                 }
             }
@@ -158,7 +158,7 @@ namespace ProjetoBanco.MVC.Controllers
         }
 
         //confirma os dados do deposito
-        public ActionResult ConfirmDeposito(TransacaoViewModel trasacaoViewModel)
+        public async Task<ActionResult> ConfirmDeposito(TransacaoViewModel trasacaoViewModel)
         {
             operacaoRealizada.agencia = int.Parse(Utilitarios.Utilitarios.retiraMask(trasacaoViewModel.agencia));
             operacaoRealizada.clienteId = trasacaoViewModel.clienteId;
@@ -169,8 +169,18 @@ namespace ProjetoBanco.MVC.Controllers
             TempData["menssagem"] = "Depósito Realizado com sucesso!";
             TempData["outraOp"] = "/Operacoes/Deposito";
 
-            _operacaoesRealizadasAppService.Deposito(operacaoRealizada, 1);
-            return View("FeedBackOp");
+            operacaoRealizada.operacaoId = 1;
+            statusCode = _operacaoesRealizadasAppService.Deposito(operacaoRealizada);
+            if (statusCode.IsSuccessStatusCode)
+            {
+                return View("FeedBackOp");
+            }
+            else
+            {
+                transact = await statusCode.Content.ReadAsStringAsync();
+                ViewBag.erro = Utilitarios.Utilitarios.limpaMenssagemErro(transact);
+                return View("FeedBackOp");
+            }
         }
 
         public async Task<ActionResult> ConsultaSaldo(TransacaoViewModel trasacaoViewModel)
@@ -185,34 +195,48 @@ namespace ProjetoBanco.MVC.Controllers
             statusCode = _OperacaoAppService.ConsultaSaldo(transacao);
             if (statusCode.IsSuccessStatusCode)
             {
+                //faz a deserialização do json retornado da requisiçao 
                 transact = await statusCode.Content.ReadAsAsync<Transacao>();
-                ViewBag.saldo = transact;/*String.Format(CultureInfo.GetCultureInfo("pt-BR"), "{0:C}", saldo);*/
+                ViewBag.saldo = transact;
                 return View("MostraSaldo");
             }
             else
             {
                 transact = await statusCode.Content.ReadAsStringAsync();
-                ViewBag.erro = Utilitarios.Utilitarios.limpaMenssagemErro(transact+"");
+                ViewBag.erro = Utilitarios.Utilitarios.limpaMenssagemErro(transact + "");
                 return View("MostraSaldo");
 
             }
 
         }
         //confirma os dados do saque
-        public ActionResult ConfirmSaque(TransacaoViewModel trasacaoViewModel)
+        public async Task<ActionResult> ConfirmSaque(TransacaoViewModel trasacaoViewModel)
         {
             operacaoRealizada.agencia = int.Parse(Utilitarios.Utilitarios.retiraMask(trasacaoViewModel.agencia));
             operacaoRealizada.clienteId = trasacaoViewModel.clienteId;
             operacaoRealizada.contaId = trasacaoViewModel.contaId;
             operacaoRealizada.dataOp = DateTime.Now;
             operacaoRealizada.valorOp = decimal.Parse(Utilitarios.Utilitarios.retiraMaskMoney(trasacaoViewModel.valor));
+            operacaoRealizada.operacaoId = 2;
 
-            TempData["menssagem"] = _operacaoesRealizadasAppService.Saque(operacaoRealizada, 2);
-            TempData["outraOp"] = "/Operacoes/Saque";
-            return View("FeedBackOp");
+            statusCode = _operacaoesRealizadasAppService.Saque(operacaoRealizada);
+            if (statusCode.IsSuccessStatusCode)
+            {
+                TempData["menssagem"] = "Saque realizado com sucesso!";
+                TempData["outraOp"] = "/Operacoes/Saque";
+                return View("FeedBackOp");
+            }
+            else
+            {
+                transact = await statusCode.Content.ReadAsStringAsync();
+                TempData["menssagem"] = Utilitarios.Utilitarios.limpaMenssagemErro(transact + "");
+                TempData["outraOp"] = "/Operacoes/Saque";
+                return View("FeedBackOp");
+            }
+
         }
         [HttpPost]
-        public ActionResult Transferencia(FormCollection transacao)
+        public async Task<ActionResult> Transferencia(FormCollection transacao)
         {
             Cliente cli = (Cliente)Session["cliente"];
 
@@ -222,7 +246,8 @@ namespace ProjetoBanco.MVC.Controllers
                 senhaCli = transacao["senha"],
                 agencia = int.Parse(Utilitarios.Utilitarios.retiraMask(transacao["agenciaCont1"])),
                 conta = Utilitarios.Utilitarios.retiraMask(transacao["numCont1"]),
-                clienteId = cli.Id
+                clienteId = cli.Id,
+                op = 2
             };
             Transacao transacao2 = new Transacao
             {
@@ -231,10 +256,14 @@ namespace ProjetoBanco.MVC.Controllers
                 clienteId = cli.Id
             };
             //garante que a primeira conta é a sua própria, para impedir que tranferencia entre conta de terceiros
-            transacao1 =null ;_OperacaoAppService.VerificaDadosTransacao(transacao1);
-            transacao2 = _OperacaoAppService.VerificaDadosTransferencia(transacao2);
-            if (transacao1.nome != null)
+            statusCode = _OperacaoAppService.VerificaDadosTransacao(transacao1);
+            transacao1 = await statusCode.Content.ReadAsAsync<Transacao>();
+            statusCode = _OperacaoAppService.VerificaDadosTransferencia(transacao2);
+
+            if (statusCode.IsSuccessStatusCode)
             {
+                transacao2 = await statusCode.Content.ReadAsAsync<Transacao>();
+
                 TransacaoViewModel transacao1ViewModel = new TransacaoViewModel();
                 //insere os valores na view no hidden
                 transacao1ViewModel.clienteId = transacao1.clienteId;
@@ -250,7 +279,7 @@ namespace ProjetoBanco.MVC.Controllers
                     transacao2ViewModel.contaId = transacao2.contaId;
                     transacao2ViewModel.agencia = transacao2.agencia + "";
                     transacao2ViewModel.nome = transacao2.nome;
-                    transacao2ViewModel.valor =transacao["valor"];
+                    transacao2ViewModel.valor = transacao["valor"];
                     lstTransacoesViewModels.Add(transacao1ViewModel);
                     lstTransacoesViewModels.Add(transacao2ViewModel);
                     if (transacao1ViewModel.contaId == transacao2ViewModel.contaId)
