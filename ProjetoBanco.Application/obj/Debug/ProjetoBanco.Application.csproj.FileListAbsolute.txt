@@ -48,3 +48,32 @@ C:\Users\Douglas\ProjetoBanco\ProjetoBanco.Application\obj\Debug\ProjetoBanco.Ap
 C:\Users\Douglas\ProjetoBanco\ProjetoBanco.Application\obj\Debug\ProjetoBanco.Application.dll
 C:\Users\Douglas\ProjetoBanco\ProjetoBanco.Application\obj\Debug\ProjetoBanco.Application.pdb
 C:\Users\Douglas\ProjetoBanco\ProjetoBanco.Application\bin\Debug\ProjetoBanco.Infra.Data.pdb
+D:\ProjetoBanco\ProjetoBanco.Application\bin\Debug\roslyn\csc.exe
+D:\ProjetoBanco\ProjetoBanco.Application\bin\Debug\roslyn\Microsoft.Build.Tasks.CodeAnalysis.dll
+D:\ProjetoBanco\ProjetoBanco.Application\bin\Debug\roslyn\Microsoft.CodeAnalysis.CSharp.dll
+D:\ProjetoBanco\ProjetoBanco.Application\bin\Debug\roslyn\Microsoft.CodeAnalysis.dll
+D:\ProjetoBanco\ProjetoBanco.Application\bin\Debug\roslyn\Microsoft.CodeAnalysis.VisualBasic.dll
+D:\ProjetoBanco\ProjetoBanco.Application\bin\Debug\roslyn\Microsoft.CSharp.Core.targets
+D:\ProjetoBanco\ProjetoBanco.Application\bin\Debug\roslyn\Microsoft.VisualBasic.Core.targets
+D:\ProjetoBanco\ProjetoBanco.Application\bin\Debug\roslyn\System.Collections.Immutable.dll
+D:\ProjetoBanco\ProjetoBanco.Application\bin\Debug\roslyn\System.Reflection.Metadata.dll
+D:\ProjetoBanco\ProjetoBanco.Application\bin\Debug\roslyn\vbc.exe
+D:\ProjetoBanco\ProjetoBanco.Application\bin\Debug\roslyn\VBCSCompiler.exe
+D:\ProjetoBanco\ProjetoBanco.Application\bin\Debug\roslyn\VBCSCompiler.exe.config
+D:\ProjetoBanco\ProjetoBanco.Application\bin\Debug\ProjetoBanco.Application.dll.config
+D:\ProjetoBanco\ProjetoBanco.Application\bin\Debug\Newtonsoft.Json.dll
+D:\ProjetoBanco\ProjetoBanco.Application\bin\Debug\System.Net.Http.Formatting.dll
+D:\ProjetoBanco\ProjetoBanco.Application\bin\Debug\System.Web.Http.dll
+D:\ProjetoBanco\ProjetoBanco.Application\bin\Debug\Web Api.dll
+D:\ProjetoBanco\ProjetoBanco.Application\bin\Debug\SimpleInjector.dll
+D:\ProjetoBanco\ProjetoBanco.Application\bin\Debug\ProjetoBanco.Infra.Data.dll
+D:\ProjetoBanco\ProjetoBanco.Application\bin\Debug\System.Web.Http.WebHost.dll
+D:\ProjetoBanco\ProjetoBanco.Application\bin\Debug\SimpleInjector.Integration.WebApi.dll
+D:\ProjetoBanco\ProjetoBanco.Application\bin\Debug\Web Api.pdb
+D:\ProjetoBanco\ProjetoBanco.Application\bin\Debug\Newtonsoft.Json.xml
+D:\ProjetoBanco\ProjetoBanco.Application\bin\Debug\System.Net.Http.Formatting.xml
+D:\ProjetoBanco\ProjetoBanco.Application\bin\Debug\System.Web.Http.xml
+D:\ProjetoBanco\ProjetoBanco.Application\bin\Debug\SimpleInjector.xml
+D:\ProjetoBanco\ProjetoBanco.Application\bin\Debug\ProjetoBanco.Infra.Data.pdb
+D:\ProjetoBanco\ProjetoBanco.Application\bin\Debug\System.Web.Http.WebHost.xml
+D:\ProjetoBanco\ProjetoBanco.Application\bin\Debug\SimpleInjector.Integration.WebApi.xml
