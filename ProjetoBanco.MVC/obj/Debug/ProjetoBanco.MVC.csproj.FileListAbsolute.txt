@@ -1,134 +1,3 @@
-c:\users\douglas\documents\visual studio 2015\Projects\ProjetoBanco\ProjetoBanco.MVC\obj\Debug\ProjetoBanco.MVC.csprojResolveAssemblyReference.cache
-c:\users\douglas\documents\visual studio 2015\Projects\ProjetoBanco\ProjetoBanco.MVC\bin\ApplicationInsights.config
-c:\users\douglas\documents\visual studio 2015\Projects\ProjetoBanco\ProjetoBanco.MVC\bin\roslyn\csc.exe
-c:\users\douglas\documents\visual studio 2015\Projects\ProjetoBanco\ProjetoBanco.MVC\bin\roslyn\Microsoft.Build.Tasks.CodeAnalysis.dll
-c:\users\douglas\documents\visual studio 2015\Projects\ProjetoBanco\ProjetoBanco.MVC\bin\roslyn\Microsoft.CodeAnalysis.CSharp.dll
-c:\users\douglas\documents\visual studio 2015\Projects\ProjetoBanco\ProjetoBanco.MVC\bin\roslyn\Microsoft.CodeAnalysis.dll
-c:\users\douglas\documents\visual studio 2015\Projects\ProjetoBanco\ProjetoBanco.MVC\bin\roslyn\Microsoft.CodeAnalysis.VisualBasic.dll
-c:\users\douglas\documents\visual studio 2015\Projects\ProjetoBanco\ProjetoBanco.MVC\bin\roslyn\Microsoft.CSharp.Core.targets
-c:\users\douglas\documents\visual studio 2015\Projects\ProjetoBanco\ProjetoBanco.MVC\bin\roslyn\Microsoft.VisualBasic.Core.targets
-c:\users\douglas\documents\visual studio 2015\Projects\ProjetoBanco\ProjetoBanco.MVC\bin\roslyn\System.Collections.Immutable.dll
-c:\users\douglas\documents\visual studio 2015\Projects\ProjetoBanco\ProjetoBanco.MVC\bin\roslyn\System.Reflection.Metadata.dll
-c:\users\douglas\documents\visual studio 2015\Projects\ProjetoBanco\ProjetoBanco.MVC\bin\roslyn\vbc.exe
-c:\users\douglas\documents\visual studio 2015\Projects\ProjetoBanco\ProjetoBanco.MVC\bin\roslyn\VBCSCompiler.exe
-c:\users\douglas\documents\visual studio 2015\Projects\ProjetoBanco\ProjetoBanco.MVC\bin\roslyn\VBCSCompiler.exe.config
-c:\users\douglas\documents\visual studio 2015\Projects\ProjetoBanco\ProjetoBanco.MVC\bin\ProjetoBanco.MVC.dll.config
-c:\users\douglas\documents\visual studio 2015\Projects\ProjetoBanco\ProjetoBanco.MVC\bin\ProjetoBanco.MVC.dll
-c:\users\douglas\documents\visual studio 2015\Projects\ProjetoBanco\ProjetoBanco.MVC\bin\ProjetoBanco.MVC.pdb
-c:\users\douglas\documents\visual studio 2015\Projects\ProjetoBanco\ProjetoBanco.MVC\bin\Antlr3.Runtime.dll
-c:\users\douglas\documents\visual studio 2015\Projects\ProjetoBanco\ProjetoBanco.MVC\bin\Microsoft.AI.Agent.Intercept.dll
-c:\users\douglas\documents\visual studio 2015\Projects\ProjetoBanco\ProjetoBanco.MVC\bin\Microsoft.AI.DependencyCollector.dll
-c:\users\douglas\documents\visual studio 2015\Projects\ProjetoBanco\ProjetoBanco.MVC\bin\Microsoft.AI.PerfCounterCollector.dll
-c:\users\douglas\documents\visual studio 2015\Projects\ProjetoBanco\ProjetoBanco.MVC\bin\Microsoft.AI.ServerTelemetryChannel.dll
-c:\users\douglas\documents\visual studio 2015\Projects\ProjetoBanco\ProjetoBanco.MVC\bin\Microsoft.AI.Web.dll
-c:\users\douglas\documents\visual studio 2015\Projects\ProjetoBanco\ProjetoBanco.MVC\bin\Microsoft.AI.WindowsServer.dll
-c:\users\douglas\documents\visual studio 2015\Projects\ProjetoBanco\ProjetoBanco.MVC\bin\Microsoft.ApplicationInsights.dll
-c:\users\douglas\documents\visual studio 2015\Projects\ProjetoBanco\ProjetoBanco.MVC\bin\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.dll
-c:\users\douglas\documents\visual studio 2015\Projects\ProjetoBanco\ProjetoBanco.MVC\bin\Microsoft.Web.Infrastructure.dll
-c:\users\douglas\documents\visual studio 2015\Projects\ProjetoBanco\ProjetoBanco.MVC\bin\Newtonsoft.Json.dll
-c:\users\douglas\documents\visual studio 2015\Projects\ProjetoBanco\ProjetoBanco.MVC\bin\ProjetoBanco.Application.dll
-c:\users\douglas\documents\visual studio 2015\Projects\ProjetoBanco\ProjetoBanco.MVC\bin\ProjetoBanco.Domain.dll
-c:\users\douglas\documents\visual studio 2015\Projects\ProjetoBanco\ProjetoBanco.MVC\bin\System.Web.Helpers.dll
-c:\users\douglas\documents\visual studio 2015\Projects\ProjetoBanco\ProjetoBanco.MVC\bin\System.Web.Mvc.dll
-c:\users\douglas\documents\visual studio 2015\Projects\ProjetoBanco\ProjetoBanco.MVC\bin\System.Web.Optimization.dll
-c:\users\douglas\documents\visual studio 2015\Projects\ProjetoBanco\ProjetoBanco.MVC\bin\System.Web.Razor.dll
-c:\users\douglas\documents\visual studio 2015\Projects\ProjetoBanco\ProjetoBanco.MVC\bin\System.Web.WebPages.Deployment.dll
-c:\users\douglas\documents\visual studio 2015\Projects\ProjetoBanco\ProjetoBanco.MVC\bin\System.Web.WebPages.dll
-c:\users\douglas\documents\visual studio 2015\Projects\ProjetoBanco\ProjetoBanco.MVC\bin\System.Web.WebPages.Razor.dll
-c:\users\douglas\documents\visual studio 2015\Projects\ProjetoBanco\ProjetoBanco.MVC\bin\WebGrease.dll
-c:\users\douglas\documents\visual studio 2015\Projects\ProjetoBanco\ProjetoBanco.MVC\bin\ProjetoBanco.Application.pdb
-c:\users\douglas\documents\visual studio 2015\Projects\ProjetoBanco\ProjetoBanco.MVC\bin\ProjetoBanco.Domain.pdb
-c:\users\douglas\documents\visual studio 2015\Projects\ProjetoBanco\ProjetoBanco.MVC\bin\Microsoft.AI.DependencyCollector.xml
-c:\users\douglas\documents\visual studio 2015\Projects\ProjetoBanco\ProjetoBanco.MVC\bin\Microsoft.AI.ServerTelemetryChannel.xml
-c:\users\douglas\documents\visual studio 2015\Projects\ProjetoBanco\ProjetoBanco.MVC\bin\Microsoft.AI.Web.xml
-c:\users\douglas\documents\visual studio 2015\Projects\ProjetoBanco\ProjetoBanco.MVC\bin\Microsoft.AI.WindowsServer.xml
-c:\users\douglas\documents\visual studio 2015\Projects\ProjetoBanco\ProjetoBanco.MVC\bin\Microsoft.ApplicationInsights.xml
-c:\users\douglas\documents\visual studio 2015\Projects\ProjetoBanco\ProjetoBanco.MVC\bin\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.xml
-c:\users\douglas\documents\visual studio 2015\Projects\ProjetoBanco\ProjetoBanco.MVC\bin\System.Web.Helpers.xml
-c:\users\douglas\documents\visual studio 2015\Projects\ProjetoBanco\ProjetoBanco.MVC\bin\System.Web.Mvc.xml
-c:\users\douglas\documents\visual studio 2015\Projects\ProjetoBanco\ProjetoBanco.MVC\bin\System.Web.Optimization.xml
-c:\users\douglas\documents\visual studio 2015\Projects\ProjetoBanco\ProjetoBanco.MVC\bin\System.Web.Razor.xml
-c:\users\douglas\documents\visual studio 2015\Projects\ProjetoBanco\ProjetoBanco.MVC\bin\System.Web.WebPages.xml
-c:\users\douglas\documents\visual studio 2015\Projects\ProjetoBanco\ProjetoBanco.MVC\bin\System.Web.WebPages.Deployment.xml
-c:\users\douglas\documents\visual studio 2015\Projects\ProjetoBanco\ProjetoBanco.MVC\bin\System.Web.WebPages.Razor.xml
-c:\users\douglas\documents\visual studio 2015\Projects\ProjetoBanco\ProjetoBanco.MVC\bin\Antlr3.Runtime.pdb
-c:\users\douglas\documents\visual studio 2015\Projects\ProjetoBanco\ProjetoBanco.MVC\bin\Newtonsoft.Json.xml
-c:\users\douglas\documents\visual studio 2015\Projects\ProjetoBanco\ProjetoBanco.MVC\obj\Debug\ProjetoBanco.MVC.dll
-c:\users\douglas\documents\visual studio 2015\Projects\ProjetoBanco\ProjetoBanco.MVC\obj\Debug\ProjetoBanco.MVC.pdb
-c:\users\douglas\documents\visual studio 2015\Projects\ProjetoBanco\ProjetoBanco.MVC\bin\Ninject.dll
-c:\users\douglas\documents\visual studio 2015\Projects\ProjetoBanco\ProjetoBanco.MVC\bin\Ninject.Web.Common.dll
-c:\users\douglas\documents\visual studio 2015\Projects\ProjetoBanco\ProjetoBanco.MVC\bin\Ninject.Web.Mvc.dll
-c:\users\douglas\documents\visual studio 2015\Projects\ProjetoBanco\ProjetoBanco.MVC\bin\WebActivatorEx.dll
-c:\users\douglas\documents\visual studio 2015\Projects\ProjetoBanco\ProjetoBanco.MVC\bin\Ninject.xml
-c:\users\douglas\documents\visual studio 2015\Projects\ProjetoBanco\ProjetoBanco.MVC\bin\Ninject.Web.Common.xml
-c:\users\douglas\documents\visual studio 2015\Projects\ProjetoBanco\ProjetoBanco.MVC\bin\Ninject.Web.Mvc.xml
-D:\ProjetoBanco\ProjetoBanco.MVC\bin\ApplicationInsights.config
-D:\ProjetoBanco\ProjetoBanco.MVC\bin\roslyn\csc.exe
-D:\ProjetoBanco\ProjetoBanco.MVC\bin\roslyn\Microsoft.Build.Tasks.CodeAnalysis.dll
-D:\ProjetoBanco\ProjetoBanco.MVC\bin\roslyn\Microsoft.CodeAnalysis.CSharp.dll
-D:\ProjetoBanco\ProjetoBanco.MVC\bin\roslyn\Microsoft.CodeAnalysis.dll
-D:\ProjetoBanco\ProjetoBanco.MVC\bin\roslyn\Microsoft.CodeAnalysis.VisualBasic.dll
-D:\ProjetoBanco\ProjetoBanco.MVC\bin\roslyn\Microsoft.CSharp.Core.targets
-D:\ProjetoBanco\ProjetoBanco.MVC\bin\roslyn\Microsoft.VisualBasic.Core.targets
-D:\ProjetoBanco\ProjetoBanco.MVC\bin\roslyn\System.Collections.Immutable.dll
-D:\ProjetoBanco\ProjetoBanco.MVC\bin\roslyn\System.Reflection.Metadata.dll
-D:\ProjetoBanco\ProjetoBanco.MVC\bin\roslyn\vbc.exe
-D:\ProjetoBanco\ProjetoBanco.MVC\bin\roslyn\VBCSCompiler.exe
-D:\ProjetoBanco\ProjetoBanco.MVC\bin\roslyn\VBCSCompiler.exe.config
-D:\ProjetoBanco\ProjetoBanco.MVC\bin\ProjetoBanco.MVC.dll.config
-D:\ProjetoBanco\ProjetoBanco.MVC\bin\ProjetoBanco.MVC.dll
-D:\ProjetoBanco\ProjetoBanco.MVC\bin\ProjetoBanco.MVC.pdb
-D:\ProjetoBanco\ProjetoBanco.MVC\bin\Antlr3.Runtime.dll
-D:\ProjetoBanco\ProjetoBanco.MVC\bin\Microsoft.AI.Agent.Intercept.dll
-D:\ProjetoBanco\ProjetoBanco.MVC\bin\Microsoft.AI.DependencyCollector.dll
-D:\ProjetoBanco\ProjetoBanco.MVC\bin\Microsoft.AI.PerfCounterCollector.dll
-D:\ProjetoBanco\ProjetoBanco.MVC\bin\Microsoft.AI.ServerTelemetryChannel.dll
-D:\ProjetoBanco\ProjetoBanco.MVC\bin\Microsoft.AI.Web.dll
-D:\ProjetoBanco\ProjetoBanco.MVC\bin\Microsoft.AI.WindowsServer.dll
-D:\ProjetoBanco\ProjetoBanco.MVC\bin\Microsoft.ApplicationInsights.dll
-D:\ProjetoBanco\ProjetoBanco.MVC\bin\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.dll
-D:\ProjetoBanco\ProjetoBanco.MVC\bin\Microsoft.Web.Infrastructure.dll
-D:\ProjetoBanco\ProjetoBanco.MVC\bin\Newtonsoft.Json.dll
-D:\ProjetoBanco\ProjetoBanco.MVC\bin\Ninject.dll
-D:\ProjetoBanco\ProjetoBanco.MVC\bin\Ninject.Web.Common.dll
-D:\ProjetoBanco\ProjetoBanco.MVC\bin\Ninject.Web.Mvc.dll
-D:\ProjetoBanco\ProjetoBanco.MVC\bin\ProjetoBanco.Application.dll
-D:\ProjetoBanco\ProjetoBanco.MVC\bin\ProjetoBanco.Domain.dll
-D:\ProjetoBanco\ProjetoBanco.MVC\bin\System.Web.Helpers.dll
-D:\ProjetoBanco\ProjetoBanco.MVC\bin\System.Web.Mvc.dll
-D:\ProjetoBanco\ProjetoBanco.MVC\bin\System.Web.Optimization.dll
-D:\ProjetoBanco\ProjetoBanco.MVC\bin\System.Web.Razor.dll
-D:\ProjetoBanco\ProjetoBanco.MVC\bin\System.Web.WebPages.Deployment.dll
-D:\ProjetoBanco\ProjetoBanco.MVC\bin\System.Web.WebPages.dll
-D:\ProjetoBanco\ProjetoBanco.MVC\bin\System.Web.WebPages.Razor.dll
-D:\ProjetoBanco\ProjetoBanco.MVC\bin\WebActivatorEx.dll
-D:\ProjetoBanco\ProjetoBanco.MVC\bin\WebGrease.dll
-D:\ProjetoBanco\ProjetoBanco.MVC\bin\ProjetoBanco.Application.pdb
-D:\ProjetoBanco\ProjetoBanco.MVC\bin\ProjetoBanco.Domain.pdb
-D:\ProjetoBanco\ProjetoBanco.MVC\bin\Microsoft.AI.DependencyCollector.xml
-D:\ProjetoBanco\ProjetoBanco.MVC\bin\Microsoft.AI.ServerTelemetryChannel.xml
-D:\ProjetoBanco\ProjetoBanco.MVC\bin\Microsoft.AI.Web.xml
-D:\ProjetoBanco\ProjetoBanco.MVC\bin\Microsoft.AI.WindowsServer.xml
-D:\ProjetoBanco\ProjetoBanco.MVC\bin\Microsoft.ApplicationInsights.xml
-D:\ProjetoBanco\ProjetoBanco.MVC\bin\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.xml
-D:\ProjetoBanco\ProjetoBanco.MVC\bin\Ninject.xml
-D:\ProjetoBanco\ProjetoBanco.MVC\bin\Ninject.Web.Common.xml
-D:\ProjetoBanco\ProjetoBanco.MVC\bin\Ninject.Web.Mvc.xml
-D:\ProjetoBanco\ProjetoBanco.MVC\bin\System.Web.Helpers.xml
-D:\ProjetoBanco\ProjetoBanco.MVC\bin\System.Web.Mvc.xml
-D:\ProjetoBanco\ProjetoBanco.MVC\bin\System.Web.Optimization.xml
-D:\ProjetoBanco\ProjetoBanco.MVC\bin\System.Web.Razor.xml
-D:\ProjetoBanco\ProjetoBanco.MVC\bin\System.Web.WebPages.xml
-D:\ProjetoBanco\ProjetoBanco.MVC\bin\System.Web.WebPages.Deployment.xml
-D:\ProjetoBanco\ProjetoBanco.MVC\bin\System.Web.WebPages.Razor.xml
-D:\ProjetoBanco\ProjetoBanco.MVC\bin\Antlr3.Runtime.pdb
-D:\ProjetoBanco\ProjetoBanco.MVC\bin\Newtonsoft.Json.xml
-D:\ProjetoBanco\ProjetoBanco.MVC\obj\Debug\ProjetoBanco.MVC.csprojResolveAssemblyReference.cache
-D:\ProjetoBanco\ProjetoBanco.MVC\obj\Debug\ProjetoBanco.MVC.dll
-D:\ProjetoBanco\ProjetoBanco.MVC\obj\Debug\ProjetoBanco.MVC.pdb
-D:\ProjetoBanco\ProjetoBanco.MVC\bin\ProjetoBanco.Infra.Data.dll
-D:\ProjetoBanco\ProjetoBanco.MVC\bin\ProjetoBanco.Infra.Data.pdb
-C:\Users\Douglas\ProjetoBanco\ProjetoBanco.MVC\obj\Debug\ProjetoBanco.MVC.csprojResolveAssemblyReference.cache
 C:\Users\Douglas\ProjetoBanco\ProjetoBanco.MVC\bin\roslyn\csc.exe
 C:\Users\Douglas\ProjetoBanco\ProjetoBanco.MVC\bin\roslyn\Microsoft.Build.Tasks.CodeAnalysis.dll
 C:\Users\Douglas\ProjetoBanco\ProjetoBanco.MVC\bin\roslyn\Microsoft.CodeAnalysis.CSharp.dll
@@ -177,7 +46,6 @@ C:\Users\Douglas\ProjetoBanco\ProjetoBanco.MVC\bin\System.Web.Http.WebHost.dll
 C:\Users\Douglas\ProjetoBanco\ProjetoBanco.MVC\bin\SimpleInjector.Integration.WebApi.dll
 C:\Users\Douglas\ProjetoBanco\ProjetoBanco.MVC\bin\ProjetoBanco.Application.pdb
 C:\Users\Douglas\ProjetoBanco\ProjetoBanco.MVC\bin\ProjetoBanco.Domain.pdb
-C:\Users\Douglas\ProjetoBanco\ProjetoBanco.MVC\bin\ProjetoBanco.Infra.Data.pdb
 C:\Users\Douglas\ProjetoBanco\ProjetoBanco.MVC\bin\Web Api.pdb
 C:\Users\Douglas\ProjetoBanco\ProjetoBanco.MVC\bin\Microsoft.AI.DependencyCollector.xml
 C:\Users\Douglas\ProjetoBanco\ProjetoBanco.MVC\bin\Microsoft.AI.ServerTelemetryChannel.xml
@@ -200,5 +68,7 @@ C:\Users\Douglas\ProjetoBanco\ProjetoBanco.MVC\bin\Antlr3.Runtime.pdb
 C:\Users\Douglas\ProjetoBanco\ProjetoBanco.MVC\bin\Newtonsoft.Json.xml
 C:\Users\Douglas\ProjetoBanco\ProjetoBanco.MVC\bin\System.Web.Http.WebHost.xml
 C:\Users\Douglas\ProjetoBanco\ProjetoBanco.MVC\bin\SimpleInjector.Integration.WebApi.xml
+C:\Users\Douglas\ProjetoBanco\ProjetoBanco.MVC\obj\Debug\ProjetoBanco.MVC.csprojResolveAssemblyReference.cache
 C:\Users\Douglas\ProjetoBanco\ProjetoBanco.MVC\obj\Debug\ProjetoBanco.MVC.dll
 C:\Users\Douglas\ProjetoBanco\ProjetoBanco.MVC\obj\Debug\ProjetoBanco.MVC.pdb
+C:\Users\Douglas\ProjetoBanco\ProjetoBanco.MVC\bin\ProjetoBanco.Infra.Data.pdb

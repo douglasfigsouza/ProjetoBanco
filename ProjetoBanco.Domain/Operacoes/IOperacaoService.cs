@@ -1,11 +1,8 @@
-﻿using System.Net.Http;
-using ProjetoBanco.Domain.Operacoes;
-
-namespace ProjetoBanco.Domain.Interfaces.IServices
+﻿namespace ProjetoBanco.Domain.Operacoes
 {
     public interface IOperacaoService
     {
-        void AddOperacao(Operacoes.Operacoes op);
+        void AddOperacao(Domain.Operacoes.Operacoes op);
         Transacao VerificaDadosTransacao(Transacao transacao);
         Transacao VerificaDadosTransferencia(Transacao transacao);
         Transacao ConsultaSaldo(Transacao transacao);

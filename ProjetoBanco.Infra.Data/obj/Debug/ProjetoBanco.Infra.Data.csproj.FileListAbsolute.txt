@@ -5,10 +5,10 @@ D:\ProjetoBanco\ProjetoBanco.Infra.Data\bin\Debug\ProjetoBanco.Domain.pdb
 D:\ProjetoBanco\ProjetoBanco.Infra.Data\obj\Debug\ProjetoBanco.Infra.Data.dll
 D:\ProjetoBanco\ProjetoBanco.Infra.Data\obj\Debug\ProjetoBanco.Infra.Data.pdb
 D:\ProjetoBanco\ProjetoBanco.Infra.Data\obj\Debug\ProjetoBanco.Infra.Data.csprojResolveAssemblyReference.cache
-C:\Users\Douglas\ProjetoBanco\ProjetoBanco.Infra.Data\obj\Debug\ProjetoBanco.Infra.Data.csprojResolveAssemblyReference.cache
 C:\Users\Douglas\ProjetoBanco\ProjetoBanco.Infra.Data\bin\Debug\ProjetoBanco.Infra.Data.dll
 C:\Users\Douglas\ProjetoBanco\ProjetoBanco.Infra.Data\bin\Debug\ProjetoBanco.Infra.Data.pdb
 C:\Users\Douglas\ProjetoBanco\ProjetoBanco.Infra.Data\bin\Debug\ProjetoBanco.Domain.dll
 C:\Users\Douglas\ProjetoBanco\ProjetoBanco.Infra.Data\bin\Debug\ProjetoBanco.Domain.pdb
+C:\Users\Douglas\ProjetoBanco\ProjetoBanco.Infra.Data\obj\Debug\ProjetoBanco.Infra.Data.csprojResolveAssemblyReference.cache
 C:\Users\Douglas\ProjetoBanco\ProjetoBanco.Infra.Data\obj\Debug\ProjetoBanco.Infra.Data.dll
 C:\Users\Douglas\ProjetoBanco\ProjetoBanco.Infra.Data\obj\Debug\ProjetoBanco.Infra.Data.pdb

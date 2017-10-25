@@ -1,6 +1,5 @@
-﻿using System.Web.Http.Dependencies;
-using SimpleInjector.Integration.WebApi;
-using Web_Api.App_Start;
+﻿using SimpleInjector.Integration.WebApi;
+using System.Web.Http.Dependencies;
 
 namespace Web_Api
 {

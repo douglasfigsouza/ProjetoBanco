@@ -1,10 +1,6 @@
-﻿using System.Net.Http;
-using ProjetoBanco.Domain.Entities;
-using ProjetoBanco.Domain.Interfaces.IRepositories;
-using ProjetoBanco.Domain.Interfaces.IServices;
-using ProjetoBanco.Domain.Operacoes;
+﻿using ProjetoBanco.Domain.Entities;
 
-namespace ProjetoBanco.Domain.Services
+namespace ProjetoBanco.Domain.Operacoes
 {
     public class OperacoesService:IOperacaoService
     {
@@ -16,7 +12,7 @@ namespace ProjetoBanco.Domain.Services
             _repository = repository;
             _notifications = notifications;
         }
-        public void AddOperacao(Operacoes.Operacoes op)
+        public void AddOperacao(Domain.Operacoes.Operacoes op)
         {
             _repository.AddOperacao(op);
         }

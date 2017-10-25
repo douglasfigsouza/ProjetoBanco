@@ -1,7 +1,6 @@
 ﻿using System.Collections.Generic;
-using ProjetoBanco.Domain.Usuarios;
 
-namespace ProjetoBanco.Domain.Interfaces.IRepositories
+namespace ProjetoBanco.Domain.Usuarios
 {
     public interface IUsuarioRepository
     {

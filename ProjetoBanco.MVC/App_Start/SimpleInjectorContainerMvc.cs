@@ -2,7 +2,9 @@
 using ProjetoBanco.Application.Interfaces;
 using ProjetoBanco.Domain.Interfaces.IRepositories;
 using ProjetoBanco.Domain.Interfaces.IServices;
+using ProjetoBanco.Domain.Operacoes;
 using ProjetoBanco.Domain.Services;
+using ProjetoBanco.Domain.Usuarios;
 using ProjetoBanco.Infra.Data.Repositories;
 using SimpleInjector;
 

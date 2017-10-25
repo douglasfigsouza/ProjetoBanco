@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Data.SqlClient;
+using System.Linq;
 using ProjetoBanco.Domain.Entities;
 using ProjetoBanco.Domain.Interfaces.IRepositories;
 using ProjetoBanco.Domain.Operacoes;
@@ -9,7 +10,7 @@ namespace ProjetoBanco.Infra.Data.Repositories
 {
     public class OperacaoRealizadaRepository : IOperacoesRealizadasRepository
     {
-        private Conexao conn;
+        private readonly Conexao conn;
         private Notifications _notifications;
         private SqlDataReader result;
         private List<Estorno> OpsEstorno;
@@ -26,8 +27,9 @@ namespace ProjetoBanco.Infra.Data.Repositories
         public OperacaoRealizadaRepository(Notifications notifications)
         {
             _notifications = notifications;
-            conn = new Conexao();
             OpsEstorno = new List<Estorno>();
+            conn = new Conexao();
+
         }
         public void Deposito(OperacoesRealizadas operacaoRealizada)
         {
@@ -50,8 +52,13 @@ namespace ProjetoBanco.Infra.Data.Repositories
             }
 
         }
-        public int Transferencia(OperacoesRealizadas opConta1, OperacoesRealizadas opConta2)
+        public void Transferencia(List<OperacoesRealizadas>operacoes)
         {
+            OperacoesRealizadas opConta1 = new OperacoesRealizadas();
+            OperacoesRealizadas opConta2 = new OperacoesRealizadas();
+
+            opConta1 = operacoes.ElementAt(0);
+            opConta2 = operacoes.ElementAt(1);    
             conn.ExecuteProcedure(Procedure.PBSP_SAQUE);
             conn.AddParameter("codTipoOp", 2);
             conn.AddParameter("@agencia", opConta1.agencia);
@@ -61,7 +68,6 @@ namespace ProjetoBanco.Infra.Data.Repositories
             conn.AddParameter("@valorOp", opConta1.valorOp);
             if (conn.ExecuteNonQueryWithReturn() == 1)
             {
-                conn = new Conexao();
                 conn.ExecuteProcedure(Procedure.PBSP_TRANSFERENCIA);
                 conn.AddParameter("codTipoOp", 4);
                 conn.AddParameter("@agencia", opConta2.agencia);
@@ -69,12 +75,11 @@ namespace ProjetoBanco.Infra.Data.Repositories
                 conn.AddParameter("@dataOp", opConta2.dataOp);
                 conn.AddParameter("@valorOp", opConta1.valorOp);
                 conn.ExecuteNonQuery();
-                return 1;
             }
 
             else
             {
-                return 0;
+                _notifications.Notificacoes.Add("A transferência não pode ser realizada, você não possui saldo suficiente");
             }
         }
         public IEnumerable<Estorno> GetAllOperacoesPorContaParaEstorno(string conta, string senha, int agencia)

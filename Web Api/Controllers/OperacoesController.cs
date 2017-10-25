@@ -1,4 +1,5 @@
-﻿using System.Web.Http;
+﻿using System.Collections.Generic;
+using System.Web.Http;
 using ProjetoBanco.Domain.Entities;
 using ProjetoBanco.Domain.Interfaces.IRepositories;
 using ProjetoBanco.Domain.Operacoes;
@@ -57,7 +58,7 @@ namespace Web_Api.Controllers
 
         public IHttpActionResult VerificaDadosTransferencia(Transacao transacao)
         {
-            _operacoesRepository.VerificaDadosTransferencia(transacao);
+            transact = _operacoesRepository.VerificaDadosTransferencia(transacao);
             if (_notifications.Notificacoes.Count > 0)
             {
                 string erros = "";
@@ -69,7 +70,25 @@ namespace Web_Api.Controllers
             }
             else
             {
-                return Ok();
+                return Ok(transact);
+            }
+        }
+
+        public IHttpActionResult Transferencia(List<OperacoesRealizadas> operacoes)
+        {
+            _operacoesRealizadasRepository.Transferencia(operacoes);
+            if (_notifications.Notificacoes.Count > 0)
+            {
+                string erros = "";
+                foreach (var erro in _notifications.Notificacoes)
+                {
+                    erros = erros + " " + erro;
+                }
+                return BadRequest(erros);
+            }
+            else
+            {
+                return Ok(transact);
             }
         }
 

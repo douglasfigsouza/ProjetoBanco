@@ -82,7 +82,7 @@ namespace ProjetoBanco.Infra.Data.Repositories
             }
             catch (Exception e)
             {
-                _notifications.Notificacoes.Add("Impossível realizar a transferência!");
+                _notifications.Notificacoes.Add($"Impossível realizar a transferência! Erro{e.Message}");
                 Console.WriteLine(e);
                 throw;
             }
@@ -128,7 +128,7 @@ namespace ProjetoBanco.Infra.Data.Repositories
             }
             catch (Exception ex)
             {
-                _notifications.Notificacoes.Add("Conta não encontrada!");
+                _notifications.Notificacoes.Add($"Conta não encontrada!{ex.Message}");
                 return null;
 
             }

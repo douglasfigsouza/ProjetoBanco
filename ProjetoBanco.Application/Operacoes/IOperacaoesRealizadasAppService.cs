@@ -9,7 +9,7 @@ namespace ProjetoBanco.Application.Interfaces
     {
         HttpResponseMessage Deposito(OperacoesRealizadas operacaoRealizada);
         HttpResponseMessage Saque(OperacoesRealizadas operacaoRealizada);
-        string Transferencia(OperacoesRealizadas opConta1, OperacoesRealizadas opConta2);
+        HttpResponseMessage Transferencia(List<OperacoesRealizadas>operacoesRealizadases);
         IEnumerable<Estorno> GetAllOperacoesPorContaParaEstorno(string conta, string senha, int agencia);
         Estorno GetOpRealizadaEstornoById(int Id);
         string ConfirmEstorno(int id);

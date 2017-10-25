@@ -1,10 +1,8 @@
-﻿using System.Collections.Generic;
-using System.Net.Http;
-using ProjetoBanco.Application.Interfaces;
+﻿using ProjetoBanco.Application.Interfaces;
 using ProjetoBanco.Domain.Entities;
-using ProjetoBanco.Domain.Interfaces.IRepositories;
-using ProjetoBanco.Domain.Interfaces.IServices;
 using ProjetoBanco.Domain.Operacoes;
+using System.Collections.Generic;
+using System.Net.Http;
 using Web_Api.Utilitarios;
 
 namespace ProjetoBanco.Application
@@ -29,18 +27,12 @@ namespace ProjetoBanco.Application
             return response;
         }
 
-        public string Transferencia(OperacoesRealizadas opConta1, OperacoesRealizadas opConta2)
+        public HttpResponseMessage Transferencia(List<OperacoesRealizadas>operacoes)
         {
-            if (_operacoesRealizadaService.Transferencia(opConta1, opConta2)==1)
-            {
-                return "Transferência Realizada com sucesso";
-            }
-            else
-            { 
-                return "A transferência não pode ser realizada, você não possui saldo suficiente";
+            response = HttpClientConf.HttpClientConfig("Operacoes")
+                .PostAsJsonAsync("Transferencia", operacoes).Result;
+            return response;
 
-            }
-            
         }
 
         public Estorno GetOpRealizadaEstornoById(int Id)

@@ -1,9 +1,8 @@
-﻿using System.Web.Mvc;
+﻿using ProjetoBanco.MVC.App_Start;
+using SimpleInjector.Integration.Web.Mvc;
+using System.Web.Mvc;
 using System.Web.Optimization;
 using System.Web.Routing;
-using ProjetoBanco.MVC.App_Start;
-using SimpleInjector.Integration.Web.Mvc;
-using Web_Api.App_Start;
 
 
 namespace ProjetoBanco.MVC

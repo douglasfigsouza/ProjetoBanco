@@ -1,12 +1,10 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Net.Http;
-using ProjetoBanco.Domain.Entities;
+﻿using ProjetoBanco.Domain.Entities;
 using ProjetoBanco.Domain.Interfaces.IRepositories;
 using ProjetoBanco.Domain.Interfaces.IServices;
-using ProjetoBanco.Domain.Operacoes;
+using System.Collections.Generic;
+using System.Net.Http;
 
-namespace ProjetoBanco.Domain.Services
+namespace ProjetoBanco.Domain.Operacoes
 {
     public class OperacoesRealizadasService:IOperacoeRealizadaService
     {
@@ -34,9 +32,9 @@ namespace ProjetoBanco.Domain.Services
            return _operacoesRealizadasRepository.ConfirmEstorno(id);
         }
 
-        public int Transferencia(OperacoesRealizadas opConta1, OperacoesRealizadas opConta2)
+        public void Transferencia(List<OperacoesRealizadas>operacoes)
         {
-           return  _operacoesRealizadasRepository.Transferencia(opConta1, opConta2);
+            _operacoesRealizadasRepository.Transferencia(operacoes);
         }
 
         public IEnumerable<Estorno> GetAllOperacoesEstorno()

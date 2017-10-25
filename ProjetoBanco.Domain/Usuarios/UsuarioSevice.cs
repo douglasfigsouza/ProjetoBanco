@@ -1,10 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
-using ProjetoBanco.Domain.Interfaces.IRepositories;
-using ProjetoBanco.Domain.Interfaces.IServices;
-using ProjetoBanco.Domain.Usuarios;
 
-namespace ProjetoBanco.Domain.Services
+namespace ProjetoBanco.Domain.Usuarios
 {
     public class UsuarioSeviceDomain:IUsuariosService
     {

@@ -306,7 +306,7 @@ namespace ProjetoBanco.MVC.Controllers
             }
         }
 
-        public ActionResult ConfirmTransferencia(List<TransacaoViewModel> Transacoes)
+        public async Task<ActionResult> ConfirmTransferencia(List<TransacaoViewModel> Transacoes)
         {
             operacaoRealizada.agencia = int.Parse(Transacoes[0].agencia);
             operacaoRealizada.clienteId = Transacoes[0].clienteId;
@@ -318,7 +318,23 @@ namespace ProjetoBanco.MVC.Controllers
             operacaoRealizada1.contaId = Transacoes[1].contaId;
             operacaoRealizada1.dataOp = DateTime.Now;
 
-            TempData["menssagem"] = _operacaoesRealizadasAppService.Transferencia(operacaoRealizada, operacaoRealizada1);
+            List<OperacoesRealizadas> operacoes = new List<OperacoesRealizadas>();
+            operacoes.Add(operacaoRealizada);
+            operacoes.Add(operacaoRealizada1);
+
+            statusCode = _operacaoesRealizadasAppService.Transferencia(operacoes);
+            if (statusCode.IsSuccessStatusCode)
+            {
+
+                TempData["menssagem"] = "Tranferência realizada com sucesso!";
+            }
+            else
+            {
+                transact = await statusCode.Content.ReadAsStringAsync();
+                TempData["menssagem"] = Utilitarios.Utilitarios.limpaMenssagemErro(transact);
+
+            }
+
             TempData["outraOp"] = "/Operacoes/Transferencia";
             return View("FeedBackOp");
 

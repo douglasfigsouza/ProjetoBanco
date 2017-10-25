@@ -1,14 +1,13 @@
-﻿using System.Collections.Generic;
-using ProjetoBanco.Domain.Entities;
-using ProjetoBanco.Domain.Operacoes;
+﻿using ProjetoBanco.Domain.Entities;
+using System.Collections.Generic;
 
-namespace ProjetoBanco.Domain.Interfaces.IRepositories
+namespace ProjetoBanco.Domain.Operacoes
 {
     public interface IOperacoesRealizadasRepository
     {
         void Deposito(OperacoesRealizadas operacaoRealizada);
         void Saque(OperacoesRealizadas operacaoRealizada);
-        int Transferencia(OperacoesRealizadas opConta1, OperacoesRealizadas opConta2);
+        void Transferencia(List<OperacoesRealizadas>operacoes);
         IEnumerable<Estorno> GetAllOperacoesPorContaParaEstorno(string conta, string senha, int agencia);
         IEnumerable<Estorno> GetAllOperacoesEstorno();
         string ConfirmEstorno(int id);

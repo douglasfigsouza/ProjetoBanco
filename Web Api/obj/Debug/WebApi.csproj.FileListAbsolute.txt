@@ -39,7 +39,6 @@ C:\Users\Douglas\ProjetoBanco\Web Api\bin\System.Web.WebPages.Deployment.dll
 C:\Users\Douglas\ProjetoBanco\Web Api\bin\System.Web.WebPages.dll
 C:\Users\Douglas\ProjetoBanco\Web Api\bin\System.Web.WebPages.Razor.dll
 C:\Users\Douglas\ProjetoBanco\Web Api\bin\ProjetoBanco.Domain.pdb
-C:\Users\Douglas\ProjetoBanco\Web Api\bin\ProjetoBanco.Infra.Data.pdb
 C:\Users\Douglas\ProjetoBanco\Web Api\bin\Microsoft.AI.DependencyCollector.xml
 C:\Users\Douglas\ProjetoBanco\Web Api\bin\Microsoft.AI.ServerTelemetryChannel.xml
 C:\Users\Douglas\ProjetoBanco\Web Api\bin\Microsoft.AI.Web.xml
@@ -60,3 +59,4 @@ C:\Users\Douglas\ProjetoBanco\Web Api\bin\System.Web.Http.xml
 C:\Users\Douglas\ProjetoBanco\Web Api\bin\System.Web.Http.WebHost.xml
 C:\Users\Douglas\ProjetoBanco\Web Api\obj\Debug\Web Api.dll
 C:\Users\Douglas\ProjetoBanco\Web Api\obj\Debug\Web Api.pdb
+C:\Users\Douglas\ProjetoBanco\Web Api\bin\ProjetoBanco.Infra.Data.pdb
