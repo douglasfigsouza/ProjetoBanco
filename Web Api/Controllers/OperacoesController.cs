@@ -1,8 +1,8 @@
-﻿using System.Collections.Generic;
-using System.Web.Http;
-using ProjetoBanco.Domain.Entities;
-using ProjetoBanco.Domain.Interfaces.IRepositories;
+﻿using ProjetoBanco.Domain.Entities;
 using ProjetoBanco.Domain.Operacoes;
+using ProjetoBanco.Domain.Operacoes.Dto;
+using System.Collections.Generic;
+using System.Web.Http;
 
 namespace Web_Api.Controllers
 {
@@ -11,7 +11,6 @@ namespace Web_Api.Controllers
         private readonly IOperacoesRepository _operacoesRepository;
         private readonly IOperacoesRealizadasRepository _operacoesRealizadasRepository;
         private readonly Notifications _notifications;
-        private Transacao transact;
 
         public OperacoesController(IOperacoesRepository operacoesRepository, Notifications notifications, IOperacoesRealizadasRepository operacoesRealizadasRepository)
         {
@@ -58,6 +57,7 @@ namespace Web_Api.Controllers
 
         public IHttpActionResult VerificaDadosTransferencia(Transacao transacao)
         {
+            var transact = new Transacao();
             transact = _operacoesRepository.VerificaDadosTransferencia(transacao);
             if (_notifications.Notificacoes.Count > 0)
             {
@@ -88,7 +88,7 @@ namespace Web_Api.Controllers
             }
             else
             {
-                return Ok(transact);
+                return Ok();
             }
         }
 
@@ -112,7 +112,7 @@ namespace Web_Api.Controllers
 
         public IHttpActionResult VerificaDadosTransacao(Transacao transacao)
         {
-            transact = new Transacao();
+            var transact = new Transacao();
             transact = _operacoesRepository.VerificaDadosTransacao(transacao);
             if (_notifications.Notificacoes.Count > 0)
             {
@@ -131,7 +131,7 @@ namespace Web_Api.Controllers
 
         public IHttpActionResult ConsultaSaldo(Transacao transacao)
         {
-            transact = new Transacao();
+            var transact = new Transacao();
             transact = _operacoesRepository.ConsultaSaldo(transacao);
             if (_notifications.Notificacoes.Count > 0)
             {
@@ -145,6 +145,69 @@ namespace Web_Api.Controllers
             else
             {
                 return Ok(transact);
+            }
+        }
+
+        public IHttpActionResult GetAllOperacoesPorContaParaEstorno(string conta, string senha, string agencia)
+        {
+
+            List<Estorno> transacts = new List<Estorno>();
+            DadosGetOpReal dadosGetOpReal = new DadosGetOpReal
+            {
+                agencia = int.Parse(agencia),
+                senha = senha,
+                conta = conta
+            };
+            transacts = _operacoesRealizadasRepository.GetAllOperacoesPorContaParaEstorno(dadosGetOpReal);
+            if (_notifications.Notificacoes.Count > 0)
+            {
+                string erros = "";
+                foreach (var erro in _notifications.Notificacoes)
+                {
+                    erros = erros + " " + erro;
+                }
+                return BadRequest(erros);
+            }
+            else
+            {
+                return Ok(transacts);
+            }
+        }
+
+        public IHttpActionResult GetOpRealizadaEstornoById(string Id)
+        {
+            var estorno = new Estorno();
+            estorno = _operacoesRealizadasRepository.GetOpRealizadaEstornoById(int.Parse(Id));
+            if (_notifications.Notificacoes.Count > 0)
+            {
+                string erros = "";
+                foreach (var erro in _notifications.Notificacoes)
+                {
+                    erros = erros + " " + erro;
+                }
+                return BadRequest(erros);
+            }
+            else
+            {
+                return Ok(estorno);
+            }
+        }
+        [HttpPost]
+        public IHttpActionResult confirmEstorno(Estorno estorno)
+        {
+            _operacoesRealizadasRepository.ConfirmEstorno(estorno.Id);
+            if (_notifications.Notificacoes.Count > 0)
+            {
+                string erros = "";
+                foreach (var erro in _notifications.Notificacoes)
+                {
+                    erros = erros + " " + erro;
+                }
+                return BadRequest(erros);
+            }
+            else
+            {
+                return Ok();
             }
         }
     }

@@ -1,6 +1,5 @@
 ﻿using ProjetoBanco.Domain.Entities;
-using ProjetoBanco.Domain.Interfaces.IRepositories;
-using ProjetoBanco.Domain.Interfaces.IServices;
+using ProjetoBanco.Domain.Operacoes.Dto;
 using System.Collections.Generic;
 using System.Net.Http;
 
@@ -27,9 +26,9 @@ namespace ProjetoBanco.Domain.Operacoes
             _operacoesRealizadasRepository.Saque(operacaoRealizada);
         }
 
-        public string ConfirmEstorno(int id)
+        public void ConfirmEstorno(int id)
         {
-           return _operacoesRealizadasRepository.ConfirmEstorno(id);
+            _operacoesRealizadasRepository.ConfirmEstorno(id);
         }
 
         public void Transferencia(List<OperacoesRealizadas>operacoes)
@@ -42,9 +41,9 @@ namespace ProjetoBanco.Domain.Operacoes
             return _operacoesRealizadasRepository.GetAllOperacoesEstorno();
         }
 
-        public IEnumerable<Estorno> GetAllOperacoesPorContaParaEstorno(string conta, string senha, int agencia)
+        public IEnumerable<Estorno> GetAllOperacoesPorContaParaEstorno(DadosGetOpReal dadosGetOp)
         {
-            return _operacoesRealizadasRepository.GetAllOperacoesPorContaParaEstorno(conta, senha, agencia);
+            return _operacoesRealizadasRepository.GetAllOperacoesPorContaParaEstorno(dadosGetOp);
         }
     }
 }

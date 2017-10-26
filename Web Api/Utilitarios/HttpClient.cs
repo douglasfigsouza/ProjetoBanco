@@ -1,11 +1,13 @@
 ﻿using System;
+using System.Net.Http;
 using System.Net.Http.Headers;
+using System.Web.Routing;
 
 namespace Web_Api.Utilitarios
 {
     public static class HttpClientConf
     {
-        public static System.Net.Http.HttpClient HttpClientConfig(string controller)
+        public static HttpClient HttpClientConfig(string controller)
         {
 
             var HttpClientConf = new System.Net.Http.HttpClient();
@@ -15,5 +17,16 @@ namespace Web_Api.Utilitarios
             return HttpClientConf;
         }
 
+        public static Uri HttpClientConfigGet(string url, object parameters)
+        {
+            var client = new HttpClient();
+            var builder = new UriBuilder("http://localhost:36528/api/"+url);
+            var p = string.Empty;
+            foreach (var parameter in new RouteValueDictionary(parameters))
+                p += $"{parameter.Key}={parameter.Value}&";
+
+            builder.Query = p;
+            return builder.Uri;
+        }
     }
 }

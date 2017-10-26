@@ -1,10 +1,10 @@
-﻿using System;
+﻿using ProjetoBanco.Domain.Entities;
+using ProjetoBanco.Domain.Operacoes;
+using ProjetoBanco.Domain.Operacoes.Dto;
+using System;
 using System.Collections.Generic;
 using System.Data.SqlClient;
 using System.Linq;
-using ProjetoBanco.Domain.Entities;
-using ProjetoBanco.Domain.Interfaces.IRepositories;
-using ProjetoBanco.Domain.Operacoes;
 
 namespace ProjetoBanco.Infra.Data.Repositories
 {
@@ -21,7 +21,8 @@ namespace ProjetoBanco.Infra.Data.Repositories
             PBSP_TRANSFERENCIA,
             PBSP_GETALLOPERACOESESTORNO,
             PBSP_GETOPREALIZADASPORCONTA,
-            PBSP_ESTORNA
+            PBSP_ESTORNA,
+            PBSP_GETOPREALIZADAESTORNOBYID
         }
 
         public OperacaoRealizadaRepository(Notifications notifications)
@@ -82,12 +83,12 @@ namespace ProjetoBanco.Infra.Data.Repositories
                 _notifications.Notificacoes.Add("A transferência não pode ser realizada, você não possui saldo suficiente");
             }
         }
-        public IEnumerable<Estorno> GetAllOperacoesPorContaParaEstorno(string conta, string senha, int agencia)
+        public List<Estorno> GetAllOperacoesPorContaParaEstorno(DadosGetOpReal dadosGetOp)
         {
             conn.ExecuteProcedure(Procedure.PBSP_GETOPREALIZADASPORCONTA);
-            conn.AddParameter("@conta", conta);
-            conn.AddParameter("@senha", senha);
-            conn.AddParameter("@agencia", agencia);
+            conn.AddParameter("@conta", dadosGetOp.conta);
+            conn.AddParameter("@senha", dadosGetOp.senha);
+            conn.AddParameter("@agencia", dadosGetOp.agencia);
             try
             {
                 result = conn.ExecuteReader();
@@ -108,14 +109,15 @@ namespace ProjetoBanco.Infra.Data.Repositories
                 }
                 return OpsEstorno;
             }
-            catch (Exception e)
+            catch (Exception ex)
             {
+               _notifications.Notificacoes.Add("Impossível obter operações para estorno!");
                 return null;
             }
 
 
         }
-        public string ConfirmEstorno(int id)
+        public void ConfirmEstorno(int id)
         {
             conn.ExecuteProcedure(Procedure.PBSP_ESTORNA);
             conn.AddParameter("@id", id);
@@ -124,11 +126,10 @@ namespace ProjetoBanco.Infra.Data.Repositories
             try
             {
                 conn.ExecuteNonQuery();
-                return null;
             }
             catch (Exception e)
             {
-                return e.Message;
+                _notifications.Notificacoes.Add($"Impossível realizar o estorno!Erro {e.Message}");
             }
 
         }
@@ -174,6 +175,38 @@ namespace ProjetoBanco.Infra.Data.Repositories
                 });
             }
             return OpsEstorno;
+        }
+
+        public Estorno GetOpRealizadaEstornoById(int Id)
+        {
+            conn.ExecuteProcedure(Procedure.PBSP_GETOPREALIZADAESTORNOBYID);
+            conn.AddParameter("@Id",Id);
+            Estorno estorno = null;
+            try
+            {
+                result = conn.ExecuteReader();
+                while (result.Read())
+                {
+                    estorno = new Estorno
+                    {
+                        Id = Convert.ToInt32(result["Id"].ToString()),
+                        opId = Convert.ToInt32(result["codTipoOp"].ToString()),
+                        dataFormatada = String.Format("{0:dd/MM/yyyy}",Convert.ToDateTime(result["dataOp"].ToString())),
+                        valorOp = Convert.ToDecimal(result["valorOp"].ToString()),
+                        saldoAnterior = Convert.ToDecimal(result["saldoAnterior"].ToString()),
+                        descricao = result["descricao"].ToString(),
+                        agencia = Convert.ToInt32(result["agencia"].ToString()),
+                        conta = result["num"].ToString(),
+                        cliente = result["nome"].ToString()
+                    };
+                }
+                return estorno;
+            }
+            catch (Exception e)
+            {
+                _notifications.Notificacoes.Add($"Impossível buscar a operação selecionada! Erro: {e.Message}");
+                throw;
+            }
         }
     }
 }

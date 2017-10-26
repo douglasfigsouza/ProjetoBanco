@@ -1,18 +1,15 @@
-﻿using ProjetoBanco.Domain.Entities;
+﻿using ProjetoBanco.Domain.Operacoes.Dto;
 
 namespace ProjetoBanco.Domain.Operacoes
 {
     public class OperacoesService:IOperacaoService
     {
         private readonly IOperacoesRepository _repository;
-        private readonly Notifications _notifications;
-        private Transacao transact;
-        public OperacoesService(IOperacoesRepository repository, Notifications notifications)
+        public OperacoesService(IOperacoesRepository repository)
         {
             _repository = repository;
-            _notifications = notifications;
         }
-        public void AddOperacao(Domain.Operacoes.Operacoes op)
+        public void AddOperacao(Dto.Operacoes op)
         {
             _repository.AddOperacao(op);
         }

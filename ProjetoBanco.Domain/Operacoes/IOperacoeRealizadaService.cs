@@ -1,4 +1,4 @@
-﻿using ProjetoBanco.Domain.Entities;
+﻿using ProjetoBanco.Domain.Operacoes.Dto;
 using System.Collections.Generic;
 
 namespace ProjetoBanco.Domain.Operacoes
@@ -8,8 +8,8 @@ namespace ProjetoBanco.Domain.Operacoes
         void Deposito(OperacoesRealizadas operacaoRealizada);
         void Saque(OperacoesRealizadas operacaoRealizada);
         void Transferencia(List<OperacoesRealizadas>operacoes);
-        IEnumerable<Estorno> GetAllOperacoesPorContaParaEstorno(string conta, string senha, int agencia);
+        IEnumerable<Estorno> GetAllOperacoesPorContaParaEstorno(DadosGetOpReal dadosGetOp);
         IEnumerable<Estorno> GetAllOperacoesEstorno();
-        string ConfirmEstorno(int id);
+        void ConfirmEstorno(int id);
     }
 }

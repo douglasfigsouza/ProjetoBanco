@@ -30,25 +30,25 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
-    <Compile Include="AgenciaAppService.cs" />
-    <Compile Include="BancoAppService.cs" />
-    <Compile Include="CidadeAppService.cs" />
-    <Compile Include="ClienteAppService.cs" />
-    <Compile Include="ContaClienteAppService.cs" />
-    <Compile Include="EstadoAppService.cs" />
+    <Compile Include="Applications\AgenciaAppService.cs" />
+    <Compile Include="Applications\BancoAppService.cs" />
+    <Compile Include="Applications\CidadeAppService.cs" />
+    <Compile Include="Applications\ClienteAppService.cs" />
+    <Compile Include="Applications\ContaClienteAppService.cs" />
+    <Compile Include="Applications\EstadoAppService.cs" />
     <Compile Include="Interfaces\IAgenciaAppService.cs" />
     <Compile Include="Interfaces\IBancoAppService.cs" />
     <Compile Include="Interfaces\ICidadesAppService.cs" />
     <Compile Include="Interfaces\IClienteAppService.cs" />
     <Compile Include="Interfaces\IContaClienteAppService.cs" />
     <Compile Include="Interfaces\IEstadoAppService.cs" />
-    <Compile Include="Operacoes\IOperacaoesRealizadasAppService.cs" />
-    <Compile Include="Operacoes\IOperacoesAppService.cs" />
-    <Compile Include="Usuarios\IUsuarioAppService.cs" />
-    <Compile Include="Operacoes\OperacoesAppService.cs" />
-    <Compile Include="Operacoes\OperacoesRealizadasAppService.cs" />
+    <Compile Include="Interfaces\IOperacaoesRealizadasAppService.cs" />
+    <Compile Include="Interfaces\IOperacoesAppService.cs" />
+    <Compile Include="Interfaces\IUsuarioAppService.cs" />
+    <Compile Include="Applications\OperacoesAppService.cs" />
+    <Compile Include="Applications\OperacoesRealizadasAppService.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Usuarios\UsuarioAppService.cs" />
+    <Compile Include="Applications\UsuarioAppService.cs" />
   </ItemGroup>
   <ItemGroup>
     <Reference Include="Newtonsoft.Json, Version=6.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">

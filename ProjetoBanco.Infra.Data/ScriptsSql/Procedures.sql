@@ -1140,7 +1140,38 @@ CREATE PROCEDURE [dbo].[PBSP_UPDATEAGENCIA]
 		WHERE agencia = @agencia;
 	END
 GO
-																					
+			
+IF EXISTS (SELECT * FROM dbo.sysobjects WHERE id = object_id(N'[dbo].[PBSP_GETOPREALIZADAESTORNOBYID]') AND objectproperty(id, N'IsPROCEDURE')=1)
+	DROP PROCEDURE [dbo].[PBSP_GETOPREALIZADAESTORNOBYID]
+GO
+
+CREATE PROCEDURE [dbo].[PBSP_GETOPREALIZADAESTORNOBYID]
+	@Id INT
+	AS
+
+	/*
+	Documentação
+	Arquivo Fonte.....: ArquivoFonte.sql
+	Objetivo..........: Retona a operação requisitada para estorno 
+	Autor.............: SMN - Douglas
+ 	Data..............: 26	/10/2017
+	Ex................: EXEC [dbo].[PBSP_GETOPREALIZADAESTORNOBYID]
+
+	*/
+
+	BEGIN
+		SELECT opReal.Id,opReal.codTipoOp, opReal.dataOP,opReal.valorOp,
+			opReal.saldoAnterior, op.descricao, ag.agencia,
+			conta.num , cli.nome
+			FROM OperacoesRealizadas AS opReal WITH(NOLOCK)
+			INNER JOIN Operacoes AS op WITH(NOLOCK) on opReal.codTipoOp = op.Id
+			INNER JOIN Agencia AS ag WITH(NOLOCK) ON opReal.agencia = ag.agencia
+			INNER JOIN Conta AS conta WITH(NOLOCK) ON opReal.contaId = conta.Id
+			INNER JOIN Clientes AS cli WITH(NOLOCK) ON opReal.clienteId = cli.Id
+			WHERE opReal.Id = @Id
+	END
+GO
+																						
 --Funções
 --função que retorna o Saldo
 CREATE FUNCTION dbo.RetornaSaldo(@contaId SMALLINT)
