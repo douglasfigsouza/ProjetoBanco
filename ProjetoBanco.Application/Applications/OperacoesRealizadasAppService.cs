@@ -52,11 +52,11 @@ namespace ProjetoBanco.Application
             return response;
         }
 
-        public HttpResponseMessage ConfirmEstorno(int id)
+        public HttpResponseMessage ConfirmEstorno(Estorno estorno)
         {
             HttpResponseMessage response;
             response = HttpClientConf.HttpClientConfig("Operacoes")
-                .PostAsJsonAsync("ConfirmEstorno", id).Result;
+                .PostAsJsonAsync("ConfirmEstorno",estorno).Result;
             return response;
         }
 

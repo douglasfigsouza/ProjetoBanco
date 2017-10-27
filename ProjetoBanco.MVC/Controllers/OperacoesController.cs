@@ -5,7 +5,6 @@ using ProjetoBanco.MVC.ViewModels;
 using System;
 using System.Collections.Generic;
 using System.Net.Http;
-using System.Threading.Tasks;
 using System.Web.Mvc;
 
 namespace ProjetoBanco.MVC.Controllers
@@ -22,15 +21,13 @@ namespace ProjetoBanco.MVC.Controllers
     {
         private readonly IOperacoesAppService _OperacaoAppService;
         private readonly IOperacaoesRealizadasAppService _operacaoesRealizadasAppService;
-
-
-
+        
         public OperacoesController(IOperacoesAppService OperacaoAppService, IOperacaoesRealizadasAppService operacaoesRealizadasAppService)
         {
             _OperacaoAppService = OperacaoAppService;
             _operacaoesRealizadasAppService = operacaoesRealizadasAppService;
         }
-
+        
         // GET: Operacoes
         public ActionResult CreateOperacao()
         {
@@ -38,34 +35,27 @@ namespace ProjetoBanco.MVC.Controllers
         }
 
         [HttpPost]
-        public async Task<ActionResult> CreateOperacao(OperacaoViewModel opViewModel)
+        public ActionResult CreateOperacao(OperacaoViewModel opViewModel)
         {
             var op = new Operacoes();
             var statusCode = new HttpResponseMessage();
-            dynamic transact;
-            if (ModelState.IsValid)
+            op.descricao = opViewModel.descricao;
+            op.ativo = true;
+            statusCode = _OperacaoAppService.AddOperacao(op);
+
+            if (statusCode.IsSuccessStatusCode)
             {
-                op.descricao = opViewModel.descricao;
-                op.ativo = true;
-                statusCode = _OperacaoAppService.AddOperacao(op);
-                if (statusCode.IsSuccessStatusCode)
-                {
-                    TempData["outraOp"] = "/Operacoes/CreateOperacao";
-                    TempData["menssagem"] = "Operação: " + opViewModel.descricao + " cadastrada com sucesso!";
-                    return RedirectToAction("Success", "FeedBack");
-                }
-                else
-                {
-                    transact = await statusCode.Content.ReadAsStringAsync();
-                    TempData["outraOp"] = "/Operacoes/CreateOperacao";
-                    TempData["menssagem"] = Utilitarios.Utilitarios.limpaMenssagemErro(transact + "");
-                    return RedirectToAction("Error", "FeedBack");
-                }
+                TempData["outraOp"] = "/Operacoes/CreateOperacao";
+                TempData["menssagem"] = "Operação: " + opViewModel.descricao + " cadastrada com sucesso!";
+                return RedirectToAction("Success", "FeedBack");
             }
             else
             {
-                return View(opViewModel);
+                TempData["outraOp"] = "/Operacoes/CreateOperacao";
+                TempData["menssagem"] = Utilitarios.Utilitarios.limpaMenssagemErro(statusCode.Content.ReadAsStringAsync().Result);
+                return RedirectToAction("Error", "FeedBack");
             }
+
         }
 
         public ActionResult Deposito()
@@ -95,11 +85,12 @@ namespace ProjetoBanco.MVC.Controllers
             return View();
         }
 
-        public async Task<ActionResult> VerificaDados(TransacaoViewModel trasacaoViewModel)
+        public ActionResult VerificaDados(TransacaoViewModel trasacaoViewModel)
         {
             var transacao = new Transacao();
             var statusCode = new HttpResponseMessage();
-            dynamic transact;
+            Transacao transact;
+
             if (ModelState.IsValid)
             {
                 Cliente cli = (Cliente)Session["cliente"];
@@ -126,7 +117,7 @@ namespace ProjetoBanco.MVC.Controllers
                 statusCode = _OperacaoAppService.VerificaDadosTransacao(transacao);
                 if (statusCode.IsSuccessStatusCode)
                 {
-                    transact = await statusCode.Content.ReadAsAsync<Transacao>();
+                    transact = statusCode.Content.ReadAsAsync<Transacao>().Result;
                     //insere os valores na view no hidden
                     trasacaoViewModel.clienteId = transact.clienteId;
                     trasacaoViewModel.contaId = transact.contaId;
@@ -150,10 +141,9 @@ namespace ProjetoBanco.MVC.Controllers
         }
 
         //confirma os dados do deposito
-        public async Task<ActionResult> ConfirmDeposito(TransacaoViewModel trasacaoViewModel)
+        public ActionResult ConfirmDeposito(TransacaoViewModel trasacaoViewModel)
         {
             var statusCode = new HttpResponseMessage();
-            dynamic transact;
 
             var operacaoRealizada = new OperacoesRealizadas();
             operacaoRealizada.agencia = int.Parse(Utilitarios.Utilitarios.retiraMask(trasacaoViewModel.agencia));
@@ -173,17 +163,16 @@ namespace ProjetoBanco.MVC.Controllers
             }
             else
             {
-                transact = await statusCode.Content.ReadAsStringAsync();
-                ViewBag.erro = Utilitarios.Utilitarios.limpaMenssagemErro(transact);
+
+                ViewBag.erro = Utilitarios.Utilitarios.limpaMenssagemErro(statusCode.Content.ReadAsStringAsync().Result);
                 return View("FeedBackOp");
             }
         }
 
-        public async Task<ActionResult> ConsultaSaldo(TransacaoViewModel trasacaoViewModel)
+        public ActionResult ConsultaSaldo(TransacaoViewModel trasacaoViewModel)
         {
             var transacao = new Transacao();
             var statusCode = new HttpResponseMessage();
-            dynamic transact;
 
             Cliente cli = (Cliente)Session["cliente"];
             transacao.nivel = cli.nivel;
@@ -196,24 +185,20 @@ namespace ProjetoBanco.MVC.Controllers
             if (statusCode.IsSuccessStatusCode)
             {
                 //faz a deserialização do json retornado da requisiçao 
-                transact = await statusCode.Content.ReadAsAsync<Transacao>();
-                ViewBag.saldo = transact;
-                return View("MostraSaldo");
+                return View("MostraSaldo", statusCode.Content.ReadAsAsync<TransacaoViewModel>().Result);
             }
             else
             {
-                transact = await statusCode.Content.ReadAsStringAsync();
-                ViewBag.erro = Utilitarios.Utilitarios.limpaMenssagemErro(transact + "");
+                ViewBag.erro = Utilitarios.Utilitarios.limpaMenssagemErro(statusCode.Content.ReadAsStringAsync().Result);
                 return View("MostraSaldo");
 
             }
 
         }
         //confirma os dados do saque
-        public async Task<ActionResult> ConfirmSaque(TransacaoViewModel trasacaoViewModel)
+        public ActionResult ConfirmSaque(TransacaoViewModel trasacaoViewModel)
         {
             var statusCode = new HttpResponseMessage();
-            dynamic transact;
             var operacaoRealizada = new OperacoesRealizadas();
 
             operacaoRealizada.agencia = int.Parse(Utilitarios.Utilitarios.retiraMask(trasacaoViewModel.agencia));
@@ -232,18 +217,18 @@ namespace ProjetoBanco.MVC.Controllers
             }
             else
             {
-                transact = await statusCode.Content.ReadAsStringAsync();
-                TempData["menssagem"] = Utilitarios.Utilitarios.limpaMenssagemErro(transact + "");
+                TempData["menssagem"] = Utilitarios.Utilitarios.limpaMenssagemErro(statusCode.Content.ReadAsStringAsync().Result);
                 TempData["outraOp"] = "/Operacoes/Saque";
                 return View("FeedBackOp");
             }
 
         }
         [HttpPost]
-        public async Task<ActionResult> Transferencia(FormCollection transacao)
+        public ActionResult Transferencia(FormCollection transacao)
         {
             var lstTransacoesViewModels = new List<TransacaoViewModel>();
             var statusCode = new HttpResponseMessage();
+
             Cliente cli = (Cliente)Session["cliente"];
 
             Transacao transacao1 = new Transacao
@@ -263,12 +248,12 @@ namespace ProjetoBanco.MVC.Controllers
             };
             //garante que a primeira conta é a sua própria, para impedir que tranferencia entre conta de terceiros
             statusCode = _OperacaoAppService.VerificaDadosTransacao(transacao1);
-            transacao1 = await statusCode.Content.ReadAsAsync<Transacao>();
+            transacao1 = statusCode.Content.ReadAsAsync<Transacao>().Result;
             statusCode = _OperacaoAppService.VerificaDadosTransferencia(transacao2);
 
             if (statusCode.IsSuccessStatusCode)
             {
-                transacao2 = await statusCode.Content.ReadAsAsync<Transacao>();
+                transacao2 = statusCode.Content.ReadAsAsync<Transacao>().Result;
 
                 TransacaoViewModel transacao1ViewModel = new TransacaoViewModel();
                 //insere os valores na view no hidden
@@ -312,12 +297,12 @@ namespace ProjetoBanco.MVC.Controllers
             }
         }
 
-        public async Task<ActionResult> ConfirmTransferencia(List<TransacaoViewModel> Transacoes)
+        public ActionResult ConfirmTransferencia(List<TransacaoViewModel> Transacoes)
         {
             var operacaoRealizada = new OperacoesRealizadas();
             var operacaoRealizada1 = new OperacoesRealizadas();
             var statusCode = new HttpResponseMessage();
-            dynamic transact;
+
             operacaoRealizada.agencia = int.Parse(Transacoes[0].agencia);
             operacaoRealizada.clienteId = Transacoes[0].clienteId;
             operacaoRealizada.contaId = Transacoes[0].contaId;
@@ -340,9 +325,7 @@ namespace ProjetoBanco.MVC.Controllers
             }
             else
             {
-                transact = await statusCode.Content.ReadAsStringAsync();
-                TempData["menssagem"] = Utilitarios.Utilitarios.limpaMenssagemErro(transact);
-
+                TempData["menssagem"] = Utilitarios.Utilitarios.limpaMenssagemErro(statusCode.Content.ReadAsStringAsync().Result);
             }
 
             TempData["outraOp"] = "/Operacoes/Transferencia";
@@ -356,11 +339,10 @@ namespace ProjetoBanco.MVC.Controllers
 
         }
 
-        public async Task<ActionResult> Estorno(FormCollection form)
+        public ActionResult Estorno(FormCollection form)
         {
             var dadosOpGetReal = new DadosGetOpReal();
             var statusCode = new HttpResponseMessage();
-            IEnumerable<Estorno> transacts;
             List<EstornoViewModel> opsEstornoViewModels = new List<EstornoViewModel>();
 
             dadosOpGetReal.conta = Utilitarios.Utilitarios.retiraMask(form["conta"]);
@@ -370,8 +352,7 @@ namespace ProjetoBanco.MVC.Controllers
             statusCode = _operacaoesRealizadasAppService.GetAllOperacoesPorContaParaEstorno(dadosOpGetReal);
             if (statusCode.IsSuccessStatusCode)
             {
-                transacts = statusCode.Content.ReadAsAsync<IEnumerable<Estorno>>().Result;
-                foreach (var op in transacts)
+                foreach (var op in statusCode.Content.ReadAsAsync<IEnumerable<Estorno>>().Result)
                 {
                     opsEstornoViewModels.Add(new EstornoViewModel
                     {
@@ -399,9 +380,8 @@ namespace ProjetoBanco.MVC.Controllers
             }
             else
             {
-                dynamic transact;
-                transact = statusCode.Content.ReadAsStringAsync();
-                TempData["menssagem"] = transact;
+                TempData["menssagem"] =
+                    Utilitarios.Utilitarios.limpaMenssagemErro(statusCode.Content.ReadAsStringAsync().Result);
                 TempData["outraOp"] = "/Operacoes/DadosParaEstorno";
                 return View("FeedBackOp");
             }
@@ -411,7 +391,11 @@ namespace ProjetoBanco.MVC.Controllers
         public ActionResult ConfirmEstorno(int id)
         {
             var statusCode = new HttpResponseMessage();
-            statusCode = _operacaoesRealizadasAppService.ConfirmEstorno(id);
+            var estorno = new Estorno
+            {
+                Id = id
+            };
+            statusCode = _operacaoesRealizadasAppService.ConfirmEstorno(estorno);
             if (statusCode.IsSuccessStatusCode)
             {
                 TempData["menssagem"] = "Estorno realizado com sucesso!";
@@ -420,8 +404,7 @@ namespace ProjetoBanco.MVC.Controllers
             }
             else
             {
-                string erro = statusCode.Content.ReadAsStringAsync().Result;
-                TempData["menssagem"] = erro;
+                TempData["menssagem"] = Utilitarios.Utilitarios.limpaMenssagemErro(statusCode.Content.ReadAsStringAsync().Result);
                 TempData["outraOp"] = "/Operacoes/Estorno";
                 return View("FeedBackOp");
             }

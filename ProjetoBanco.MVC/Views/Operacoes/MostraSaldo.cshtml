@@ -2,11 +2,11 @@
     <div class="col s12">
         @if (ViewBag.erro == null)
         {
-            <h6>Conta: @ViewBag.saldo.conta / Cliente: @ViewBag.saldo.nome</h6>
+            <m>Conta: @Model.conta / Cliente: @Model.nome</m>
             <hr/>
             <h5>
                 Seu saldo é de:R$
-                @ViewBag.saldo.valor Reais
+                @Model.valor Reais
             </h5>
         }
         else
