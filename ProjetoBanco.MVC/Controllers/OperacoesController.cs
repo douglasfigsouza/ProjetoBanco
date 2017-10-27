@@ -21,13 +21,13 @@ namespace ProjetoBanco.MVC.Controllers
     {
         private readonly IOperacoesAppService _OperacaoAppService;
         private readonly IOperacaoesRealizadasAppService _operacaoesRealizadasAppService;
-        
+
         public OperacoesController(IOperacoesAppService OperacaoAppService, IOperacaoesRealizadasAppService operacaoesRealizadasAppService)
         {
             _OperacaoAppService = OperacaoAppService;
             _operacaoesRealizadasAppService = operacaoesRealizadasAppService;
         }
-        
+
         // GET: Operacoes
         public ActionResult CreateOperacao()
         {
@@ -168,8 +168,8 @@ namespace ProjetoBanco.MVC.Controllers
                 return View("FeedBackOp");
             }
         }
-
-        public ActionResult ConsultaSaldo(TransacaoViewModel trasacaoViewModel)
+        [HttpPost]
+        public ActionResult Saldo(TransacaoViewModel trasacaoViewModel)
         {
             var transacao = new Transacao();
             var statusCode = new HttpResponseMessage();
@@ -182,18 +182,15 @@ namespace ProjetoBanco.MVC.Controllers
             transacao.conta = Utilitarios.Utilitarios.retiraMask(trasacaoViewModel.conta);
 
             statusCode = _OperacaoAppService.ConsultaSaldo(transacao);
-            if (statusCode.IsSuccessStatusCode)
+            if (!statusCode.IsSuccessStatusCode)
             {
-                //faz a deserialização do json retornado da requisiçao 
-                return View("MostraSaldo", statusCode.Content.ReadAsAsync<TransacaoViewModel>().Result);
-            }
-            else
-            {
-                ViewBag.erro = Utilitarios.Utilitarios.limpaMenssagemErro(statusCode.Content.ReadAsStringAsync().Result);
-                return View("MostraSaldo");
-
+                Response.TrySkipIisCustomErrors = true;
+                Response.StatusCode = 400;
+                return Content("Momo viadão" + statusCode.Content.ReadAsStringAsync().Result);
             }
 
+            Response.StatusCode = 200;
+            return Content("OK");
         }
         //confirma os dados do saque
         public ActionResult ConfirmSaque(TransacaoViewModel trasacaoViewModel)

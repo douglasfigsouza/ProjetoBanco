@@ -1,6 +1,11 @@
 ﻿@model ProjetoBanco.MVC.ViewModels.TransacaoViewModel
 <div class="col s12 ">
-    @using (Html.BeginForm("ConsultaSaldo", "Operacoes"))
+    @using (Ajax.BeginForm("Saldo", "Operacoes", null, new AjaxOptions
+    {
+        HttpMethod = "POST",
+        OnSuccess = "sucesso()",
+        OnFailure = "erro(xhr)"
+    }))
     {
         @Html.ValidationSummary(true)
         {
@@ -36,7 +41,16 @@
     }
 </div>
 <script>
+    function sucesso() {
+        debugger;
+        alert("sucesso");
+    }
+    function erro(xhr) {
+        debugger;
+        alert("erro", xhr.responseText);
+    }
     $(document).ready(function () {
         $(".container").addClass("diminuicao50");
     });
+
 </script>

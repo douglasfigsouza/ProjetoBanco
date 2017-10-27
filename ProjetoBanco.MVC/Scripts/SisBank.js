@@ -1,5 +1,7 @@
 ﻿$(document).ready(function () {
-
+    function sucesso() {
+        alert("teste");
+    }
     $(".button-collapse").sideNav();
     //verifica checked
     $(document).on("change",

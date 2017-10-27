@@ -1,5 +1,4 @@
-﻿using System.Web;
-using System.Web.Optimization;
+﻿using System.Web.Optimization;
 
 namespace ProjetoBanco.MVC
 {
@@ -9,10 +8,14 @@ namespace ProjetoBanco.MVC
         public static void RegisterBundles(BundleCollection bundles)
         {
             bundles.Add(new ScriptBundle("~/bundles/jquery").Include(
-                        "~/Scripts/jquery-{version}.js"));
+                        "~/Scripts/jquery-{version}.js",
+                        "~/Scripts/jquery.validate.js"
+                        ));
 
-            bundles.Add(new ScriptBundle("~/bundles/jqueryval").Include(
-                        "~/Scripts/jquery.validate*"));
+            bundles.Add(new ScriptBundle("~/bundles/unobtrusive").Include(
+                "~/Scripts/jquery.validate.unobtrusive.js",
+                "~/Scripts/jquery.unobtrusive-ajax.js"
+            ));
 
             // Use the development version of Modernizr to develop with and learn from. Then, when you're
             // ready for production, use the build tool at http://modernizr.com to pick only the tests you need.
@@ -26,7 +29,7 @@ namespace ProjetoBanco.MVC
                       "~/Scripts/SisBank.js",
                       "~/Scripts/materialize/SisBankMaterialize.js",
                       "~/Scripts/jquery.maskedinput.js",
-                      "~/Scripts/jquery.validate.js",
+                      //"~/Scripts/jquery.validate.js",
                       "~/Scripts/jquery.maskMoney.js"));
 
             bundles.Add(new StyleBundle("~/Content/css").Include(
