@@ -13,7 +13,6 @@ namespace ProjetoBanco.MVC
                         ));
 
             bundles.Add(new ScriptBundle("~/bundles/unobtrusive").Include(
-                "~/Scripts/jquery.validate.unobtrusive.js",
                 "~/Scripts/jquery.unobtrusive-ajax.js"
             ));
 
@@ -29,7 +28,6 @@ namespace ProjetoBanco.MVC
                       "~/Scripts/SisBank.js",
                       "~/Scripts/materialize/SisBankMaterialize.js",
                       "~/Scripts/jquery.maskedinput.js",
-                      //"~/Scripts/jquery.validate.js",
                       "~/Scripts/jquery.maskMoney.js"));
 
             bundles.Add(new StyleBundle("~/Content/css").Include(

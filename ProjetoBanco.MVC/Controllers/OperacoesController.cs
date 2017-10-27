@@ -184,13 +184,13 @@ namespace ProjetoBanco.MVC.Controllers
             statusCode = _OperacaoAppService.ConsultaSaldo(transacao);
             if (!statusCode.IsSuccessStatusCode)
             {
-                Response.TrySkipIisCustomErrors = true;
-                Response.StatusCode = 400;
-                return Content("Momo viadão" + statusCode.Content.ReadAsStringAsync().Result);
+                //Response.TrySkipIisCustomErrors = true;
+                //Response.StatusCode = 400;
+                //return Content("Momo viadão" + statusCode.Content.ReadAsStringAsync().Result);
+               
             }
-
             Response.StatusCode = 200;
-            return Content("OK");
+            return Json(statusCode.Content.ReadAsAsync<TransacaoViewModel>().Result,JsonRequestBehavior.AllowGet); ;
         }
         //confirma os dados do saque
         public ActionResult ConfirmSaque(TransacaoViewModel trasacaoViewModel)
