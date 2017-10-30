@@ -1,4 +1,7 @@
-﻿@model ProjetoBanco.MVC.ViewModels.TransacaoViewModel
+﻿@{
+    Layout = null;
+}
+@model ProjetoBanco.MVC.ViewModels.TransacaoViewModel
 <div class="col s12"id="dadosContaCliente">
     @using (Ajax.BeginForm("Saldo", "Operacoes", null, new AjaxOptions
     {

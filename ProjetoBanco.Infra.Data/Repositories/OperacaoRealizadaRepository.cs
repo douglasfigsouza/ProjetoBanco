@@ -36,7 +36,6 @@ namespace ProjetoBanco.Infra.Data.Repositories
         {
             conn.ExecuteProcedure(Procedure.PBSP_DEPOSITO);
             conn.AddParameter("@codTipoOp",operacaoRealizada.operacaoId);
-            conn.AddParameter("@agencia", operacaoRealizada.agencia);
             conn.AddParameter("@contaId", operacaoRealizada.contaId);
             conn.AddParameter("@clienteId", operacaoRealizada.clienteId);
             conn.AddParameter("@dataOp", operacaoRealizada.dataOp);
@@ -137,7 +136,6 @@ namespace ProjetoBanco.Infra.Data.Repositories
         {
             conn.ExecuteProcedure(Procedure.PBSP_SAQUE);
             conn.AddParameter("@codTipoOp", operacaoRealizada.operacaoId);
-            conn.AddParameter("@agencia", operacaoRealizada.agencia);
             conn.AddParameter("@contaId", operacaoRealizada.contaId);
             conn.AddParameter("@clienteId", operacaoRealizada.clienteId);
             conn.AddParameter("@dataOp", operacaoRealizada.dataOp);

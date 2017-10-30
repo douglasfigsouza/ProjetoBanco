@@ -50,6 +50,7 @@ namespace ProjetoBanco.Infra.Data.Repositories
             conn.AddParameter("@agencia", transacao.agencia);
             conn.AddParameter("@clienteId", transacao.clienteId);
             conn.AddParameter("@conta", transacao.conta);
+            var valor = transacao.valor;
             transacao = null;
             result = conn.ExecuteReader();
             while (result.Read())
@@ -61,6 +62,7 @@ namespace ProjetoBanco.Infra.Data.Repositories
                     bancoId = Convert.ToInt32(result["bancoId"].ToString()),
                     agencia = Convert.ToInt32(result["agencia"].ToString()),
                     contaId = Convert.ToInt32(result["contaId"].ToString()),
+                    valor = valor
                 };
             }
             if (transacao == null)

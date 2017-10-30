@@ -1,19 +1,37 @@
 ﻿@model ProjetoBanco.MVC.ViewModels.TransacaoViewModel
-<div class="row">
+<div class="row" id="dadosParaDeposito">
+    <div class="row divErroNaOperacao">
+        <div class="col s12">
+            <h6 class="erroOperacao"></h6>
+        </div>
+    </div>
+
+    <div class="row divSucessoNaOperacao">
+        <div class="col s12">
+            <h6 class="sucessoOperacao"></h6>
+        </div>
+    </div>
     <div class="col s12">
         <h5>Depósito</h5>
         <hr />
     </div>
     <div class="col s12">
-        @using (Html.BeginForm("VerificaDados", "Operacoes"))
-        { 
-            <input type="hidden" name="op" value="1"/>
+        @using (Ajax.BeginForm("VerificaDados", "Operacoes", null, new AjaxOptions
+        {
+            HttpMethod = "POST",
+            OnSuccess = "sucesso",
+            OnFailure = "erro(xhr)",
+            OnBegin = "progresso",
+            OnComplete = "fim"
+        }))
+        {
+            <input type="hidden" name="op" value="1" />
             @Html.ValidationSummary(true)
             {
                 <div class="row">
                     <div class="col s6 ">
                         <label for="agencia" class="col s12">Agência</label>
-                        @Html.TextBoxFor(t=>t.agencia,new {@class="col s12 agencia"})
+                        @Html.TextBoxFor(t => t.agencia, new { @class = "col s12 agencia" })
                     </div>
                     <div class="col s6 ">
                         <label for="conta" class="col s12">Conta</label>
@@ -38,8 +56,70 @@
         }
     </div>
 </div>
+<div id="dadosConfirmacaoDeposito" class="row">
+    @using (Ajax.BeginForm("ConfirmaDeposito", "Operacoes", null, new AjaxOptions
+    {
+        HttpMethod = "POST",
+        OnSuccess = "sucessoConfirmacao",
+        OnFailure = "erroConfirmacao(xhr)",
+        OnBegin = "progresso",
+        OnComplete = "fim"
+    }))
+    {
+        <div class="row">
+            <input id="valorADepositar" name="valorADepositar" type="hidden"/>
+            <input id="contaId" name="contaId" type="hidden" />
+            <h6>Depósito</h6>
+            <hr />
+            <h5 id="nomeFavorecido"></h5>
+            <h5 id="valorDeposito"></h5>
+        </div>
+        <hr />
+        <button class="btn waves-effect waves-light" type="submit" name="ConfirmDeposito">
+            Confirmar
+            <i class="material-icons right">send</i>
+        </button>
+    }
+</div>
+
+
 <script>
-    $(document).ready(function() {
+    function sucesso(response) {
+        $("#dadosConfirmacaoDeposito").show();
+        $("#dadosParaDeposito").hide();
+        $("#nomeFavorecido").text("Favorecido: " + response.nome);
+        $("#valorDeposito").text("Valor: R$ " + response.valor + " Reais");
+        $("#contaId").val(response.contaId);
+        $("#valorADepositar").val(response.valor);
+    }
+
+    function erro(xhr) {
+        $("#dadosConfirmacaoDeposito").hide();
+        $("#dadosParaDeposito").show();
+        $(".divErroNaOperacao").fadeIn(3000);
+        $("#conta").val("");
+        $("#agencia").val("");
+        $("#valor").val("");
+        $(".erroOperacao").html("<i class='tiny material-icons'>error</i>Ops! algo deu errado. " + xhr.responseText);
+    }
+    function sucessoConfirmacao() {
+        $("#dadosConfirmacaoDeposito").hide();
+        $("#dadosParaDeposito").show();
+        $(".divSucessoNaOperacao").fadeIn(3000);
+        $(".sucessoOperacao").html("<i class='tiny material-icons'>check_circle</i> Depósito efetuado com Sucesso!")
+    }
+    function erroConfirmacao(xhr) {
+        debugger;
+        $("#dadosConfirmacaoDeposito").hide();
+        $("#dadosParaDeposito").show();
+        $(".divErroNaOperacao").fadeIn(3000);
+        $("#conta").val("");
+        $("#agencia").val("");
+        $("#valor").val("");
+        $(".erroOperacao").html("<i class='tiny material-icons'>error</i>Ops! algo deu errado. " + xhr.responseText);
+    }
+    $(document).ready(function () {
+        $("#dadosConfirmacaoDeposito").hide();
         $(".container").addClass("diminuicao50");
     });
 </script>

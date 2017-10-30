@@ -77,88 +77,86 @@ namespace ProjetoBanco.MVC.Controllers
             return View();
         }
 
-        public ActionResult VerificaDados(TransacaoViewModel trasacaoViewModel)
+        public ActionResult VerificaDados(TransacaoViewModel transacaoViewModel)
         {
             var transacao = new Transacao();
             var statusCode = new HttpResponseMessage();
-            Transacao transact;
+            Cliente cli = (Cliente)Session["cliente"];
 
-            if (ModelState.IsValid)
+            transacao.clienteId = cli.Id;
+            var valor = decimal.Parse(Utilitarios.Utilitarios.retiraMaskMoney(transacaoViewModel.valor));
+            transacao.agencia = int.Parse(Utilitarios.Utilitarios.retiraMask(transacaoViewModel.agencia));
+            transacao.conta = Utilitarios.Utilitarios.retiraMask(transacaoViewModel.conta);
+            transacao.senhaCli = transacaoViewModel.senhaCli;
+            transacao.nivel = cli.nivel;
+            transacao.op = transacaoViewModel.op;
+            transacao.valor = decimal.Parse(Utilitarios.Utilitarios.retiraMaskMoney(transacaoViewModel.valor));
+
+            if (transacaoViewModel.op == 1)
             {
-                Cliente cli = (Cliente)Session["cliente"];
+                ViewBag.descOp = "Depósito";
+                ViewBag.operacao = 1;
+            }
+            else if (transacaoViewModel.op == 2)
+            {
+                ViewBag.descOp = "Saque";
+                ViewBag.operacao = 2;
+            }
 
-                transacao.clienteId = cli.Id;
-                var valor = decimal.Parse(Utilitarios.Utilitarios.retiraMaskMoney(trasacaoViewModel.valor));
-                transacao.agencia = int.Parse(Utilitarios.Utilitarios.retiraMask(trasacaoViewModel.agencia));
-                transacao.conta = Utilitarios.Utilitarios.retiraMask(trasacaoViewModel.conta);
-                transacao.senhaCli = trasacaoViewModel.senhaCli;
-                transacao.nivel = cli.nivel;
-                transacao.op = trasacaoViewModel.op;
-
-                if (trasacaoViewModel.op == 1)
-                {
-                    ViewBag.descOp = "Depósito";
-                    ViewBag.operacao = 1;
-                }
-                else if (trasacaoViewModel.op == 2)
-                {
-                    ViewBag.descOp = "Saque";
-                    ViewBag.operacao = 2;
-                }
-
-                statusCode = _OperacaoAppService.VerificaDadosTransacao(transacao);
-                if (statusCode.IsSuccessStatusCode)
-                {
-                    transact = statusCode.Content.ReadAsAsync<Transacao>().Result;
-                    //insere os valores na view no hidden
-                    trasacaoViewModel.clienteId = transact.clienteId;
-                    trasacaoViewModel.contaId = transact.contaId;
-                    trasacaoViewModel.agencia = transact.agencia + "";
-                    trasacaoViewModel.nome = transact.nome;
-                    trasacaoViewModel.valor = valor + "";
-
-                    return View("Confirmacao", trasacaoViewModel);
-                }
-                else
-                {
-                    ViewBag.erroTransacao = "Trasação nao pode ser realizada, pois nao foi possivel localizar uma conta com os dados informado";
-                    return View("Confirmacao");
-                }
+            statusCode = _OperacaoAppService.VerificaDadosTransacao(transacao);
+            if (!statusCode.IsSuccessStatusCode)
+            {
+                Response.TrySkipIisCustomErrors = true;
+                Response.StatusCode = 400;
+                return Content(Utilitarios.Utilitarios.limpaMenssagemErro(statusCode.Content.ReadAsStringAsync().Result));
 
             }
-            else
-            {
-                return View("Deposito", trasacaoViewModel);
-            }
+
+            Response.StatusCode = 200;
+            return Json(statusCode.Content.ReadAsAsync<TransacaoViewModel>().Result);
+
+            //statusCode = _OperacaoAppService.VerificaDadosTransacao(transacao);
+            //if (statusCode.IsSuccessStatusCode)
+            //{
+            //    transact = statusCode.Content.ReadAsAsync<Transacao>().Result;
+            //    //insere os valores na view no hidden
+            //    trasacaoViewModel.clienteId = transact.clienteId;
+            //    trasacaoViewModel.contaId = transact.contaId;
+            //    trasacaoViewModel.agencia = transact.agencia + "";
+            //    trasacaoViewModel.nome = transact.nome;
+            //    trasacaoViewModel.valor = valor + "";
+
+            //    return View("Confirmacao", trasacaoViewModel);
+            //}
+            //else
+            //{
+            //    ViewBag.erroTransacao = "Trasação nao pode ser realizada, pois nao foi possivel localizar uma conta com os dados informado";
+            //    return View("Confirmacao");
+            //}
         }
 
         //confirma os dados do deposito
-        public ActionResult ConfirmDeposito(TransacaoViewModel trasacaoViewModel)
+        public ActionResult ConfirmaDeposito(string contaId, string valorADepositar)
         {
             var statusCode = new HttpResponseMessage();
-
+            var cliente = (Cliente)Session["cliente"];
             var operacaoRealizada = new OperacoesRealizadas();
-            operacaoRealizada.agencia = int.Parse(Utilitarios.Utilitarios.retiraMask(trasacaoViewModel.agencia));
-            operacaoRealizada.clienteId = trasacaoViewModel.clienteId;
-            operacaoRealizada.contaId = trasacaoViewModel.contaId;
+            operacaoRealizada.contaId = int.Parse(contaId);
+            operacaoRealizada.clienteId = cliente.Id;
             operacaoRealizada.dataOp = DateTime.Now;
-            operacaoRealizada.valorOp = decimal.Parse(Utilitarios.Utilitarios.retiraMaskMoney(trasacaoViewModel.valor));
-
-            TempData["menssagem"] = "Depósito Realizado com sucesso!";
-            TempData["outraOp"] = "/Operacoes/Deposito";
-
+            operacaoRealizada.valorOp = decimal.Parse(valorADepositar);
             operacaoRealizada.operacaoId = 1;
-            statusCode = _operacaoesRealizadasAppService.Deposito(operacaoRealizada);
-            if (statusCode.IsSuccessStatusCode)
-            {
-                return View("FeedBackOp");
-            }
-            else
-            {
 
-                ViewBag.erro = Utilitarios.Utilitarios.limpaMenssagemErro(statusCode.Content.ReadAsStringAsync().Result);
-                return View("FeedBackOp");
+            statusCode = _operacaoesRealizadasAppService.Deposito(operacaoRealizada);
+            if (!statusCode.IsSuccessStatusCode)
+            {
+                Response.TrySkipIisCustomErrors = true;
+                Response.StatusCode = 400;
+                return Content(Utilitarios.Utilitarios.limpaMenssagemErro(statusCode.Content.ReadAsStringAsync().Result));
+
             }
+            Response.StatusCode = 200;
+            return Json(statusCode.Content.ReadAsStringAsync().Result);
         }
         [HttpPost]
         public ActionResult Saldo(TransacaoViewModel trasacaoViewModel)
@@ -185,31 +183,44 @@ namespace ProjetoBanco.MVC.Controllers
             return Json(statusCode.Content.ReadAsAsync<TransacaoViewModel>().Result);
         }
         //confirma os dados do saque
-        public ActionResult ConfirmSaque(TransacaoViewModel trasacaoViewModel)
+        public ActionResult ConfirmaSaque(string contaId, string valorASacar)
         {
+            var cliente = (Cliente)Session["cliente"];
             var statusCode = new HttpResponseMessage();
             var operacaoRealizada = new OperacoesRealizadas();
-
-            operacaoRealizada.agencia = int.Parse(Utilitarios.Utilitarios.retiraMask(trasacaoViewModel.agencia));
-            operacaoRealizada.clienteId = trasacaoViewModel.clienteId;
-            operacaoRealizada.contaId = trasacaoViewModel.contaId;
+            decimal valor;
+            operacaoRealizada.contaId = int.Parse(contaId);
+            operacaoRealizada.clienteId = cliente.Id;
             operacaoRealizada.dataOp = DateTime.Now;
-            operacaoRealizada.valorOp = decimal.Parse(Utilitarios.Utilitarios.retiraMaskMoney(trasacaoViewModel.valor));
+            decimal.TryParse(valorASacar, out valor);
+
+            operacaoRealizada.valorOp = decimal.Parse(valorASacar.Replace(".",","));
             operacaoRealizada.operacaoId = 2;
 
             statusCode = _operacaoesRealizadasAppService.Saque(operacaoRealizada);
-            if (statusCode.IsSuccessStatusCode)
+            if (!statusCode.IsSuccessStatusCode)
             {
-                TempData["menssagem"] = "Saque realizado com sucesso!";
-                TempData["outraOp"] = "/Operacoes/Saque";
-                return View("FeedBackOp");
+                Response.TrySkipIisCustomErrors = true;
+                Response.StatusCode = 400;
+                return Content(Utilitarios.Utilitarios.limpaMenssagemErro(statusCode.Content.ReadAsStringAsync().Result));
+
             }
-            else
-            {
-                TempData["menssagem"] = Utilitarios.Utilitarios.limpaMenssagemErro(statusCode.Content.ReadAsStringAsync().Result);
-                TempData["outraOp"] = "/Operacoes/Saque";
-                return View("FeedBackOp");
-            }
+            Response.StatusCode = 200;
+            return Json(statusCode.Content.ReadAsStringAsync().Result);
+
+            //statusCode = _operacaoesRealizadasAppService.Saque(operacaoRealizada);
+            //if (statusCode.IsSuccessStatusCode)
+            //{
+            //    TempData["menssagem"] = "Saque realizado com sucesso!";
+            //    TempData["outraOp"] = "/Operacoes/Saque";
+            //    return View("FeedBackOp");
+            //}
+            //else
+            //{
+            //    TempData["menssagem"] = Utilitarios.Utilitarios.limpaMenssagemErro(statusCode.Content.ReadAsStringAsync().Result);
+            //    TempData["outraOp"] = "/Operacoes/Saque";
+            //    return View("FeedBackOp");
+            //}
 
         }
         [HttpPost]

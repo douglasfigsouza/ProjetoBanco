@@ -494,81 +494,81 @@ GO
 
 IF EXISTS (SELECT * FROM dbo.sysobjects WHERE id = object_id(N'[dbo].[PBSP_DEPOSITO]') AND objectproperty(id, N'IsPROCEDURE')=1)
 DROP PROCEDURE [dbo].[PBSP_DEPOSITO]
-GO
+	GO
 
-CREATE PROCEDURE [dbo].[PBSP_DEPOSITO]
-@codTipoOp SMALLINT,
-@clienteId SMALLINT,
-@contaId SMALLINT,
-@agencia INT,
-@dataOp DATETIME,
-@valorOp DECIMAL(18,2)
-AS
+	CREATE PROCEDURE [dbo].[PBSP_DEPOSITO]
+	@codTipoOp SMALLINT,
+	@clienteId SMALLINT,
+	@contaId SMALLINT,
+	@dataOp DATETIME,
+	@valorOp DECIMAL(18,2)
+	AS
 
-/*
-Documentação
-Arquivo Fonte.....: ArquivoFonte.sql
-Objetivo..........: Faz o depósito na conta selecionada
-Autor.............: SMN - Douglas
-Data..............: 06/10/2017
-Ex................: EXEC [dbo].[PBSP_DEPOSITO]
+	/*
+	Documentação
+	Arquivo Fonte.....: ArquivoFonte.sql
+	Objetivo..........: Faz o depósito na conta selecionada
+	Autor.............: SMN - Douglas
+	Data..............: 06/10/2017
+	Ex................: EXEC [dbo].[PBSP_DEPOSITO]
 
-*/
+	*/
 
-BEGIN
-DECLARE @bancoId SMALLINT,
-@saldoAnterior DECIMAL(18,2);
-SET	@bancoId = dbo.RetornaIdBanco(@agencia);
-SET @saldoAnterior = dbo.RetornaSaldo(@contaId);
+	BEGIN
+		DECLARE @bancoId SMALLINT,
+				@saldoAnterior DECIMAL(18,2),
+				@agencia SMALLINT;
+		SET @saldoAnterior = dbo.RetornaSaldo(@contaId);
+		SET @agencia = dbo.RetornaAgenciaDaConta(@contaId);
+		SET @bancoId = dbo.RetornaIdBanco(@agencia);
+		INSERT INTO OperacoesRealizadas(codTipoOp,clienteId,contaId,agencia,bancoId,dataOP,saldoAnterior,valorOp)
+		VALUES(@codTipoOp,@clienteId,@contaId,@agencia,@bancoId,@dataOp,@saldoAnterior,@valorOp)
 
-INSERT INTO OperacoesRealizadas(codTipoOp,clienteId,contaId,agencia,bancoId,dataOP,saldoAnterior,valorOp)
-VALUES(@codTipoOp,@clienteId,@contaId,@agencia,@bancoId,@dataOp,@saldoAnterior,@valorOp)
-
-END
-GO
---Saque
+		END
+	GO
+	--Saque
 
 IF EXISTS (SELECT * FROM dbo.sysobjects WHERE id = object_id(N'[dbo].[PBSP_SAQUE]') AND objectproperty(id, N'IsPROCEDURE')=1)
 DROP PROCEDURE [dbo].[PBSP_SAQUE]
 GO
 
-CREATE PROCEDURE [dbo].[PBSP_SAQUE]
-@codTipoOp SMALLINT,
-@clienteId SMALLINT,
-@contaId SMALLINT,
-@agencia INT,
-@dataOp DATETIME,
-@valorOp DECIMAL(18,2)
-AS
+	CREATE PROCEDURE [dbo].[PBSP_SAQUE]
+	@codTipoOp SMALLINT,
+	@clienteId SMALLINT,
+	@contaId SMALLINT,
+	@dataOp DATETIME,
+	@valorOp DECIMAL(18,2)
+	AS
 
-/*
+	/*
 
-Documentação
-Arquivo Fonte.....: ArquivoFonte.sql
-Objetivo..........: Faz o saque na conta selecionada
-Autor.............: SMN - Douglas
-Data..............: 09/10/2017
-Ex................: EXEC [dbo].[PBSP_SAQUE]
+	Documentação
+	Arquivo Fonte.....: ArquivoFonte.sql
+	Objetivo..........: Faz o saque na conta selecionada
+	Autor.............: SMN - Douglas
+	Data..............: 09/10/2017
+	Ex................: EXEC [dbo].[PBSP_SAQUE]
 
-*/
+	*/
 
-BEGIN
-DECLARE @bancoId SMALLINT,
-@saldoAnterior DECIMAL(18,2);
-SET	@bancoId = dbo.RetornaIdBanco(@agencia);
-SET @saldoAnterior = dbo.RetornaSaldo(@contaId);
-IF((@saldoAnterior - @valorOp) >= 0)
-BEGIN
-INSERT INTO OperacoesRealizadas(codTipoOp,clienteId,contaId,agencia,bancoId,dataOP,saldoAnterior,valorOp)
-VALUES(@codTipoOp,@clienteId,@contaId,@agencia,@bancoId,@dataOp,@saldoAnterior,@valorOp*(-1))
-RETURN 1;
-END
-ELSE
-BEGIN
-RETURN 0;
-END
+	BEGIN
+		DECLARE @bancoId SMALLINT,
+				@saldoAnterior DECIMAL(18,2),
+				@agencia SMALLINT = dbo.RetornaAgenciaDaConta(@contaId);;
+		SET	@bancoId = dbo.RetornaIdBanco(@agencia);
+		SET @saldoAnterior = dbo.RetornaSaldo(@contaId);
+		IF((@saldoAnterior - @valorOp) >= 0)
+			BEGIN
+				INSERT INTO OperacoesRealizadas(codTipoOp,clienteId,contaId,agencia,bancoId,dataOP,saldoAnterior,valorOp)
+					VALUES(@codTipoOp,@clienteId,@contaId,@agencia,@bancoId,@dataOp,@saldoAnterior,@valorOp*(-1))
+				RETURN 1;
+			END
+		ELSE
+			BEGIN
+				RETURN 0;
+			END
 
-END
+	END
 GO
 GO
 
@@ -1148,7 +1148,7 @@ GO
 CREATE PROCEDURE [dbo].[PBSP_GETOPREALIZADAESTORNOBYID]
 	@Id INT
 	AS
-
+	
 	/*
 	Documentação
 	Arquivo Fonte.....: ArquivoFonte.sql
@@ -1236,5 +1236,15 @@ CREATE FUNCTION dbo.RetornaIdProxOpRealizada(@idOpReal SMALLINT)
 						WHERE Id=@idOpReal);
 			END
 		RETURN @opProxOpReal;
+	END
+GO
+--Retorna o id da agencia da conta vinculada
+CREATE FUNCTION dbo.RetornaAgenciaDaConta(@contaId SMALLINT)
+	RETURNS SMALLINT
+	BEGIN
+		RETURN (SELECT TOP(1) Agencia.agencia FROM Agencia WITH(NOLOCK)
+				INNER JOIN ContaCliente WITH(NOLOCK) ON Agencia.agencia = ContaCliente.agencia
+				INNER JOIN Conta WITH(NOLOCK) on ContaCliente.contaId = Conta.id
+				WHERE Conta.Id = @contaId);
 	END
 GO
