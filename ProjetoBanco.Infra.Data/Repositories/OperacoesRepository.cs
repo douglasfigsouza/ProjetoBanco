@@ -122,7 +122,7 @@ namespace ProjetoBanco.Infra.Data.Repositories
                 }
                 if (transacao == null)
                 {
-                    _notifications.Notificacoes.Add("Conta não encontrada e ou não existe saldo nessa conta!");
+                    _notifications.Notificacoes.Add("Conta não encontrada!");
                 }
                 return transacao;
             }

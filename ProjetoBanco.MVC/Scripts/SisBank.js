@@ -1,4 +1,13 @@
-﻿$(document).ready(function () {
+﻿function progresso() {
+    $(".loading").show();
+}
+function fim() {
+    $(".loading").hide();
+}
+$(document).ready(function () {
+    $(".divErroNaOperacao").hide();
+    $(".divSucessoNaOperacao").hide();
+    $(".loading").hide();
     $(".button-collapse").sideNav();
     //verifica checked
     $(document).on("change",

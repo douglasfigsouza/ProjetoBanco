@@ -15,6 +15,9 @@
 
 </head>
 <body>
+    <div class="loading">
+        <img class="imgLoading" src="@Url.Content("~/Content/Img/loading.gif")" />
+    </div>
     <header>
         <ul id="alteracoes" class="dropdown-content">
             <li>@Html.ActionLink("Agência", "UpdateAgencia", "Agencia")</li>
@@ -41,6 +44,7 @@
             <div class="nav-wrapper #42a5f5 blue lighten-1">
                 <a href="/Usuarios/Logout" class="brand-logo"><i class="material-icons right" title="Deseja sair do sistema?">highlight_off</i></a>
                 <a href="/Home/Index" class="brand-logo center" title="Ir para página inicial?"><i class="material-icons">home</i></a>
+                <span id="usuarioLogado">Bem Vindo(a): @ViewBag.cliente.nome</span>
                 <ul class="right hide-on-med-and-down">
                     @if (Session["nivel"].ToString() == "f")
                     {

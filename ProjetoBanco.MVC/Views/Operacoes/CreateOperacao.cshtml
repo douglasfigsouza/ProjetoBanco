@@ -1,10 +1,28 @@
 ﻿@model ProjetoBanco.MVC.ViewModels.OperacaoViewModel
-<h5>Cadastro de Operação</h5>
 <div class="row">
     <div class="col s12">
+        <div class="row divErroNaOperacao">
+            <div class="col s12">
+                <h6  class="erroOperacao"></h6>
+            </div>
+        </div>
+
+        <div class="row divSucessoNaOperacao">
+            <div class="col s12">
+                <h6 class="sucessoOperacao"></h6>
+            </div>
+        </div>
+        <h5>Cadastro de Operação</h5>
         <hr />
-        @using (Html.BeginForm())
-        {
+       @using (Ajax.BeginForm("CreateOperacao", "Operacoes", null, new AjaxOptions
+       {
+           HttpMethod = "POST",
+           OnSuccess = "sucesso",
+           OnFailure = "erro(xhr)",
+           OnBegin = "progresso",
+           OnComplete = "fim"
+       }))
+       {
             @Html.AntiForgeryToken()
             @Html.ValidationSummary(true)
             {
@@ -26,6 +44,19 @@
     </div>
 </div>
 <script>
+    function sucesso() {
+        debugger;
+        $(".divSucessoNaOperacao").fadeIn(3000);
+        $(".sucessoOperacao").html("<i class='tiny material-icons'>check_circle</i> Operação cadastrada com Sucesso!")
+    }
+    function erro(xhr) {
+        debugger;
+        $(".divErroNaOperacao").fadeIn(3000);
+        $("#conta").val("");
+        $("#agencia").val("");
+        $("#senhaCli").val("");
+        $("#erroOperacao").html("<i class='tiny material-icons'>error</i>Ops! algo deu errado. " + xhr.responseText);
+    }
     $(document).ready(function () {
         $(".container").addClass("diminuicao40");
         $("form").validate({

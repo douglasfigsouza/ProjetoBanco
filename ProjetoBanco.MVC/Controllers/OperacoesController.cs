@@ -41,26 +41,21 @@ namespace ProjetoBanco.MVC.Controllers
             var statusCode = new HttpResponseMessage();
             op.descricao = opViewModel.descricao;
             op.ativo = true;
+
             statusCode = _OperacaoAppService.AddOperacao(op);
-
-            if (statusCode.IsSuccessStatusCode)
+            if (!statusCode.IsSuccessStatusCode)
             {
-                TempData["outraOp"] = "/Operacoes/CreateOperacao";
-                TempData["menssagem"] = "Operação: " + opViewModel.descricao + " cadastrada com sucesso!";
-                return RedirectToAction("Success", "FeedBack");
-            }
-            else
-            {
-                TempData["outraOp"] = "/Operacoes/CreateOperacao";
-                TempData["menssagem"] = Utilitarios.Utilitarios.limpaMenssagemErro(statusCode.Content.ReadAsStringAsync().Result);
-                return RedirectToAction("Error", "FeedBack");
-            }
+                Response.TrySkipIisCustomErrors = true;
+                Response.StatusCode = 400;
+                return Content(Utilitarios.Utilitarios.limpaMenssagemErro(statusCode.Content.ReadAsStringAsync().Result));
 
+            }
+            Response.StatusCode = 200;
+            return Json(statusCode.Content.ReadAsStringAsync().Result);
         }
 
         public ActionResult Deposito()
         {
-            ViewBag.cliente = (Cliente)Session["cliente"];
             TempData["operacao"] = 1;
             return View("Operacoes");
         }
@@ -68,20 +63,17 @@ namespace ProjetoBanco.MVC.Controllers
         public ActionResult Saque()
         {
             TempData["operacao"] = 2;
-            ViewBag.cliente = (Cliente)Session["cliente"];
             return View("Operacoes");
         }
 
         public ActionResult Saldo()
         {
-            ViewBag.cliente = (Cliente)Session["cliente"];
             TempData["operacao"] = 3;
             return View("Operacoes");
         }
 
         public ActionResult Transferencia()
         {
-            ViewBag.cliente = (Cliente)Session["cliente"];
             return View();
         }
 
@@ -184,13 +176,13 @@ namespace ProjetoBanco.MVC.Controllers
             statusCode = _OperacaoAppService.ConsultaSaldo(transacao);
             if (!statusCode.IsSuccessStatusCode)
             {
-                //Response.TrySkipIisCustomErrors = true;
-                //Response.StatusCode = 400;
-                //return Content("Momo viadão" + statusCode.Content.ReadAsStringAsync().Result);
-               
+                Response.TrySkipIisCustomErrors = true;
+                Response.StatusCode = 400;
+                return Content(Utilitarios.Utilitarios.limpaMenssagemErro(statusCode.Content.ReadAsStringAsync().Result));
+
             }
             Response.StatusCode = 200;
-            return Json(statusCode.Content.ReadAsAsync<TransacaoViewModel>().Result,JsonRequestBehavior.AllowGet); ;
+            return Json(statusCode.Content.ReadAsAsync<TransacaoViewModel>().Result);
         }
         //confirma os dados do saque
         public ActionResult ConfirmSaque(TransacaoViewModel trasacaoViewModel)
