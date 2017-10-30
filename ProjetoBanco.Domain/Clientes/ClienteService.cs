@@ -1,26 +1,22 @@
-﻿using System;
+﻿using ProjetoBanco.Domain.Clientes.Dto;
+using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using ProjetoBanco.Domain.Entities;
-using ProjetoBanco.Domain.Interfaces.IRepositories;
-using ProjetoBanco.Domain.Interfaces.IServices;
 
-namespace ProjetoBanco.Domain.Services
+
+namespace ProjetoBanco.Domain.Clientes
 {
     public class ClienteService : IClienteServiceDomain
     {
-        private readonly IClienteRepositoryDomain _repository;
+        private readonly IClienteRepository _repository;
 
-        public ClienteService(IClienteRepositoryDomain repository)
+        public ClienteService(IClienteRepository repository)
         {
             _repository = repository;
         }
 
-        public string AddCliente(Cliente cliente)
+        public void AddCliente(Cliente cliente)
         {
-           return _repository.AddCliente(cliente);
+           _repository.AddCliente(cliente);
         }
 
         public IEnumerable<Cliente> GetAllClientes(int op)

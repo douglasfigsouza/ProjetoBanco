@@ -1,26 +1,31 @@
 ﻿
+using ProjetoBanco.Application.Interfaces;
+using ProjetoBanco.Domain.Clientes;
+using ProjetoBanco.Domain.Clientes.Dto;
 using System;
 using System.Collections.Generic;
-using ProjetoBanco.Application.Interfaces;
-using ProjetoBanco.Domain.Entities;
-using ProjetoBanco.Domain.Interfaces.IRepositories;
-using ProjetoBanco.Domain.Interfaces.IServices;
+using System.Net.Http;
+using Web_Api.Utilitarios;
 
 namespace ProjetoBanco.Application
 {
     public class ClienteAppService : IClienteAppService
     {
         private readonly IClienteServiceDomain _iClienteService;
-        private readonly IClienteRepositoryDomain _clienteRepositoryDomain;
-        public ClienteAppService(IClienteServiceDomain iClienteService, IClienteRepositoryDomain clienteRepositoryDomain)
+        private readonly IClienteRepository _clienteRepositoryDomain;
+        public ClienteAppService(IClienteServiceDomain iClienteService, IClienteRepository clienteRepositoryDomain)
         {
             _iClienteService = iClienteService;
             _clienteRepositoryDomain = clienteRepositoryDomain;
         }
 
-        public string AddCliente(Cliente cliente)
+
+        public HttpResponseMessage AddCliente(Cliente cliente)
         {
-            return _iClienteService.AddCliente(cliente);
+            var response = new HttpResponseMessage();
+            response = HttpClientConf.HttpClientConfig("Clientes")
+                .PostAsJsonAsync("AddOCliente", cliente).Result;
+            return response;
         }
 
         public Cliente GetByClienteId(int id)

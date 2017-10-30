@@ -12,7 +12,6 @@ namespace ProjetoBanco.MVC.Controllers
     {
         public ActionResult Index()
         {
-            ViewBag.cliente = (Cliente) Session["cliente"];
             return View();
         }
 

@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using ProjetoBanco.Domain.Clientes.Dto;
+using System.Collections.Generic;
 
 namespace ProjetoBanco.Domain.Entities
 {

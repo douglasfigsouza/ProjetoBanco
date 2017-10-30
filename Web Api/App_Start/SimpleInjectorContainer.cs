@@ -1,4 +1,5 @@
-﻿using ProjetoBanco.Domain.Entities;
+﻿using ProjetoBanco.Domain.Clientes;
+using ProjetoBanco.Domain.Entities;
 using ProjetoBanco.Domain.Interfaces.IRepositories;
 using ProjetoBanco.Domain.Interfaces.IServices;
 using ProjetoBanco.Domain.Operacoes;
@@ -28,7 +29,7 @@ namespace Web_Api
 
 
             container.Register<IClienteServiceDomain, ClienteService>();
-            container.Register<IClienteRepositoryDomain, ClientesRepository>();
+            container.Register<IClienteRepository, ClientesRepository>();
 
             container.Register<IContaClienteServiceDomain, ContaClienteServiceDomain>();
             container.Register<IContaClienteRepositoryDomain, ContaClienteRepository>();
@@ -47,6 +48,8 @@ namespace Web_Api
             container.Register<IUsuariosService, UsuarioSeviceDomain>();
 
             container.Register<Notifications>(Lifestyle.Scoped);
+
+            container.Register<Conexao>(Lifestyle.Scoped);
 
             container.Verify();
 

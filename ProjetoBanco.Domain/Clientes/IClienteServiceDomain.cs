@@ -1,11 +1,11 @@
-﻿using System.Collections.Generic;
-using ProjetoBanco.Domain.Entities;
+﻿using ProjetoBanco.Domain.Clientes.Dto;
+using System.Collections.Generic;
 
-namespace ProjetoBanco.Domain.Interfaces.IServices
+namespace ProjetoBanco.Domain.Clientes
 {
     public interface IClienteServiceDomain
     {
-        string AddCliente(Cliente cliente);
+        void AddCliente(Cliente cliente);
         Cliente GetByClienteId(int id);
         IEnumerable<Cliente> GetAllClientes(int op);
         Cliente GetClienteByCpf(string cpf);

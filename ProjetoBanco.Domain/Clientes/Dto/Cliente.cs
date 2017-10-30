@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace ProjetoBanco.Domain.Entities
+namespace ProjetoBanco.Domain.Clientes.Dto
 {
     public class Cliente
     {

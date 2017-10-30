@@ -3,14 +3,31 @@
 @{
     ViewBag.Title = "CreateCliente";
 }
+<div class="row divErroNaOperacao">
+    <div class="col s12">
+        <h6 class="erroOperacao"></h6>
+    </div>
+</div>
 
+<div class="row divSucessoNaOperacao">
+    <div class="col s12">
+        <h6 class="sucessoOperacao"></h6>
+    </div>
+</div>
 <h5>Cadastro de Clientes</h5>
 <div class="row">
     <div class="col s12">
         <hr>
     </div>
     <div class="col s12">
-        @using (Html.BeginForm())
+        @using (Ajax.BeginForm("CreateCliente", "Clientes", null, new AjaxOptions
+        {
+            HttpMethod = "POST",
+            OnSuccess = "sucesso",
+            OnFailure = "erro(xhr)",
+            OnBegin = "progresso",
+            OnComplete = "fim"
+        }))
         {
             @Html.AntiForgeryToken()
             @Html.ValidationSummary(true)
@@ -96,6 +113,14 @@
     </div>
 </div>
 <script>
+    function sucesso() {
+        $(".divSucessoNaOperacao").fadeIn(3000);
+        $(".sucessoOperacao").html("<i class='tiny material-icons'>check_circle</i> Cliente cadastrado com Sucesso!")
+    }
+    function erro(xhr) {
+        $(".divErroNaOperacao").fadeIn(3000);
+        $(".erroOperacao").html("<i class='tiny material-icons'>error</i>Ops! algo deu errado. " + xhr.responseText);
+    }
     $(document).ready(function () {
         //função que busca cidades pelo id do estado e seta no combo cidades
         $("#ddlestadoClientes").change(function () {

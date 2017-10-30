@@ -1,4 +1,5 @@
 ﻿using ProjetoBanco.Application.Interfaces;
+using ProjetoBanco.Domain.Clientes.Dto;
 using ProjetoBanco.Domain.Entities;
 using ProjetoBanco.Domain.Operacoes.Dto;
 using ProjetoBanco.MVC.ViewModels;
@@ -114,25 +115,6 @@ namespace ProjetoBanco.MVC.Controllers
 
             Response.StatusCode = 200;
             return Json(statusCode.Content.ReadAsAsync<TransacaoViewModel>().Result);
-
-            //statusCode = _OperacaoAppService.VerificaDadosTransacao(transacao);
-            //if (statusCode.IsSuccessStatusCode)
-            //{
-            //    transact = statusCode.Content.ReadAsAsync<Transacao>().Result;
-            //    //insere os valores na view no hidden
-            //    trasacaoViewModel.clienteId = transact.clienteId;
-            //    trasacaoViewModel.contaId = transact.contaId;
-            //    trasacaoViewModel.agencia = transact.agencia + "";
-            //    trasacaoViewModel.nome = transact.nome;
-            //    trasacaoViewModel.valor = valor + "";
-
-            //    return View("Confirmacao", trasacaoViewModel);
-            //}
-            //else
-            //{
-            //    ViewBag.erroTransacao = "Trasação nao pode ser realizada, pois nao foi possivel localizar uma conta com os dados informado";
-            //    return View("Confirmacao");
-            //}
         }
 
         //confirma os dados do deposito
@@ -207,20 +189,6 @@ namespace ProjetoBanco.MVC.Controllers
             }
             Response.StatusCode = 200;
             return Json(statusCode.Content.ReadAsStringAsync().Result);
-
-            //statusCode = _operacaoesRealizadasAppService.Saque(operacaoRealizada);
-            //if (statusCode.IsSuccessStatusCode)
-            //{
-            //    TempData["menssagem"] = "Saque realizado com sucesso!";
-            //    TempData["outraOp"] = "/Operacoes/Saque";
-            //    return View("FeedBackOp");
-            //}
-            //else
-            //{
-            //    TempData["menssagem"] = Utilitarios.Utilitarios.limpaMenssagemErro(statusCode.Content.ReadAsStringAsync().Result);
-            //    TempData["outraOp"] = "/Operacoes/Saque";
-            //    return View("FeedBackOp");
-            //}
 
         }
         [HttpPost]

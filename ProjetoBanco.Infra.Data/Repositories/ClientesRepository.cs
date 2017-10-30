@@ -1,5 +1,6 @@
-﻿using ProjetoBanco.Domain.Entities;
-using ProjetoBanco.Domain.Interfaces.IRepositories;
+﻿using ProjetoBanco.Domain.Clientes;
+using ProjetoBanco.Domain.Clientes.Dto;
+using ProjetoBanco.Domain.Entities;
 using System;
 using System.Collections.Generic;
 using System.Data.SqlClient;
@@ -7,16 +8,21 @@ using System.Linq;
 
 namespace ProjetoBanco.Infra.Data.Repositories
 {
-    public class ClientesRepository : IClienteRepositoryDomain
+    public class ClientesRepository : IClienteRepository
     {
-        Conexao conn = new Conexao();
+        private readonly Conexao _conn;
+        private Notifications _notifications;
         private SqlDataReader result;
         private List<Cliente> lstClientes;
         private Cliente cliente;
 
-        public ClientesRepository()
+
+        public ClientesRepository(Notifications notifications, Conexao conn)
         {
             lstClientes = new List<Cliente>();
+            _notifications = notifications;
+            _conn = conn;
+            
         }
 
         private enum Procedures
@@ -28,38 +34,37 @@ namespace ProjetoBanco.Infra.Data.Repositories
             PBSP_GETCLIENTEBYCPF
         }
 
-        public string AddCliente(Cliente cliente)
+        public void AddCliente(Cliente cliente)
         {
             try
             {
-                conn.ExecuteProcedure(Procedures.PBSP_INSERTCLIENTE);
-                conn.AddParameter("@cidadeId", cliente.cidadeId);
-                conn.AddParameter("@nome", cliente.nome);
-                conn.AddParameter("@cpf", cliente.cpf);
-                conn.AddParameter("@rg", cliente.rg);
-                conn.AddParameter("@fone", cliente.fone);
-                conn.AddParameter("@bairro", cliente.bairro);
-                conn.AddParameter("@rua", cliente.rua);
-                conn.AddParameter("@num", cliente.num);
-                conn.AddParameter("@dataCadastro", cliente.dataCadastro);
-                conn.AddParameter("@nivel", cliente.nivel);
-                conn.AddParameter("@ativo", cliente.ativo);
-                conn.ExecuteNonQuery();
-                return null;
+                _conn.ExecuteProcedure(Procedures.PBSP_INSERTCLIENTE);
+                _conn.AddParameter("@cidadeId", cliente.cidadeId);
+                _conn.AddParameter("@nome", cliente.nome);
+                _conn.AddParameter("@cpf", cliente.cpf);
+                _conn.AddParameter("@rg", cliente.rg);
+                _conn.AddParameter("@fone", cliente.fone);
+                _conn.AddParameter("@bairro", cliente.bairro);
+                _conn.AddParameter("@rua", cliente.rua);
+                _conn.AddParameter("@num", cliente.num);
+                _conn.AddParameter("@dataCadastro", cliente.dataCadastro);
+                _conn.AddParameter("@nivel", cliente.nivel);
+                _conn.AddParameter("@ativo", cliente.ativo);
+                _conn.ExecuteNonQuery();
+                
             }
             catch (Exception e)
             {
-
-                return e.Message;
+                _notifications.Notificacoes.Add("Impossível cadastrar cliente!");                
             }
             
         }
 
         public Cliente GetByClienteId(int id)
         {
-            conn.ExecuteProcedure(Procedures.PBSP_GETCLIENTEBYID);
-            conn.AddParameter("@id", id);
-            result = conn.ExecuteReader();
+            _conn.ExecuteProcedure(Procedures.PBSP_GETCLIENTEBYID);
+            _conn.AddParameter("@id", id);
+            result = _conn.ExecuteReader();
             while (result.Read())
             {
                 cliente = new Cliente
@@ -84,9 +89,9 @@ namespace ProjetoBanco.Infra.Data.Repositories
 
         public IEnumerable<Cliente> GetAllClientes(int op)
         {
-            conn.ExecuteProcedure(Procedures.PBSP_GETALLCLIENTES);
-            conn.AddParameter("@op", op);
-            result = conn.ExecuteReader();
+            _conn.ExecuteProcedure(Procedures.PBSP_GETALLCLIENTES);
+            _conn.AddParameter("@op", op);
+            result = _conn.ExecuteReader();
             while (result.Read())
             {
                 lstClientes.Add(new Cliente
@@ -110,19 +115,19 @@ namespace ProjetoBanco.Infra.Data.Repositories
         {
             try
             {
-                conn.ExecuteProcedure(Procedures.PBSP_UPDATECLIENTE);
-                conn.AddParameter("@id", cliente.Id);
-                conn.AddParameter("@cidadeId", cliente.cidadeId);
-                conn.AddParameter("@nome", cliente.nome);
-                conn.AddParameter("@cpf", cliente.cpf);
-                conn.AddParameter("@rg", cliente.rg);
-                conn.AddParameter("@fone", cliente.fone);
-                conn.AddParameter("@bairro", cliente.bairro);
-                conn.AddParameter("@rua", cliente.rua);
-                conn.AddParameter("@num", cliente.num);
-                conn.AddParameter("@nivel", cliente.nivel);
-                conn.AddParameter("@ativo", cliente.ativo);
-                conn.ExecuteNonQuery();
+                _conn.ExecuteProcedure(Procedures.PBSP_UPDATECLIENTE);
+                _conn.AddParameter("@id", cliente.Id);
+                _conn.AddParameter("@cidadeId", cliente.cidadeId);
+                _conn.AddParameter("@nome", cliente.nome);
+                _conn.AddParameter("@cpf", cliente.cpf);
+                _conn.AddParameter("@rg", cliente.rg);
+                _conn.AddParameter("@fone", cliente.fone);
+                _conn.AddParameter("@bairro", cliente.bairro);
+                _conn.AddParameter("@rua", cliente.rua);
+                _conn.AddParameter("@num", cliente.num);
+                _conn.AddParameter("@nivel", cliente.nivel);
+                _conn.AddParameter("@ativo", cliente.ativo);
+                _conn.ExecuteNonQuery();
                 return null;
             }
             catch (Exception e)
@@ -144,9 +149,9 @@ namespace ProjetoBanco.Infra.Data.Repositories
 
         public Cliente GetClienteByCpf(string cpf)
         {
-            conn.ExecuteProcedure(Procedures.PBSP_GETCLIENTEBYCPF);
-            conn.AddParameter("@cpf", cpf);
-            result = conn.ExecuteReader();
+            _conn.ExecuteProcedure(Procedures.PBSP_GETCLIENTEBYCPF);
+            _conn.AddParameter("@cpf", cpf);
+            result = _conn.ExecuteReader();
             while (result.Read())
             {
                 cliente = new Cliente

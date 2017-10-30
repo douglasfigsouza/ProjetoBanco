@@ -1,8 +1,9 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Data.SqlClient;
+﻿using ProjetoBanco.Domain.Clientes.Dto;
 using ProjetoBanco.Domain.Entities;
 using ProjetoBanco.Domain.Interfaces.IRepositories;
+using System;
+using System.Collections.Generic;
+using System.Data.SqlClient;
 
 namespace ProjetoBanco.Infra.Data.Repositories
 {

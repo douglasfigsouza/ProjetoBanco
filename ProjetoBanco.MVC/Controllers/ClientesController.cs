@@ -1,7 +1,8 @@
 ﻿using ProjetoBanco.Application.Interfaces;
-using ProjetoBanco.Domain.Entities;
+using ProjetoBanco.Domain.Clientes.Dto;
 using ProjetoBanco.MVC.ViewModels;
 using System;
+using System.Net.Http;
 using System.Web.Mvc;
 
 namespace ProjetoBanco.MVC.Controllers
@@ -37,31 +38,30 @@ namespace ProjetoBanco.MVC.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult CreateCliente(ClienteViewModel clienteViewModel, FormCollection form)
         {
-            if (ModelState.IsValid)
+
+            cliente.cidadeId = clienteViewModel.cidadeId;
+            cliente.nome = clienteViewModel.nome;
+            cliente.cpf = Utilitarios.Utilitarios.retiraMask(clienteViewModel.cpf);
+            cliente.rg = Utilitarios.Utilitarios.retiraMask(clienteViewModel.rg);
+            cliente.fone = Utilitarios.Utilitarios.retiraMask(clienteViewModel.fone);
+            cliente.rua = clienteViewModel.rua;
+            cliente.bairro = clienteViewModel.bairro;
+            cliente.num = clienteViewModel.num;
+            cliente.nivel = clienteViewModel.nivel;
+            cliente.dataCadastro = DateTime.Now;
+            cliente.ativo = true;
+            var statusCode = new HttpResponseMessage();
+
+            statusCode = _clienteApp.AddCliente(cliente);
+            if (!statusCode.IsSuccessStatusCode)
             {
-                cliente.cidadeId = clienteViewModel.cidadeId;
-                cliente.nome = clienteViewModel.nome;
-                cliente.cpf = Utilitarios.Utilitarios.retiraMask(clienteViewModel.cpf);
-                cliente.rg = Utilitarios.Utilitarios.retiraMask(clienteViewModel.rg);
-                cliente.fone = Utilitarios.Utilitarios.retiraMask(clienteViewModel.fone);
-                cliente.rua = clienteViewModel.rua;
-                cliente.bairro = clienteViewModel.bairro;
-                cliente.num = clienteViewModel.num;
-                cliente.nivel = clienteViewModel.nivel;
-                cliente.dataCadastro = DateTime.Now;
-                cliente.ativo = true;
-
-                error = _clienteApp.AddCliente(cliente);
-          
-
-                return feedBackOperacao("CreateCliente",error,clienteViewModel.nome,"Cadastrado com sucesso!");
+                Response.TrySkipIisCustomErrors = true;
+                Response.StatusCode = 400;
+                return Content(Utilitarios.Utilitarios.limpaMenssagemErro(statusCode.Content.ReadAsStringAsync().Result));
 
             }
-            else
-            {
-                ViewBag.estados = _estadoAppService.GetAllEstados();
-                return View(clienteViewModel);
-            }
+            Response.StatusCode = 200;
+            return Json(statusCode.Content.ReadAsStringAsync().Result);
         }
         [HttpGet]
         public JsonResult GetCidadesByIdEstado(int id)
@@ -99,7 +99,7 @@ namespace ProjetoBanco.MVC.Controllers
 
 
                 error = _clienteApp.UpdateCliente(cliente);
-                return feedBackOperacao("EditCliente",error,clienteViewModel.nome,"Atualizado com sucesso!");
+                return feedBackOperacao("EditCliente", error, clienteViewModel.nome, "Atualizado com sucesso!");
             }
             ViewBag.clientes = _clienteApp.GetAllClientes(0);
             return View(clienteViewModel);
@@ -118,19 +118,19 @@ namespace ProjetoBanco.MVC.Controllers
             clienteViewModel.nome = cliente.nome;
             return Json(cliente, JsonRequestBehavior.AllowGet);
         }
-        private ActionResult feedBackOperacao(string action, string error,string nome, string op)
+        private ActionResult feedBackOperacao(string action, string error, string nome, string op)
         {
             if (error == null)
             {
                 TempData["outraOp"] = "/Clientes/" + action;
-                TempData["menssagem"] = "Cliente: " + nome+ " "+op;
+                TempData["menssagem"] = "Cliente: " + nome + " " + op;
                 return RedirectToAction("Success", "FeedBack");
             }
             else
             {
 
                 TempData["outraOp"] = "/Clientes/" + action;
-                TempData["menssagem"] = "Cliente: " + nome +" "+ op+" Erro:"+error;
+                TempData["menssagem"] = "Cliente: " + nome + " " + op + " Erro:" + error;
                 return RedirectToAction("Error", "FeedBack");
             }
         }

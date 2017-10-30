@@ -4,7 +4,7 @@ using System.Data.SqlClient;
 
 namespace ProjetoBanco.Infra.Data.Repositories
 {
-    class Conexao
+    public class Conexao
     {
         //Cria o construtor pra que toda vez que o _connection for instanciado abrir a conexão com o banco 
         public Conexao()

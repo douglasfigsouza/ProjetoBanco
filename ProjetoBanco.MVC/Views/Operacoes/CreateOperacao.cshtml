@@ -45,12 +45,10 @@
 </div>
 <script>
     function sucesso() {
-        debugger;
         $(".divSucessoNaOperacao").fadeIn(3000);
         $(".sucessoOperacao").html("<i class='tiny material-icons'>check_circle</i> Operação cadastrada com Sucesso!")
     }
     function erro(xhr) {
-        debugger;
         $(".divErroNaOperacao").fadeIn(3000);
         $("#conta").val("");
         $("#agencia").val("");
