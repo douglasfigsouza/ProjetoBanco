@@ -3,7 +3,6 @@ using ProjetoBanco.Application.Interfaces;
 using ProjetoBanco.Domain.Clientes;
 using ProjetoBanco.Domain.Clientes.Dto;
 using System;
-using System.Collections.Generic;
 using System.Net.Http;
 using Web_Api.Utilitarios;
 
@@ -24,7 +23,7 @@ namespace ProjetoBanco.Application
         {
             var response = new HttpResponseMessage();
             response = HttpClientConf.HttpClientConfig("Clientes")
-                .PostAsJsonAsync("AddOCliente", cliente).Result;
+                .PostAsJsonAsync("AddCliente", cliente).Result;
             return response;
         }
 
@@ -33,9 +32,16 @@ namespace ProjetoBanco.Application
             return _clienteRepositoryDomain.GetByClienteId(id);
         }
 
-        public IEnumerable<Cliente> GetAllClientes(int op)
+        public HttpResponseMessage GetAllClientes(int op)
         {
-            return _iClienteService.GetAllClientes(op);
+            HttpResponseMessage response;
+            //Create a query
+            HttpClient client = new HttpClient();
+            response = client.GetAsync(HttpClientConf.HttpClientConfigGet("Clientes/GetAllClientes", new
+            {
+                op
+            })).Result;
+            return response;
         }
 
         public Cliente GetClienteByCpf(string cpf)
@@ -43,9 +49,12 @@ namespace ProjetoBanco.Application
             return _clienteRepositoryDomain.GetClienteByCpf(cpf);
         }
 
-        public string UpdateCliente(Cliente cliente)
+        public HttpResponseMessage UpdateCliente(Cliente cliente)
         {
-           return _clienteRepositoryDomain.UpdateClientes(cliente);
+            var response = new HttpResponseMessage();
+            response = HttpClientConf.HttpClientConfig("Clientes")
+                .PostAsJsonAsync("UpdateCliente", cliente).Result;
+            return response;
         }
 
         public void RemoveCliente(Cliente cliente)

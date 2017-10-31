@@ -1,9 +1,10 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Web.Mvc;
-using ProjetoBanco.Application.Interfaces;
+﻿using ProjetoBanco.Application.Interfaces;
 using ProjetoBanco.Domain.Entities;
 using ProjetoBanco.MVC.ViewModels;
+using System;
+using System.Collections.Generic;
+using System.Net.Http;
+using System.Web.Mvc;
 
 namespace ProjetoBanco.MVC.Controllers
 {
@@ -32,6 +33,7 @@ namespace ProjetoBanco.MVC.Controllers
 
         public ActionResult CreateConta()
         {
+            var statusCode = new HttpResponseMessage();
             foreach (var agencia in _agenciaAppService.GetAllAgencias())
             {
                 cmbContaViewModel.Agencias.Add(new AgenciaViewModel
@@ -40,7 +42,8 @@ namespace ProjetoBanco.MVC.Controllers
                     agencia = agencia.agencia+""
                 });
             }
-            foreach (var cliente in _clienteAppService.GetAllClientes(1))
+            statusCode = _clienteAppService.GetAllClientes(1);
+            foreach (var cliente in statusCode.Content.ReadAsAsync<IEnumerable<ClienteViewModel>>().Result)
             {
                 cmbContaViewModel.Clientes.Add(new ClienteViewModel
                 {

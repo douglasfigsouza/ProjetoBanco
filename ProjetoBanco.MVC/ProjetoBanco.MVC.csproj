@@ -253,7 +253,7 @@
     <Content Include="Views\Operacoes\Transferencia.cshtml" />
     <Content Include="Views\Operacoes\ConfirmTransferencia.cshtml" />
     <Content Include="Views\Clientes\CreateCliente.cshtml" />
-    <Content Include="Views\Clientes\EditCliente.cshtml" />
+    <Content Include="Views\Clientes\EditarCliente.cshtml" />
     <Content Include="Views\Usuarios\EditUsuario.cshtml" />
     <Content Include="Views\Operacoes\Estorno.cshtml" />
     <Content Include="Views\Operacoes\OpRealizadasEstorno.cshtml" />

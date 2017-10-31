@@ -1,8 +1,4 @@
 ﻿@model ProjetoBanco.MVC.ViewModels.ClienteViewModel
-
-@{
-    ViewBag.Title = "CreateCliente";
-}
 <div class="row divErroNaOperacao">
     <div class="col s12">
         <h6 class="erroOperacao"></h6>
@@ -30,15 +26,13 @@
         }))
         {
             @Html.AntiForgeryToken()
-            @Html.ValidationSummary(true)
-            {
-                <div class="row">
-                    <div class="col s6 ">
-                        <label for="nome" class="col s12">Nome</label>
-                        @Html.TextBoxFor(model => model.nome, new { htmlAttributes = new { @class = "col s12" } })
-                        @Html.ValidationMessageFor(model => model.nome, "", new { @class = "text-danger" })
-                    </div>
+            <div class="row">
+                <div class="col s6 ">
+                    <label for="nome" class="col s12">Nome</label>
+                    @Html.TextBoxFor(model => model.nome, new { htmlAttributes = new { @class = "col s12" } })
+                    @Html.ValidationMessageFor(model => model.nome, "", new { @class = "text-danger" })
                 </div>
+            </div>
 
                 <div class="row">
                     <div class="col s6 ">
@@ -103,17 +97,23 @@
                 </div>
 
                 <div class="row">
-                    <button class="btn waves-effect waves-light right clearBoth" type="submit" name="action">
+                    <button class="btn waves-effect waves-light right clearBoth" type="submit" name="CreateCliente">
                         Cadastrar
                         <i class="material-icons right">send</i>
                     </button>
                 </div>
-            }
         }
     </div>
 </div>
 <script>
     function sucesso() {
+        $("#nome").val("");
+        $("#rua").val("");
+        $("#bairro").val("");
+        $("#cpf").val("");
+        $("#fone").val("");
+        $("#num").val("");
+        $("#rg").val("");
         $(".divSucessoNaOperacao").fadeIn(3000);
         $(".sucessoOperacao").html("<i class='tiny material-icons'>check_circle</i> Cliente cadastrado com Sucesso!")
     }

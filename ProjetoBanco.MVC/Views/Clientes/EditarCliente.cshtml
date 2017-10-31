@@ -3,53 +3,71 @@
     <div class="">
         <table id="tlbClientesEditaveis" class="striped responsive-table centered">
             <thead>
-            <tr>
-                <th>Nome</th>
-                <th>CPF</th>
-                <th>RG</th>
-                <th>Fone</th>
-                <th>Bairro</th>
-                <th>Rua</th>
-                <th>Num</th>
-                <th>Incluir</th>
-            </tr>
+                <tr>
+                    <th>Nome</th>
+                    <th>CPF</th>
+                    <th>RG</th>
+                    <th>Fone</th>
+                    <th>Bairro</th>
+                    <th>Rua</th>
+                    <th>Num</th>
+                    <th>Incluir</th>
+                </tr>
             </thead>
             <tbody id="tbdClientesConta">
-            @foreach (var cli in ViewBag.clientes)
+                @foreach (var cli in Model.Clientes)
             {
-                <tr id=@cli.Id>
-                    <td>@cli.nome</td>
-                    <td>@cli.cpf</td>
-                    <td>@cli.rg</td>
-                    <td>@cli.fone</td>
-                    <td>@cli.bairro</td>
-                    <td>@cli.rua</td>
-                    <td>@cli.num</td>
-                    <td>
-                        <button type="button" class="btnClienteEditavel modal-action modal-close btn green">
-                            <i class="material-icons">add_box</i>
-                        </button>
-                    </td>
-                </tr>
-            }
+                    <tr id=@cli.Id>
+                        <td>@cli.nome</td>
+                        <td>@cli.cpf</td>
+                        <td>@cli.rg</td>
+                        <td>@cli.fone</td>
+                        <td>@cli.bairro</td>
+                        <td>@cli.rua</td>
+                        <td>@cli.num</td>
+                        <td>
+                            <button type="button" class="btnClienteEditavel modal-action modal-close btn green">
+                                <i class="material-icons">add_box</i>
+                            </button>
+                        </td>
+                    </tr>
+                }
             </tbody>
         </table>
     </div>
 </div>
 
 <div id="formClienteEditavel">
-    <h5>Cadastro de Clientes</h5>
+    <div class="row divErroNaOperacao">
+        <div class="col s12">
+            <h6 class="erroOperacao"></h6>
+        </div>
+    </div>
+
+    <div class="row divSucessoNaOperacao">
+        <div class="col s12">
+            <h6 class="sucessoOperacao"></h6>
+        </div>
+    </div>
+    <h5>Editar Cliente</h5>
     <div class="row">
         <div class="col s12">
             <hr>
         </div>
         <div class="col s12">
-            @using (Html.BeginForm())
+            @using (Ajax.BeginForm("EditarCliente", "Clientes", null, new AjaxOptions
+            {
+                HttpMethod = "POST",
+                OnSuccess = "sucesso",
+                OnFailure = "erro(xhr)",
+                OnBegin = "progresso",
+                OnComplete = "fim"
+            }))
             {
                 @Html.AntiForgeryToken()
                 @Html.ValidationSummary(true)
                 {
-                    <input type="hidden" name="Id" id="id"/>
+                    <input type="hidden" name="Id" id="id" />
                     <div class="row">
                         <div class="col s6">
                             <label for="nome" class="col s12">Nome</label>
@@ -123,13 +141,13 @@
                     </div>
                     <div class="row">
                         <div class="col s3 ">
-                            <input type="checkbox" id="ativo" name="ativo" checked/>
+                            <input type="checkbox" id="ativo" name="ativo" checked />
                             <label for="ativo">Ativo</label>
                         </div>
                     </div>
                     <div class="row">
-                        <button class="btn waves-effect waves-light right" type="submit" name="action">
-                            Cadastrar
+                        <button class="btn waves-effect waves-light right" type="submit" name="EditaCliente">
+                            Editar
                             <i class="material-icons right">send</i>
                         </button>
                     </div>
@@ -139,6 +157,21 @@
     </div>
 </div>
 <script>
+    function sucesso() {
+        $("#nome").val("");
+        $("#rua").val("");
+        $("#bairro").val("");
+        $("#cpf").val("");
+        $("#fone").val("");
+        $("#num").val("");
+        $("#rg").val("");
+        $(".divSucessoNaOperacao").fadeIn(3000);
+        $(".sucessoOperacao").html("<i class='tiny material-icons'>check_circle</i> Cliente alterado com Sucesso!")
+    }
+    function erro(xhr) {
+        $(".divErroNaOperacao").fadeIn(3000);
+        $(".erroOperacao").html("<i class='tiny material-icons'>error</i>Ops! algo deu errado. " + xhr.responseText);
+    }
     $(document).ready(function () {
         $(".container").addClass("aumento");
         $body = $("body");
@@ -169,9 +202,9 @@
             }
 
         });
-        //pega o id do cliente selecionado 
+        //pega o id do cliente selecionado
         $(".btnClienteEditavel").click(function () {
-            $body.addClass("loading");
+            $(".loading").show();
             var id = $(this).closest('tr').attr('id');
             $("#divTblClientesEditaveis").hide();
             $.ajax(
@@ -182,6 +215,7 @@
                     cache: false,
                     async: true,
                     success: function (data) {
+
                         $(".container").removeClass("aumento");
                         $("#id").val(data.Id);
                         $("#nome").val(data.nome);
@@ -212,12 +246,12 @@
                                 cidadeId: data.cidadeId,
                                 estadoId: data.estadoId
                             },
-                            success: function(dados) {
+                            success: function (dados) {
                                 $('#ddlCidadesCliente').html('');
                                 $('#ddlCidadesCliente').removeAttr('disabled');
 
                                 $.each(dados,
-                                    function(value, option) {
+                                    function (value, option) {
 
                                         $('#ddlCidadesCliente')
                                             .append($('<option></option>').val(option.Value).html(option.Text));
@@ -235,12 +269,12 @@
                             data: {
                                 estadoId: data.estadoId
                             },
-                            success: function(dados) {
+                            success: function (dados) {
                                 $('#ddlestadoClientes').html('');
                                 $('#ddlestadoClientes').removeAttr('disabled');
 
                                 $.each(dados,
-                                    function(value, option) {
+                                    function (value, option) {
 
                                         $('#ddlestadoClientes')
                                             .append($('<option></option>').val(option.Value).html(option.Text));
@@ -253,6 +287,7 @@
                                 alert(dados.status + ' ' + dados.statusText);
                             }
                         });
+                        $(".loading").hide();
                     },
                     error(e) {
                         alert("Erro ao Consultar Clientes!");
@@ -270,7 +305,7 @@
         //função que busca cidades pelo id do estado e seta no combo cidades
         $(document).on("change",
             "#ddlestadoClientes",
-            function() {
+            function () {
                 var id = $("#ddlestadoClientes").val();
                 $('#ddlCidadesCliente').empty();
                 $.ajax(
@@ -280,9 +315,9 @@
                         dataType: 'json',
                         cache: false,
                         async: true,
-                        success: function(data) {
+                        success: function (data) {
                             $.each(data,
-                                function(key, value) {
+                                function (key, value) {
                                     $("#ddlCidadesCliente")
                                         .append("<option value=" + value.cidadeId + ">" + value.Nome + "</option>");
                                 });
@@ -294,6 +329,6 @@
 
                     });
             });
-       
+
     });
 </script>

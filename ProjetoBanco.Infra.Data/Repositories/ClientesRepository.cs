@@ -22,7 +22,7 @@ namespace ProjetoBanco.Infra.Data.Repositories
             lstClientes = new List<Cliente>();
             _notifications = notifications;
             _conn = conn;
-            
+
         }
 
         private enum Procedures
@@ -51,20 +51,27 @@ namespace ProjetoBanco.Infra.Data.Repositories
                 _conn.AddParameter("@nivel", cliente.nivel);
                 _conn.AddParameter("@ativo", cliente.ativo);
                 _conn.ExecuteNonQuery();
-                
+
             }
             catch (Exception e)
             {
-                _notifications.Notificacoes.Add("Impossível cadastrar cliente!");                
+                _notifications.Notificacoes.Add($"Impossível cadastrar cliente! {e.Message}");
             }
-            
+
         }
 
         public Cliente GetByClienteId(int id)
         {
             _conn.ExecuteProcedure(Procedures.PBSP_GETCLIENTEBYID);
             _conn.AddParameter("@id", id);
-            result = _conn.ExecuteReader();
+            try
+            {
+                result = _conn.ExecuteReader();
+            }
+            catch (Exception ex)
+            {
+                _notifications.Notificacoes.Add($"Impossível buscar clientes {ex.Message}");
+            }
             while (result.Read())
             {
                 cliente = new Cliente
@@ -84,12 +91,17 @@ namespace ProjetoBanco.Infra.Data.Repositories
                     estadoId = Convert.ToInt32(result["EstadoId"].ToString())
                 };
             }
+            if (cliente == null)
+            {
+                _notifications.Notificacoes.Add("Não existem clientes cadastrados!");
+            }
             return cliente;
         }
 
         public IEnumerable<Cliente> GetAllClientes(int op)
         {
             _conn.ExecuteProcedure(Procedures.PBSP_GETALLCLIENTES);
+            //o parametro 0 é para recuperar todos os clientes ativos e nao ativos
             _conn.AddParameter("@op", op);
             result = _conn.ExecuteReader();
             while (result.Read())
@@ -111,7 +123,7 @@ namespace ProjetoBanco.Infra.Data.Repositories
             return lstClientes.ToList();
         }
 
-        public string  UpdateClientes(Cliente cliente)
+        public void UpdateClientes(Cliente cliente)
         {
             try
             {
@@ -128,11 +140,10 @@ namespace ProjetoBanco.Infra.Data.Repositories
                 _conn.AddParameter("@nivel", cliente.nivel);
                 _conn.AddParameter("@ativo", cliente.ativo);
                 _conn.ExecuteNonQuery();
-                return null;
             }
             catch (Exception e)
             {
-                return e.ToString();
+                _notifications.Notificacoes.Add($"Impossível atualizar cliente! Erro  {e.Message}");
             }
 
         }

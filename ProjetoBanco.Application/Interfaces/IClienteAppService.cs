@@ -1,5 +1,4 @@
 ﻿using ProjetoBanco.Domain.Clientes.Dto;
-using System.Collections.Generic;
 using System.Net.Http;
 
 namespace ProjetoBanco.Application.Interfaces
@@ -8,9 +7,9 @@ namespace ProjetoBanco.Application.Interfaces
     {
         HttpResponseMessage AddCliente(Cliente cliente);
         Cliente GetByClienteId(int id);
-        IEnumerable<Cliente> GetAllClientes(int op);
+        HttpResponseMessage GetAllClientes(int op);
         Cliente GetClienteByCpf(string cpf);
-        string UpdateCliente(Cliente cliente);
+        HttpResponseMessage UpdateCliente(Cliente cliente);
         void Dispose();
     }
 }

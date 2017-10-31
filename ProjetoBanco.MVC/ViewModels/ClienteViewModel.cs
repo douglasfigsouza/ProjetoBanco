@@ -1,8 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
-using System.Linq;
-using System.Web;
 
 namespace ProjetoBanco.MVC.ViewModels
 {
@@ -45,5 +43,6 @@ namespace ProjetoBanco.MVC.ViewModels
         [Required(ErrorMessage = "O campo nivel é obrigatório,digite-O!")]
         public char nivel { get; set; }
         public bool ativo { get; set; }
+        public IEnumerable<ClienteViewModel> Clientes { get; set; }
     }
 }

@@ -2,6 +2,7 @@
 using ProjetoBanco.Domain.Clientes.Dto;
 using ProjetoBanco.MVC.ViewModels;
 using System;
+using System.Collections.Generic;
 using System.Net.Http;
 using System.Web.Mvc;
 
@@ -12,19 +13,12 @@ namespace ProjetoBanco.MVC.Controllers
         private readonly IClienteAppService _clienteApp;
         private readonly IEstadoAppService _estadoAppService;
         private readonly ICidadesAppService _cidadesAppService;
-        private Cliente cliente;
-        private string error;
-        private ClienteViewModel clienteViewModel;
-        private FeedBackController feedCtrl;
 
         public ClientesController(IClienteAppService clienteApp, IEstadoAppService estadoApp, ICidadesAppService ICidadeAppService, IBancoAppService IBancoAppService)
         {
             _clienteApp = clienteApp;
             _estadoAppService = estadoApp;
             _cidadesAppService = ICidadeAppService;
-            cliente = new Cliente();
-            clienteViewModel = new ClienteViewModel();
-            feedCtrl = new FeedBackController();
         }
         // GET: Clientes/Create
         public ActionResult CreateCliente()
@@ -39,6 +33,7 @@ namespace ProjetoBanco.MVC.Controllers
         public ActionResult CreateCliente(ClienteViewModel clienteViewModel, FormCollection form)
         {
 
+            var cliente = new Cliente();
             cliente.cidadeId = clienteViewModel.cidadeId;
             cliente.nome = clienteViewModel.nome;
             cliente.cpf = Utilitarios.Utilitarios.retiraMask(clienteViewModel.cpf);
@@ -74,35 +69,56 @@ namespace ProjetoBanco.MVC.Controllers
             return Json(_clienteApp.GetAllClientes(1), JsonRequestBehavior.AllowGet);
         }
 
-        public ActionResult EditCliente()
+        public ActionResult EditarCliente()
         {
-            ViewBag.clientes = _clienteApp.GetAllClientes(0);
-            return View();
+            var statusCode = new HttpResponseMessage();
+
+            statusCode = _clienteApp.GetAllClientes(0);
+            if (!statusCode.IsSuccessStatusCode)
+            {
+                Response.TrySkipIisCustomErrors = true;
+                Response.StatusCode = 400;
+                return Content(Utilitarios.Utilitarios.limpaMenssagemErro(statusCode.Content.ReadAsStringAsync().Result));
+
+            }
+            Response.StatusCode = 200;
+            var cliente = new ClienteViewModel
+            {
+                Clientes = statusCode.Content.ReadAsAsync<IEnumerable<ClienteViewModel>>().Result
+            };
+            return View(cliente);
         }
 
         [HttpPost]
-        public ActionResult EditCliente(ClienteViewModel clienteViewModel)
+        public ActionResult EditarCliente(ClienteViewModel clienteViewModel)
         {
-            if (ModelState.IsValid)
+            var cliente = new Cliente
             {
-                cliente.Id = clienteViewModel.Id;
-                cliente.nome = clienteViewModel.nome;
-                cliente.cpf = Utilitarios.Utilitarios.retiraMask(clienteViewModel.cpf);
-                cliente.rg = Utilitarios.Utilitarios.retiraMask(clienteViewModel.rg);
-                cliente.fone = Utilitarios.Utilitarios.retiraMask(clienteViewModel.fone);
-                cliente.bairro = clienteViewModel.bairro;
-                cliente.rua = clienteViewModel.rua;
-                cliente.num = clienteViewModel.num;
-                cliente.nivel = clienteViewModel.nivel;
-                cliente.ativo = clienteViewModel.ativo;
-                cliente.cidadeId = clienteViewModel.cidadeId;
+                Id = clienteViewModel.Id,
+                nome = clienteViewModel.nome,
+                cpf = Utilitarios.Utilitarios.retiraMask(clienteViewModel.cpf),
+                rg = Utilitarios.Utilitarios.retiraMask(clienteViewModel.rg),
+                fone = Utilitarios.Utilitarios.retiraMask(clienteViewModel.fone),
+                bairro = clienteViewModel.bairro,
+                rua = clienteViewModel.rua,
+                num = clienteViewModel.num,
+                nivel = clienteViewModel.nivel,
+                ativo = clienteViewModel.ativo,
+                cidadeId = clienteViewModel.cidadeId,
+            };
+            var statusCode = new HttpResponseMessage();
 
+            statusCode = _clienteApp.UpdateCliente(cliente);
+            if (!statusCode.IsSuccessStatusCode)
+            {
+                Response.TrySkipIisCustomErrors = true;
+                Response.StatusCode = 400;
+                return Content(Utilitarios.Utilitarios.limpaMenssagemErro(statusCode.Content.ReadAsStringAsync().Result));
 
-                error = _clienteApp.UpdateCliente(cliente);
-                return feedBackOperacao("EditCliente", error, clienteViewModel.nome, "Atualizado com sucesso!");
             }
-            ViewBag.clientes = _clienteApp.GetAllClientes(0);
-            return View(clienteViewModel);
+            Response.StatusCode = 200;
+            return Json(statusCode.Content.ReadAsStringAsync().Result);
+
         }
 
         public JsonResult GetByClienteId(int Id)
@@ -113,6 +129,8 @@ namespace ProjetoBanco.MVC.Controllers
         [HttpGet]
         public JsonResult GetClienteByCPF(string cpf)
         {
+            var cliente = new Cliente();
+            var clienteViewModel = new ClienteViewModel();
             cliente = _clienteApp.GetClienteByCpf(Utilitarios.Utilitarios.retiraMask(cpf));
             clienteViewModel.Id = cliente.Id;
             clienteViewModel.nome = cliente.nome;
