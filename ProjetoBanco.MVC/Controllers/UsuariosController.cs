@@ -2,7 +2,6 @@
 using ProjetoBanco.Domain.Usuarios;
 using ProjetoBanco.MVC.ViewModels;
 using System.Collections.Generic;
-using System.Linq.Expressions;
 using System.Net.Http;
 using System.Web.Mvc;
 using System.Web.Security;
@@ -90,15 +89,22 @@ namespace ProjetoBanco.MVC.Controllers
         [HttpPost]
         public ActionResult CreateUsuario(UsuarioViewModel usuarioViewModel)
         {
-            var error = "";
+            var statusCode = new HttpResponseMessage();
             var usuario = new Usuario
             {
                 clienteId = usuarioViewModel.clienteId,
                 nome = usuarioViewModel.nome,
                 senha = usuarioViewModel.senha,
             };
-            //error = _usuarioAppService.AddUsuario(usuario);
-            return feedBackOperacao("CreateUsuario", error); ;
+            statusCode = _usuarioAppService.AddUsuario(usuario);
+            if (!statusCode.IsSuccessStatusCode)
+            {
+                Response.TrySkipIisCustomErrors = true;
+                Response.StatusCode = 400;
+                return Json(Utilitarios.Utilitarios.limpaMenssagemErro(statusCode.Content.ReadAsStringAsync().Result), JsonRequestBehavior.AllowGet);
+            }
+            Response.StatusCode = 200;
+            return Json(statusCode.Content.ReadAsStringAsync().Result);
 
         }
 
