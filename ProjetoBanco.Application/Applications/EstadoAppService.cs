@@ -1,35 +1,18 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using ProjetoBanco.Application.Interfaces;
-using ProjetoBanco.Domain.Entities;
-using ProjetoBanco.Domain.Interfaces.IServices;
+﻿using ProjetoBanco.Application.Interfaces;
+using System.Net.Http;
+using Web_Api.Utilitarios;
 
 namespace ProjetoBanco.Application
 {
     public class EstadoAppService : IEstadoAppService
     {
-        private readonly IEstadoServiceDomain _IEstadoService;
-
-        public EstadoAppService( IEstadoServiceDomain IEestadoService)
+        public HttpResponseMessage GetAllEstados()
         {
-            _IEstadoService = IEestadoService;
-        }
-        public void Dispose()
-        {
-            throw new NotImplementedException();
+            HttpResponseMessage response;
+            response = HttpClientConf.HttpClientConfig("Estados")
+                .GetAsync("GetAllEstados").Result;
+            return response;
         }
 
-        public IEnumerable<Estado> GetAllEstados()
-        {
-           return _IEstadoService.GetAllEstados();
-        }
-
-        public Estado GetByEstadoId(int id)
-        {
-            throw new NotImplementedException();
-        }
     }
 }

@@ -13,13 +13,9 @@ namespace ProjetoBanco.Infra.Data.Repositories
         private readonly Conexao _conn;
         private Notifications _notifications;
         private SqlDataReader result;
-        private List<Cliente> lstClientes;
-        private Cliente cliente;
-
 
         public ClientesRepository(Notifications notifications, Conexao conn)
         {
-            lstClientes = new List<Cliente>();
             _notifications = notifications;
             _conn = conn;
 
@@ -62,6 +58,7 @@ namespace ProjetoBanco.Infra.Data.Repositories
 
         public Cliente GetByClienteId(int id)
         {
+            Cliente cliente = null;
             _conn.ExecuteProcedure(Procedures.PBSP_GETCLIENTEBYID);
             _conn.AddParameter("@id", id);
             try
@@ -100,10 +97,18 @@ namespace ProjetoBanco.Infra.Data.Repositories
 
         public IEnumerable<Cliente> GetAllClientes(int op)
         {
+            List<Cliente> lstClientes = new List<Cliente>();
             _conn.ExecuteProcedure(Procedures.PBSP_GETALLCLIENTES);
             //o parametro 0 é para recuperar todos os clientes ativos e nao ativos
             _conn.AddParameter("@op", op);
-            result = _conn.ExecuteReader();
+            try
+            {
+                result = _conn.ExecuteReader();
+            }
+            catch (Exception e)
+            {
+                _notifications.Notificacoes.Add($"Imposssível buscar Clientes! Erro {e.Message}");
+            }
             while (result.Read())
             {
                 lstClientes.Add(new Cliente
@@ -119,6 +124,10 @@ namespace ProjetoBanco.Infra.Data.Repositories
                     num = Convert.ToInt32(result["num"].ToString()),
                     dataCadastro = Convert.ToDateTime(result["dataCadastro"].ToString())
                 });
+            }
+            if (lstClientes == null)
+            {
+                _notifications.Notificacoes.Add("Nenhum cliente encontrado!");
             }
             return lstClientes.ToList();
         }
@@ -148,21 +157,19 @@ namespace ProjetoBanco.Infra.Data.Repositories
 
         }
 
-        public void RemoveClientes(Cliente obj)
-        {
-            throw new NotImplementedException();
-        }
-
-        public void Dispose()
-        {
-            throw new NotImplementedException();
-        }
-
         public Cliente GetClienteByCpf(string cpf)
         {
+            Cliente cliente = null;
             _conn.ExecuteProcedure(Procedures.PBSP_GETCLIENTEBYCPF);
             _conn.AddParameter("@cpf", cpf);
-            result = _conn.ExecuteReader();
+            try
+            {
+                result = _conn.ExecuteReader();
+            }
+            catch (Exception e)
+            {
+                _notifications.Notificacoes.Add($"Impossível buscar cliente! Erro {e.Message}");
+            }
             while (result.Read())
             {
                 cliente = new Cliente
@@ -170,6 +177,10 @@ namespace ProjetoBanco.Infra.Data.Repositories
                     Id = int.Parse(result["Id"].ToString()),
                     nome = result["nome"].ToString()
                 };
+            }
+            if (cliente == null)
+            {
+                _notifications.Notificacoes.Add("Cliente não encontrado!");
             }
             return cliente;
         }

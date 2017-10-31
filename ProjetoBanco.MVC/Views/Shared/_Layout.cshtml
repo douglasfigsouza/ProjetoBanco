@@ -45,7 +45,7 @@
                 <a href="/Usuarios/Logout" class="brand-logo"><i class="material-icons right" title="Deseja sair do sistema?">highlight_off</i></a>
                 <a href="/Home/Index" class="brand-logo center" title="Ir para página inicial?"><i class="material-icons">home</i></a>
                 @{ 
-                    var cliente = (ProjetoBanco.Domain.Clientes.Dto.Cliente)Session["cliente"];
+                    var cliente = (ProjetoBanco.MVC.ViewModels.ClienteViewModel)Session["cliente"];
                     <span id="usuarioLogado">Bem Vindo(a): @cliente.nome</span>
                 }
                 <ul class="right hide-on-med-and-down">

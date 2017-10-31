@@ -156,6 +156,7 @@
     <Compile Include="App_Start\SimpleInjectorContainer.cs" />
     <Compile Include="App_Start\WebApiConfig.cs" />
     <Compile Include="Controllers\ClientesController.cs" />
+    <Compile Include="Controllers\EstadosController.cs" />
     <Compile Include="Controllers\OperacoesController.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>

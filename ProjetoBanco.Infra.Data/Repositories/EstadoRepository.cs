@@ -1,52 +1,52 @@
 ﻿using ProjetoBanco.Domain.Entities;
-using ProjetoBanco.Domain.Interfaces.IRepositories;
+using ProjetoBanco.Domain.Estados;
+using ProjetoBanco.Domain.Estados.Dto;
 using System;
 using System.Collections.Generic;
 using System.Data.SqlClient;
 
 namespace ProjetoBanco.Infra.Data.Repositories
 {
-    public class EstadoRepository:IEstadoRepositoryDomain
+    public class EstadoRepository : IEstadoRepository
     {
-        private  Conexao conn;
-        private SqlDataReader result;
-        private List<Estado> lstEstados;
+        private readonly Conexao _conn;
+        private Notifications _notifications;
 
+        public EstadoRepository(Conexao conn, Notifications notifications)
+        {
+            _conn = conn;
+            _notifications = notifications;
+        }
         private enum Procedures
         {
             PBSP_GETALLESTADOS
         }
-        public EstadoRepository()
-        {
-
-            lstEstados = new List<Estado>();
-
-        }
-
-        public Estado GetByEstadoId(int id)
-        {
-            throw new NotImplementedException();
-        }
-
         public IEnumerable<Estado> GetAllEstados()
         {
-            conn = new Conexao();
-            conn.ExecuteProcedure(Procedures.PBSP_GETALLESTADOS);
-            result = conn.ExecuteReader();
+            SqlDataReader result = null;
+            List<Estado> estados = new List<Estado>();
+            _conn.ExecuteProcedure(Procedures.PBSP_GETALLESTADOS);
+            try
+            {
+                result = _conn.ExecuteReader();
+            }
+            catch (Exception e)
+            {
+                _notifications.Notificacoes.Add($"Impossível buscar estados! Erro {e.Message}");
+            }
             while (result.Read())
             {
-                lstEstados.Add(new Estado
+                estados.Add(new Estado
                 {
                     Sigla = result["Sigla"].ToString(),
                     EstadoId = Convert.ToInt32(result["EstadoId"].ToString())
                 });
             }
-            return lstEstados;
-        }
-
-        public void Dispose()
-        {
-            throw new NotImplementedException();
+            if (estados.Count == 0)
+            {
+                _notifications.Notificacoes.Add("Nenhum estado cadastrado!");
+            }
+            return estados;
         }
     }
 }

@@ -5,6 +5,7 @@ using System;
 using System.Collections.Generic;
 using System.Net.Http;
 using System.Web.Mvc;
+using ProjetoBanco.Domain.Estados.Dto;
 
 namespace ProjetoBanco.MVC.Controllers
 {
@@ -23,7 +24,13 @@ namespace ProjetoBanco.MVC.Controllers
         // GET: Clientes/Create
         public ActionResult CreateCliente()
         {
-            ViewBag.estados = _estadoAppService.GetAllEstados();
+            var statusCode = new HttpResponseMessage();
+            statusCode = _estadoAppService.GetAllEstados();
+            if (!statusCode.IsSuccessStatusCode)
+            {
+                return null;
+            }
+            ViewBag.estados = statusCode.Content.ReadAsAsync<IEnumerable<Estado>>().Result;
             return View();
         }
 
@@ -33,18 +40,20 @@ namespace ProjetoBanco.MVC.Controllers
         public ActionResult CreateCliente(ClienteViewModel clienteViewModel, FormCollection form)
         {
 
-            var cliente = new Cliente();
-            cliente.cidadeId = clienteViewModel.cidadeId;
-            cliente.nome = clienteViewModel.nome;
-            cliente.cpf = Utilitarios.Utilitarios.retiraMask(clienteViewModel.cpf);
-            cliente.rg = Utilitarios.Utilitarios.retiraMask(clienteViewModel.rg);
-            cliente.fone = Utilitarios.Utilitarios.retiraMask(clienteViewModel.fone);
-            cliente.rua = clienteViewModel.rua;
-            cliente.bairro = clienteViewModel.bairro;
-            cliente.num = clienteViewModel.num;
-            cliente.nivel = clienteViewModel.nivel;
-            cliente.dataCadastro = DateTime.Now;
-            cliente.ativo = true;
+            var cliente = new Cliente
+            {
+                cidadeId = clienteViewModel.cidadeId,
+                nome = clienteViewModel.nome,
+                cpf = Utilitarios.Utilitarios.retiraMask(clienteViewModel.cpf),
+                rg = Utilitarios.Utilitarios.retiraMask(clienteViewModel.rg),
+                fone = Utilitarios.Utilitarios.retiraMask(clienteViewModel.fone),
+                rua = clienteViewModel.rua,
+                bairro = clienteViewModel.bairro,
+                num = clienteViewModel.num,
+                nivel = clienteViewModel.nivel,
+                dataCadastro = DateTime.Now,
+                ativo = true
+            };
             var statusCode = new HttpResponseMessage();
 
             statusCode = _clienteApp.AddCliente(cliente);
@@ -66,7 +75,19 @@ namespace ProjetoBanco.MVC.Controllers
         [HttpGet]
         public JsonResult GetAllClientes()
         {
-            return Json(_clienteApp.GetAllClientes(1), JsonRequestBehavior.AllowGet);
+            var statusCode = new HttpResponseMessage();
+
+            statusCode = _clienteApp.GetAllClientes(1);
+            if (!statusCode.IsSuccessStatusCode)
+            {
+                Response.TrySkipIisCustomErrors = true;
+                Response.StatusCode = 400;
+
+                return Json(Utilitarios.Utilitarios.limpaMenssagemErro(statusCode.Content.ReadAsStringAsync().Result),JsonRequestBehavior.AllowGet);
+
+            }
+            Response.StatusCode = 200;
+            return Json(statusCode.Content.ReadAsAsync<IEnumerable<ClienteViewModel>>().Result, JsonRequestBehavior.AllowGet);
         }
 
         public ActionResult EditarCliente()
@@ -123,34 +144,40 @@ namespace ProjetoBanco.MVC.Controllers
 
         public JsonResult GetByClienteId(int Id)
         {
-            return Json(_clienteApp.GetByClienteId(Id), JsonRequestBehavior.AllowGet);
+            var statusCode = new HttpResponseMessage();
+
+            statusCode = _clienteApp.GetByClienteId(Id);
+            if (!statusCode.IsSuccessStatusCode)
+            {
+                Response.TrySkipIisCustomErrors = true;
+                Response.StatusCode = 400;
+                return Json(Utilitarios.Utilitarios.limpaMenssagemErro(statusCode.Content.ReadAsStringAsync().Result), JsonRequestBehavior.AllowGet);
+
+            }
+            Response.StatusCode = 200;
+            return Json(statusCode.Content.ReadAsAsync<ClienteViewModel>().Result, JsonRequestBehavior.AllowGet);
         }
 
         [HttpGet]
         public JsonResult GetClienteByCPF(string cpf)
         {
-            var cliente = new Cliente();
-            var clienteViewModel = new ClienteViewModel();
-            cliente = _clienteApp.GetClienteByCpf(Utilitarios.Utilitarios.retiraMask(cpf));
-            clienteViewModel.Id = cliente.Id;
-            clienteViewModel.nome = cliente.nome;
-            return Json(cliente, JsonRequestBehavior.AllowGet);
-        }
-        private ActionResult feedBackOperacao(string action, string error, string nome, string op)
-        {
-            if (error == null)
-            {
-                TempData["outraOp"] = "/Clientes/" + action;
-                TempData["menssagem"] = "Cliente: " + nome + " " + op;
-                return RedirectToAction("Success", "FeedBack");
-            }
-            else
-            {
+            var statusCode = new HttpResponseMessage();
 
-                TempData["outraOp"] = "/Clientes/" + action;
-                TempData["menssagem"] = "Cliente: " + nome + " " + op + " Erro:" + error;
-                return RedirectToAction("Error", "FeedBack");
+            statusCode = _clienteApp.GetClienteByCpf(cpf);
+            if (!statusCode.IsSuccessStatusCode)
+            {
+                Response.TrySkipIisCustomErrors = true;
+                Response.StatusCode = 400;
+                return Json(Utilitarios.Utilitarios.limpaMenssagemErro(statusCode.Content.ReadAsStringAsync().Result), JsonRequestBehavior.AllowGet);
+
             }
+            Response.StatusCode = 200;
+            return Json(statusCode.Content.ReadAsAsync<ClienteViewModel>().Result, JsonRequestBehavior.AllowGet);
+            //caso der pau, olhar esse trecho de código
+            //cliente = _clienteApp.GetClienteByCpf(Utilitarios.Utilitarios.retiraMask(cpf));
+            //clienteViewModel.Id = cliente.Id;
+            //clienteViewModel.nome = cliente.nome;
+            //return Json(cliente, JsonRequestBehavior.AllowGet);
         }
     }
 }

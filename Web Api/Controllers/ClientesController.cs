@@ -67,6 +67,43 @@ namespace Web_Api.Controllers
                 return Ok();
             }
         }
+        public IHttpActionResult GetByClienteId(int id)
+        {
+            var cliente = new Cliente();
+            cliente = _clienteRepository.GetByClienteId(id);
 
+            if (_notifications.Notificacoes.Count > 0)
+            {
+                string erros = "";
+                foreach (var erro in _notifications.Notificacoes)
+                {
+                    erros = erros + " " + erro;
+                }
+                return BadRequest(erros);
+            }
+            else
+            {
+                return Ok(cliente);
+            }
+        }
+        public IHttpActionResult GetClienteByCpf(string cpf)
+        {
+            var cliente = new Cliente();
+            cliente = _clienteRepository.GetClienteByCpf(cpf);
+
+            if (_notifications.Notificacoes.Count > 0)
+            {
+                string erros = "";
+                foreach (var erro in _notifications.Notificacoes)
+                {
+                    erros = erros + " " + erro;
+                }
+                return BadRequest(erros);
+            }
+            else
+            {
+                return Ok(cliente);
+            }
+        }
     }
 }

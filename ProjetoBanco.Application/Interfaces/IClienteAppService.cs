@@ -6,10 +6,9 @@ namespace ProjetoBanco.Application.Interfaces
     public interface IClienteAppService
     {
         HttpResponseMessage AddCliente(Cliente cliente);
-        Cliente GetByClienteId(int id);
+        HttpResponseMessage GetByClienteId(int id);
         HttpResponseMessage GetAllClientes(int op);
-        Cliente GetClienteByCpf(string cpf);
+        HttpResponseMessage GetClienteByCpf(string cpf);
         HttpResponseMessage UpdateCliente(Cliente cliente);
-        void Dispose();
     }
 }

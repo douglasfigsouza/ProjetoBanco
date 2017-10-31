@@ -37,7 +37,7 @@
     <Compile Include="Entities\Conta.cs" />
     <Compile Include="Entities\ContaCliente.cs" />
     <Compile Include="Entities\ContaClienteAlteracao.cs" />
-    <Compile Include="Entities\Estado.cs" />
+    <Compile Include="Estados\Dto\Estado.cs" />
     <Compile Include="Operacoes\Dto\DadosGetOpReal.cs" />
     <Compile Include="Operacoes\Dto\Estorno.cs" />
     <Compile Include="Entities\feedBack.cs" />
@@ -49,7 +49,7 @@
     <Compile Include="Interfaces\IRepositories\ICidadeRepositoryDomain.cs" />
     <Compile Include="Clientes\IClienteRepository.cs" />
     <Compile Include="Interfaces\IRepositories\IContaClienteRepositoryDomain.cs" />
-    <Compile Include="Interfaces\IRepositories\IEstadoRepositoryDomain.cs" />
+    <Compile Include="Estados\IEstadoRepository.cs" />
     <Compile Include="Operacoes\IOperacoesRealizadasRepository.cs" />
     <Compile Include="Operacoes\IOperacoesRepository.cs" />
     <Compile Include="Usuarios\IUsuarioRepository.cs" />
@@ -58,7 +58,7 @@
     <Compile Include="Interfaces\IServices\ICidadeServiceDomain.cs" />
     <Compile Include="Clientes\IClienteServiceDomain.cs" />
     <Compile Include="Interfaces\IServices\IContaClienteServiceDomain.cs" />
-    <Compile Include="Interfaces\IServices\IEstadoServiceDomain.cs" />
+    <Compile Include="Estados\IEstadoService.cs" />
     <Compile Include="Operacoes\IOperacaoService.cs" />
     <Compile Include="Operacoes\IOperacoeRealizadaService.cs" />
     <Compile Include="Usuarios\IUsuariosService.cs" />
@@ -70,7 +70,7 @@
     <Compile Include="Services\CidadeServiceDomain.cs" />
     <Compile Include="Clientes\ClienteService.cs" />
     <Compile Include="Services\ContaClienteServiceDomain.cs" />
-    <Compile Include="Services\EstadoServiceDomain.cs" />
+    <Compile Include="Estados\EstadoService.cs" />
     <Compile Include="Operacoes\OperacoesRealizadasService.cs" />
     <Compile Include="Operacoes\OperacoesService.cs" />
     <Compile Include="Usuarios\UsuarioSevice.cs" />

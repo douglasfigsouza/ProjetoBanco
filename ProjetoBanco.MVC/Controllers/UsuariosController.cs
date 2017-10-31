@@ -1,28 +1,23 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Web;
-using System.Web.Mvc;
-using System.Web.Security;
-using ProjetoBanco.Application.Interfaces;
-using ProjetoBanco.Domain.Entities;
+﻿using ProjetoBanco.Application.Interfaces;
 using ProjetoBanco.Domain.Usuarios;
 using ProjetoBanco.MVC.ViewModels;
+using System.Collections.Generic;
+using System.Net.Http;
+using System.Web.Mvc;
+using System.Web.Security;
 
 namespace ProjetoBanco.MVC.Controllers
 {
     public class UsuariosController : Controller
     {
-        private readonly IUsuarioAppService _IUsuarioAppService;
-        private readonly IClienteAppService _IClienteAppService;
-        private Usuario usuario;
-        private string error;
+        private readonly IUsuarioAppService _usuarioAppService;
+        private readonly IClienteAppService _clienteAppService;
 
-        public UsuariosController(IUsuarioAppService IUsuarioAppService, IClienteAppService IClienteAppService)
+        public UsuariosController(IUsuarioAppService usuarioAppService, IClienteAppService clienteAppService)
         {
-            _IUsuarioAppService = IUsuarioAppService;
-            _IClienteAppService = IClienteAppService;
-            usuario = new Usuario();
+            _usuarioAppService = usuarioAppService;
+            _clienteAppService = clienteAppService;
+
         }
 
         public ActionResult Login()
@@ -34,16 +29,29 @@ namespace ProjetoBanco.MVC.Controllers
         [HttpPost]
         public ActionResult Login(FormCollection form)
         {
-            usuario.nome = form["usuario"];
-            usuario.senha = form["senha"];
+            var usuario = new Usuario
+            {
+                nome = form["usuario"],
+                senha = form["senha"],
+            };
             if (usuario.senha != "" && usuario.nome != "")
             {
-                usuario = _IUsuarioAppService.VerificaLogin(usuario);
+                usuario = _usuarioAppService.VerificaLogin(usuario);
 
-                if (usuario.nivel !=0)
+                if (usuario.nivel != 0)
                 {
-                    Session["cliente"] =_IClienteAppService.GetByClienteId(usuario.clienteId);
-                    return RedirectToAction("Index", "Home");
+                    var statusCode = new HttpResponseMessage();
+                    statusCode = _clienteAppService.GetByClienteId(usuario.clienteId);
+                    if (!statusCode.IsSuccessStatusCode)
+                    {
+                        Logout();
+                        return null;
+                    }
+                    else
+                    {
+                        Session["cliente"] = statusCode.Content.ReadAsAsync<ClienteViewModel>().Result;
+                        return RedirectToAction("Index", "Home");
+                    }
                 }
                 else
                 {
@@ -65,63 +73,66 @@ namespace ProjetoBanco.MVC.Controllers
 
         public ActionResult CreateUsuario()
         {
-            ViewBag.clientes = _IClienteAppService.GetAllClientes(1);
+            var statusCode = new HttpResponseMessage();
+            statusCode = _clienteAppService.GetAllClientes(1);
+            if (!statusCode.IsSuccessStatusCode)
+            {
+                Response.TrySkipIisCustomErrors = true;
+                Response.StatusCode = 400;
+                return Json(Utilitarios.Utilitarios.limpaMenssagemErro(statusCode.Content.ReadAsStringAsync().Result), JsonRequestBehavior.AllowGet);
+
+            }
+            Response.StatusCode = 200;
+            ViewBag.clientes = statusCode.Content.ReadAsAsync<IEnumerable<ClienteViewModel>>().Result;
             return View();
         }
 
         [HttpPost]
         public ActionResult CreateUsuario(UsuarioViewModel usuarioViewModel)
         {
-            if (ModelState.IsValid)
+            var error = "";
+            var usuario = new Usuario
             {
-                usuario.clienteId = usuarioViewModel.clienteId;
-                usuario.nome = usuarioViewModel.nome;
-                usuario.senha = usuarioViewModel.senha;
-                error = _IUsuarioAppService.AddUsuario(usuario);
-                return feedBackOperacao("CreateUsuario", error);
+                clienteId = usuarioViewModel.clienteId,
+                nome = usuarioViewModel.nome,
+                senha = usuarioViewModel.senha,
+            };
+            error = _usuarioAppService.AddUsuario(usuario);
+            return feedBackOperacao("CreateUsuario", error); ;
 
-            }
-            else
-            {
-                ViewBag.clientes = _IClienteAppService.GetAllClientes(1);
-                return View(usuarioViewModel);
-            }
         }
 
         public ActionResult EditUsuario()
         {
-            ViewBag.usuarios = _IUsuarioAppService.GetAllUsuarios();
+            ViewBag.usuarios = _usuarioAppService.GetAllUsuarios();
             return View();
         }
 
         [HttpPost]
         public ActionResult EditUsuario(UsuarioViewModel usuarioViewModel)
         {
-            if (ModelState.IsValid)
+            var error = "";
+            var usuario = new Usuario
             {
-                usuario.clienteId = usuarioViewModel.clienteId;
-                usuario.senha = usuarioViewModel.senha;
-                usuario.nome = usuarioViewModel.nome;
-                usuario.ativo = usuarioViewModel.ativo;
-                error =_IUsuarioAppService.UpdateUsuario(usuario);
+                clienteId = usuarioViewModel.clienteId,
+                senha = usuarioViewModel.senha,
+                nome = usuarioViewModel.nome,
+                ativo = usuarioViewModel.ativo,
+            };
+            error = _usuarioAppService.UpdateUsuario(usuario);
 
-                return feedBackOperacao("EditUsuario", error);
-            }
-            else
-            {
+            return feedBackOperacao("EditUsuario", error);
 
-                ViewBag.usuarios = _IUsuarioAppService.GetAllUsuarios();
-                return View(usuarioViewModel);
-            }
         }
 
         [HttpGet]
         public JsonResult GetByUsuarioId(int clienteId)
         {
-           return Json(_IUsuarioAppService.GetByUsuarioId(clienteId), JsonRequestBehavior.AllowGet);
+            return Json(_usuarioAppService.GetByUsuarioId(clienteId), JsonRequestBehavior.AllowGet);
         }
         private ActionResult feedBackOperacao(string action, string error)
         {
+            var usuario = new Usuario();
             if (error == null)
             {
                 TempData["outraOp"] = "/Usuarios/" + action;

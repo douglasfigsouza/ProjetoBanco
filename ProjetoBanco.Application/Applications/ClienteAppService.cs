@@ -1,8 +1,5 @@
-﻿
-using ProjetoBanco.Application.Interfaces;
-using ProjetoBanco.Domain.Clientes;
+﻿using ProjetoBanco.Application.Interfaces;
 using ProjetoBanco.Domain.Clientes.Dto;
-using System;
 using System.Net.Http;
 using Web_Api.Utilitarios;
 
@@ -10,15 +7,6 @@ namespace ProjetoBanco.Application
 {
     public class ClienteAppService : IClienteAppService
     {
-        private readonly IClienteServiceDomain _iClienteService;
-        private readonly IClienteRepository _clienteRepositoryDomain;
-        public ClienteAppService(IClienteServiceDomain iClienteService, IClienteRepository clienteRepositoryDomain)
-        {
-            _iClienteService = iClienteService;
-            _clienteRepositoryDomain = clienteRepositoryDomain;
-        }
-
-
         public HttpResponseMessage AddCliente(Cliente cliente)
         {
             var response = new HttpResponseMessage();
@@ -27,9 +15,16 @@ namespace ProjetoBanco.Application
             return response;
         }
 
-        public Cliente GetByClienteId(int id)
+        public HttpResponseMessage GetByClienteId(int id)
         {
-            return _clienteRepositoryDomain.GetByClienteId(id);
+            HttpResponseMessage response;
+            //Create a query
+            HttpClient client = new HttpClient();
+            response = client.GetAsync(HttpClientConf.HttpClientConfigGet("Clientes/GetByClienteId", new
+            {
+                id
+            })).Result;
+            return response;
         }
 
         public HttpResponseMessage GetAllClientes(int op)
@@ -44,9 +39,16 @@ namespace ProjetoBanco.Application
             return response;
         }
 
-        public Cliente GetClienteByCpf(string cpf)
+        public HttpResponseMessage GetClienteByCpf(string cpf)
         {
-            return _clienteRepositoryDomain.GetClienteByCpf(cpf);
+            HttpResponseMessage response;
+            //Create a query
+            HttpClient client = new HttpClient();
+            response = client.GetAsync(HttpClientConf.HttpClientConfigGet("Clientes/GetByClienteId", new
+            {
+                cpf
+            })).Result;
+            return response;
         }
 
         public HttpResponseMessage UpdateCliente(Cliente cliente)
@@ -57,14 +59,5 @@ namespace ProjetoBanco.Application
             return response;
         }
 
-        public void RemoveCliente(Cliente cliente)
-        {
-            throw new NotImplementedException();
-        }
-
-        public void Dispose()
-        {
-            _clienteRepositoryDomain.Dispose();
-        }
     }
 }

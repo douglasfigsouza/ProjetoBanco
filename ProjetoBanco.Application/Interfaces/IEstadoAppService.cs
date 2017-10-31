@@ -1,16 +1,9 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using ProjetoBanco.Domain.Entities;
+﻿using System.Net.Http;
 
 namespace ProjetoBanco.Application.Interfaces
 {
     public interface IEstadoAppService
     {
-        Estado GetByEstadoId(int id);
-        IEnumerable<Estado> GetAllEstados();
-        void Dispose();
+        HttpResponseMessage GetAllEstados();
     }
 }

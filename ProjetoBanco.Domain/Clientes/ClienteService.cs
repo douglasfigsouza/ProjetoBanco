@@ -1,5 +1,4 @@
 ﻿using ProjetoBanco.Domain.Clientes.Dto;
-using System;
 using System.Collections.Generic;
 
 
@@ -29,18 +28,9 @@ namespace ProjetoBanco.Domain.Clientes
             return _repository.GetByClienteId(id);
         }
 
-        public void RemoveClientes(Cliente obj)
-        {
-            throw new NotImplementedException();
-        }
-
         public void UpdateClientes(Cliente cliente)
         {
            _repository.UpdateClientes(cliente);
-        }
-        public void Dispose()
-        {
-            _repository.Dispose();
         }
 
         public Cliente GetClienteByCpf(string cpf)

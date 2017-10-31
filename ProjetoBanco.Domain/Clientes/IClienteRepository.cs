@@ -10,6 +10,5 @@ namespace ProjetoBanco.Domain.Clientes
         IEnumerable<Cliente> GetAllClientes(int op);
         Cliente GetClienteByCpf(string cpf);
         void UpdateClientes(Cliente cliente);
-        void Dispose();
     }
 }
