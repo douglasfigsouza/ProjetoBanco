@@ -2,6 +2,7 @@
 using ProjetoBanco.Domain.Usuarios;
 using ProjetoBanco.MVC.ViewModels;
 using System.Collections.Generic;
+using System.Linq.Expressions;
 using System.Net.Http;
 using System.Web.Mvc;
 using System.Web.Security;
@@ -29,6 +30,7 @@ namespace ProjetoBanco.MVC.Controllers
         [HttpPost]
         public ActionResult Login(FormCollection form)
         {
+            HttpResponseMessage statusCode;
             var usuario = new Usuario
             {
                 nome = form["usuario"],
@@ -36,32 +38,30 @@ namespace ProjetoBanco.MVC.Controllers
             };
             if (usuario.senha != "" && usuario.nome != "")
             {
-                usuario = _usuarioAppService.VerificaLogin(usuario);
+                statusCode = _usuarioAppService.VerificaLogin(usuario);
+                if (!statusCode.IsSuccessStatusCode)
+                {
+                    Response.TrySkipIisCustomErrors = true;
+                    Response.StatusCode = 400;
+                    return Content(Utilitarios.Utilitarios.limpaMenssagemErro(statusCode.Content.ReadAsStringAsync().Result));
 
-                if (usuario.nivel != 0)
-                {
-                    var statusCode = new HttpResponseMessage();
-                    statusCode = _clienteAppService.GetByClienteId(usuario.clienteId);
-                    if (!statusCode.IsSuccessStatusCode)
-                    {
-                        Logout();
-                        return null;
-                    }
-                    else
-                    {
-                        Session["cliente"] = statusCode.Content.ReadAsAsync<ClienteViewModel>().Result;
-                        return RedirectToAction("Index", "Home");
-                    }
                 }
-                else
+                statusCode = _clienteAppService.GetByClienteId(statusCode.Content.ReadAsAsync<Usuario>().Result.clienteId);
+                if (!statusCode.IsSuccessStatusCode)
                 {
-                    return View("Login");
+                    Logout();
+                    return null;
                 }
+                Response.TrySkipIisCustomErrors = true;
+                Response.StatusCode = 200;
+                Session["cliente"] = statusCode.Content.ReadAsAsync<ClienteViewModel>().Result;
+                return Json(statusCode.Content.ReadAsStringAsync().Result);
             }
             else
             {
                 return View("Login");
             }
+
         }
 
         public ActionResult Logout()
@@ -97,7 +97,7 @@ namespace ProjetoBanco.MVC.Controllers
                 nome = usuarioViewModel.nome,
                 senha = usuarioViewModel.senha,
             };
-            error = _usuarioAppService.AddUsuario(usuario);
+            //error = _usuarioAppService.AddUsuario(usuario);
             return feedBackOperacao("CreateUsuario", error); ;
 
         }
@@ -119,7 +119,7 @@ namespace ProjetoBanco.MVC.Controllers
                 nome = usuarioViewModel.nome,
                 ativo = usuarioViewModel.ativo,
             };
-            error = _usuarioAppService.UpdateUsuario(usuario);
+            //error = _usuarioAppService.UpdateUsuario(usuario);
 
             return feedBackOperacao("EditUsuario", error);
 

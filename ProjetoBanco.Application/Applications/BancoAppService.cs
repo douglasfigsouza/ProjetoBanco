@@ -1,33 +1,26 @@
-﻿using System;
-using System.Collections.Generic;
-using ProjetoBanco.Application.Interfaces;
-using ProjetoBanco.Domain.Entities;
-using ProjetoBanco.Domain.Interfaces.IRepositories;
-using ProjetoBanco.Domain.Interfaces.IServices;
+﻿using ProjetoBanco.Application.Interfaces;
+using ProjetoBanco.Domain.Bancos;
+using System.Net.Http;
+using Web_Api.Utilitarios;
 
 namespace ProjetoBanco.Application
 {
     public class BancoAppService : IBancoAppService
     {
-        private readonly IBancoServiceDomain _bancoServiceDomain;
-        private readonly IBancoRepositoryDomain _bancoRepositoryDomain;
-        public BancoAppService(IBancoServiceDomain IBancoServiceDomain, IBancoRepositoryDomain bancoRepositoryDomain)
+        public HttpResponseMessage AddBanco(Banco banco)
         {
-            _bancoServiceDomain = IBancoServiceDomain;
-            _bancoRepositoryDomain = bancoRepositoryDomain;
-        }
-        public string AddBanco(Banco banco)
-        {
-            return _bancoRepositoryDomain.AddBanco(banco);
+            var response = new HttpResponseMessage();
+            response = HttpClientConf.HttpClientConfig("Banco")
+                .PostAsJsonAsync("AddBanco", banco).Result;
+            return response;
         }
 
-        public IEnumerable<Banco> GetAllBancos()
+        public HttpResponseMessage GetAllBancos()
         {
-            return _bancoRepositoryDomain.GetAllBancos();
-        }
-        public void Dispose()
-        {
-            throw new NotImplementedException();
+            var response = new HttpResponseMessage();
+            response = HttpClientConf.HttpClientConfig("Banco")
+                .GetAsync("GetAllBancos").Result;
+            return response;
         }
     }
 }

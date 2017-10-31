@@ -1,7 +1,10 @@
-﻿using System.Web.Mvc;
-using ProjetoBanco.Application.Interfaces;
+﻿using ProjetoBanco.Application.Interfaces;
 using ProjetoBanco.Domain.Entities;
 using ProjetoBanco.MVC.ViewModels;
+using System.Collections.Generic;
+using System.Net.Http;
+using System.Web.Mvc;
+using ProjetoBanco.Domain.Estados.Dto;
 
 namespace ProjetoBanco.MVC.Controllers
 {
@@ -24,8 +27,21 @@ namespace ProjetoBanco.MVC.Controllers
         // GET: Agencia
         public ActionResult CreateAgencia()
         {
-            ViewBag.estados = _estadoAppService.GetAllEstados();
-            ViewBag.bancos = _bancoAppService.GetAllBancos();
+            var statusCode = new HttpResponseMessage();
+
+            statusCode = _estadoAppService.GetAllEstados();
+            if (!statusCode.IsSuccessStatusCode)
+            {
+                return null;
+            }
+            ViewBag.estados = statusCode.Content.ReadAsAsync<IEnumerable<Estado>>().Result;
+
+            statusCode = _bancoAppService.GetAllBancos();
+            if (!statusCode.IsSuccessStatusCode)
+            {
+                return null;
+            }
+            ViewBag.bancos = statusCode.Content.ReadAsAsync<IEnumerable<BancoViewModel>>().Result;
             return View();
         }
 

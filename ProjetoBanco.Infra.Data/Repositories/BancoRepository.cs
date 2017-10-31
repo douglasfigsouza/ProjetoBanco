@@ -1,64 +1,66 @@
-﻿using System;
-using System.CodeDom;
+﻿using ProjetoBanco.Domain.Bancos;
+using ProjetoBanco.Domain.Entities;
+using System;
 using System.Collections.Generic;
 using System.Data.SqlClient;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using ProjetoBanco.Domain.Entities;
-using ProjetoBanco.Domain.Interfaces.IRepositories;
 
 namespace ProjetoBanco.Infra.Data.Repositories
 {
-    public class BancoRepository : IBancoRepositoryDomain
+    public class BancoRepository : IBancoRepository
     {
-        private Conexao conn;
-        private SqlDataReader result;
-        private List<Banco> lstBancos;
-
+        private readonly Conexao _conn;
+        private Notifications _notifications;
         public enum Procedures
         {
             PBSP_INSERTBANCO,
             PBSP_GETALLBANCOS
         }
-        public BancoRepository()
+        public BancoRepository(Conexao conn, Notifications notifications)
         {
-            conn = new Conexao();
-            lstBancos = new List<Banco>();
+            _notifications = notifications;
+            _conn = new Conexao();
         }
-        public string AddBanco(Banco banco)
+        public void AddBanco(Banco banco)
         {
             try
             {
-                conn.ExecuteProcedure(Procedures.PBSP_INSERTBANCO);
-                conn.AddParameter("@nome", banco.nome);
-                conn.AddParameter("@ativo", banco.ativo);
-                conn.ExecuteNonQuery();
-                return null;
+                _conn.ExecuteProcedure(Procedures.PBSP_INSERTBANCO);
+                _conn.AddParameter("@nome", banco.nome);
+                _conn.AddParameter("@ativo", banco.ativo);
+                _conn.ExecuteNonQuery();
             }
             catch (Exception e)
             {
-                return e.ToString();
+                _notifications.Notificacoes.Add($"Impossível cadastrar banco! Erro {e.Message}");
             }
 
         }
         public IEnumerable<Banco> GetAllBancos()
         {
-            conn.ExecuteProcedure(Procedures.PBSP_GETALLBANCOS);
-            result = conn.ExecuteReader();
+            SqlDataReader result = null;
+            List<Banco> bancos = new List<Banco>();
+            _conn.ExecuteProcedure(Procedures.PBSP_GETALLBANCOS);
+            try
+            {
+                result = _conn.ExecuteReader();
+            }
+            catch (Exception e)
+            {
+                _notifications.Notificacoes.Add($"Impossível buscar bancos! Erro {e.Message}");
+            }
             while (result.Read())
             {
-                lstBancos.Add(new Banco
+                bancos.Add(new Banco
                 {
                     Id = Convert.ToInt32(result["Id"].ToString()),
                     nome = result["nome"].ToString()
                 });
             }
-            return lstBancos.ToList();
-        }
-        public void Dispose()
-        {
-            throw new NotImplementedException();
+            if (bancos.Count == 0)
+            {
+                _notifications.Notificacoes.Add("Não existem bancos cadastrados!");
+            }
+            return bancos;
         }
     }
 }

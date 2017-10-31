@@ -46,8 +46,7 @@ namespace ProjetoBanco.Infra.Data.Repositories
             }
             catch (Exception e)
             {
-                _notifications.Notificacoes.Add("Conta não encontrada!");
-                Console.WriteLine(e);
+                _notifications.Notificacoes.Add($"Conta não encontrada! Erro {e.Message}");
                 throw;
             }
 
@@ -110,7 +109,7 @@ namespace ProjetoBanco.Infra.Data.Repositories
             }
             catch (Exception ex)
             {
-               _notifications.Notificacoes.Add("Impossível obter operações para estorno!");
+               _notifications.Notificacoes.Add($"Impossível obter operações para estorno! Erro {ex.Message}");
                 return null;
             }
 
@@ -147,8 +146,7 @@ namespace ProjetoBanco.Infra.Data.Repositories
             }
             catch (Exception e)
             {
-                _notifications.Notificacoes.Add("Impossível realizar saque!");
-                Console.WriteLine(e);
+                _notifications.Notificacoes.Add($"Impossível realizar saque!Erro {e.Message}");
                 throw;
             }
         }

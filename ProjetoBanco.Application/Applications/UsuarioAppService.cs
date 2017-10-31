@@ -1,44 +1,49 @@
-﻿using System.Collections.Generic;
-using ProjetoBanco.Application.Interfaces;
-using ProjetoBanco.Domain.Interfaces.IRepositories;
-using ProjetoBanco.Domain.Interfaces.IServices;
+﻿using ProjetoBanco.Application.Interfaces;
 using ProjetoBanco.Domain.Usuarios;
+using System.Net.Http;
+using Web_Api.Utilitarios;
 
 namespace ProjetoBanco.Application
 {
     public class UsuarioAppService : IUsuarioAppService
     {
-        private readonly IUsuariosService _usuarioService;
-        private readonly IUsuarioRepository _usuarioRepository;
 
-        public UsuarioAppService(IUsuariosService usuarioService, IUsuarioRepository usuarioRepository)
+        public HttpResponseMessage AddUsuario(Usuario usuario)
         {
-            _usuarioService = usuarioService;
-            _usuarioRepository = usuarioRepository;
-        }
-        public string AddUsuario(Usuario usuario)
-        {
-            return _usuarioRepository.AddUsuario(usuario);
+           var response = HttpClientConf.HttpClientConfig("Usuarios")
+                .PostAsJsonAsync("AddUsuario", usuario).Result;
+            return response;
         }
 
-        public Usuario GetByUsuarioId(int id)
+        public HttpResponseMessage GetByUsuarioId(int id)
         {
-            return _usuarioRepository.GetByUsuarioId(id);
+            HttpClient client = new HttpClient();
+            var response = client.GetAsync(HttpClientConf.HttpClientConfigGet("Usuarios/GetByUsuarioId", new
+            {
+                id
+            })).Result;
+            return response;
         }
 
-        public IEnumerable<Usuario> GetAllUsuarios()
+        public HttpResponseMessage GetAllUsuarios()
         {
-            return _usuarioRepository.GetAllUsuarios();
+            var response = HttpClientConf.HttpClientConfig("Usuarios")
+                .GetAsync("GetAllUsuarios").Result;
+            return response;
         }
 
-        public string UpdateUsuario(Usuario usuario)
+        public HttpResponseMessage UpdateUsuario(Usuario usuario)
         {
-            return _usuarioRepository.UpdateUsuario(usuario);
+            var response = HttpClientConf.HttpClientConfig("Usuarios")
+                .PostAsJsonAsync("UpdateUsuario", usuario).Result;
+            return response;
         }
 
-        public Usuario VerificaLogin(Usuario usuario)
+        public HttpResponseMessage VerificaLogin(Usuario usuario)
         {
-            return _usuarioRepository.VerificaLogin(usuario);
+            var response = HttpClientConf.HttpClientConfig("Usuarios")
+                .PostAsJsonAsync("VerificaLogin", usuario).Result;
+            return response;
         }
     }
 }

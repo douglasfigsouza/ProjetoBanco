@@ -1,17 +1,15 @@
-﻿using System;
+﻿using ProjetoBanco.Domain.Entities;
+using ProjetoBanco.Domain.Usuarios;
+using System;
 using System.Collections.Generic;
 using System.Data.SqlClient;
-using ProjetoBanco.Domain.Interfaces.IRepositories;
-using ProjetoBanco.Domain.Usuarios;
 
 namespace ProjetoBanco.Infra.Data.Repositories
 {
     public class UsuarioRepository : IUsuarioRepository
     {
-        private Conexao conn;
-        private SqlDataReader result;
-        private Usuario usuario;
-        private List<Usuario> Usuarios;
+        private readonly Conexao _conn;
+        private Notifications _notifications;
         public enum Procedures
         {
             PBSP_INSERTUSUARIOS,
@@ -21,50 +19,72 @@ namespace ProjetoBanco.Infra.Data.Repositories
             PBSP_UPDATEUSUARIO
         }
 
-        public UsuarioRepository()
+        public UsuarioRepository(Conexao conn, Notifications notifications)
         {
-            conn = new Conexao();
-            usuario = new Usuario();
-            Usuarios = new List<Usuario>();
+            _conn = conn;
+            _notifications = notifications;
         }
-        public string AddUsuario(Usuario usuario)
+        public void AddUsuario(Usuario usuario)
         {
+            _conn.ExecuteProcedure(Procedures.PBSP_INSERTUSUARIOS);
+            _conn.AddParameter("@clienteId", usuario.clienteId);
+            _conn.AddParameter("@nome", usuario.nome);
+            _conn.AddParameter("@senha", usuario.senha);
             try
             {
-                conn.ExecuteProcedure(Procedures.PBSP_INSERTUSUARIOS);
-                conn.AddParameter("@clienteId", usuario.clienteId);
-                conn.AddParameter("@nome", usuario.nome);
-                conn.AddParameter("@senha", usuario.senha);
-                conn.ExecuteNonQuery();
-                return null;
+                _conn.ExecuteNonQuery();
+
             }
             catch (Exception e)
             {
-                return e.ToString();
+                _notifications.Notificacoes.Add($"Impossível cadastrar usuário! Erro {e.Message}");
             }
         }
 
         public Usuario VerificaLogin(Usuario usuario)
         {
-            conn.ExecuteProcedure(Procedures.PBSP_AUTENTICA);
-            conn.AddParameter("@nome", usuario.nome);
-            conn.AddParameter("@senha", usuario.senha);
-            result = conn.ExecuteReader();
+            SqlDataReader result = null;
+            _conn.ExecuteProcedure(Procedures.PBSP_AUTENTICA);
+            _conn.AddParameter("@nome", usuario.nome);
+            _conn.AddParameter("@senha", usuario.senha);
+            usuario = null;
+            try
+            {
+                result = _conn.ExecuteReader();
+            }
+            catch (Exception e)
+            {
+                _notifications.Notificacoes.Add($"Impossível fazer login! Erro {e.Message}");
+            }
             while (result.Read())
             {
+                usuario = new Usuario();
                 usuario.clienteId = Convert.ToInt32(result["clienteId"].ToString());
                 usuario.nome = result["nome"].ToString();
                 usuario.senha = result["senha"].ToString();
                 usuario.nivel = Convert.ToChar(result["nivel"].ToString());
+            }
+            if (usuario == null)
+            {
+                _notifications.Notificacoes.Add("Usuário ou senha inválidos!");
             }
             return usuario;
         }
 
         public Usuario GetByUsuarioId(int id)
         {
-            conn.ExecuteProcedure(Procedures.PBSP_GETBYUSUARIOID);
-            conn.AddParameter("@id", id);
-            result = conn.ExecuteReader();
+            SqlDataReader result = null;
+            Usuario usuario = null;
+            _conn.ExecuteProcedure(Procedures.PBSP_GETBYUSUARIOID);
+            _conn.AddParameter("@id", id);
+            try
+            {
+                result = _conn.ExecuteReader();
+            }
+            catch (Exception e)
+            {
+                _notifications.Notificacoes.Add($"Impossível buscar usuários! Erro {e.Message}");
+            }
             while (result.Read())
             {
                 usuario = new Usuario
@@ -75,15 +95,29 @@ namespace ProjetoBanco.Infra.Data.Repositories
                     ativo = Convert.ToBoolean(result["ativo"].ToString())
                 };
             }
+            if (usuario == null)
+            {
+                _notifications.Notificacoes.Add("Não existem usuários cadastrados!");
+            }
             return usuario;
         }
         public IEnumerable<Usuario> GetAllUsuarios()
         {
-            conn.ExecuteProcedure(Procedures.PBSP_GETALLUSERS);
-            result = conn.ExecuteReader();
+            SqlDataReader result = null;
+            List<Usuario> usuarios = new List<Usuario>();
+            _conn.ExecuteProcedure(Procedures.PBSP_GETALLUSERS);
+
+            try
+            {
+                result = _conn.ExecuteReader();
+            }
+            catch (Exception e)
+            {
+                _notifications.Notificacoes.Add($"Impossível buscar usuários! Erro {e.Message}");
+            }
             while (result.Read())
             {
-                Usuarios.Add(new Usuario
+                usuarios.Add(new Usuario
                 {
                     clienteId = Convert.ToInt32(result["clienteId"].ToString()),
                     nome = result["usuNome"].ToString(),
@@ -91,23 +125,26 @@ namespace ProjetoBanco.Infra.Data.Repositories
                     nomeCli = result["cliNome"].ToString()
                 });
             }
-            return Usuarios;
+            if (usuarios.Count == 0)
+            {
+                _notifications.Notificacoes.Add("Não existem usuários!");
+            }
+            return usuarios;
         }
-        public string UpdateUsuario(Usuario usuario)
+        public void UpdateUsuario(Usuario usuario)
         {
+            _conn.ExecuteProcedure(Procedures.PBSP_UPDATEUSUARIO);
+            _conn.AddParameter("@clienteId", usuario.clienteId);
+            _conn.AddParameter("@nome", usuario.nome);
+            _conn.AddParameter("@senha", usuario.senha);
+            _conn.AddParameter("@ativo", usuario.ativo);
             try
             {
-                conn.ExecuteProcedure(Procedures.PBSP_UPDATEUSUARIO);
-                conn.AddParameter("@clienteId", usuario.clienteId);
-                conn.AddParameter("@nome", usuario.nome);
-                conn.AddParameter("@senha", usuario.senha);
-                conn.AddParameter("@ativo", usuario.ativo);
-                conn.ExecuteNonQuery();
-                return null;
+                _conn.ExecuteNonQuery();
             }
             catch (Exception e)
             {
-                return e.Message;
+                _notifications.Notificacoes.Add($"Impossível atualizar usuários! Erro {e.Message}");
             }
         }
     }

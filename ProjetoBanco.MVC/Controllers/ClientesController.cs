@@ -1,11 +1,11 @@
 ﻿using ProjetoBanco.Application.Interfaces;
 using ProjetoBanco.Domain.Clientes.Dto;
+using ProjetoBanco.Domain.Estados.Dto;
 using ProjetoBanco.MVC.ViewModels;
 using System;
 using System.Collections.Generic;
 using System.Net.Http;
 using System.Web.Mvc;
-using ProjetoBanco.Domain.Estados.Dto;
 
 namespace ProjetoBanco.MVC.Controllers
 {
@@ -127,6 +127,7 @@ namespace ProjetoBanco.MVC.Controllers
                 ativo = clienteViewModel.ativo,
                 cidadeId = clienteViewModel.cidadeId,
             };
+
             var statusCode = new HttpResponseMessage();
 
             statusCode = _clienteApp.UpdateCliente(cliente);

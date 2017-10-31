@@ -1,20 +1,15 @@
-﻿using ProjetoBanco.Domain.Entities;
-using ProjetoBanco.Domain.Operacoes.Dto;
+﻿using ProjetoBanco.Domain.Operacoes.Dto;
 using System.Collections.Generic;
-using System.Net.Http;
 
 namespace ProjetoBanco.Domain.Operacoes
 {
     public class OperacoesRealizadasService:IOperacoeRealizadaService
     {
         private readonly IOperacoesRealizadasRepository _operacoesRealizadasRepository;
-        private HttpResponseMessage response;
-        private readonly Notifications _notifications;
 
-        public OperacoesRealizadasService(IOperacoesRealizadasRepository operacoesRealizadasRepositoryDomain, Notifications notifications)
+        public OperacoesRealizadasService(IOperacoesRealizadasRepository operacoesRealizadasRepositoryDomain)
         {
             _operacoesRealizadasRepository = operacoesRealizadasRepositoryDomain;
-            _notifications = notifications;
         }
         public void Deposito(OperacoesRealizadas operacaoRealizada)
         {

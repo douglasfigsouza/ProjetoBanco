@@ -1,14 +1,14 @@
-﻿using System.Collections.Generic;
-using ProjetoBanco.Domain.Usuarios;
+﻿using ProjetoBanco.Domain.Usuarios;
+using System.Net.Http;
 
 namespace ProjetoBanco.Application.Interfaces
 {
     public interface IUsuarioAppService
     {
-        string AddUsuario(Usuario usuario);
-        Usuario VerificaLogin(Usuario usuario);
-        Usuario GetByUsuarioId(int id);
-        IEnumerable<Usuario> GetAllUsuarios();
-        string UpdateUsuario(Usuario usuario);
+        HttpResponseMessage AddUsuario(Usuario usuario);
+        HttpResponseMessage VerificaLogin(Usuario usuario);
+        HttpResponseMessage GetByUsuarioId(int id);
+        HttpResponseMessage GetAllUsuarios();
+        HttpResponseMessage UpdateUsuario(Usuario usuario);
     }
 }

@@ -3,8 +3,20 @@
 }
 <div id="login-page" class="row login">
     <div class="col s12 z-depth-4 card-panel">
-        @using (Html.BeginForm())
+        @using (Ajax.BeginForm("Login", "Usuarios", null, new AjaxOptions
         {
+            HttpMethod = "POST",
+            OnSuccess = "sucesso()",
+            OnFailure = "erro(xhr)",
+            OnBegin = "progresso",
+            OnComplete = "fim"
+        }))
+        {
+            <div class="row divErroNaOperacao">
+                <div class="col s12">
+                    <h6 class="erroOperacao"></h6>
+                </div>
+            </div>
             <div class="row">
                 <div class="input-field col s12 center">
                     <p class="center login-form-text">Login - SisBank</p>
@@ -26,9 +38,19 @@
             </div>
             <div class="row">
                 <div class="input-field col s12">
-                    <button class="btn waves-effect waves-light col s12">Login</button>
+                    <button class="btn waves-effect waves-light col s12" type="submit">Login</button>
                 </div>
             </div>
         }
     </div>
 </div>
+<script>
+    function sucesso() {
+        window.location = "/Home/Index";
+    }
+    function erro(xhr) {
+        debugger;
+        $(".divErroNaOperacao").fadeIn(3000);
+        $(".erroOperacao").html("<i class='tiny material-icons'>error</i>" + xhr.responseText);
+    }
+</script>

@@ -9,7 +9,7 @@ namespace ProjetoBanco.Infra.Data.Repositories
     public class OperacoesRepository : IOperacoesRepository
     {
         private Notifications _notifications;
-        private Conexao conn;
+        private Conexao _conn;
         private SqlDataReader result;
 
         public enum Procedures
@@ -20,39 +20,39 @@ namespace ProjetoBanco.Infra.Data.Repositories
             PBSP_CONSULTASALDO
         }
 
-        public OperacoesRepository(Notifications notifications)
+        public OperacoesRepository(Notifications notifications, Conexao conn)
         {
             _notifications = notifications;
-            conn = new Conexao();
+            _conn = conn;
         }
 
         public void AddOperacao(Operacoes op)
         {
             try
             {
-                conn.ExecuteProcedure(Procedures.PBSP_INSERTOPERACAO);
-                conn.AddParameter("@descricao", op.descricao);
-                conn.AddParameter("@ativo", op.ativo);
-                conn.ExecuteNonQuery();
+                _conn.ExecuteProcedure(Procedures.PBSP_INSERTOPERACAO);
+                _conn.AddParameter("@descricao", op.descricao);
+                _conn.AddParameter("@ativo", op.ativo);
+                _conn.ExecuteNonQuery();
             }
             catch (Exception e)
             {
-                _notifications.Notificacoes.Add("Operação não cadastrada!");
+                _notifications.Notificacoes.Add($"Operação não cadastrada! Erro {e.Message}");
             }
         }
         public Transacao VerificaDadosTransacao(Transacao transacao)
         {
-            conn = new Conexao();
-            conn.ExecuteProcedure(Procedures.PBSP_VERIFICADADOSTRASACAO);
-            conn.AddParameter("@op", transacao.op);
-            conn.AddParameter("@nivel",transacao.nivel);
-            conn.AddParameter("@senhaCli", transacao.senhaCli);
-            conn.AddParameter("@agencia", transacao.agencia);
-            conn.AddParameter("@clienteId", transacao.clienteId);
-            conn.AddParameter("@conta", transacao.conta);
+            _conn = new Conexao();
+            _conn.ExecuteProcedure(Procedures.PBSP_VERIFICADADOSTRASACAO);
+            _conn.AddParameter("@op", transacao.op);
+            _conn.AddParameter("@nivel", transacao.nivel);
+            _conn.AddParameter("@senhaCli", transacao.senhaCli);
+            _conn.AddParameter("@agencia", transacao.agencia);
+            _conn.AddParameter("@clienteId", transacao.clienteId);
+            _conn.AddParameter("@conta", transacao.conta);
             var valor = transacao.valor;
             transacao = null;
-            result = conn.ExecuteReader();
+            result = _conn.ExecuteReader();
             while (result.Read())
             {
                 transacao = new Transacao
@@ -74,13 +74,12 @@ namespace ProjetoBanco.Infra.Data.Repositories
 
         public Transacao VerificaDadosTransferencia(Transacao transacao)
         {
-            conn = new Conexao();
-            conn.ExecuteProcedure(Procedures.PBSP_VERIFICADADOSDATRANSFERENCIA);
-            conn.AddParameter("@agencia", transacao.agencia);
-            conn.AddParameter("@conta", transacao.conta);
+            _conn.ExecuteProcedure(Procedures.PBSP_VERIFICADADOSDATRANSFERENCIA);
+            _conn.AddParameter("@agencia", transacao.agencia);
+            _conn.AddParameter("@conta", transacao.conta);
             try
             {
-                result = conn.ExecuteReader();
+                result = _conn.ExecuteReader();
             }
             catch (Exception e)
             {
@@ -106,18 +105,18 @@ namespace ProjetoBanco.Infra.Data.Repositories
         {
             try
             {
-                conn.ExecuteProcedure(Procedures.PBSP_CONSULTASALDO);
-                conn.AddParameter("@nivel",transacao.nivel);
-                conn.AddParameter("@senhaCli", transacao.senhaCli);
-                conn.AddParameter("@conta", transacao.conta);
-                conn.AddParameter("@agencia", transacao.agencia);
-                conn.AddParameter("@clienteId", transacao.clienteId);
-                result = conn.ExecuteReader();
+                _conn.ExecuteProcedure(Procedures.PBSP_CONSULTASALDO);
+                _conn.AddParameter("@nivel", transacao.nivel);
+                _conn.AddParameter("@senhaCli", transacao.senhaCli);
+                _conn.AddParameter("@conta", transacao.conta);
+                _conn.AddParameter("@agencia", transacao.agencia);
+                _conn.AddParameter("@clienteId", transacao.clienteId);
+                result = _conn.ExecuteReader();
                 transacao = null;
                 while (result.Read())
                 {
                     transacao = new Transacao();
-                    transacao.valor  = decimal.Parse(result["saldo"].ToString());
+                    transacao.valor = decimal.Parse(result["saldo"].ToString());
                     transacao.nome = result["nome"].ToString();
                     transacao.conta = result["num"].ToString();
 
@@ -134,7 +133,7 @@ namespace ProjetoBanco.Infra.Data.Repositories
                 return null;
 
             }
- 
+
         }
     }
 }

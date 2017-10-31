@@ -12,7 +12,6 @@ namespace ProjetoBanco.Infra.Data.Repositories
     {
         private readonly Conexao _conn;
         private Notifications _notifications;
-        private SqlDataReader result;
 
         public ClientesRepository(Notifications notifications, Conexao conn)
         {
@@ -58,6 +57,7 @@ namespace ProjetoBanco.Infra.Data.Repositories
 
         public Cliente GetByClienteId(int id)
         {
+            SqlDataReader result = null;
             Cliente cliente = null;
             _conn.ExecuteProcedure(Procedures.PBSP_GETCLIENTEBYID);
             _conn.AddParameter("@id", id);
@@ -97,6 +97,7 @@ namespace ProjetoBanco.Infra.Data.Repositories
 
         public IEnumerable<Cliente> GetAllClientes(int op)
         {
+            SqlDataReader result = null;
             List<Cliente> lstClientes = new List<Cliente>();
             _conn.ExecuteProcedure(Procedures.PBSP_GETALLCLIENTES);
             //o parametro 0 é para recuperar todos os clientes ativos e nao ativos
@@ -159,6 +160,7 @@ namespace ProjetoBanco.Infra.Data.Repositories
 
         public Cliente GetClienteByCpf(string cpf)
         {
+            SqlDataReader result = null;
             Cliente cliente = null;
             _conn.ExecuteProcedure(Procedures.PBSP_GETCLIENTEBYCPF);
             _conn.AddParameter("@cpf", cpf);
