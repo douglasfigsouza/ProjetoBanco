@@ -1,10 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Web;
-using System.Web.Mvc;
-using ProjetoBanco.Domain.Entities;
-using ProjetoBanco.MVC.ViewModels;
+﻿using System.Web.Mvc;
 
 namespace ProjetoBanco.MVC.Controllers
 {

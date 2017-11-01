@@ -10,8 +10,8 @@ namespace ProjetoBanco.Application
 
         public HttpResponseMessage AddUsuario(Usuario usuario)
         {
-           var response = HttpClientConf.HttpClientConfig("Usuarios")
-                .PostAsJsonAsync("AddUsuario", usuario).Result;
+            var response = HttpClientConf.HttpClientConfig("Usuarios")
+                 .PostAsJsonAsync("AddUsuario", usuario).Result;
             return response;
         }
 

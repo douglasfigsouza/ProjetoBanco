@@ -110,14 +110,28 @@ namespace ProjetoBanco.MVC.Controllers
 
         public ActionResult EditUsuario()
         {
-            ViewBag.usuarios = _usuarioAppService.GetAllUsuarios();
-            return View();
+            var statusCode = new HttpResponseMessage();
+            statusCode = _usuarioAppService.GetAllUsuarios();
+            if (!statusCode.IsSuccessStatusCode)
+            {
+                Response.TrySkipIisCustomErrors = true;
+                Response.StatusCode = 400;
+                return Json(Utilitarios.Utilitarios.limpaMenssagemErro(statusCode.Content.ReadAsStringAsync().Result), JsonRequestBehavior.AllowGet);
+
+            }
+            Response.StatusCode = 200;
+            UsuarioViewModel usuario = new UsuarioViewModel
+            {
+                usuarios = statusCode.Content.ReadAsAsync<IEnumerable<UsuarioViewModel>>().Result
+            };
+            return View(usuario);
+
         }
 
         [HttpPost]
         public ActionResult EditUsuario(UsuarioViewModel usuarioViewModel)
         {
-            var error = "";
+            HttpResponseMessage statusCode;
             var usuario = new Usuario
             {
                 clienteId = usuarioViewModel.clienteId,
@@ -125,33 +139,32 @@ namespace ProjetoBanco.MVC.Controllers
                 nome = usuarioViewModel.nome,
                 ativo = usuarioViewModel.ativo,
             };
-            //error = _usuarioAppService.UpdateUsuario(usuario);
-
-            return feedBackOperacao("EditUsuario", error);
+            statusCode = _usuarioAppService.UpdateUsuario(usuario);
+            if (!statusCode.IsSuccessStatusCode)
+            {
+                Response.TrySkipIisCustomErrors = true;
+                Response.StatusCode = 400;
+                return Json(Utilitarios.Utilitarios.limpaMenssagemErro(statusCode.Content.ReadAsStringAsync().Result), JsonRequestBehavior.AllowGet);
+            }
+            Response.StatusCode = 200;
+            return Json(statusCode.Content.ReadAsStringAsync().Result);
 
         }
 
         [HttpGet]
         public JsonResult GetByUsuarioId(int clienteId)
         {
-            return Json(_usuarioAppService.GetByUsuarioId(clienteId), JsonRequestBehavior.AllowGet);
-        }
-        private ActionResult feedBackOperacao(string action, string error)
-        {
-            var usuario = new Usuario();
-            if (error == null)
+            var statusCode = new HttpResponseMessage();
+            statusCode = _usuarioAppService.GetByUsuarioId(clienteId);
+            if (!statusCode.IsSuccessStatusCode)
             {
-                TempData["outraOp"] = "/Usuarios/" + action;
-                TempData["menssagem"] = "Usuario: " + usuario.nomeCli + " cadastrado com sucesso!";
-                return RedirectToAction("Success", "FeedBack");
-            }
-            else
-            {
-                TempData["outraOp"] = "/Usuarios/" + action;
-                TempData["menssagem"] = "Usuario: " + usuario.nomeCli + " Não cadastrada! Erro: " + error;
-                return RedirectToAction("Error", "FeedBack");
-            }
+                Response.TrySkipIisCustomErrors = true;
+                Response.StatusCode = 400;
+                return Json(Utilitarios.Utilitarios.limpaMenssagemErro(statusCode.Content.ReadAsStringAsync().Result), JsonRequestBehavior.AllowGet);
 
+            }
+            Response.StatusCode = 200;
+            return Json(statusCode.Content.ReadAsAsync<Usuario>().Result, JsonRequestBehavior.AllowGet);
         }
     }
 }
