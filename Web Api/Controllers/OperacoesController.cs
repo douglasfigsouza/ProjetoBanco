@@ -192,7 +192,6 @@ namespace Web_Api.Controllers
                 return Ok(estorno);
             }
         }
-        [HttpPost]
         public IHttpActionResult confirmEstorno(Estorno estorno)
         {
             _operacoesRealizadasRepository.ConfirmEstorno(estorno.Id);
@@ -208,6 +207,23 @@ namespace Web_Api.Controllers
             else
             {
                 return Ok();
+            }
+        }
+        public IHttpActionResult GetAllOperacoesEstorno()
+        {
+            List<Estorno> opsEstornos= new List<Estorno>(_operacoesRealizadasRepository.GetAllOperacoesEstorno());
+            if (_notifications.Notificacoes.Count > 0)
+            {
+                string erros = "";
+                foreach (var erro in _notifications.Notificacoes)
+                {
+                    erros = erros + " " + erro;
+                }
+                return BadRequest(erros);
+            }
+            else
+            {
+                return Ok(opsEstornos);
             }
         }
     }

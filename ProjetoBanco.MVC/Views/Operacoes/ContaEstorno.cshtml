@@ -1,6 +1,18 @@
-﻿<div class="row">
+﻿<div class="row" id="teste">
+    <div class="row divErroNaOperacao">
+        <div class="col s12">
+            <h6 class="erroOperacao"></h6>
+        </div>
+    </div>
     <div class="col s12">
-        @using (Html.BeginForm("Estorno","Operacoes"))
+        @using (Ajax.BeginForm("Estorno", "Operacoes", null, new AjaxOptions
+        {
+            HttpMethod = "POST",
+            OnSuccess = "sucesso",
+            OnFailure = "erro(xhr)",
+            OnBegin = "progresso",
+            OnComplete = "fim"
+        }))
         {
             <div class="row">
                 <h5>Digite os Dados</h5>
@@ -28,8 +40,22 @@
         }
     </div>
 </div>
+<div id="opsRealizadas"> <h1>tESTE</h1></div>
 <script>
-    $(document).ready(function() {
+    function erro(xhr) {
+        $(".divErroNaOperacao").fadeIn(3000);
+        $(".erroOperacao").html("<i class='tiny material-icons'>error</i>Ops! algo deu errado. " + xhr.responseText);
+    }
+
+    function sucesso(response) {
+        $(".container").removeClass("diminuicao40");
+        $(".container").addClass("diminuicao60");
+        $("#teste").slideUp(200);
+        $("#opsRealizadas").html(response).slideDown(200);
+        //window.location = "criaViewComOpsParaEstorno/" + { response };
+    }
+    $(document).ready(function () {
+        $("#opsRealizadas").hide();
         $(".container").addClass("diminuicao40");
     });
 </script>

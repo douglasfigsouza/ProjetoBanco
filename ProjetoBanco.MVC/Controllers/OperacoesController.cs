@@ -1,6 +1,5 @@
 ﻿using ProjetoBanco.Application.Interfaces;
 using ProjetoBanco.Domain.Clientes.Dto;
-using ProjetoBanco.Domain.Entities;
 using ProjetoBanco.Domain.Operacoes.Dto;
 using ProjetoBanco.MVC.ViewModels;
 using System;
@@ -176,7 +175,7 @@ namespace ProjetoBanco.MVC.Controllers
             operacaoRealizada.dataOp = DateTime.Now;
             decimal.TryParse(valorASacar, out valor);
 
-            operacaoRealizada.valorOp = decimal.Parse(valorASacar.Replace(".",","));
+            operacaoRealizada.valorOp = decimal.Parse(valorASacar.Replace(".", ","));
             operacaoRealizada.operacaoId = 2;
 
             statusCode = _operacaoesRealizadasAppService.Saque(operacaoRealizada);
@@ -303,7 +302,7 @@ namespace ProjetoBanco.MVC.Controllers
 
         public ActionResult DadosParaEstorno()
         {
-            return View("Estorno");
+            return View("ContaEstorno");
 
         }
 
@@ -311,48 +310,46 @@ namespace ProjetoBanco.MVC.Controllers
         {
             var dadosOpGetReal = new DadosGetOpReal();
             var statusCode = new HttpResponseMessage();
-            List<EstornoViewModel> opsEstornoViewModels = new List<EstornoViewModel>();
+            var opsEstornoViewModels = new List<EstornoViewModel>();
 
             dadosOpGetReal.conta = Utilitarios.Utilitarios.retiraMask(form["conta"]);
             dadosOpGetReal.senha = Utilitarios.Utilitarios.retiraMask(form["senha"]);
             dadosOpGetReal.agencia = int.Parse(Utilitarios.Utilitarios.retiraMask(form["agencia"]));
 
             statusCode = _operacaoesRealizadasAppService.GetAllOperacoesPorContaParaEstorno(dadosOpGetReal);
-            if (statusCode.IsSuccessStatusCode)
+            if (!statusCode.IsSuccessStatusCode)
             {
-                foreach (var op in statusCode.Content.ReadAsAsync<IEnumerable<Estorno>>().Result)
-                {
-                    opsEstornoViewModels.Add(new EstornoViewModel
-                    {
-                        Id = op.Id,
-                        opId = op.opId,
-                        cliente = op.cliente,
-                        agencia = op.agencia,
-                        conta = op.conta,
-                        saldoAnterior = op.saldoAnterior,
-                        valorOp = op.valorOp,
-                        dataOp = op.dataOp,
-                        descricao = op.descricao
-                    });
-                }
-                if (opsEstornoViewModels == null || opsEstornoViewModels.Count == 0)
-                {
-                    TempData["menssagem"] = "Estorno não realizado! Alguns dos dados fornecidos podem ser inválidos.";
-                    TempData["outraOp"] = "/Operacoes/DadosParaEstorno";
-                    return View("FeedBackOp");
-                }
-                else
-                {
-                    return View("OpRealizadasEstorno", opsEstornoViewModels);
-                }
+                Response.TrySkipIisCustomErrors = true;
+                Response.StatusCode = 400;
+                return Content(Utilitarios.Utilitarios.limpaMenssagemErro(statusCode.Content.ReadAsStringAsync().Result));
+
             }
-            else
+
+            foreach (var op in statusCode.Content.ReadAsAsync<IEnumerable<Estorno>>().Result)
             {
-                TempData["menssagem"] =
-                    Utilitarios.Utilitarios.limpaMenssagemErro(statusCode.Content.ReadAsStringAsync().Result);
-                TempData["outraOp"] = "/Operacoes/DadosParaEstorno";
-                return View("FeedBackOp");
+                opsEstornoViewModels.Add(new EstornoViewModel
+                {
+                    Id = op.Id,
+                    opId = op.opId,
+                    cliente = op.cliente,
+                    agencia = op.agencia,
+                    conta = op.conta,
+                    saldoAnterior = op.saldoAnterior,
+                    valorOp = op.valorOp,
+                    dataOp = op.dataOp,
+                    descricao = op.descricao
+                });
             }
+            Response.StatusCode = 200;
+            return View("OpRealizadasEstorno",opsEstornoViewModels);
+        }
+
+        [HttpPost]
+        public ActionResult criaViewComOpsParaEstorno(List<EstornoViewModel> response)
+        {
+            //OperacaoViewModel opsOperacaoViewModel =
+            //    new JavaScriptSerializer().Deserialize<OperacaoViewModel>(response);
+            return View("OpRealizadasEstorno", response);
         }
 
         [System.Web.Mvc.HttpPost]

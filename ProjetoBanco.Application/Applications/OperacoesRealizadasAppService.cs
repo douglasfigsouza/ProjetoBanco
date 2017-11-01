@@ -60,9 +60,12 @@ namespace ProjetoBanco.Application
             return response;
         }
 
-        public IEnumerable<Estorno> GetAllOperacoesEstorno()
+        public HttpResponseMessage GetAllOperacoesEstorno()
         {
-            return _operacoesRealizadasRepository.GetAllOperacoesEstorno();
+            HttpResponseMessage response;
+            response = HttpClientConf.HttpClientConfig("Operacoes")
+                .GetAsync("GetAllOperacoesEstorno").Result;
+            return response;
         }
 
         public HttpResponseMessage Saque(OperacoesRealizadas operacaoRealizada)

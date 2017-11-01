@@ -31,7 +31,7 @@ namespace ProjetoBanco.Infra.Data.Repositories
         public void Deposito(OperacoesRealizadas operacaoRealizada)
         {
             _conn.ExecuteProcedure(Procedure.PBSP_DEPOSITO);
-            _conn.AddParameter("@codTipoOp",operacaoRealizada.operacaoId);
+            _conn.AddParameter("@codTipoOp", operacaoRealizada.operacaoId);
             _conn.AddParameter("@contaId", operacaoRealizada.contaId);
             _conn.AddParameter("@clienteId", operacaoRealizada.clienteId);
             _conn.AddParameter("@dataOp", operacaoRealizada.dataOp);
@@ -47,13 +47,13 @@ namespace ProjetoBanco.Infra.Data.Repositories
             }
 
         }
-        public void Transferencia(List<OperacoesRealizadas>operacoes)
+        public void Transferencia(List<OperacoesRealizadas> operacoes)
         {
             OperacoesRealizadas opConta1 = new OperacoesRealizadas();
             OperacoesRealizadas opConta2 = new OperacoesRealizadas();
 
             opConta1 = operacoes.ElementAt(0);
-            opConta2 = operacoes.ElementAt(1);    
+            opConta2 = operacoes.ElementAt(1);
             _conn.ExecuteProcedure(Procedure.PBSP_SAQUE);
             _conn.AddParameter("codTipoOp", 2);
             _conn.AddParameter("@agencia", opConta1.agencia);
@@ -80,6 +80,7 @@ namespace ProjetoBanco.Infra.Data.Repositories
         public List<Estorno> GetAllOperacoesPorContaParaEstorno(DadosGetOpReal dadosGetOp)
         {
             SqlDataReader result = null;
+            var OpsEstorno = new List<Estorno>();
             _conn.ExecuteProcedure(Procedure.PBSP_GETOPREALIZADASPORCONTA);
             _conn.AddParameter("@conta", dadosGetOp.conta);
             _conn.AddParameter("@senha", dadosGetOp.senha);
@@ -102,11 +103,15 @@ namespace ProjetoBanco.Infra.Data.Repositories
                         cliente = result["nome"].ToString()
                     });
                 }
+                if (OpsEstorno.Count == 0)
+                {
+                    _notifications.Notificacoes.Add("Não existem operações para estorno!");
+                }
                 return OpsEstorno;
             }
             catch (Exception ex)
             {
-               _notifications.Notificacoes.Add($"Impossível obter operações para estorno! Erro {ex.Message}");
+                _notifications.Notificacoes.Add($"Impossível obter operações para estorno! Erro {ex.Message}");
                 return null;
             }
 
@@ -138,7 +143,7 @@ namespace ProjetoBanco.Infra.Data.Repositories
             _conn.AddParameter("@valorOp", operacaoRealizada.valorOp);
             try
             {
-                if(_conn.ExecuteNonQueryWithReturn()==0)
+                if (_conn.ExecuteNonQueryWithReturn() == 0)
                     _notifications.Notificacoes.Add("Você não possui saldo suficiente!");
             }
             catch (Exception e)
@@ -149,9 +154,18 @@ namespace ProjetoBanco.Infra.Data.Repositories
         }
         public IEnumerable<Estorno> GetAllOperacoesEstorno()
         {
-            _conn.ExecuteProcedure(Procedure.PBSP_GETALLOPERACOESESTORNO);
-            result = _conn.ExecuteReader();
+            SqlDataReader result = null;
+            var OpsEstorno = new List<Estorno>();
 
+            _conn.ExecuteProcedure(Procedure.PBSP_GETALLOPERACOESESTORNO);
+            try
+            {
+                result = _conn.ExecuteReader();
+            }
+            catch (Exception e)
+            {
+                _notifications.Notificacoes.Add($"Impossível buscar operações! Erro {e.Message}");
+            }
             while (result.Read())
             {
                 OpsEstorno.Add(new Estorno
@@ -167,39 +181,48 @@ namespace ProjetoBanco.Infra.Data.Repositories
                     cliente = result["nome"].ToString()
                 });
             }
+            if (OpsEstorno.Count == 0)
+            {
+                _notifications.Notificacoes.Add("Não existem operações para estorno!");
+            }
             return OpsEstorno;
         }
 
         public Estorno GetOpRealizadaEstornoById(int Id)
         {
+            SqlDataReader result = null;
             _conn.ExecuteProcedure(Procedure.PBSP_GETOPREALIZADAESTORNOBYID);
-            _conn.AddParameter("@Id",Id);
+            _conn.AddParameter("@Id", Id);
             Estorno estorno = null;
             try
             {
                 result = _conn.ExecuteReader();
-                while (result.Read())
-                {
-                    estorno = new Estorno
-                    {
-                        Id = Convert.ToInt32(result["Id"].ToString()),
-                        opId = Convert.ToInt32(result["codTipoOp"].ToString()),
-                        dataFormatada = String.Format("{0:dd/MM/yyyy}",Convert.ToDateTime(result["dataOp"].ToString())),
-                        valorOp = Convert.ToDecimal(result["valorOp"].ToString()),
-                        saldoAnterior = Convert.ToDecimal(result["saldoAnterior"].ToString()),
-                        descricao = result["descricao"].ToString(),
-                        agencia = Convert.ToInt32(result["agencia"].ToString()),
-                        conta = result["num"].ToString(),
-                        cliente = result["nome"].ToString()
-                    };
-                }
-                return estorno;
             }
             catch (Exception e)
             {
                 _notifications.Notificacoes.Add($"Impossível buscar a operação selecionada! Erro: {e.Message}");
                 throw;
             }
+            while (result.Read())
+            {
+                estorno = new Estorno
+                {
+                    Id = Convert.ToInt32(result["Id"].ToString()),
+                    opId = Convert.ToInt32(result["codTipoOp"].ToString()),
+                    dataFormatada = String.Format("{0:dd/MM/yyyy}", Convert.ToDateTime(result["dataOp"].ToString())),
+                    valorOp = Convert.ToDecimal(result["valorOp"].ToString()),
+                    saldoAnterior = Convert.ToDecimal(result["saldoAnterior"].ToString()),
+                    descricao = result["descricao"].ToString(),
+                    agencia = Convert.ToInt32(result["agencia"].ToString()),
+                    conta = result["num"].ToString(),
+                    cliente = result["nome"].ToString()
+                };
+            }
+            if (estorno == null)
+            {
+                _notifications.Notificacoes.Add("Operação não encontrada!");
+            }
+            return estorno;
         }
     }
 }
