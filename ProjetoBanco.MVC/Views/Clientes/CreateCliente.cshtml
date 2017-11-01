@@ -34,17 +34,17 @@
                 </div>
             </div>
 
-                <div class="row">
-                    <div class="col s6 ">
-                        <label for="cpf" class="col s12">CPF</label>
-                        @Html.EditorFor(model => model.cpf, new { htmlAttributes = new { @class = "col s12 cpf" } })
-                        @Html.ValidationMessageFor(model => model.cpf, "", new { @class = "text-danger" })
-                    </div>
-                    <div class="col s6 ">
-                        <label for="rg" class="col s12">RG</label>
-                        @Html.EditorFor(model => model.rg, new { htmlAttributes = new { @class = "col s12 rg" } })
-                    </div>
+            <div class="row">
+                <div class="col s6 ">
+                    <label for="cpf" class="col s12">CPF</label>
+                    @Html.EditorFor(model => model.cpf, new { htmlAttributes = new { @class = "col s12 cpf" } })
+                    @Html.ValidationMessageFor(model => model.cpf, "", new { @class = "text-danger" })
                 </div>
+                <div class="col s6 ">
+                    <label for="rg" class="col s12">RG</label>
+                    @Html.EditorFor(model => model.rg, new { htmlAttributes = new { @class = "col s12 rg" } })
+                </div>
+            </div>
 
                 <div class="row">
                     <div class="col s6 ">
@@ -129,7 +129,7 @@
             $.ajax(
                 {
                     type: 'GET',
-                    url: "GetCidadesByIdEstado/" + id,
+                    url: "/EstadosCidades/GetCidadesByIdEstado/" + id,
                     dataType: 'json',
                     cache: false,
                     async: true,

@@ -1,54 +1,52 @@
-﻿using System;
+﻿using ProjetoBanco.Domain.Cidades;
+using ProjetoBanco.Domain.Entities;
+using System;
 using System.Collections.Generic;
 using System.Data.SqlClient;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using ProjetoBanco.Domain.Entities;
-using ProjetoBanco.Domain.Interfaces.IRepositories;
 
 namespace ProjetoBanco.Infra.Data.Repositories
 {
-    public class CidadeRepository:ICidadeRepositoryDomain
+    public class CidadeRepository : ICidadeRepository
     {
-        private  Conexao conn;
-        private SqlDataReader result;
-        private List<Cidade> lstCidades;
+        private readonly Conexao _conn;
+        private Notifications _notifications;
 
-        public CidadeRepository()
+        public CidadeRepository(Conexao conn, Notifications notifications)
         {
-            lstCidades = new List<Cidade>();
+            _conn = conn;
+            _notifications = notifications;
         }
         public enum Procedures
         {
             PBSP_GETCIDADESBYIDESTADO
         }
-
-        public Cidade GetByCidadeId(int id)
-        {
-            throw new NotImplementedException();
-        }
-
         public IEnumerable<Cidade> GetCidadesByEstadoId(int id)
         {
-            conn = new Conexao();
-            conn.ExecuteProcedure(Procedures.PBSP_GETCIDADESBYIDESTADO);
-            conn.AddParameter("@id", id);
-            result = conn.ExecuteReader();
+            _conn.ExecuteProcedure(Procedures.PBSP_GETCIDADESBYIDESTADO);
+            _conn.AddParameter("@id", id);
+            SqlDataReader result = null;
+            try
+            {
+                result = _conn.ExecuteReader();
+            }
+            catch (Exception e)
+            {
+                _notifications.Notificacoes.Add($"Impossível buscar cidades! Erro {e.Message}");
+            }
+            List<Cidade> cidades = new List<Cidade>();
             while (result.Read())
             {
-                lstCidades.Add(new Cidade
+                cidades.Add(new Cidade
                 {
                     cidadeId = Convert.ToInt32(result["CidadeId"].ToString()),
                     Nome = result["Nome"].ToString()
                 });
             }
-            return lstCidades.ToList();
-        }
-
-        public void Dispose()
-        {
-            throw new NotImplementedException();
+            if (cidades.Count == 0)
+            {
+                _notifications.Notificacoes.Add("Não foi possível buscar cidades!");
+            }
+            return cidades;
         }
     }
 }

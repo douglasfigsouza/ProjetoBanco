@@ -1,5 +1,6 @@
 ﻿using ProjetoBanco.Domain.Agencias;
 using ProjetoBanco.Domain.Bancos;
+using ProjetoBanco.Domain.Cidades;
 using ProjetoBanco.Domain.Clientes;
 using ProjetoBanco.Domain.Entities;
 using ProjetoBanco.Domain.Estados;
@@ -27,8 +28,8 @@ namespace Web_Api
             container.Register<IBancoRepository, BancoRepository>();
 
 
-            container.Register<ICidadeServiceDomain, CidadeServiceDomain>();
-            container.Register<ICidadeRepositoryDomain, CidadeRepository>();
+            //container.Register<ICidadeServiceDomain, CidadeServiceDomain>();
+            container.Register<ICidadeRepository, CidadeRepository>();
 
 
             container.Register<IClienteServiceDomain, ClienteService>();

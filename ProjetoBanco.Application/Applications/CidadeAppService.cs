@@ -1,36 +1,21 @@
-﻿using System;
-using System.CodeDom;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using ProjetoBanco.Application.Interfaces;
-using ProjetoBanco.Domain.Entities;
-using ProjetoBanco.Domain.Interfaces.IServices;
+﻿using ProjetoBanco.Application.Interfaces;
+using System.Net.Http;
+using Web_Api.Utilitarios;
 
 namespace ProjetoBanco.Application
 {
-    public class CidadeAppService:ICidadesAppService
+    public class CidadeAppService : ICidadesAppService
     {
-        private readonly ICidadeServiceDomain _ICidadeServiceDomain;
-        public CidadeAppService(ICidadeServiceDomain ICidadeServiceDomain)
+        public HttpResponseMessage GetCidadesByEstadoId(int id)
         {
-            _ICidadeServiceDomain = ICidadeServiceDomain;
-        }
-        public Cidade GetByCidadeId(int id)
-        {
-            throw new NotImplementedException();
-        }
-
-        public IEnumerable<Cidade> GetCidadesByEstadoId(int id)
-        {
-           return _ICidadeServiceDomain.GetCidadesByEstadoId(id);
+            var response = new HttpResponseMessage();
+            var client = new HttpClient();
+            response = client.GetAsync(HttpClientConf.HttpClientConfigGet("Cidades/GetCidadesByEstadoId", new
+            {
+                id
+            })).Result;
+            return response;
         }
 
-        public void Dispose()
-        {
-            throw new NotImplementedException();
-        }
-        
     }
 }

@@ -1,7 +1,7 @@
 ﻿using ProjetoBanco.Application.Interfaces;
+using ProjetoBanco.Domain.Cidades;
 using ProjetoBanco.Domain.Estados.Dto;
 using System.Collections.Generic;
-using System.Linq;
 using System.Net.Http;
 using System.Web.Mvc;
 
@@ -35,19 +35,35 @@ namespace ProjetoBanco.MVC.Controllers
         [HttpGet]
         public JsonResult GetCidadesByIdEstado(int id)
         {
-            return Json(_cidadeAppService.GetCidadesByEstadoId(id), JsonRequestBehavior.AllowGet);
+            var statusCode = new HttpResponseMessage();
+            statusCode = _cidadeAppService.GetCidadesByEstadoId(id);
+            if (!statusCode.IsSuccessStatusCode)
+            {
+                Response.TrySkipIisCustomErrors = true;
+                Response.StatusCode = 400;
+                return Json(statusCode.Content.ReadAsStringAsync().Result, JsonRequestBehavior.AllowGet);
+            }
+            return Json(statusCode.Content.ReadAsAsync<IEnumerable<Cidade>>().Result, JsonRequestBehavior.AllowGet);
         }
         [HttpGet]
         public JsonResult GetCidadeJaCadastrada(int cidadeId, int EstadoId)
         {
-            foreach (var item in _cidadeAppService.GetCidadesByEstadoId(EstadoId).ToList())
+            var statusCode = new HttpResponseMessage();
+            statusCode = _cidadeAppService.GetCidadesByEstadoId(EstadoId);
+            if (!statusCode.IsSuccessStatusCode)
+            {
+                Response.TrySkipIisCustomErrors = true;
+                Response.StatusCode = 400;
+                return Json(statusCode.Content.ReadAsStringAsync().Result, JsonRequestBehavior.AllowGet);
+            }
+            foreach (var item in statusCode.Content.ReadAsAsync<IEnumerable<Cidade>>().Result)
             {
                 if (item.cidadeId == cidadeId)
                 {
                     Cidades.Add(new SelectListItem() { Text = item.Nome, Value = item.cidadeId + "" });
                 }
             }
-            foreach (var item in _cidadeAppService.GetCidadesByEstadoId(EstadoId))
+            foreach (var item in statusCode.Content.ReadAsAsync<IEnumerable<Cidade>>().Result)
             {
                 Cidades.Add(new SelectListItem() { Text = item.Nome, Value = item.cidadeId + "" });
             }

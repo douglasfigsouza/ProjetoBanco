@@ -32,7 +32,7 @@
   <ItemGroup>
     <Compile Include="Agencias\Dto\Agencia.cs" />
     <Compile Include="Bancos\Dto\Banco.cs" />
-    <Compile Include="Entities\Cidade.cs" />
+    <Compile Include="Cidades\Dto\Cidade.cs" />
     <Compile Include="Clientes\Dto\Cliente.cs" />
     <Compile Include="Entities\Conta.cs" />
     <Compile Include="Entities\ContaCliente.cs" />
@@ -46,7 +46,7 @@
     <Compile Include="Usuarios\Dto\Usuario.cs" />
     <Compile Include="Agencias\IAgenciaRepository.cs" />
     <Compile Include="Bancos\IBancoRepository.cs" />
-    <Compile Include="Interfaces\IRepositories\ICidadeRepositoryDomain.cs" />
+    <Compile Include="Cidades\ICidadeRepository.cs" />
     <Compile Include="Clientes\IClienteRepository.cs" />
     <Compile Include="Interfaces\IRepositories\IContaClienteRepositoryDomain.cs" />
     <Compile Include="Estados\IEstadoRepository.cs" />
@@ -55,7 +55,7 @@
     <Compile Include="Usuarios\IUsuarioRepository.cs" />
     <Compile Include="Agencias\IAgenciaService.cs" />
     <Compile Include="Bancos\IBancoService.cs" />
-    <Compile Include="Interfaces\IServices\ICidadeServiceDomain.cs" />
+    <Compile Include="Cidades\ICidadeService.cs" />
     <Compile Include="Clientes\IClienteServiceDomain.cs" />
     <Compile Include="Interfaces\IServices\IContaClienteServiceDomain.cs" />
     <Compile Include="Estados\IEstadoService.cs" />
@@ -67,7 +67,7 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Agencias\AgenciaService.cs" />
     <Compile Include="Bancos\BancoService.cs" />
-    <Compile Include="Services\CidadeServiceDomain.cs" />
+    <Compile Include="Cidades\CidadeService.cs" />
     <Compile Include="Clientes\ClienteService.cs" />
     <Compile Include="Services\ContaClienteServiceDomain.cs" />
     <Compile Include="Estados\EstadoService.cs" />

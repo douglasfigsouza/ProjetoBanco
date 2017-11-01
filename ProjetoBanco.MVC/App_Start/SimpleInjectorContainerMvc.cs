@@ -2,6 +2,7 @@
 using ProjetoBanco.Application.Interfaces;
 using ProjetoBanco.Domain.Agencias;
 using ProjetoBanco.Domain.Bancos;
+using ProjetoBanco.Domain.Cidades;
 using ProjetoBanco.Domain.Clientes;
 using ProjetoBanco.Domain.Estados;
 using ProjetoBanco.Domain.Interfaces.IRepositories;
@@ -30,8 +31,8 @@ namespace ProjetoBanco.MVC.App_Start
             container.Register<IBancoRepository, BancoRepository>();
 
             container.Register<ICidadesAppService, CidadeAppService>();
-            container.Register<ICidadeServiceDomain, CidadeServiceDomain>();
-            container.Register<ICidadeRepositoryDomain, CidadeRepository>();
+            //container.Register<ICidadeServiceDomain, CidadeServiceDomain>();
+            container.Register<ICidadeRepository, CidadeRepository>();
 
             container.Register<IClienteAppService, ClienteAppService>();
             container.Register<IClienteServiceDomain, ClienteService>();
