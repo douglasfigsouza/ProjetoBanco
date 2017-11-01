@@ -10,10 +10,8 @@ namespace ProjetoBanco.Infra.Data.Repositories
 {
     public class OperacaoRealizadaRepository : IOperacoesRealizadasRepository
     {
-        private readonly Conexao conn;
+        private readonly Conexao _conn;
         private Notifications _notifications;
-        private SqlDataReader result;
-        private List<Estorno> OpsEstorno;
         private enum Procedure
         {
             PBSP_DEPOSITO,
@@ -25,24 +23,22 @@ namespace ProjetoBanco.Infra.Data.Repositories
             PBSP_GETOPREALIZADAESTORNOBYID
         }
 
-        public OperacaoRealizadaRepository(Notifications notifications)
+        public OperacaoRealizadaRepository(Notifications notifications, Conexao conn)
         {
             _notifications = notifications;
-            OpsEstorno = new List<Estorno>();
-            conn = new Conexao();
-
+            _conn = conn;
         }
         public void Deposito(OperacoesRealizadas operacaoRealizada)
         {
-            conn.ExecuteProcedure(Procedure.PBSP_DEPOSITO);
-            conn.AddParameter("@codTipoOp",operacaoRealizada.operacaoId);
-            conn.AddParameter("@contaId", operacaoRealizada.contaId);
-            conn.AddParameter("@clienteId", operacaoRealizada.clienteId);
-            conn.AddParameter("@dataOp", operacaoRealizada.dataOp);
-            conn.AddParameter("@valorOp", operacaoRealizada.valorOp);
+            _conn.ExecuteProcedure(Procedure.PBSP_DEPOSITO);
+            _conn.AddParameter("@codTipoOp",operacaoRealizada.operacaoId);
+            _conn.AddParameter("@contaId", operacaoRealizada.contaId);
+            _conn.AddParameter("@clienteId", operacaoRealizada.clienteId);
+            _conn.AddParameter("@dataOp", operacaoRealizada.dataOp);
+            _conn.AddParameter("@valorOp", operacaoRealizada.valorOp);
             try
             {
-                conn.ExecuteNonQuery();
+                _conn.ExecuteNonQuery();
             }
             catch (Exception e)
             {
@@ -58,22 +54,22 @@ namespace ProjetoBanco.Infra.Data.Repositories
 
             opConta1 = operacoes.ElementAt(0);
             opConta2 = operacoes.ElementAt(1);    
-            conn.ExecuteProcedure(Procedure.PBSP_SAQUE);
-            conn.AddParameter("codTipoOp", 2);
-            conn.AddParameter("@agencia", opConta1.agencia);
-            conn.AddParameter("@contaId", opConta1.contaId);
-            conn.AddParameter("@clienteId", opConta1.clienteId);
-            conn.AddParameter("@dataOp", opConta1.dataOp);
-            conn.AddParameter("@valorOp", opConta1.valorOp);
-            if (conn.ExecuteNonQueryWithReturn() == 1)
+            _conn.ExecuteProcedure(Procedure.PBSP_SAQUE);
+            _conn.AddParameter("codTipoOp", 2);
+            _conn.AddParameter("@agencia", opConta1.agencia);
+            _conn.AddParameter("@contaId", opConta1.contaId);
+            _conn.AddParameter("@clienteId", opConta1.clienteId);
+            _conn.AddParameter("@dataOp", opConta1.dataOp);
+            _conn.AddParameter("@valorOp", opConta1.valorOp);
+            if (_conn.ExecuteNonQueryWithReturn() == 1)
             {
-                conn.ExecuteProcedure(Procedure.PBSP_TRANSFERENCIA);
-                conn.AddParameter("codTipoOp", 4);
-                conn.AddParameter("@agencia", opConta2.agencia);
-                conn.AddParameter("@contaId", opConta2.contaId);
-                conn.AddParameter("@dataOp", opConta2.dataOp);
-                conn.AddParameter("@valorOp", opConta1.valorOp);
-                conn.ExecuteNonQuery();
+                _conn.ExecuteProcedure(Procedure.PBSP_TRANSFERENCIA);
+                _conn.AddParameter("codTipoOp", 4);
+                _conn.AddParameter("@agencia", opConta2.agencia);
+                _conn.AddParameter("@contaId", opConta2.contaId);
+                _conn.AddParameter("@dataOp", opConta2.dataOp);
+                _conn.AddParameter("@valorOp", opConta1.valorOp);
+                _conn.ExecuteNonQuery();
             }
 
             else
@@ -83,13 +79,14 @@ namespace ProjetoBanco.Infra.Data.Repositories
         }
         public List<Estorno> GetAllOperacoesPorContaParaEstorno(DadosGetOpReal dadosGetOp)
         {
-            conn.ExecuteProcedure(Procedure.PBSP_GETOPREALIZADASPORCONTA);
-            conn.AddParameter("@conta", dadosGetOp.conta);
-            conn.AddParameter("@senha", dadosGetOp.senha);
-            conn.AddParameter("@agencia", dadosGetOp.agencia);
+            SqlDataReader result = null;
+            _conn.ExecuteProcedure(Procedure.PBSP_GETOPREALIZADASPORCONTA);
+            _conn.AddParameter("@conta", dadosGetOp.conta);
+            _conn.AddParameter("@senha", dadosGetOp.senha);
+            _conn.AddParameter("@agencia", dadosGetOp.agencia);
             try
             {
-                result = conn.ExecuteReader();
+                result = _conn.ExecuteReader();
                 while (result.Read())
                 {
                     OpsEstorno.Add(new Estorno
@@ -117,13 +114,13 @@ namespace ProjetoBanco.Infra.Data.Repositories
         }
         public void ConfirmEstorno(int id)
         {
-            conn.ExecuteProcedure(Procedure.PBSP_ESTORNA);
-            conn.AddParameter("@id", id);
-            conn.AddParameter("@opId", 4);
+            _conn.ExecuteProcedure(Procedure.PBSP_ESTORNA);
+            _conn.AddParameter("@id", id);
+            _conn.AddParameter("@opId", 4);
 
             try
             {
-                conn.ExecuteNonQuery();
+                _conn.ExecuteNonQuery();
             }
             catch (Exception e)
             {
@@ -133,15 +130,15 @@ namespace ProjetoBanco.Infra.Data.Repositories
         }
         public void Saque(OperacoesRealizadas operacaoRealizada)
         {
-            conn.ExecuteProcedure(Procedure.PBSP_SAQUE);
-            conn.AddParameter("@codTipoOp", operacaoRealizada.operacaoId);
-            conn.AddParameter("@contaId", operacaoRealizada.contaId);
-            conn.AddParameter("@clienteId", operacaoRealizada.clienteId);
-            conn.AddParameter("@dataOp", operacaoRealizada.dataOp);
-            conn.AddParameter("@valorOp", operacaoRealizada.valorOp);
+            _conn.ExecuteProcedure(Procedure.PBSP_SAQUE);
+            _conn.AddParameter("@codTipoOp", operacaoRealizada.operacaoId);
+            _conn.AddParameter("@contaId", operacaoRealizada.contaId);
+            _conn.AddParameter("@clienteId", operacaoRealizada.clienteId);
+            _conn.AddParameter("@dataOp", operacaoRealizada.dataOp);
+            _conn.AddParameter("@valorOp", operacaoRealizada.valorOp);
             try
             {
-                if(conn.ExecuteNonQueryWithReturn()==0)
+                if(_conn.ExecuteNonQueryWithReturn()==0)
                     _notifications.Notificacoes.Add("Você não possui saldo suficiente!");
             }
             catch (Exception e)
@@ -152,8 +149,8 @@ namespace ProjetoBanco.Infra.Data.Repositories
         }
         public IEnumerable<Estorno> GetAllOperacoesEstorno()
         {
-            conn.ExecuteProcedure(Procedure.PBSP_GETALLOPERACOESESTORNO);
-            result = conn.ExecuteReader();
+            _conn.ExecuteProcedure(Procedure.PBSP_GETALLOPERACOESESTORNO);
+            result = _conn.ExecuteReader();
 
             while (result.Read())
             {
@@ -175,12 +172,12 @@ namespace ProjetoBanco.Infra.Data.Repositories
 
         public Estorno GetOpRealizadaEstornoById(int Id)
         {
-            conn.ExecuteProcedure(Procedure.PBSP_GETOPREALIZADAESTORNOBYID);
-            conn.AddParameter("@Id",Id);
+            _conn.ExecuteProcedure(Procedure.PBSP_GETOPREALIZADAESTORNOBYID);
+            _conn.AddParameter("@Id",Id);
             Estorno estorno = null;
             try
             {
-                result = conn.ExecuteReader();
+                result = _conn.ExecuteReader();
                 while (result.Read())
                 {
                     estorno = new Estorno

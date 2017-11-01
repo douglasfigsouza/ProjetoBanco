@@ -12,6 +12,6 @@ namespace ProjetoBanco.Application.Interfaces
         HttpResponseMessage GetAllOperacoesPorContaParaEstorno(DadosGetOpReal dadosGetOpReal);
         HttpResponseMessage GetOpRealizadaEstornoById(int Id);
         HttpResponseMessage ConfirmEstorno(Estorno estorno);
-        IEnumerable<Estorno> GetAllOperacoesEstorno();
+        HttpResponseMessage GetAllOperacoesEstorno();
     }
 }

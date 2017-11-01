@@ -1,18 +1,16 @@
 ﻿using ProjetoBanco.Domain.Clientes.Dto;
+using ProjetoBanco.Domain.Contas;
 using ProjetoBanco.Domain.Entities;
-using ProjetoBanco.Domain.Interfaces.IRepositories;
 using System;
-using System.Collections.Generic;
 using System.Data.SqlClient;
 
 namespace ProjetoBanco.Infra.Data.Repositories
 {
-    public class ContaClienteRepository : IContaClienteRepositoryDomain
+    public class ContaClienteRepository : IContaClienteRepository
     {
-        private Conexao conn;
-        private SqlDataReader result;
-        private int contaId;
-        private ContaClienteAlteracao contaClienteAlteracao;
+        private readonly Conexao _conn;
+        private Notifications _notifications;
+
 
         public enum Procedure
         {
@@ -22,86 +20,85 @@ namespace ProjetoBanco.Infra.Data.Repositories
             PBSP_UPDATECONTA
         }
 
-        public ContaClienteRepository()
+        public ContaClienteRepository(Conexao conn, Notifications notifications)
         {
-            conn = new Conexao();
-            contaClienteAlteracao = new ContaClienteAlteracao();
-            contaClienteAlteracao.Clientes = new List<Cliente>();
+            _conn = conn;
+            _notifications = notifications;
         }
-        public string AddContaCliente(Conta conta, List<Domain.Entities.ContaCliente> contaClientes)
+        public void AddContaCliente(Conta conta)
         {
+            _conn.ExecuteProcedure(Procedure.PBSP_INSERTCONTA);
+            _conn.AddParameter("@num", conta.num);
+            _conn.AddParameter("@senha", conta.senha);
+            _conn.AddParameter("@tipo", conta.tipo);
+            _conn.AddParameter("@ativo", conta.ativo);
             try
             {
-                conn.ExecuteProcedure(Procedure.PBSP_INSERTCONTA);
-                conn.AddParameter("@num", conta.num);
-                conn.AddParameter("@senha", conta.senha);
-                conn.AddParameter("@tipo", conta.tipo);
-                conn.AddParameter("@ativo", conta.ativo);
-                contaId = conn.ExecuteNonQueryWithReturn();
-                foreach (var item in contaClientes)
+                var contaId = _conn.ExecuteNonQueryWithReturn();
+                foreach (var item in conta.contaClientes)
                 {
-                    conn.ExecuteProcedure(Procedure.PBSP_INSERTCONTACLIENTE);
-                    conn.AddParameter("@contaId", contaId);
-                    conn.AddParameter("@clienteId", item.clienteId);
-                    conn.AddParameter("@agencia", item.agencia);
-                    conn.ExecuteNonQuery();
+                    _conn.ExecuteProcedure(Procedure.PBSP_INSERTCONTACLIENTE);
+                    _conn.AddParameter("@contaId", contaId);
+                    _conn.AddParameter("@clienteId", item.clienteId);
+                    _conn.AddParameter("@agencia", item.agencia);
+                    _conn.ExecuteNonQuery();
                 }
-                return null;
+
             }
             catch (Exception e)
             {
-                return e.Message;
-
-
+                _notifications.Notificacoes.Add($"Impossível Cadastrar Conta! Erro {e.Message}");
             }
         }
-        public string UpdateConta(Conta conta)
+        public void UpdateConta(Conta conta)
         {
+            _conn.ExecuteProcedure(Procedure.PBSP_UPDATECONTA);
+            _conn.AddParameter("@conta", conta.num);
+            _conn.AddParameter("@senha", conta.senha);
+            _conn.AddParameter("@ativo", conta.ativo);
             try
             {
-                conn.ExecuteProcedure(Procedure.PBSP_UPDATECONTA);
-                conn.AddParameter("@conta", conta.num);
-                conn.AddParameter("@senha", conta.senha);
-                conn.AddParameter("@ativo", conta.ativo);
-                conn.ExecuteNonQuery();
-                return null;
+                _conn.ExecuteNonQuery();
             }
             catch (Exception e)
             {
-                return e.ToString();
+                _notifications.Notificacoes.Add($"Impossível atualizar conta! Erro {e.Message}");
             }
-        }
-
-        public void Dispose()
-        {
-            throw new NotImplementedException();
         }
         public ContaClienteAlteracao GetConta(string conta, int agencia, string senha)
         {
+            ContaClienteAlteracao contaClienteAlteracao = null;
+            _conn.ExecuteProcedure(Procedure.PBSP_GETCONTA);
+            _conn.AddParameter("@conta", conta);
+            _conn.AddParameter("@senha", senha);
+            _conn.AddParameter("@agencia", agencia);
             try
             {
-                conn.ExecuteProcedure(Procedure.PBSP_GETCONTA);
-                conn.AddParameter("@conta", conta);
-                conn.AddParameter("@senha", senha);
-                conn.AddParameter("@agencia", agencia);
-                result = conn.ExecuteReader();
+                SqlDataReader result;
+                result = _conn.ExecuteReader();
                 while (result.Read())
                 {
-                    contaClienteAlteracao.conta = result["num"].ToString();
-                    contaClienteAlteracao.senha = result["senha"].ToString();
+                    contaClienteAlteracao = new ContaClienteAlteracao
+                    {
+                        conta = result["num"].ToString(),
+                        senha = result["senha"].ToString()
+                    };
                     contaClienteAlteracao.Clientes.Add(new Cliente
                     {
                         nome = result["nome"].ToString()
                     });
                     contaClienteAlteracao.ativo = bool.Parse(result["ativo"].ToString());
                 }
-                return contaClienteAlteracao;
+                if (contaClienteAlteracao == null)
+                {
+                    _notifications.Notificacoes.Add("Não foi possível buscar a conta!");
+                }
             }
             catch (Exception e)
             {
-                Console.WriteLine(e);
-                throw;
+                _notifications.Notificacoes.Add($"Impossível alterar conta! Erro {e.Message}");
             }
+            return contaClienteAlteracao;
         }
     }
 }

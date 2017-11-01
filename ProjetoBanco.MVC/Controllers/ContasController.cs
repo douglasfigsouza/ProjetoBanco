@@ -1,5 +1,5 @@
 ﻿using ProjetoBanco.Application.Interfaces;
-using ProjetoBanco.Domain.Entities;
+using ProjetoBanco.Domain.Contas;
 using ProjetoBanco.MVC.ViewModels;
 using System;
 using System.Collections.Generic;
@@ -13,26 +13,17 @@ namespace ProjetoBanco.MVC.Controllers
         private readonly IAgenciaAppService _agenciaAppService;
         private readonly IClienteAppService _clienteAppService;
         private readonly IContaClienteAppService _contaClienteAppService;
-        private CombosContaViewModel cmbContaViewModel;
-        private Conta conta;
-        private string error;
-        private List<ContaCliente> contaClientes;
 
         public ContasController(IAgenciaAppService agenciaAppService, IClienteAppService clienteAppService, IContaClienteAppService contaClienteAppService)
         {
             _agenciaAppService = agenciaAppService;
             _clienteAppService = clienteAppService;
             _contaClienteAppService = contaClienteAppService;
-
-            cmbContaViewModel = new CombosContaViewModel();
-            cmbContaViewModel.Agencias = new List<AgenciaViewModel>();
-            cmbContaViewModel.Clientes = new List<ClienteViewModel>();
-            conta = new Conta();
-            contaClientes = new List<ContaCliente>();
         }
 
         public ActionResult CreateConta()
         {
+            CombosContaViewModel cmbContaViewModel = new CombosContaViewModel();
             var statusCode = new HttpResponseMessage();
             statusCode = _agenciaAppService.GetAllAgencias();
             if (!statusCode.IsSuccessStatusCode)
@@ -41,7 +32,6 @@ namespace ProjetoBanco.MVC.Controllers
                 Response.StatusCode = 400;
                 return null;
             }
-            Response.StatusCode = 200;
             foreach (var agencia in statusCode.Content.ReadAsAsync<IEnumerable<AgenciaViewModel>>().Result)
             {
                 cmbContaViewModel.Agencias.Add(new AgenciaViewModel
@@ -70,23 +60,35 @@ namespace ProjetoBanco.MVC.Controllers
         [HttpPost]
         public ActionResult CreateConta(List<int> ClientesSelecionados, FormCollection form)
         {
-            conta.num = Utilitarios.Utilitarios.retiraMask(form["num"]);
-            conta.senha = form["senha"];
-            conta.tipo = char.Parse(Utilitarios.Utilitarios.retiraMask(form["tipoConta"]));
-            conta.ativo = true;
+            var statusCode = new HttpResponseMessage();
+            var conta = new Conta
+            {
+                num = Utilitarios.Utilitarios.retiraMask(form["num"]),
+                senha = form["senha"],
+                tipo = char.Parse(Utilitarios.Utilitarios.retiraMask(form["tipoConta"])),
+                ativo = true
+            };
             int agencia = int.Parse(form["ddlAgencias"]);
 
             foreach (var item in ClientesSelecionados)
             {
-                contaClientes.Add(new ContaCliente
+                conta.contaClientes.Add(new ContaCliente
                 {
                     clienteId = item,
                     agencia = agencia
 
                 });
             }
-            error = _contaClienteAppService.AddContaCliente(conta, contaClientes);
-            return feedBackOperacao("CreateConta", error);
+            statusCode = _contaClienteAppService.AddContaCliente(conta);
+            if (!statusCode.IsSuccessStatusCode)
+            {
+                Response.TrySkipIisCustomErrors = true;
+                Response.StatusCode = 400;
+                return Content(Utilitarios.Utilitarios.limpaMenssagemErro(statusCode.Content.ReadAsStringAsync().Result));
+
+            }
+            Response.StatusCode = 200;
+            return Content(statusCode.Content.ReadAsStringAsync().Result);
         }
 
         public ActionResult EditConta()
@@ -97,13 +99,25 @@ namespace ProjetoBanco.MVC.Controllers
         [HttpPost]
         public ActionResult UpdateConta(FormCollection form)
         {
+            var statusCode = new HttpResponseMessage();
             if (form != null)
             {
-                conta.num = Utilitarios.Utilitarios.retiraMask(form["conta"]);
-                conta.senha = form["senha"];
-                conta.ativo = Convert.ToBoolean(form["ativo"]);
-                error = _contaClienteAppService.UpdateConta(conta);
-                return feedBackOperacao("UpdateConta", error);
+                var conta = new Conta
+                {
+                    num = Utilitarios.Utilitarios.retiraMask(form["conta"]),
+                    senha = form["senha"],
+                    ativo = Convert.ToBoolean(form["ativo"]),
+                };
+                statusCode = _contaClienteAppService.UpdateConta(conta);
+                if (!statusCode.IsSuccessStatusCode)
+                {
+                    Response.TrySkipIisCustomErrors = true;
+                    Response.StatusCode = 400;
+                    return Content(Utilitarios.Utilitarios.limpaMenssagemErro(statusCode.Content.ReadAsStringAsync().Result));
+
+                }
+                Response.StatusCode = 200;
+                return Json(statusCode.Content.ReadAsStringAsync().Result);
             }
             else
             {
@@ -111,45 +125,31 @@ namespace ProjetoBanco.MVC.Controllers
             }
         }
 
-        [HttpGet]
+        [HttpPost]
         public JsonResult GetConta(string conta, string agencia, string senha)
         {
             if (conta != "" && agencia != "" && senha != "")
             {
-                ContaClienteAlteracao contaCliAlter = new ContaClienteAlteracao();
+                var statusCode = new HttpResponseMessage();
+
                 conta = Utilitarios.Utilitarios.retiraMask(conta);
                 agencia = Utilitarios.Utilitarios.retiraMask(agencia);
-                contaCliAlter = _contaClienteAppService.GetConta(conta, int.Parse(agencia), senha);
-                if (contaCliAlter.conta == null)
+                statusCode = _contaClienteAppService.GetConta(conta, int.Parse(agencia), senha);
+
+                if (!statusCode.IsSuccessStatusCode)
                 {
-                    feedBackOperacao("EditConta", null);
-                    return null;
+                    Response.TrySkipIisCustomErrors = true;
+                    Response.StatusCode = 400;
+                    return Json(Utilitarios.Utilitarios.limpaMenssagemErro(statusCode.Content.ReadAsStringAsync().Result));
+
                 }
-                else
-                {
-                    return Json(contaCliAlter, JsonRequestBehavior.AllowGet);
-                }
+                Response.StatusCode = 200;
+                return Json(statusCode.Content.ReadAsAsync<ContaClienteAlteracao>().Result);
             }
             else
             {
                 return null;
             }
-        }
-        private ActionResult feedBackOperacao(string action, string error)
-        {
-            if (error == null)
-            {
-                TempData["outraOp"] = "/Contas/" + action;
-                TempData["menssagem"] = "Conta: " + conta.num + " cadastrada com sucesso!";
-                return RedirectToAction("Success", "FeedBack");
-            }
-            else
-            {
-                TempData["outraOp"] = "/Contas/" + action;
-                TempData["menssagem"] = "Conta: " + conta.num + " Não cadastrada! Erro: " + error;
-                return RedirectToAction("Error", "FeedBack");
-            }
-
         }
     }
 }

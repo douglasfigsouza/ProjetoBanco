@@ -1,4 +1,4 @@
-﻿namespace ProjetoBanco.Domain.Entities
+﻿namespace ProjetoBanco.Domain.Contas
 {
     public class ContaCliente
     {

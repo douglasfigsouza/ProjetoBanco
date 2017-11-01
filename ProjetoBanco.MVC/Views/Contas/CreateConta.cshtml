@@ -2,121 +2,144 @@
 @{
     ViewBag.Title = "CreateConta";
 }
+<div class="row divErroNaOperacao">
+    <div class="col s12">
+        <h6 class="erroOperacao"></h6>
+    </div>
+</div>
 
-@using (Html.BeginForm())
+<div class="row divSucessoNaOperacao">
+    <div class="col s12">
+        <h6 class="sucessoOperacao"></h6>
+    </div>
+</div>
+
+@using (Ajax.BeginForm("CreateConta", "Contas", null, new AjaxOptions
 {
-    @Html.AntiForgeryToken()
-    @Html.ValidationSummary(true)
-    {
-        <h5>Cadastro de Conta</h5>
-        <div class="row">
-            <hr>
+    HttpMethod = "POST",
+    OnSuccess = "sucesso",
+    OnFailure = "erro(xhr)",
+    OnBegin = "progresso",
+    OnComplete = "fim"
+}))
+{
+    <h5>Cadastro de Conta</h5>
+    <div class="row">
+        <hr>
 
-            <div class="col s7 border-right">
+        <div class="col s7 border-right">
 
-                <div class="row">
-                    <div class="col s6">
-                        <label class="col s12" for="ddlAgencias">Agência</label>
-                        @Html.DropDownList("ddlAgencias", new SelectList(@Model.Agencias, "agencia", "agencia"), "Selecione", new { @class = "col s10" })
-                    </div>
-                    <div class="col s6 ">
-                        <label class="col s12" for="num">N° Conta</label>
-                        <input type="text" class="col s12 conta" id="num" name="num" />
-                    </div>
+            <div class="row">
+                <div class="col s6">
+                    <label class="col s12" for="ddlAgencias">Agência</label>
+                    @Html.DropDownList("ddlAgencias", new SelectList(@Model.Agencias, "agencia", "agencia"), "Selecione", new { @class = "col s10" })
                 </div>
-
-                <div class="row">
-                    <div class="col s6 ">
-                        <label class="col s12" for="senha">Senha</label>
-                        <input type="password" class="col s12" id="senha" name="senha" class="senha" />
-                    </div>
-                    <div class="col s6 ">
-                        <label class="col s12" for="conf_senha">Confirme sua Senha</label>
-                        <input type="password" class="col s12" id="conf_senha" name="conf_senha" class="conf_senha"/>
-                    </div>
+                <div class="col s6 ">
+                    <label class="col s12" for="num">N° Conta</label>
+                    <input type="text" class="col s12 conta" id="num" name="num" />
                 </div>
+            </div>
 
-                <div class="row">
-                    <div class="col s12 ">
-                        <h6 class="col s12">Tipo de Conta</h6>
-                        <hr/>
-                        <p>
-                            <input class="with-gap col s1" value="c" name="tipoConta" type="radio" id="corrente" checked/>
-                            <label for="corrente" class="col s5">Corrente</label>
-                        </p>
-                        <p>
-                            <input class="with-gap col s1" name="tipoConta" value="p" type="radio" id="poupanca" />
-                            <label for="poupanca" class="col s5">Poupança</label>
-                        </p>
-                    </div>
+            <div class="row">
+                <div class="col s6 ">
+                    <label class="col s12" for="senha">Senha</label>
+                    <input type="password" class="col s12" id="senha" name="senha" class="senha" />
                 </div>
-
-                <!-- Modal Trigger -->
-                @*<button id="abremodal" type="button">abre</button>*@
-                <div class="row">
-                    <div class="col s6">
-                        <h6>Vincular Clientes</h6>
-                        <hr/>
-                        <button class="waves-effect waves-light modal-trigger btn" type="button" href="#modalCientesConta" id="buscaClienetes">
-                            <i class="large material-icons">add_box</i>
-                        </button>
-
-                    </div>
+                <div class="col s6 ">
+                    <label class="col s12" for="conf_senha">Confirme sua Senha</label>
+                    <input type="password" class="col s12" id="conf_senha" name="conf_senha" class="conf_senha" />
                 </div>
+            </div>
+
+            <div class="row">
+                <div class="col s12 ">
+                    <h6 class="col s12">Tipo de Conta</h6>
+                    <hr />
+                    <p>
+                        <input class="with-gap col s1" value="c" name="tipoConta" type="radio" id="corrente" checked />
+                        <label for="corrente" class="col s5">Corrente</label>
+                    </p>
+                    <p>
+                        <input class="with-gap col s1" name="tipoConta" value="p" type="radio" id="poupanca" />
+                        <label for="poupanca" class="col s5">Poupança</label>
+                    </p>
+                </div>
+            </div>
+
+            <!-- Modal Trigger -->
+            <div class="row">
+                <div class="col s6">
+                    <h6>Vincular Clientes</h6>
+                    <hr />
+                    <button class="waves-effect waves-light modal-trigger btn" type="button" href="#modalCientesConta" id="buscaClienetes">
+                        <i class="large material-icons">add_box</i>
+                    </button>
+
+                </div>
+            </div>
 
 
-                <!-- Modal Structure -->
-                <div id="modalCientesConta" class="modal">
-                    <div class="modal-content">
-                        <div class="row">
-                            <div class="col s12">
-                                <table id="clientesConta" class="striped responsive-table centered" cellspacing="0" width="100%">
-                                    <thead>
-                                        <tr>
-                                            <th>Nome</th>
-                                            <th>CPF</th>
-                                            <th>RG</th>
-                                            <th>Fone</th>
-                                            <th>Bairro</th>
-                                            <th>Rua</th>
-                                            <th>Num</th>
-                                            <th>Incluir</th>
-                                        </tr>
-                                    </thead>
-                                    <tbody id="tbdClientesConta"></tbody>
-                                </table>
-                            </div>
+            <!-- Modal Structure -->
+            <div id="modalCientesConta" class="modal">
+                <div class="modal-content">
+                    <div class="row">
+                        <div class="col s12">
+                            <table id="clientesConta" class="striped responsive-table centered" cellspacing="0" width="100%">
+                                <thead>
+                                    <tr>
+                                        <th>Nome</th>
+                                        <th>CPF</th>
+                                        <th>RG</th>
+                                        <th>Fone</th>
+                                        <th>Bairro</th>
+                                        <th>Rua</th>
+                                        <th>Num</th>
+                                        <th>Incluir</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="tbdClientesConta"></tbody>
+                            </table>
                         </div>
                     </div>
                 </div>
             </div>
-            <div class="col s5">
-                <div class="row" id="clientesSelecionados">
-                    <div class="col s12">
-                        <table class="striped responsive-table centered">
-                            <thead>
-                                <tr>
-                                    <th>Nome</th>
-                                    <th>CPF</th>
-                                    <th>Remover</th>
-                                </tr>
-                            </thead>
-                            <tbody id="clientesSelecionadosConta"></tbody>
-                        </table>
-                    </div>
+        </div>
+        <div class="col s5">
+            <div class="row" id="clientesSelecionados">
+                <div class="col s12">
+                    <table class="striped responsive-table centered">
+                        <thead>
+                            <tr>
+                                <th>Nome</th>
+                                <th>CPF</th>
+                                <th>Remover</th>
+                            </tr>
+                        </thead>
+                        <tbody id="clientesSelecionadosConta"></tbody>
+                    </table>
                 </div>
-
             </div>
+
         </div>
-        <div class="row">
-            <button class="btn waves-effect waves-light right" type="submit" name="action">
-                Cadastrar
-                <i class="material-icons right">send</i>
-            </button>
-        </div>
-    }
+    </div>
+    <div class="row">
+        <button class="btn waves-effect waves-light right" type="submit" name="CadastraConta">
+            Cadastrar
+            <i class="material-icons right">send</i>
+        </button>
+    </div>
 }
 <script>
+    function sucesso() {
+        $(".divErroNaOperacao").hide();
+        $(".divSucessoNaOperacao").fadeIn(3000);
+        $(".sucessoOperacao").html("<i class='tiny material-icons'>check_circle</i> Conta cadastrada com Sucesso!");
+    }
+    function erro(xhr) {
+        $(".divSucessoNaOperacao").hide();
+        $(".divErroNaOperacao").fadeIn(3000);
+        $(".erroOperacao").html("<i class='tiny material-icons'>error</i>Ops! algo deu errado. " + xhr.responseText);
+    }
     $(document).ready(function () {
         //oculta table on de serão inseridos os clientes
         $("#clientesSelecionados").hide();
@@ -137,14 +160,14 @@
             if (flag == true) alert("Este cliente ja pertence a conta!")
             else {
                 $("#clientesSelecionadosConta").append("<tr>" +
-                        "<input type='hidden' name='ClientesSelecionados' value='" + id + "'/>" +
-                        "<td>" + nome + "</td>" +
-                        "<td>" + cpf + "</td>" +
-                        "<td>" +
-                            "<button type='button' class='btnClienteContaRemove modal-action modal-close btn red'>" +
-                                "<i class='material-icons '>remove</i>" +
-                            "</button>" +
-                        "</td>" +
+                    "<input type='hidden' name='ClientesSelecionados' value='" + id + "'/>" +
+                    "<td>" + nome + "</td>" +
+                    "<td>" + cpf + "</td>" +
+                    "<td>" +
+                    "<button type='button' class='btnClienteContaRemove modal-action modal-close btn red'>" +
+                    "<i class='material-icons '>remove</i>" +
+                    "</button>" +
+                    "</td>" +
                     "</tr>");
                 $("#clientesSelecionados").show();
             }
@@ -193,17 +216,17 @@
                         $("#tbdClientesConta").empty();
                         $.each(data, function (key, value) {
                             $("#tbdClientesConta").append("<tr id=" + value.Id + ">" +
-                                    "<td id='nome" + value.Id + "'>" + value.nome + "</td>" +
-                                    "<td id='cpf" + value.Id + "'>" + value.cpf + "</td>" +
-                                    "<td>" + value.rg + "</td>" +
-                                    "<td>" + value.fone + "</td>" +
-                                    "<td>" + value.bairro + "</td>" +
-                                    "<td>" + value.rua + "</td>" +
-                                    "<td>" + value.num + "</td>" +
-                                    "<td><button type='button' class='btnClienteConta modal-action modal-close btn green'>" +
-                                        "<i class='material-icons '>add_box</i>" +
-                                        "</button>" +
-                                    "</td>" +
+                                "<td id='nome" + value.Id + "'>" + value.nome + "</td>" +
+                                "<td id='cpf" + value.Id + "'>" + value.cpf + "</td>" +
+                                "<td>" + value.rg + "</td>" +
+                                "<td>" + value.fone + "</td>" +
+                                "<td>" + value.bairro + "</td>" +
+                                "<td>" + value.rua + "</td>" +
+                                "<td>" + value.num + "</td>" +
+                                "<td><button type='button' class='btnClienteConta modal-action modal-close btn green'>" +
+                                "<i class='material-icons '>add_box</i>" +
+                                "</button>" +
+                                "</td>" +
 
                                 "</tr>");
                         });
@@ -244,8 +267,8 @@
                 },
                 senha: {
                     required: "O campo senha é Obrigatório! Digite-O",
-                    mainlength:"O campo Senha deve conter no mínimo {0} caracteres!",
-                    maaxlength:"O campo Senha deve conter no máximo {0} caracteres!"
+                    mainlength: "O campo Senha deve conter no mínimo {0} caracteres!",
+                    maaxlength: "O campo Senha deve conter no máximo {0} caracteres!"
                 },
                 conf_senha: {
                     required: "O campo Confirme sua Senha é Obrigatório! Digite-O",

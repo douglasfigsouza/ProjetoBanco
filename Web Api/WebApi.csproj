@@ -159,6 +159,7 @@
     <Compile Include="Controllers\BancoController.cs" />
     <Compile Include="Controllers\CidadesController.cs" />
     <Compile Include="Controllers\ClientesController.cs" />
+    <Compile Include="Controllers\ContaClienteController.cs" />
     <Compile Include="Controllers\EstadosController.cs" />
     <Compile Include="Controllers\OperacoesController.cs" />
     <Compile Include="Controllers\UsuariosController.cs" />

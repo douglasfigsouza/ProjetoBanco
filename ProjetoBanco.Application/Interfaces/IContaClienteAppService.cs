@@ -1,13 +1,12 @@
-﻿using System.Collections.Generic;
-using ProjetoBanco.Domain.Entities;
+﻿using ProjetoBanco.Domain.Contas;
+using System.Net.Http;
 
 namespace ProjetoBanco.Application.Interfaces
 {
     public interface IContaClienteAppService
     {
-        string AddContaCliente(Conta conta, List<ContaCliente> contaCliente);
-        ContaClienteAlteracao GetConta(string conta, int agencia, string senha);
-        string UpdateConta(Conta conta);
-        void Dispose();
+        HttpResponseMessage AddContaCliente(Conta conta);
+        HttpResponseMessage GetConta(string conta, int agencia, string senha);
+        HttpResponseMessage UpdateConta(Conta conta);
     }
 }

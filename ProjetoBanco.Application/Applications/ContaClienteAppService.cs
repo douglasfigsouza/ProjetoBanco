@@ -1,41 +1,41 @@
-﻿using System;
-using System.Collections.Generic;
-using ProjetoBanco.Application.Interfaces;
-using ProjetoBanco.Domain.Entities;
-using ProjetoBanco.Domain.Interfaces.IRepositories;
-using ProjetoBanco.Domain.Interfaces.IServices;
+﻿using ProjetoBanco.Application.Interfaces;
+using ProjetoBanco.Domain.Contas;
+using System.Net.Http;
+using Web_Api.Utilitarios;
 
 namespace ProjetoBanco.Application
 {
-    public class ContaClienteAppService:IContaClienteAppService
+    public class ContaClienteAppService : IContaClienteAppService
     {
-        private readonly IContaClienteServiceDomain _contaClienteServiceDomain;
-        private readonly IContaClienteRepositoryDomain _contaClienteRepositoryDomain;
-
-        public ContaClienteAppService(IContaClienteServiceDomain contaClienteServiceDomain, IContaClienteRepositoryDomain contaClienteRepositoryDomain)
+        public HttpResponseMessage AddContaCliente(Conta conta)
         {
-            _contaClienteServiceDomain = contaClienteServiceDomain;
-            _contaClienteRepositoryDomain = contaClienteRepositoryDomain;
-        }
-        public string AddContaCliente(Conta conta, List<ContaCliente> contaClientes)
-        {
-          return _contaClienteRepositoryDomain.AddContaCliente(conta,contaClientes);
+            var response = new HttpResponseMessage();
+            response = HttpClientConf.HttpClientConfig("ContaCliente")
+                .PostAsJsonAsync("AddContaCliente", conta).Result;
+            return response;
         }
 
-        public ContaClienteAlteracao GetConta(string conta, int agencia, string senha)
+        public HttpResponseMessage GetConta(string conta, int agencia, string senha)
         {
-            return _contaClienteRepositoryDomain.GetConta(conta,  agencia, senha);
+            HttpResponseMessage response;
+            //Create a query
+            HttpClient client = new HttpClient();
+            response = client.GetAsync(HttpClientConf.HttpClientConfigGet("ContaCliente/GetConta", new
+            {
+                conta,
+                agencia,
+                senha
+
+            })).Result;
+            return response;
         }
 
-        public string UpdateConta(Conta conta)
+        public HttpResponseMessage UpdateConta(Conta conta)
         {
-           return _contaClienteRepositoryDomain.UpdateConta(conta);
-        }
-
-        public void Dispose()
-        {
-           _contaClienteRepositoryDomain.Dispose();
-           _contaClienteServiceDomain.Dispose();
+            var response = new HttpResponseMessage();
+            response = HttpClientConf.HttpClientConfig("ContaCliente")
+                .PostAsJsonAsync("UpdateConta", conta).Result;
+            return response;
         }
     }
 }

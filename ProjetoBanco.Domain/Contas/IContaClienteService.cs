@@ -1,10 +1,8 @@
-﻿
-using System.Collections.Generic;
-using ProjetoBanco.Domain.Entities;
+﻿using System.Collections.Generic;
 
-namespace ProjetoBanco.Domain.Interfaces.IServices
+namespace ProjetoBanco.Domain.Contas
 {
-    public interface IContaClienteServiceDomain
+    public interface IContaClienteService
     {
         string AddContaCliente(Conta conta, List<ContaCliente> contaClientes);
         ContaClienteAlteracao GetConta(string conta, int agencia, string senha);

@@ -34,9 +34,9 @@
     <Compile Include="Bancos\Dto\Banco.cs" />
     <Compile Include="Cidades\Dto\Cidade.cs" />
     <Compile Include="Clientes\Dto\Cliente.cs" />
-    <Compile Include="Entities\Conta.cs" />
-    <Compile Include="Entities\ContaCliente.cs" />
-    <Compile Include="Entities\ContaClienteAlteracao.cs" />
+    <Compile Include="Contas\Dto\Conta.cs" />
+    <Compile Include="Contas\Dto\ContaCliente.cs" />
+    <Compile Include="Contas\Dto\ContaClienteAlteracao.cs" />
     <Compile Include="Estados\Dto\Estado.cs" />
     <Compile Include="Operacoes\Dto\DadosGetOpReal.cs" />
     <Compile Include="Operacoes\Dto\Estorno.cs" />
@@ -48,7 +48,7 @@
     <Compile Include="Bancos\IBancoRepository.cs" />
     <Compile Include="Cidades\ICidadeRepository.cs" />
     <Compile Include="Clientes\IClienteRepository.cs" />
-    <Compile Include="Interfaces\IRepositories\IContaClienteRepositoryDomain.cs" />
+    <Compile Include="Contas\IContaClienteRepository.cs" />
     <Compile Include="Estados\IEstadoRepository.cs" />
     <Compile Include="Operacoes\IOperacoesRealizadasRepository.cs" />
     <Compile Include="Operacoes\IOperacoesRepository.cs" />
@@ -57,7 +57,7 @@
     <Compile Include="Bancos\IBancoService.cs" />
     <Compile Include="Cidades\ICidadeService.cs" />
     <Compile Include="Clientes\IClienteServiceDomain.cs" />
-    <Compile Include="Interfaces\IServices\IContaClienteServiceDomain.cs" />
+    <Compile Include="Contas\IContaClienteService.cs" />
     <Compile Include="Estados\IEstadoService.cs" />
     <Compile Include="Operacoes\IOperacaoService.cs" />
     <Compile Include="Operacoes\IOperacoeRealizadaService.cs" />
@@ -69,7 +69,7 @@
     <Compile Include="Bancos\BancoService.cs" />
     <Compile Include="Cidades\CidadeService.cs" />
     <Compile Include="Clientes\ClienteService.cs" />
-    <Compile Include="Services\ContaClienteServiceDomain.cs" />
+    <Compile Include="Contas\ContaClienteService.cs" />
     <Compile Include="Estados\EstadoService.cs" />
     <Compile Include="Operacoes\OperacoesRealizadasService.cs" />
     <Compile Include="Operacoes\OperacoesService.cs" />
