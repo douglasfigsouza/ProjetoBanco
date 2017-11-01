@@ -1,4 +1,5 @@
 C:\Users\Douglas\ProjetoBanco\ProjetoBanco.MVC\obj\Debug\ProjetoBanco.MVC.csprojResolveAssemblyReference.cache
+C:\Users\Douglas\ProjetoBanco\ProjetoBanco.MVC\bin\ApplicationInsights.config
 C:\Users\Douglas\ProjetoBanco\ProjetoBanco.MVC\bin\roslyn\csc.exe
 C:\Users\Douglas\ProjetoBanco\ProjetoBanco.MVC\bin\roslyn\Microsoft.Build.Tasks.CodeAnalysis.dll
 C:\Users\Douglas\ProjetoBanco\ProjetoBanco.MVC\bin\roslyn\Microsoft.CodeAnalysis.CSharp.dll
@@ -11,7 +12,6 @@ C:\Users\Douglas\ProjetoBanco\ProjetoBanco.MVC\bin\roslyn\System.Reflection.Meta
 C:\Users\Douglas\ProjetoBanco\ProjetoBanco.MVC\bin\roslyn\vbc.exe
 C:\Users\Douglas\ProjetoBanco\ProjetoBanco.MVC\bin\roslyn\VBCSCompiler.exe
 C:\Users\Douglas\ProjetoBanco\ProjetoBanco.MVC\bin\roslyn\VBCSCompiler.exe.config
-C:\Users\Douglas\ProjetoBanco\ProjetoBanco.MVC\bin\ApplicationInsights.config
 C:\Users\Douglas\ProjetoBanco\ProjetoBanco.MVC\bin\ProjetoBanco.MVC.dll.config
 C:\Users\Douglas\ProjetoBanco\ProjetoBanco.MVC\bin\ProjetoBanco.MVC.dll
 C:\Users\Douglas\ProjetoBanco\ProjetoBanco.MVC\bin\ProjetoBanco.MVC.pdb

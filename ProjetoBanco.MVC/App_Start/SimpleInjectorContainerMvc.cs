@@ -1,5 +1,6 @@
 ﻿using ProjetoBanco.Application;
 using ProjetoBanco.Application.Interfaces;
+using ProjetoBanco.Domain.Agencias;
 using ProjetoBanco.Domain.Bancos;
 using ProjetoBanco.Domain.Clientes;
 using ProjetoBanco.Domain.Estados;
@@ -21,8 +22,8 @@ namespace ProjetoBanco.MVC.App_Start
             var container = new Container();
 
             container.Register<IAgenciaAppService, AgenciaAppService>();
-            container.Register<IAgenciaServiceDomain, AgenciaServiceDomain>();
-            container.Register<IAgenciaRepositoryDomain, AgenciaRepository>();
+            //container.Register<IAgenciaServiceDomain, AgenciaServiceDomain>();
+            container.Register<IAgenciaRepository, AgenciaRepository>();
 
             container.Register<IBancoAppService, BancoAppService>();
             container.Register<IBancoService, BancoService>();

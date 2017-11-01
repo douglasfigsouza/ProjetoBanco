@@ -1,14 +1,12 @@
 ﻿using System.Collections.Generic;
-using ProjetoBanco.Domain.Entities;
 
-namespace ProjetoBanco.Domain.Interfaces.IRepositories
+namespace ProjetoBanco.Domain.Agencias
 {
-    public interface IAgenciaRepositoryDomain
+    public interface IAgenciaService
     {
         string AddAgencia(Agencia agencia);
         Agencia GetAgenciaByNum(int agencia);
         IEnumerable<Agencia> GetAllAgencias();
         string UpdateAgencia(Agencia agencia);
-        void Dispose();
     }
 }

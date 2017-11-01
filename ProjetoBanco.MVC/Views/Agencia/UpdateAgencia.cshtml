@@ -18,6 +18,17 @@
 </div>
 <div class="row" id="divAgenciaEditavel">
     <div class="col s10">
+        <div class="row divErroNaOperacao">
+            <div class="col s12">
+                <h6 class="erroOperacao"></h6>
+            </div>
+        </div>
+
+        <div class="row divSucessoNaOperacao">
+            <div class="col s12">
+                <h6 class="sucessoOperacao"></h6>
+            </div>
+        </div>
         <h6>Agência</h6>
         <hr/>
         <div class="row">
@@ -28,7 +39,14 @@
             <h6 class="col s6">Agencia:</h6>
             <h6 class="col s6" id="numAgencia"></h6>
         </div>
-        @using (Html.BeginForm("AtualizaAgencia", "Agencia"))
+        @using (Ajax.BeginForm("UpdateAgencia", "Agencia", null, new AjaxOptions
+        {
+            HttpMethod = "POST",
+            OnSuccess = "sucesso",
+            OnFailure = "erro(xhr)",
+            OnBegin = "progresso",
+            OnComplete = "fim"
+        }))
         {
             @Html.ValidationSummary(true)
             <div class="row">
@@ -46,6 +64,14 @@
     </div>
 </div>
 <script>
+    function sucesso() {
+        $(".divSucessoNaOperacao").fadeIn(3000);
+        $(".sucessoOperacao").html("<i class='tiny material-icons'>check_circle</i> Agência Alterada com Sucesso!");
+    }
+    function erro(xhr) {
+        $(".divErroNaOperacao").fadeIn(3000);
+        $(".erroOperacao").html("<i class='tiny material-icons'>error</i>Ops! algo deu errado. " + xhr.responseText);
+    }
     $(document).ready(function () {
         $(".container").addClass("diminuicao30");
         $("#divAgenciaEditavel").hide();

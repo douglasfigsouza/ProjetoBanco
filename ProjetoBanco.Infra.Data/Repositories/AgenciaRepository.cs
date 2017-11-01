@@ -1,18 +1,16 @@
-﻿using System;
+﻿using ProjetoBanco.Domain.Agencias;
+using ProjetoBanco.Domain.Entities;
+using System;
 using System.Collections.Generic;
 using System.Data.SqlClient;
 using System.Linq;
-using ProjetoBanco.Domain.Entities;
-using ProjetoBanco.Domain.Interfaces.IRepositories;
 
 namespace ProjetoBanco.Infra.Data.Repositories
 {
-    public class AgenciaRepository : IAgenciaRepositoryDomain
+    public class AgenciaRepository : IAgenciaRepository
     {
-        private Conexao conn;
-        private SqlDataReader result;
-        private List<Agencia> Agencias;
-        private Agencia Agencia;
+        private readonly Conexao _conn;
+        private Notifications _notifications;
         public enum Procedures
         {
             PBSP_INSERTAGENCIA,
@@ -20,43 +18,42 @@ namespace ProjetoBanco.Infra.Data.Repositories
             PBSP_GETAGENCIABYNUM,
             PBSP_UPDATEAGENCIA
         }
-        public AgenciaRepository()
+        public AgenciaRepository(Conexao conn, Notifications notifications)
         {
-            conn = new Conexao();
-            Agencias = new List<Agencia>();
-            Agencia = new Agencia();
+            _conn = conn;
+            _notifications = notifications;
         }
 
-        public string AddAgencia(Agencia agencia)
+        public void AddAgencia(Agencia agencia)
         {
             try
             {
-                conn.ExecuteProcedure(Procedures.PBSP_INSERTAGENCIA);
-                conn.AddParameter("@cidadeId", agencia.CidadeId);
-                conn.AddParameter("@bancoId", agencia.bancoId);
-                conn.AddParameter("@agencia", agencia.agencia);
-                conn.AddParameter("@ativo", agencia.agencia);
-                conn.ExecuteNonQuery();
-                return null;
+                _conn.ExecuteProcedure(Procedures.PBSP_INSERTAGENCIA);
+                _conn.AddParameter("@cidadeId", agencia.CidadeId);
+                _conn.AddParameter("@bancoId", agencia.bancoId);
+                _conn.AddParameter("@agencia", agencia.agencia);
+                _conn.AddParameter("@ativo", agencia.agencia);
+                _conn.ExecuteNonQuery();
             }
             catch (Exception e)
             {
-                return e.ToString();
+                _notifications.Notificacoes.Add($"Impossível cadastrar agência! Erro {e.Message}");
             }
 
         }
 
         public IEnumerable<Agencia> GetAllAgencias()
         {
+            SqlDataReader result = null;
+            var Agencias = new List<Agencia>();
             try
             {
-                conn.ExecuteProcedure(Procedures.PBSP_GETALLAGENCIAS);
-                result = conn.ExecuteReader();
+                _conn.ExecuteProcedure(Procedures.PBSP_GETALLAGENCIAS);
+                result = _conn.ExecuteReader();
             }
             catch (Exception e)
             {
-                Console.WriteLine(e);
-                throw;
+                _notifications.Notificacoes.Add($"Impossível buscar agências! Erro {e.Message}");
             }
             while (result.Read())
             {
@@ -65,49 +62,55 @@ namespace ProjetoBanco.Infra.Data.Repositories
                     bancoId = Convert.ToInt32(result["bancoId"].ToString()),
                     agencia = Convert.ToInt32(result["agencia"].ToString()),
                     CidadeId = Convert.ToInt32(result["CidadeId"].ToString()),
-                    ativo = Convert.ToBoolean(result["ativo"].ToString())                 
+                    ativo = Convert.ToBoolean(result["ativo"].ToString())
                 });
+            }
+            if (Agencias.Count == 0)
+            {
+                _notifications.Notificacoes.Add("Nenhuma agência cadastrada!");
             }
             return Agencias.ToList();
         }
-        public string UpdateAgencia(Agencia agencia)
+        public void UpdateAgencia(Agencia agencia)
         {
+            _conn.ExecuteProcedure(Procedures.PBSP_UPDATEAGENCIA);
+            _conn.AddParameter("@agencia", agencia.agencia);
+            _conn.AddParameter("@ativo", agencia.ativo);
             try
             {
-                conn.ExecuteProcedure(Procedures.PBSP_UPDATEAGENCIA);
-                conn.AddParameter("@agencia", agencia.agencia);
-                conn.AddParameter("@ativo", agencia.ativo);
-                conn.ExecuteNonQuery();
-                return null;
+                _conn.ExecuteNonQuery();
             }
             catch (Exception e)
             {
-                return e.ToString();
+                _notifications.Notificacoes.Add($"Impossível cadastrar agencia! Erro {e.Message}");
             }
         }
-        public void Dispose()
-        {
-
-        }
-
         public Agencia GetAgenciaByNum(int agencia)
         {
+            SqlDataReader result = null;
+            Agencia Agencia = null;
+            _conn.ExecuteProcedure(Procedures.PBSP_GETAGENCIABYNUM);
+            _conn.AddParameter("@agencia", agencia);
             try
             {
-                conn.ExecuteProcedure(Procedures.PBSP_GETAGENCIABYNUM);
-                conn.AddParameter("@agencia", agencia);
-                result = conn.ExecuteReader();
-                while (result.Read())
-                {
-                    Agencia.agencia = int.Parse(result["agencia"].ToString());
-                    Agencia.banco = result["nome"].ToString();
-                    Agencia.ativo = Convert.ToBoolean(result["ativo"].ToString());
-                }
+                result = _conn.ExecuteReader();
             }
             catch (Exception e)
             {
-                Console.WriteLine(e);
-                throw;
+                _notifications.Notificacoes.Add($"Impossível buscar agencias! Erro {e.Message}");
+            }
+            while (result.Read())
+            {
+                Agencia = new Agencia
+                {
+                    agencia = int.Parse(result["agencia"].ToString()),
+                    banco = result["nome"].ToString(),
+                    ativo = Convert.ToBoolean(result["ativo"].ToString()),
+                };
+            }
+            if (Agencia == null)
+            {
+                _notifications.Notificacoes.Add("Nenhuma agência encontrada!");
             }
             return Agencia;
         }

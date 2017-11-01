@@ -28,21 +28,35 @@ namespace ProjetoBanco.MVC.Controllers
             cmbContaViewModel.Agencias = new List<AgenciaViewModel>();
             cmbContaViewModel.Clientes = new List<ClienteViewModel>();
             conta = new Conta();
-            contaClientes= new List<ContaCliente>();
+            contaClientes = new List<ContaCliente>();
         }
 
         public ActionResult CreateConta()
         {
             var statusCode = new HttpResponseMessage();
-            foreach (var agencia in _agenciaAppService.GetAllAgencias())
+            statusCode = _agenciaAppService.GetAllAgencias();
+            if (!statusCode.IsSuccessStatusCode)
+            {
+                Response.TrySkipIisCustomErrors = true;
+                Response.StatusCode = 400;
+                return null;
+            }
+            Response.StatusCode = 200;
+            foreach (var agencia in statusCode.Content.ReadAsAsync<IEnumerable<AgenciaViewModel>>().Result)
             {
                 cmbContaViewModel.Agencias.Add(new AgenciaViewModel
                 {
                     bancoId = agencia.bancoId,
-                    agencia = agencia.agencia+""
+                    agencia = agencia.agencia + ""
                 });
             }
             statusCode = _clienteAppService.GetAllClientes(1);
+            if (!statusCode.IsSuccessStatusCode)
+            {
+                Response.TrySkipIisCustomErrors = true;
+                Response.StatusCode = 400;
+                return null;
+            }
             foreach (var cliente in statusCode.Content.ReadAsAsync<IEnumerable<ClienteViewModel>>().Result)
             {
                 cmbContaViewModel.Clientes.Add(new ClienteViewModel
@@ -64,14 +78,14 @@ namespace ProjetoBanco.MVC.Controllers
 
             foreach (var item in ClientesSelecionados)
             {
-               contaClientes.Add(new ContaCliente
-               {
-                   clienteId = item,
-                   agencia = agencia
+                contaClientes.Add(new ContaCliente
+                {
+                    clienteId = item,
+                    agencia = agencia
 
-               });
+                });
             }
-            error = _contaClienteAppService.AddContaCliente(conta,contaClientes);
+            error = _contaClienteAppService.AddContaCliente(conta, contaClientes);
             return feedBackOperacao("CreateConta", error);
         }
 
@@ -83,7 +97,7 @@ namespace ProjetoBanco.MVC.Controllers
         [HttpPost]
         public ActionResult UpdateConta(FormCollection form)
         {
-            if (form!= null)
+            if (form != null)
             {
                 conta.num = Utilitarios.Utilitarios.retiraMask(form["conta"]);
                 conta.senha = form["senha"];

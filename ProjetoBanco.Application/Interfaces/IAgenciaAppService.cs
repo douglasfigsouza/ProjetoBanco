@@ -1,14 +1,14 @@
-﻿using System.Collections.Generic;
-using ProjetoBanco.Domain.Entities;
+﻿using ProjetoBanco.Domain.Agencias;
+using System.Net.Http;
 
 namespace ProjetoBanco.Application.Interfaces
 {
     public interface IAgenciaAppService
     {
-        string AddAgencia(Agencia agencia);
-        Agencia GetAgenciaByNum(int agencia);
-        IEnumerable<Agencia> GetAllAgencias();
-        string UpdateAgencia(Agencia agencia);
-        void Dispose();
+        HttpResponseMessage AddAgencia(Agencia agencia);
+        HttpResponseMessage GetAgenciaByNum(int agencia);
+        HttpResponseMessage GetAllAgencias();
+        HttpResponseMessage UpdateAgencia(Agencia agencia);
+
     }
 }

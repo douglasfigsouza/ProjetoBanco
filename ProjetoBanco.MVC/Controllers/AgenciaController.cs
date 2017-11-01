@@ -1,10 +1,10 @@
 ﻿using ProjetoBanco.Application.Interfaces;
-using ProjetoBanco.Domain.Entities;
+using ProjetoBanco.Domain.Agencias;
+using ProjetoBanco.Domain.Estados.Dto;
 using ProjetoBanco.MVC.ViewModels;
 using System.Collections.Generic;
 using System.Net.Http;
 using System.Web.Mvc;
-using ProjetoBanco.Domain.Estados.Dto;
 
 namespace ProjetoBanco.MVC.Controllers
 {
@@ -13,15 +13,12 @@ namespace ProjetoBanco.MVC.Controllers
         private readonly IAgenciaAppService _agenciaAppService;
         private readonly IEstadoAppService _estadoAppService;
         private readonly IBancoAppService _bancoAppService;
-        private string error;
-        private Agencia agencia;
 
         public AgenciaController(IAgenciaAppService agenciaAppService, IBancoAppService bancoAppService, IEstadoAppService estadoAppService)
         {
             _agenciaAppService = agenciaAppService;
             _estadoAppService = estadoAppService;
             _bancoAppService = bancoAppService;
-            agencia = new Agencia();
         }
 
         // GET: Agencia
@@ -48,23 +45,25 @@ namespace ProjetoBanco.MVC.Controllers
         [HttpPost]
         public ActionResult CreateAgencia(AgenciaViewModel agenciaViewModel)
         {
-            if (ModelState.IsValid)
+            var agencia = new Agencia
             {
-                agencia.CidadeId = agenciaViewModel.CidadeId;
-                agencia.bancoId = agenciaViewModel.bancoId;
-                agencia.agencia = int.Parse(Utilitarios.Utilitarios.retiraMask(agenciaViewModel.agencia));
-                agencia.ativo = agenciaViewModel.ativo;
-
-                error = _agenciaAppService.AddAgencia(agencia);
-
-                return feedBackOperacao("CreateAgencia", error,"Cadastrada com sucesso!");
-            }
-            else
+                CidadeId = agenciaViewModel.CidadeId,
+                bancoId = agenciaViewModel.bancoId,
+                agencia = int.Parse(Utilitarios.Utilitarios.retiraMask(agenciaViewModel.agencia)),
+                ativo = agenciaViewModel.ativo,
+            };
+            var statusCode = new HttpResponseMessage();
+            statusCode = _agenciaAppService.AddAgencia(agencia);
+            if (!statusCode.IsSuccessStatusCode)
             {
-                ViewBag.estados = _estadoAppService.GetAllEstados();
-                ViewBag.bancos = _bancoAppService.GetAllBancos();
-                return View(agenciaViewModel);
+                Response.TrySkipIisCustomErrors = true;
+                Response.StatusCode = 400;
+                return Content(
+                    Utilitarios.Utilitarios.limpaMenssagemErro(statusCode.
+                        Content.ReadAsStringAsync().Result));
             }
+            Response.StatusCode = 200;
+            return Content(statusCode.Content.ReadAsStringAsync().Result);
         }
 
         public ActionResult UpdateAgencia()
@@ -73,55 +72,47 @@ namespace ProjetoBanco.MVC.Controllers
         }
 
         [HttpPost]
-        public ActionResult AtualizaAgencia(AgenciaViewModel agenciaViewModel)
+        public ActionResult UpdateAgencia(AgenciaViewModel agenciaViewModel)
         {
-            agencia.agencia = int.Parse(Utilitarios.Utilitarios.retiraMask(agenciaViewModel.agencia));
-            agencia.ativo = agenciaViewModel.ativo;
-
-            error = _agenciaAppService.UpdateAgencia(agencia);
-
-            return feedBackOperacao("UpdateAgencia", error,"Atualizada com sucesso!");
+            var agencia = new Agencia
+            {
+                agencia = int.Parse(Utilitarios.Utilitarios.retiraMask(agenciaViewModel.agencia)),
+                ativo = agenciaViewModel.ativo
+            };
+            var statusCode = new HttpResponseMessage();
+            statusCode = _agenciaAppService.UpdateAgencia(agencia);
+            if (!statusCode.IsSuccessStatusCode)
+            {
+                Response.TrySkipIisCustomErrors = true;
+                Response.StatusCode = 400;
+                return Content(
+                    Utilitarios.Utilitarios.limpaMenssagemErro(statusCode.
+                        Content.ReadAsStringAsync().Result));
+            }
+            Response.StatusCode = 200;
+            return Content(statusCode.Content.ReadAsStringAsync().Result);
         }
 
         public JsonResult GetAgenciaByNum(string numAg)
         {
-            if (numAg != null && numAg!="")
+            if (numAg != null && numAg != "")
             {
-                AgenciaViewModel agenciaViewModel = new AgenciaViewModel();
-                agencia = _agenciaAppService.GetAgenciaByNum(int.Parse(Utilitarios.Utilitarios.retiraMask(numAg)));
-
-                agenciaViewModel.agencia = agencia.agencia+"";
-                agenciaViewModel.banco = agencia.banco;
-                agenciaViewModel.ativo = agencia.ativo;
-                if (agencia.agencia!=0)
+                var statusCode = new HttpResponseMessage();
+                statusCode = _agenciaAppService.GetAgenciaByNum(int.Parse(Utilitarios.Utilitarios.retiraMask(numAg)));
+                if (!statusCode.IsSuccessStatusCode)
                 {
-                    return Json(agenciaViewModel, JsonRequestBehavior.AllowGet);
+                    Response.TrySkipIisCustomErrors = true;
+                    Response.StatusCode = 400;
+                    return Json(Utilitarios.Utilitarios.limpaMenssagemErro(statusCode.
+                            Content.ReadAsStringAsync().Result), JsonRequestBehavior.AllowGet);
                 }
-                else
-                {
-                    return null;
-                }
+                Response.StatusCode = 200;
+                return Json(statusCode.Content.ReadAsAsync<AgenciaViewModel>().Result, JsonRequestBehavior.AllowGet);
             }
             else
             {
                 return null;
             }
-        }
-        private ActionResult feedBackOperacao(string action, string error, string op)
-        {
-            if (error == null)
-            {
-                TempData["outraOp"] = "/Agencia/" + action;
-                TempData["menssagem"] = "Agência: " + agencia.agencia + " "+op;
-                return RedirectToAction("Success", "FeedBack");
-            }
-            else
-            {
-                TempData["outraOp"] = "/Agencia/" + action;
-                TempData["menssagem"] = "Agência: " + agencia.agencia +" "+ op +"error";
-                return RedirectToAction("Error", "FeedBack");
-            }
-
         }
     }
 }

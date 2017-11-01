@@ -1,4 +1,5 @@
-﻿using ProjetoBanco.Domain.Bancos;
+﻿using ProjetoBanco.Domain.Agencias;
+using ProjetoBanco.Domain.Bancos;
 using ProjetoBanco.Domain.Clientes;
 using ProjetoBanco.Domain.Entities;
 using ProjetoBanco.Domain.Estados;
@@ -19,8 +20,8 @@ namespace Web_Api
         {
             var container = new Container();
             container.Options.DefaultScopedLifestyle = new AsyncScopedLifestyle();
-            container.Register<IAgenciaServiceDomain, AgenciaServiceDomain>();
-            container.Register<IAgenciaRepositoryDomain, AgenciaRepository>();
+            //container.Register<IAgenciaService, AgenciaService>();
+            container.Register<IAgenciaRepository, AgenciaRepository>();
 
             container.Register<IBancoService, BancoService>();
             container.Register<IBancoRepository, BancoRepository>();

@@ -1,45 +1,47 @@
-﻿using System;
-using System.Collections.Generic;
-using ProjetoBanco.Application.Interfaces;
-using ProjetoBanco.Domain.Entities;
-using ProjetoBanco.Domain.Interfaces.IRepositories;
-using ProjetoBanco.Domain.Interfaces.IServices;
+﻿using ProjetoBanco.Application.Interfaces;
+using ProjetoBanco.Domain.Agencias;
+using System.Net.Http;
+using Web_Api.Utilitarios;
 
 namespace ProjetoBanco.Application
 {
     public class AgenciaAppService : IAgenciaAppService
     {
-        private readonly IAgenciaServiceDomain _agenciaServiceDomain;
-        private readonly IAgenciaRepositoryDomain _agenciaRepositoryDomain;
 
-        public AgenciaAppService(IAgenciaServiceDomain agenciaServiceDomain,
-            IAgenciaRepositoryDomain agenciaRepositoryDomain)
+        public HttpResponseMessage AddAgencia(Agencia agencia)
         {
-            _agenciaServiceDomain = agenciaServiceDomain;
-            _agenciaRepositoryDomain = agenciaRepositoryDomain;
-        }
-
-        public string AddAgencia(Agencia agencia)
-        {
-            return _agenciaRepositoryDomain.AddAgencia(agencia);
-        }
-        public IEnumerable<Agencia> GetAllAgencias()
-        {
-            return _agenciaRepositoryDomain.GetAllAgencias();
+            var response = new HttpResponseMessage();
+            response = HttpClientConf.HttpClientConfig("Agencias")
+                .PostAsJsonAsync("AddAgencia", agencia).Result;
+            return response;
         }
 
-        public string UpdateAgencia(Agencia agencia)
+        public HttpResponseMessage GetAllAgencias()
         {
-            return _agenciaRepositoryDomain.UpdateAgencia(agencia);
+            var response = new HttpResponseMessage();
+            response = HttpClientConf.HttpClientConfig("Agencias")
+                .GetAsync("GetAllAgencias").Result;
+            return response;
         }
 
-        public void Dispose()
+        public HttpResponseMessage UpdateAgencia(Agencia agencia)
         {
-            _agenciaRepositoryDomain.Dispose();
+            var response = new HttpResponseMessage();
+            response = HttpClientConf.HttpClientConfig("Agencias")
+                .PostAsJsonAsync("UpdateAgencia", agencia).Result;
+            return response;
         }
-        public Agencia GetAgenciaByNum(int agencia)
+
+        public HttpResponseMessage GetAgenciaByNum(int agencia)
         {
-            return _agenciaRepositoryDomain.GetAgenciaByNum(agencia);
+            HttpResponseMessage response;
+            //Create a query
+            HttpClient client = new HttpClient();
+            response = client.GetAsync(HttpClientConf.HttpClientConfigGet("Agencias/GetAgenciaByNum", new
+            {
+                agencia
+            })).Result;
+            return response;
         }
     }
 }
