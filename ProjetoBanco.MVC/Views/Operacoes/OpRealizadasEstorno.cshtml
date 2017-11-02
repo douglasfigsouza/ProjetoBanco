@@ -45,6 +45,16 @@
 </div>
 <div class="row" id="opSelecionada">
     <div class="col s12">
+        <div class="row divErroNaOperacao">
+            <div class="col s12">
+                <h6 class="erroOperacao"></h6>
+            </div>
+        </div>
+        <div class="row divSucessoNaOperacao">
+            <div class="col s12">
+                <h6 class="sucessoOperacao"></h6>
+            </div>
+        </div>
         <h5>Confirma Estorno</h5>
         <hr/>
         <div class="col s12">
@@ -98,6 +108,7 @@
 
 <script>
     $(document).ready(function () {
+        $(".divSucessoNaOperacao").hide();
         $("#feedBackEstorno").hide();
         $("#opSelecionada").hide();
         var id = 0;
@@ -112,6 +123,7 @@
                     id: id
                 },
                 success: function (dados) {
+                    debugger;
                     $(".enviaEstorno").prop('id', dados.Id);
                     $("#cliente").text(dados.cliente);
                     $("#conta").text(dados.conta);
@@ -121,9 +133,13 @@
                     $("#valorOp").text(dados.valorOp);
                     $("#saldoOp").text(dados.saldoAnterior);
                     $("#opSelecionada").show();
+                    $(".divErroNaOperacao").hide();
                 },
-                error: function ajaxError(dados) {
-                    alert(dados.status + ' ' + dados.statusText);
+                error: function ajaxError(xhr) {
+                    debugger;
+                    $("#opSelecionada").show();
+                    $(".divErroNaOperacao").fadeIn(3000);
+                    $("#erroOperacao").html("<i class='tiny material-icons'>error</i>Ops! algo deu errado. " + xhr.responseText);
                 }
             });
         });
@@ -137,8 +153,10 @@
                 data: {
                     id: id
                 },
-                success: function (dados) {
-                  
+                success: function () {
+                    $(".divSucessoNaOperacao").fadeIn(3000);
+                    $(".sucessoOperacao")
+                        .html("<i class='tiny material-icons'>check_circle</i> Estorno realizado com Sucesso!");
                 },
                 error: function ajaxError(dados) {
                     $("#feedBackEstorno").show();

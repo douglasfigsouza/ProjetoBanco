@@ -343,16 +343,7 @@ namespace ProjetoBanco.MVC.Controllers
             Response.StatusCode = 200;
             return View("OpRealizadasEstorno",opsEstornoViewModels);
         }
-
         [HttpPost]
-        public ActionResult criaViewComOpsParaEstorno(List<EstornoViewModel> response)
-        {
-            //OperacaoViewModel opsOperacaoViewModel =
-            //    new JavaScriptSerializer().Deserialize<OperacaoViewModel>(response);
-            return View("OpRealizadasEstorno", response);
-        }
-
-        [System.Web.Mvc.HttpPost]
         public ActionResult ConfirmEstorno(int id)
         {
             var statusCode = new HttpResponseMessage();
@@ -361,32 +352,29 @@ namespace ProjetoBanco.MVC.Controllers
                 Id = id
             };
             statusCode = _operacaoesRealizadasAppService.ConfirmEstorno(estorno);
-            if (statusCode.IsSuccessStatusCode)
+            if (!statusCode.IsSuccessStatusCode)
             {
-                TempData["menssagem"] = "Estorno realizado com sucesso!";
-                TempData["outraOp"] = "/Operacoes/Estorno";
-                return View("FeedBackOp");
+                Response.TrySkipIisCustomErrors = true;
+                Response.StatusCode = 400;
+                return Content(Utilitarios.Utilitarios.limpaMenssagemErro(statusCode.Content.ReadAsStringAsync().Result));
+
             }
-            else
-            {
-                TempData["menssagem"] = Utilitarios.Utilitarios.limpaMenssagemErro(statusCode.Content.ReadAsStringAsync().Result);
-                TempData["outraOp"] = "/Operacoes/Estorno";
-                return View("FeedBackOp");
-            }
+            Response.StatusCode = 200;
+            return Json(statusCode.Content.ReadAsStringAsync().Result);
         }
         [HttpGet]
         public JsonResult GetOpRealizadaEstornoById(int id)
         {
             var statusCode = new HttpResponseMessage();
-            if (statusCode.IsSuccessStatusCode)
+            statusCode = _operacaoesRealizadasAppService.GetOpRealizadaEstornoById(id);
+            if (!statusCode.IsSuccessStatusCode)
             {
-                statusCode = _operacaoesRealizadasAppService.GetOpRealizadaEstornoById(id);
-                return Json(statusCode.Content.ReadAsAsync<Estorno>().Result, JsonRequestBehavior.AllowGet);
+                Response.TrySkipIisCustomErrors = true;
+                Response.StatusCode = 400;
+                return Json(statusCode.Content.ReadAsStringAsync().Result, JsonRequestBehavior.AllowGet);
             }
-            else
-            {
-                return Json(statusCode.Content.ReadAsStringAsync().Result);
-            }
+            Response.StatusCode = 200;
+            return Json(statusCode.Content.ReadAsAsync<Estorno>().Result, JsonRequestBehavior.AllowGet);
         }
     }
 }
