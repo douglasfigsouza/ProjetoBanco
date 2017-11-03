@@ -9,6 +9,7 @@ using System.Web.Mvc;
 
 namespace ProjetoBanco.MVC.Controllers
 {
+    [Authorize]
     public class ClientesController : Controller
     {
         private readonly IClienteAppService _clienteApp;

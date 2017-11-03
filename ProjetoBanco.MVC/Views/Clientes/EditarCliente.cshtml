@@ -215,6 +215,7 @@
                     cache: false,
                     async: true,
                     success: function (data) {
+                        debugger;
 
                         $(".container").removeClass("aumento");
                         $("#id").val(data.Id);
@@ -237,6 +238,7 @@
                             $("#ativo").prop('checked', false);
                             $("#ativo").val(false);
                         }
+                        debugger;
                         //função que retornara a cidade do cliente
                         $.ajax({
                             type: "GET",
@@ -258,8 +260,9 @@
                                     });
                                 $('#ddlCidadesCliente').material_select();
                             },
-                            error: function ajaxError(dados) {
-                                alert(dados.status + ' ' + dados.statusText);
+                            error: function(xhr) {
+                                debugger ;
+                                alert("Ops! algo deu errado! Erro "+xhr.reponseText);
                             }
                         });
                         $.ajax({

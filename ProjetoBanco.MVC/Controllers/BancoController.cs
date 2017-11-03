@@ -6,6 +6,7 @@ using System.Web.Mvc;
 
 namespace ProjetoBanco.MVC.Controllers
 {
+    [Authorize]
     public class BancoController : Controller
     {
         private readonly IBancoAppService _bancoAppService;

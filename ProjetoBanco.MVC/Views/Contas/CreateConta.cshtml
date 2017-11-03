@@ -238,8 +238,10 @@
         });
         //faz a validação dos campos
         $("form").validate({
-            submitHandler: function (form) {
-                form.submit();
+
+            onfocusout: function (element) {
+                $(element).valid();
+
             },
             rules: {
                 num: {

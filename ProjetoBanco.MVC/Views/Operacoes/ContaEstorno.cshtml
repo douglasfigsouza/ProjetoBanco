@@ -1,4 +1,4 @@
-﻿<div class="row" id="teste">
+﻿<div class="row" id="divDadosDaConta">
     <div class="row divErroNaOperacao">
         <div class="col s12">
             <h6 class="erroOperacao"></h6>
@@ -40,7 +40,8 @@
         }
     </div>
 </div>
-<div id="opsRealizadas"> <h1>tESTE</h1></div>
+<div id="opsRealizadas">
+</div>
 <script>
     function erro(xhr) {
         $(".divErroNaOperacao").fadeIn(3000);
@@ -50,7 +51,7 @@
     function sucesso(response) {
         $(".container").removeClass("diminuicao40");
         $(".container").addClass("diminuicao60");
-        $("#teste").slideUp(200);
+        $("#divDadosDaConta").slideUp(200);
         $("#opsRealizadas").html(response).slideDown(200);
         //window.location = "criaViewComOpsParaEstorno/" + { response };
     }

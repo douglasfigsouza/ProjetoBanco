@@ -59,10 +59,10 @@ namespace ProjetoBanco.Infra.Data.Repositories
             while (result.Read())
             {
                 usuario = new Usuario();
-                usuario.clienteId = Convert.ToInt32(result["clienteId"].ToString());
+                usuario.clienteId = int.Parse(result["clienteId"].ToString());
                 usuario.nome = result["nome"].ToString();
                 usuario.senha = result["senha"].ToString();
-                usuario.nivel = Convert.ToChar(result["nivel"].ToString());
+                usuario.nivel = char.Parse(result["nivel"].ToString());
             }
             if (usuario == null)
             {

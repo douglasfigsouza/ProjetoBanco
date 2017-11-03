@@ -30,31 +30,31 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
-    <Compile Include="Agencias\Dto\Agencia.cs" />
-    <Compile Include="Bancos\Dto\Banco.cs" />
-    <Compile Include="Cidades\Dto\Cidade.cs" />
-    <Compile Include="Clientes\Dto\Cliente.cs" />
-    <Compile Include="Contas\Dto\Conta.cs" />
-    <Compile Include="Contas\Dto\ContaCliente.cs" />
-    <Compile Include="Contas\Dto\ContaClienteAlteracao.cs" />
-    <Compile Include="Estados\Dto\Estado.cs" />
-    <Compile Include="Operacoes\Dto\DadosGetOpReal.cs" />
-    <Compile Include="Operacoes\Dto\Estorno.cs" />
-    <Compile Include="Entities\feedBack.cs" />
-    <Compile Include="Entities\Notifications.cs" />
-    <Compile Include="Operacoes\Dto\Transacao.cs" />
-    <Compile Include="Usuarios\Dto\Usuario.cs" />
-    <Compile Include="Agencias\IAgenciaRepository.cs" />
-    <Compile Include="Bancos\IBancoRepository.cs" />
-    <Compile Include="Cidades\ICidadeRepository.cs" />
-    <Compile Include="Clientes\IClienteRepository.cs" />
-    <Compile Include="Contas\IContaClienteRepository.cs" />
-    <Compile Include="Estados\IEstadoRepository.cs" />
-    <Compile Include="Operacoes\IOperacoesRealizadasRepository.cs" />
-    <Compile Include="Operacoes\IOperacoesRepository.cs" />
-    <Compile Include="Usuarios\IUsuarioRepository.cs" />
-    <Compile Include="Operacoes\Dto\Operacoes.cs" />
-    <Compile Include="Operacoes\Dto\OperacoesRealizadas.cs" />
+    <Compile Include="Agencia\Dto\Agencia.cs" />
+    <Compile Include="Banco\Dto\Banco.cs" />
+    <Compile Include="Cidade\Dto\Cidade.cs" />
+    <Compile Include="Cliente\Dto\Cliente.cs" />
+    <Compile Include="Conta\Dto\Conta.cs" />
+    <Compile Include="Conta\Dto\ContaCliente.cs" />
+    <Compile Include="Conta\Dto\ContaClienteAlteracao.cs" />
+    <Compile Include="Estado\Dto\Estado.cs" />
+    <Compile Include="Operacão\Dto\DadosGetOpReal.cs" />
+    <Compile Include="Operacão\Dto\Estorno.cs" />
+    <Compile Include="Utilitario\feedBack.cs" />
+    <Compile Include="Utilitario\Notifications.cs" />
+    <Compile Include="Operacão\Dto\Transacao.cs" />
+    <Compile Include="Usuario\Dto\Usuario.cs" />
+    <Compile Include="Agencia\IAgenciaRepository.cs" />
+    <Compile Include="Banco\IBancoRepository.cs" />
+    <Compile Include="Cidade\ICidadeRepository.cs" />
+    <Compile Include="Cliente\IClienteRepository.cs" />
+    <Compile Include="Conta\IContaClienteRepository.cs" />
+    <Compile Include="Estado\IEstadoRepository.cs" />
+    <Compile Include="Operacão\IOperacoesRealizadasRepository.cs" />
+    <Compile Include="Operacão\IOperacoesRepository.cs" />
+    <Compile Include="Usuario\IUsuarioRepository.cs" />
+    <Compile Include="Operacão\Dto\Operacoes.cs" />
+    <Compile Include="Operacão\Dto\OperacoesRealizadas.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>

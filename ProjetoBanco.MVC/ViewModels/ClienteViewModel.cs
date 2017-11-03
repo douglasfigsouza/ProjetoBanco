@@ -43,6 +43,7 @@ namespace ProjetoBanco.MVC.ViewModels
         [Required(ErrorMessage = "O campo nivel é obrigatório,digite-O!")]
         public char nivel { get; set; }
         public bool ativo { get; set; }
+        public int estadoId { get; set; }
         public IEnumerable<ClienteViewModel> Clientes { get; set; }
     }
 }

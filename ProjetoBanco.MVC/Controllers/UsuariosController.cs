@@ -54,6 +54,7 @@ namespace ProjetoBanco.MVC.Controllers
                 Response.TrySkipIisCustomErrors = true;
                 Response.StatusCode = 200;
                 Session["cliente"] = statusCode.Content.ReadAsAsync<ClienteViewModel>().Result;
+                FormsAuthentication.SetAuthCookie(usuario.nome, false);
                 return Json(statusCode.Content.ReadAsStringAsync().Result);
             }
             else
@@ -69,7 +70,7 @@ namespace ProjetoBanco.MVC.Controllers
             FormsAuthentication.SignOut();
             return Redirect("/");
         }
-
+        [Authorize]
         public ActionResult CreateUsuario()
         {
             var statusCode = new HttpResponseMessage();
@@ -85,7 +86,7 @@ namespace ProjetoBanco.MVC.Controllers
             ViewBag.clientes = statusCode.Content.ReadAsAsync<IEnumerable<ClienteViewModel>>().Result;
             return View();
         }
-
+        [Authorize]
         [HttpPost]
         public ActionResult CreateUsuario(UsuarioViewModel usuarioViewModel)
         {
@@ -107,7 +108,7 @@ namespace ProjetoBanco.MVC.Controllers
             return Json(statusCode.Content.ReadAsStringAsync().Result);
 
         }
-
+        [Authorize]
         public ActionResult EditUsuario()
         {
             var statusCode = new HttpResponseMessage();
@@ -127,7 +128,7 @@ namespace ProjetoBanco.MVC.Controllers
             return View(usuario);
 
         }
-
+        [Authorize]
         [HttpPost]
         public ActionResult EditUsuario(UsuarioViewModel usuarioViewModel)
         {
@@ -150,7 +151,7 @@ namespace ProjetoBanco.MVC.Controllers
             return Json(statusCode.Content.ReadAsStringAsync().Result);
 
         }
-
+        [Authorize]
         [HttpGet]
         public JsonResult GetByUsuarioId(int clienteId)
         {

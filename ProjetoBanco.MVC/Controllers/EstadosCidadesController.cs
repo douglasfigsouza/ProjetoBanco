@@ -7,6 +7,7 @@ using System.Web.Mvc;
 
 namespace ProjetoBanco.MVC.Controllers
 {
+    [Authorize]
     public class EstadosCidadesController : Controller
     {
         private readonly IEstadoAppService _estadoAppService;
@@ -56,17 +57,19 @@ namespace ProjetoBanco.MVC.Controllers
                 Response.StatusCode = 400;
                 return Json(statusCode.Content.ReadAsStringAsync().Result, JsonRequestBehavior.AllowGet);
             }
-            foreach (var item in statusCode.Content.ReadAsAsync<IEnumerable<Cidade>>().Result)
+            var cidades = new List<Cidade>(statusCode.Content.ReadAsAsync<IEnumerable<Cidade>>().Result);
+            foreach (var item in cidades)
             {
                 if (item.cidadeId == cidadeId)
                 {
                     Cidades.Add(new SelectListItem() { Text = item.Nome, Value = item.cidadeId + "" });
                 }
             }
-            foreach (var item in statusCode.Content.ReadAsAsync<IEnumerable<Cidade>>().Result)
+            foreach (var item in cidades)
             {
                 Cidades.Add(new SelectListItem() { Text = item.Nome, Value = item.cidadeId + "" });
             }
+            Response.StatusCode = 200;
             return Json(new SelectList(Cidades, "Value", "Text", 0), JsonRequestBehavior.AllowGet);
         }
         [HttpGet]
@@ -78,14 +81,15 @@ namespace ProjetoBanco.MVC.Controllers
             {
                 return null;
             }
-            foreach (var item in statusCode.Content.ReadAsAsync<IEnumerable<Estado>>().Result)
+            var estados = new List<Estado>(statusCode.Content.ReadAsAsync<IEnumerable<Estado>>().Result);
+            foreach (var item in estados)
             {
                 if (item.EstadoId == EstadoId)
                 {
                     Cidades.Add(new SelectListItem() { Text = item.Sigla, Value = item.EstadoId + "" });
                 }
             }
-            foreach (var item in statusCode.Content.ReadAsAsync<IEnumerable<Estado>>().Result)
+            foreach (var item in estados)
             {
                 Cidades.Add(new SelectListItem() { Text = item.Sigla, Value = item.EstadoId + "" });
             }

@@ -8,6 +8,7 @@ using System.Web.Mvc;
 
 namespace ProjetoBanco.MVC.Controllers
 {
+    [Authorize]
     public class AgenciaController : Controller
     {
         private readonly IAgenciaAppService _agenciaAppService;

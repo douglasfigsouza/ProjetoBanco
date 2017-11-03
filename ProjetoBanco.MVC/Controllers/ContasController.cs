@@ -8,6 +8,7 @@ using System.Web.Mvc;
 
 namespace ProjetoBanco.MVC.Controllers
 {
+    [Authorize]
     public class ContasController : Controller
     {
         private readonly IAgenciaAppService _agenciaAppService;
@@ -20,7 +21,7 @@ namespace ProjetoBanco.MVC.Controllers
             _clienteAppService = clienteAppService;
             _contaClienteAppService = contaClienteAppService;
         }
-
+        [Authorize]
         public ActionResult CreateConta()
         {
             CombosContaViewModel cmbContaViewModel = new CombosContaViewModel();

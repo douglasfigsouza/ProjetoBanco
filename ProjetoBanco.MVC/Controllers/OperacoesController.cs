@@ -1,5 +1,4 @@
 ﻿using ProjetoBanco.Application.Interfaces;
-using ProjetoBanco.Domain.Clientes.Dto;
 using ProjetoBanco.Domain.Operacoes.Dto;
 using ProjetoBanco.MVC.ViewModels;
 using System;
@@ -17,6 +16,7 @@ namespace ProjetoBanco.MVC.Controllers
         4 - Transferencia
         5 - Estorno
     */
+    [Authorize]
     public class OperacoesController : Controller
     {
         private readonly IOperacoesAppService _OperacaoAppService;
@@ -81,7 +81,7 @@ namespace ProjetoBanco.MVC.Controllers
         {
             var transacao = new Transacao();
             var statusCode = new HttpResponseMessage();
-            Cliente cli = (Cliente)Session["cliente"];
+            ClienteViewModel cli = (ClienteViewModel)Session["cliente"];
 
             transacao.clienteId = cli.Id;
             var valor = decimal.Parse(Utilitarios.Utilitarios.retiraMaskMoney(transacaoViewModel.valor));
@@ -120,7 +120,7 @@ namespace ProjetoBanco.MVC.Controllers
         public ActionResult ConfirmaDeposito(string contaId, string valorADepositar)
         {
             var statusCode = new HttpResponseMessage();
-            var cliente = (Cliente)Session["cliente"];
+            var cliente = (ClienteViewModel)Session["cliente"];
             var operacaoRealizada = new OperacoesRealizadas();
             operacaoRealizada.contaId = int.Parse(contaId);
             operacaoRealizada.clienteId = cliente.Id;
@@ -166,7 +166,7 @@ namespace ProjetoBanco.MVC.Controllers
         //confirma os dados do saque
         public ActionResult ConfirmaSaque(string contaId, string valorASacar)
         {
-            var cliente = (Cliente)Session["cliente"];
+            var cliente = (ClienteViewModel)Session["cliente"];
             var statusCode = new HttpResponseMessage();
             var operacaoRealizada = new OperacoesRealizadas();
             decimal valor;
