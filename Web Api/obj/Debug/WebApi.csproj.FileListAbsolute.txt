@@ -13,7 +13,6 @@ C:\Users\Douglas\ProjetoBanco\Web Api\bin\roslyn\VBCSCompiler.exe.config
 C:\Users\Douglas\ProjetoBanco\Web Api\bin\Web Api.dll.config
 C:\Users\Douglas\ProjetoBanco\Web Api\bin\Web Api.dll
 C:\Users\Douglas\ProjetoBanco\Web Api\bin\Web Api.pdb
-C:\Users\Douglas\ProjetoBanco\Web Api\bin\CommonServiceLocator.dll
 C:\Users\Douglas\ProjetoBanco\Web Api\bin\Microsoft.AI.Agent.Intercept.dll
 C:\Users\Douglas\ProjetoBanco\Web Api\bin\Microsoft.AI.DependencyCollector.dll
 C:\Users\Douglas\ProjetoBanco\Web Api\bin\Microsoft.AI.PerfCounterCollector.dll
@@ -29,7 +28,6 @@ C:\Users\Douglas\ProjetoBanco\Web Api\bin\ProjetoBanco.Infra.Data.dll
 C:\Users\Douglas\ProjetoBanco\Web Api\bin\SimpleInjector.dll
 C:\Users\Douglas\ProjetoBanco\Web Api\bin\SimpleInjector.Integration.WebApi.dll
 C:\Users\Douglas\ProjetoBanco\Web Api\bin\System.Net.Http.Formatting.dll
-C:\Users\Douglas\ProjetoBanco\Web Api\bin\System.Web.Helpers.dll
 C:\Users\Douglas\ProjetoBanco\Web Api\bin\System.Web.Http.dll
 C:\Users\Douglas\ProjetoBanco\Web Api\bin\System.Web.Http.WebHost.dll
 C:\Users\Douglas\ProjetoBanco\Web Api\bin\System.Web.Mvc.dll
@@ -47,7 +45,6 @@ C:\Users\Douglas\ProjetoBanco\Web Api\bin\Microsoft.ApplicationInsights.xml
 C:\Users\Douglas\ProjetoBanco\Web Api\bin\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.xml
 C:\Users\Douglas\ProjetoBanco\Web Api\bin\SimpleInjector.xml
 C:\Users\Douglas\ProjetoBanco\Web Api\bin\SimpleInjector.Integration.WebApi.xml
-C:\Users\Douglas\ProjetoBanco\Web Api\bin\System.Web.Helpers.xml
 C:\Users\Douglas\ProjetoBanco\Web Api\bin\System.Web.Mvc.xml
 C:\Users\Douglas\ProjetoBanco\Web Api\bin\System.Web.Razor.xml
 C:\Users\Douglas\ProjetoBanco\Web Api\bin\System.Web.WebPages.xml

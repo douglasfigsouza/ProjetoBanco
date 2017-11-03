@@ -145,7 +145,7 @@ namespace ProjetoBanco.MVC.Controllers
             var transacao = new Transacao();
             var statusCode = new HttpResponseMessage();
 
-            Cliente cli = (Cliente)Session["cliente"];
+            ClienteViewModel cli = (ClienteViewModel)Session["cliente"];
             transacao.nivel = cli.nivel;
             transacao.senhaCli = trasacaoViewModel.senhaCli;
             transacao.clienteId = cli.Id;
@@ -196,7 +196,7 @@ namespace ProjetoBanco.MVC.Controllers
             var lstTransacoesViewModels = new List<TransacaoViewModel>();
             var statusCode = new HttpResponseMessage();
 
-            Cliente cli = (Cliente)Session["cliente"];
+            ClienteViewModel cli = (ClienteViewModel)Session["cliente"];
 
             Transacao transacao1 = new Transacao
             {
@@ -213,55 +213,46 @@ namespace ProjetoBanco.MVC.Controllers
                 conta = Utilitarios.Utilitarios.retiraMask(transacao["numCont2"]),
                 clienteId = cli.Id
             };
-            //garante que a primeira conta é a sua própria, para impedir que tranferencia entre conta de terceiros
             statusCode = _OperacaoAppService.VerificaDadosTransacao(transacao1);
+            if (!statusCode.IsSuccessStatusCode)
+            {
+                Response.TrySkipIisCustomErrors = true;
+                Response.StatusCode = 400;
+                return Content(Utilitarios.Utilitarios.limpaMenssagemErro(statusCode.Content.ReadAsStringAsync().Result));
+
+            }
             transacao1 = statusCode.Content.ReadAsAsync<Transacao>().Result;
             statusCode = _OperacaoAppService.VerificaDadosTransferencia(transacao2);
-
-            if (statusCode.IsSuccessStatusCode)
+            if (!statusCode.IsSuccessStatusCode)
             {
-                transacao2 = statusCode.Content.ReadAsAsync<Transacao>().Result;
-
-                TransacaoViewModel transacao1ViewModel = new TransacaoViewModel();
-                //insere os valores na view no hidden
-                transacao1ViewModel.clienteId = transacao1.clienteId;
-                transacao1ViewModel.contaId = transacao1.contaId;
-                transacao1ViewModel.agencia = transacao1.agencia + "";
-                transacao1ViewModel.nome = transacao1.nome;
-                transacao1ViewModel.valor = transacao["valor"];
-
-                if (transacao2.nome != null)
-                {
-                    TransacaoViewModel transacao2ViewModel = new TransacaoViewModel();
-                    transacao2ViewModel.clienteId = transacao2.clienteId;
-                    transacao2ViewModel.contaId = transacao2.contaId;
-                    transacao2ViewModel.agencia = transacao2.agencia + "";
-                    transacao2ViewModel.nome = transacao2.nome;
-                    transacao2ViewModel.valor = transacao["valor"];
-                    lstTransacoesViewModels.Add(transacao1ViewModel);
-                    lstTransacoesViewModels.Add(transacao2ViewModel);
-                    if (transacao1ViewModel.contaId == transacao2ViewModel.contaId)
-                    {
-                        ViewBag.erroTransacao = "Trasação nao pode ser realizada, pois não é possivel fazer tranferencia para você mesmo! Use a opção de depósito.";
-                        return View("ConfirmTransferencia");
-                    }
-                    else
-                    {
-                        return View("ConfirmTransferencia", lstTransacoesViewModels);
-                    }
-                }
-                else
-                {
-                    ViewBag.erroTransacao = "Trasação nao pode ser realizada, pois nao foi possivel localizar uma conta com os dados informado";
-                    return View("ConfirmTransferencia");
-                }
-
+                Response.TrySkipIisCustomErrors = true;
+                Response.StatusCode = 400;
+                return Content(Utilitarios.Utilitarios.limpaMenssagemErro(statusCode.Content.ReadAsStringAsync().Result));
             }
-            else
-            {
-                ViewBag.erroTransacao = "Trasação nao pode ser realizada, pois nao foi possivel localizar uma conta com os dados informado";
-                return View("ConfirmTransferencia");
-            }
+            transacao2 = statusCode.Content.ReadAsAsync<Transacao>().Result;
+
+            TransacaoViewModel transacao1ViewModel = new TransacaoViewModel();
+            //insere os valores na view no hidden
+            transacao1ViewModel.clienteId = transacao1.clienteId;
+            transacao1ViewModel.contaId = transacao1.contaId;
+            transacao1ViewModel.agencia = transacao1.agencia + "";
+            transacao1ViewModel.nome = transacao1.nome;
+            transacao1ViewModel.valor = transacao["valor"];
+
+
+            TransacaoViewModel transacao2ViewModel = new TransacaoViewModel();
+            transacao2ViewModel.clienteId = transacao2.clienteId;
+            transacao2ViewModel.contaId = transacao2.contaId;
+            transacao2ViewModel.agencia = transacao2.agencia + "";
+            transacao2ViewModel.nome = transacao2.nome;
+            transacao2ViewModel.valor = transacao["valor"];
+            lstTransacoesViewModels.Add(transacao1ViewModel);
+            lstTransacoesViewModels.Add(transacao2ViewModel);
+
+            Response.StatusCode = 200;
+            return View("ConfirmTransferencia", lstTransacoesViewModels);
+
+            //garante que a primeira conta é a sua própria, para impedir que tranferencia entre conta de terceiros
         }
 
         public ActionResult ConfirmTransferencia(List<TransacaoViewModel> Transacoes)
@@ -285,18 +276,15 @@ namespace ProjetoBanco.MVC.Controllers
             operacoes.Add(operacaoRealizada1);
 
             statusCode = _operacaoesRealizadasAppService.Transferencia(operacoes);
-            if (statusCode.IsSuccessStatusCode)
+            if (!statusCode.IsSuccessStatusCode)
             {
 
-                TempData["menssagem"] = "Tranferência realizada com sucesso!";
+                Response.TrySkipIisCustomErrors = true;
+                Response.StatusCode = 400;
+                return Content(Utilitarios.Utilitarios.limpaMenssagemErro(statusCode.Content.ReadAsStringAsync().Result));
             }
-            else
-            {
-                TempData["menssagem"] = Utilitarios.Utilitarios.limpaMenssagemErro(statusCode.Content.ReadAsStringAsync().Result);
-            }
-
-            TempData["outraOp"] = "/Operacoes/Transferencia";
-            return View("FeedBackOp");
+            Response.StatusCode = 200;
+            return Content(statusCode.Content.ReadAsStringAsync().Result);
 
         }
 
@@ -341,10 +329,10 @@ namespace ProjetoBanco.MVC.Controllers
                 });
             }
             Response.StatusCode = 200;
-            return View("OpRealizadasEstorno",opsEstornoViewModels);
+            return View("OpRealizadasEstorno", opsEstornoViewModels);
         }
         [HttpPost]
-        public ActionResult ConfirmEstorno(int id)
+        public JsonResult ConfirmEstorno(int id)
         {
             var statusCode = new HttpResponseMessage();
             var estorno = new Estorno
@@ -356,11 +344,11 @@ namespace ProjetoBanco.MVC.Controllers
             {
                 Response.TrySkipIisCustomErrors = true;
                 Response.StatusCode = 400;
-                return Content(Utilitarios.Utilitarios.limpaMenssagemErro(statusCode.Content.ReadAsStringAsync().Result));
+                return Json(Utilitarios.Utilitarios.limpaMenssagemErro(statusCode.Content.ReadAsStringAsync().Result), JsonRequestBehavior.AllowGet);
 
             }
             Response.StatusCode = 200;
-            return Json(statusCode.Content.ReadAsStringAsync().Result);
+            return Json(statusCode.Content.ReadAsStringAsync().Result, JsonRequestBehavior.AllowGet);
         }
         [HttpGet]
         public JsonResult GetOpRealizadaEstornoById(int id)

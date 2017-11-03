@@ -7,7 +7,6 @@ using ProjetoBanco.Domain.Clientes;
 using ProjetoBanco.Domain.Contas;
 using ProjetoBanco.Domain.Estados;
 using ProjetoBanco.Domain.Operacoes;
-using ProjetoBanco.Domain.Services;
 using ProjetoBanco.Domain.Usuarios;
 using ProjetoBanco.Infra.Data.Repositories;
 using SimpleInjector;
@@ -22,41 +21,40 @@ namespace ProjetoBanco.MVC.App_Start
             var container = new Container();
 
             container.Register<IAgenciaAppService, AgenciaAppService>();
-            //container.Register<IAgenciaServiceDomain, AgenciaServiceDomain>();
+
             container.Register<IAgenciaRepository, AgenciaRepository>();
 
             container.Register<IBancoAppService, BancoAppService>();
-            container.Register<IBancoService, BancoService>();
+
             container.Register<IBancoRepository, BancoRepository>();
 
             container.Register<ICidadesAppService, CidadeAppService>();
-            //container.Register<ICidadeServiceDomain, CidadeServiceDomain>();
+
             container.Register<ICidadeRepository, CidadeRepository>();
 
             container.Register<IClienteAppService, ClienteAppService>();
-            container.Register<IClienteServiceDomain, ClienteService>();
+
             container.Register<IClienteRepository, ClientesRepository>();
 
             container.Register<IContaClienteAppService, ContaClienteAppService>();
-            //container.Register<IContaClienteServiceDomain, ContaClienteServiceDomain>();
+
             container.Register<IContaClienteRepository, ContaClienteRepository>();
 
             container.Register<IEstadoAppService, EstadoAppService>();
-            container.Register<IEstadoService, EstadoService>();
+
             container.Register<IEstadoRepository, EstadoRepository>();
 
-
             container.Register<IOperacoesRepository, OperacoesRepository>();
+
             container.Register<IOperacoesAppService, OperacoesAppService>();
-            container.Register<IOperacaoService, OperacoesService>();
 
             container.Register<IOperacaoesRealizadasAppService, OperacoesRealizadasAppService>();
-            container.Register<IOperacoeRealizadaService, OperacoesRealizadasService>();
+
             container.Register<IOperacoesRealizadasRepository, OperacaoRealizadaRepository>();
 
             container.Register<IUsuarioRepository, UsuarioRepository>();
+
             container.Register<IUsuarioAppService, UsuarioAppService>();
-            //container.Register<IUsuariosService, UsuarioSeviceDomain>();
 
             container.Verify();
 

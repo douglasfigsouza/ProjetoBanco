@@ -1,17 +1,27 @@
 ﻿@model ProjetoBanco.MVC.ViewModels.TransacaoViewModel
-
-<div class="row">
+<div id="divTranferencia">
     <div class="row">
-        <div class="col s12">
-            <h5>Transferência</h5>
-            <hr />
+        <div class="row">
+            <div class="col s12">
+                <div class="row divErroNaOperacao">
+                    <div class="col s12">
+                        <h6 class="erroOperacao"></h6>
+                    </div>
+                </div>
+                <h5>Transferência</h5>
+                <hr />
+            </div>
         </div>
-    </div>
-    @using (Html.BeginForm("Transferencia", "Operacoes"))
-    {
-        <input type="hidden" name="op" value="4" />
-        @Html.ValidationSummary(true)
+        @using (Ajax.BeginForm("Transferencia", "Operacoes", null, new AjaxOptions
         {
+            HttpMethod = "POST",
+            OnSuccess = "sucesso",
+            OnFailure = "erro(xhr)",
+            OnBegin = "progresso",
+            OnComplete = "fim"
+        }))
+        {
+            <input type="hidden" name="op" value="4" />
             <div class="col s12 ">
                 <div class="row">
                     <div class="col s6 border-right">
@@ -69,13 +79,23 @@
                     </button>
                 </div>
             </div>
-
         }
-    }
-
+    </div>
+</div>
+<div id="divConfirmTransferencia">    
 </div>
 <script>
+    function sucesso(response) {
+        $("#divTranferencia").slideUp(200);
+        $("#divConfirmTransferencia").html(response).slideDown(200);
+    }
+    function erro(xhr) {
+        $(".divSucessoNaOperacao").hide();
+        $(".divErroNaOperacao").fadeIn(3000);
+        $(".erroOperacao").html("<i class='tiny material-icons'>error</i>Ops! algo deu errado. " + xhr.responseText);
+    }
     $(document).ready(function () {
+        $("#divConfirmTransferencia").hide();
         $("form").validate({
             submitHandler: function (form) {
                 form.submit();

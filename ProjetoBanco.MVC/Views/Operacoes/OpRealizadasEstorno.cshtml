@@ -7,7 +7,7 @@
     <h6>Escolha a Operação para realizar o estono</h6>
     @foreach (var op in @Model)
     {
-        <hr/>
+        <hr />
         <div class="col s12">
             <div class="col s2">
                 <label class="col s12">Cliente:</label>
@@ -56,7 +56,7 @@
             </div>
         </div>
         <h5>Confirma Estorno</h5>
-        <hr/>
+        <hr />
         <div class="col s12">
             <div class="col s3">
                 <label class="col s12">Cliente:</label>
@@ -80,7 +80,7 @@
             </div>
             <div class="col s1">
                 <label class="col s12">Valor:</label>
-                <label class="col s12"id="valorOp"></label>
+                <label class="col s12" id="valorOp"></label>
             </div>
             <div class="col s2">
                 <label class="col s12">Saldo Anterior:</label>
@@ -88,24 +88,13 @@
             </div>
         </div>
         <div class="row">
-            <button class="btn waves-effect waves-light enviaEstorno" type="button" id="estorna">Estornar
+            <button class="btn waves-effect waves-light enviaEstorno" type="button" id="estorna">
+                Estornar
                 <i class="material-icons right">send</i>
             </button>
         </div>
     </div>
 </div>
-<div class="row" id="feedBackEstorno">
-    <div class="col s6">
-        <h4>Parabéns</h4>
-        <h5>Estorno realizado com sucesso!</h5>
-        <h6>
-            Deseja Realizar Outra Operação?
-            @Html.ActionLink("Sim", "DadosParaEstorno", "Operacoes")
-            @Html.ActionLink("Não", "Logout", "Usuarios")
-        </h6>
-    </div>
-</div>
-
 <script>
     $(document).ready(function () {
         $(".divSucessoNaOperacao").hide();
@@ -128,7 +117,7 @@
                     $("#cliente").text(dados.cliente);
                     $("#conta").text(dados.conta);
                     $("#agencia").text(dados.agencia);
-                    $("#dataOp").text( dados.dataFormatada);
+                    $("#dataOp").text(dados.dataFormatada);
                     $("#descricao").text(dados.descricao);
                     $("#valorOp").text(dados.valorOp);
                     $("#saldoOp").text(dados.saldoAnterior);
@@ -139,7 +128,7 @@
                     debugger;
                     $("#opSelecionada").show();
                     $(".divErroNaOperacao").fadeIn(3000);
-                    $("#erroOperacao").html("<i class='tiny material-icons'>error</i>Ops! algo deu errado. " + xhr.responseText);
+                    $(".erroOperacao").html("<i class='tiny material-icons'>error</i>Ops! algo deu errado. " + xhr.responseText);
                 }
             });
         });
@@ -149,18 +138,22 @@
             $.ajax({
                 type: "POST",
                 url: "/Operacoes/ConfirmEstorno",
-                dataType:"JSON",
+                dataType: "JSON",
                 data: {
                     id: id
                 },
                 success: function () {
+                    debugger;
+                    $(".divErroNaOperacao").hide();
                     $(".divSucessoNaOperacao").fadeIn(3000);
                     $(".sucessoOperacao")
                         .html("<i class='tiny material-icons'>check_circle</i> Estorno realizado com Sucesso!");
                 },
-                error: function ajaxError(dados) {
-                    $("#feedBackEstorno").show();
-                    $("#opSelecionada").hide();
+                error: function(xhr) {
+                    debugger;
+                    $(".divSucessoNaOperacao").hide();
+                    $(".divErroNaOperacao").fadeIn(3000);
+                    $(".erroOperacao").html("<i class='tiny material-icons'>error</i>Ops! algo deu errado. "+xhr.responseText);
                 }
             });
         });

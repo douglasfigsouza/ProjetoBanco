@@ -18,7 +18,7 @@ namespace ProjetoBanco.Infra.Data.Repositories
         public BancoRepository(Conexao conn, Notifications notifications)
         {
             _notifications = notifications;
-            _conn = new Conexao();
+            _conn = conn;
         }
         public void AddBanco(Banco banco)
         {

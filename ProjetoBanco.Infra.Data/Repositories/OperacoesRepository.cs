@@ -52,7 +52,14 @@ namespace ProjetoBanco.Infra.Data.Repositories
             _conn.AddParameter("@conta", transacao.conta);
             var valor = transacao.valor;
             transacao = null;
-            result = _conn.ExecuteReader();
+            try
+            {
+                result = _conn.ExecuteReader();
+            }
+            catch (Exception e)
+            {
+                _notifications.Notificacoes.Add($"Impossível localizar conta! Erro{e.Message}");
+            }
             while (result.Read())
             {
                 transacao = new Transacao
@@ -77,6 +84,7 @@ namespace ProjetoBanco.Infra.Data.Repositories
             _conn.ExecuteProcedure(Procedures.PBSP_VERIFICADADOSDATRANSFERENCIA);
             _conn.AddParameter("@agencia", transacao.agencia);
             _conn.AddParameter("@conta", transacao.conta);
+            transacao = null;
             try
             {
                 result = _conn.ExecuteReader();
@@ -97,6 +105,10 @@ namespace ProjetoBanco.Infra.Data.Repositories
                     agencia = Convert.ToInt32(result["agencia"].ToString()),
                     contaId = Convert.ToInt32(result["contaId"].ToString()),
                 };
+            }
+            if (transacao == null)
+            {
+                _notifications.Notificacoes.Add("Conta para a transferência não existe!");
             }
             return transacao;
         }

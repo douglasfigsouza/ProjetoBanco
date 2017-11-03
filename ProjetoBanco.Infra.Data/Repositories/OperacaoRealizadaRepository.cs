@@ -56,7 +56,6 @@ namespace ProjetoBanco.Infra.Data.Repositories
             opConta2 = operacoes.ElementAt(1);
             _conn.ExecuteProcedure(Procedure.PBSP_SAQUE);
             _conn.AddParameter("codTipoOp", 2);
-            _conn.AddParameter("@agencia", opConta1.agencia);
             _conn.AddParameter("@contaId", opConta1.contaId);
             _conn.AddParameter("@clienteId", opConta1.clienteId);
             _conn.AddParameter("@dataOp", opConta1.dataOp);
@@ -121,7 +120,8 @@ namespace ProjetoBanco.Infra.Data.Repositories
         {
             _conn.ExecuteProcedure(Procedure.PBSP_ESTORNA);
             _conn.AddParameter("@id", id);
-            _conn.AddParameter("@opId", 4);
+            //insere a operação informando que a operação é um estorno 
+            _conn.AddParameter("@opId", 5);
 
             try
             {

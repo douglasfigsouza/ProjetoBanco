@@ -1,5 +1,4 @@
 ﻿using ProjetoBanco.Application.Interfaces;
-using ProjetoBanco.Domain.Entities;
 using ProjetoBanco.Domain.Operacoes.Dto;
 using System.Net.Http;
 using System.Web.Http;
@@ -9,16 +8,10 @@ namespace ProjetoBanco.Application
 {
     public class OperacoesAppService : IOperacoesAppService
     {
-        private HttpResponseMessage response;
-        private readonly Notifications _notifications;
-
-        public OperacoesAppService(Notifications notifications)
-        {
-            _notifications = notifications;
-        }
 
         public HttpResponseMessage AddOperacao(Operacoes op)
         {
+            HttpResponseMessage response;
             response = HttpClientConf.HttpClientConfig("Operacoes")
                 .PostAsJsonAsync("AddOperacao", op).Result;
             return response;
@@ -27,6 +20,7 @@ namespace ProjetoBanco.Application
         [HttpGet]
         public HttpResponseMessage VerificaDadosTransacao(Transacao transacao)
         {
+            HttpResponseMessage response;
             response = HttpClientConf.HttpClientConfig("Operacoes")
                 .PostAsJsonAsync("VerificaDadosTransacao", transacao).Result;
             return response;
@@ -34,6 +28,7 @@ namespace ProjetoBanco.Application
 
         public HttpResponseMessage VerificaDadosTransferencia(Transacao transacao)
         {
+            HttpResponseMessage response;
             response = HttpClientConf.HttpClientConfig("Operacoes")
                 .PostAsJsonAsync("VerificaDadosTransferencia", transacao).Result;
             return response;
@@ -42,6 +37,7 @@ namespace ProjetoBanco.Application
 
         public HttpResponseMessage ConsultaSaldo(Transacao transacao)
         {
+            HttpResponseMessage response;
             response = HttpClientConf.HttpClientConfig("Operacoes")
                 .PostAsJsonAsync("ConsultaSaldo", transacao).Result;
             return response;

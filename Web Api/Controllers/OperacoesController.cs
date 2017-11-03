@@ -211,7 +211,7 @@ namespace Web_Api.Controllers
         }
         public IHttpActionResult GetAllOperacoesEstorno()
         {
-            List<Estorno> opsEstornos= new List<Estorno>(_operacoesRealizadasRepository.GetAllOperacoesEstorno());
+            List<Estorno> opsEstornos = new List<Estorno>(_operacoesRealizadasRepository.GetAllOperacoesEstorno());
             if (_notifications.Notificacoes.Count > 0)
             {
                 string erros = "";

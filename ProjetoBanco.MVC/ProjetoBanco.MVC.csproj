@@ -92,7 +92,6 @@
     </Reference>
     <Reference Include="System.ComponentModel.DataAnnotations" />
     <Reference Include="System.Core" />
-    <Reference Include="System.Web.Extensions" />
     <Reference Include="System.Web.Http, Version=5.2.3.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
       <HintPath>..\packages\Microsoft.AspNet.WebApi.Core.5.2.3\lib\net45\System.Web.Http.dll</HintPath>
       <Private>True</Private>
@@ -164,7 +163,6 @@
     <Compile Include="Controllers\EstadosCidadesController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\OperacoesController.cs" />
-    <Compile Include="Controllers\FeedBackController.cs" />
     <Compile Include="Controllers\UsuariosController.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
@@ -234,8 +232,6 @@
     <Content Include="Views\Web.config" />
     <Content Include="Views\_ViewStart.cshtml" />
     <Content Include="Views\Shared\Error.cshtml" />
-    <Content Include="Views\Home\About.cshtml" />
-    <Content Include="Views\Home\Contact.cshtml" />
     <Content Include="Views\Home\Index.cshtml" />
     <Content Include="Views\Banco\CreateBanco.cshtml" />
     <Content Include="Views\Usuarios\CreateUsuario.cshtml" />
@@ -247,29 +243,21 @@
     <Content Include="Views\Operacoes\Operacoes.cshtml" />
     <Content Include="Views\Operacoes\Deposito.cshtml" />
     <Content Include="Views\Operacoes\Saldo.cshtml" />
-    <Content Include="Views\Operacoes\Confirmacao.cshtml" />
-    <Content Include="Views\Operacoes\MostraSaldo.cshtml" />
     <Content Include="Views\Operacoes\Saque.cshtml" />
-    <Content Include="Views\FeedBack\Success.cshtml" />
     <Content Include="Views\Operacoes\Transferencia.cshtml" />
     <Content Include="Views\Operacoes\ConfirmTransferencia.cshtml" />
     <Content Include="Views\Clientes\CreateCliente.cshtml" />
     <Content Include="Views\Clientes\EditarCliente.cshtml" />
     <Content Include="Views\Usuarios\EditUsuario.cshtml" />
-    <Content Include="Views\Operacoes\Estorno.cshtml" />
     <Content Include="Views\Operacoes\OpRealizadasEstorno.cshtml" />
     <Content Include="Views\Operacoes\ContaEstorno.cshtml" />
     <Content Include="Views\Contas\ContaEdit.cshtml" />
     <Content Include="Views\Agencia\UpdateAgencia.cshtml" />
-    <Content Include="Views\FeedBack\Error.cshtml" />
-    <Content Include="Views\Operacoes\FeedBackOp.cshtml" />
     <Content Include="Views\Shared\_Layout.cshtml" />
-    <Content Include="Views\teste\Index.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
     <Folder Include="materialize\" />
-    <Folder Include="Views\EstadosCidades\" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="fonts\glyphicons-halflings-regular.woff" />

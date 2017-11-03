@@ -8,7 +8,7 @@ namespace ProjetoBanco.Application.Interfaces
     {
         HttpResponseMessage Deposito(OperacoesRealizadas operacaoRealizada);
         HttpResponseMessage Saque(OperacoesRealizadas operacaoRealizada);
-        HttpResponseMessage Transferencia(List<OperacoesRealizadas>operacoesRealizadases);
+        HttpResponseMessage Transferencia(List<OperacoesRealizadas> operacoesRealizadases);
         HttpResponseMessage GetAllOperacoesPorContaParaEstorno(DadosGetOpReal dadosGetOpReal);
         HttpResponseMessage GetOpRealizadaEstornoById(int Id);
         HttpResponseMessage ConfirmEstorno(Estorno estorno);

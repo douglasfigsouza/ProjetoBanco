@@ -53,32 +53,12 @@
     <Compile Include="Operacoes\IOperacoesRealizadasRepository.cs" />
     <Compile Include="Operacoes\IOperacoesRepository.cs" />
     <Compile Include="Usuarios\IUsuarioRepository.cs" />
-    <Compile Include="Agencias\IAgenciaService.cs" />
-    <Compile Include="Bancos\IBancoService.cs" />
-    <Compile Include="Cidades\ICidadeService.cs" />
-    <Compile Include="Clientes\IClienteServiceDomain.cs" />
-    <Compile Include="Contas\IContaClienteService.cs" />
-    <Compile Include="Estados\IEstadoService.cs" />
-    <Compile Include="Operacoes\IOperacaoService.cs" />
-    <Compile Include="Operacoes\IOperacoeRealizadaService.cs" />
-    <Compile Include="Usuarios\IUsuariosService.cs" />
     <Compile Include="Operacoes\Dto\Operacoes.cs" />
     <Compile Include="Operacoes\Dto\OperacoesRealizadas.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Agencias\AgenciaService.cs" />
-    <Compile Include="Bancos\BancoService.cs" />
-    <Compile Include="Cidades\CidadeService.cs" />
-    <Compile Include="Clientes\ClienteService.cs" />
-    <Compile Include="Contas\ContaClienteService.cs" />
-    <Compile Include="Estados\EstadoService.cs" />
-    <Compile Include="Operacoes\OperacoesRealizadasService.cs" />
-    <Compile Include="Operacoes\OperacoesService.cs" />
-    <Compile Include="Usuarios\UsuarioSevice.cs" />
   </ItemGroup>
   <ItemGroup>
     <Reference Include="System" />
-    <Reference Include="System.EnterpriseServices" />
-    <Reference Include="System.Net.Http" />
   </ItemGroup>
   <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
