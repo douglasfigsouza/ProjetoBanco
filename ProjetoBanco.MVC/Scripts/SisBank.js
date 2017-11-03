@@ -148,4 +148,51 @@ $(document).ready(function () {
             }
         }
     });
+    ////faz a validação dos campos
+    $("#form0").validate({
+        submitHandler: function (form) {
+            form.submit();
+        },
+        onfocusout: function (element) {
+            $(element).valid();
+            console.log('teste');
+        },
+        rules: {
+            num: {
+                required: true,
+                maxlength: 20
+            },
+            senha: {
+                required: true,
+                maxlength: 8,
+                mainlength: 8
+            },
+            conf_senha: {
+                required: true,
+                equalTo: "#senha"
+            },
+            tipoConta: {
+                required: true
+            }
+        },
+        messages: {
+            num: {
+                required: "O campo N° Conta é Obrigatório! Digite-O",
+
+                maxlength: "O campo num deve conter no máximo {0} caracteres!"
+            },
+            senha: {
+                required: "O campo senha é Obrigatório! Digite-O",
+                mainlength: "O campo Senha deve conter no mínimo {0} caracteres!",
+                maaxlength: "O campo Senha deve conter no máximo {0} caracteres!"
+            },
+            conf_senha: {
+                required: "O campo Confirme sua Senha é Obrigatório! Digite-O",
+                equalTo: "As senhas nao conferem!"
+            },
+            tipoConta: {
+                required: "O Tipo de Conta deve ser informado!"
+            }
+        }
+    });
 });

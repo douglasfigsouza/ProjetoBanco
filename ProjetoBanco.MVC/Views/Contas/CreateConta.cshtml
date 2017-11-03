@@ -36,7 +36,7 @@
                 </div>
                 <div class="col s6 ">
                     <label class="col s12" for="num">N° Conta</label>
-                    <input type="text" class="col s12 conta" id="num" name="num" />
+                    <input type="text" class="col s12 conta" id="num" name="num"/>
                 </div>
             </div>
 
@@ -236,50 +236,6 @@
 
                 });
         });
-        //faz a validação dos campos
-        $("form").validate({
-
-            onfocusout: function (element) {
-                $(element).valid();
-
-            },
-            rules: {
-                num: {
-                    required: true,
-                    maxlength: 20
-                },
-                senha: {
-                    required: true,
-                    maxlength: 8,
-                    mainlength: 8
-                },
-                conf_senha: {
-                    required: true,
-                    equalTo: "#senha"
-                },
-                tipoConta: {
-                    required: true
-                }
-            },
-            messages: {
-                num: {
-                    required: "O campo N° Conta é Obrigatório! Digite-O",
-
-                    maxlength: "O campo num deve conter no máximo {0} caracteres!"
-                },
-                senha: {
-                    required: "O campo senha é Obrigatório! Digite-O",
-                    mainlength: "O campo Senha deve conter no mínimo {0} caracteres!",
-                    maaxlength: "O campo Senha deve conter no máximo {0} caracteres!"
-                },
-                conf_senha: {
-                    required: "O campo Confirme sua Senha é Obrigatório! Digite-O",
-                    equalTo: "As senhas nao conferem!"
-                },
-                tipoConta: {
-                    required: "O Tipo de Conta deve ser informado!"
-                }
-            }
-        });
+        
     });
 </script>
