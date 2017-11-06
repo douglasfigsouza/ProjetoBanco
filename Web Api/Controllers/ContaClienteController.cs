@@ -1,4 +1,5 @@
-﻿using ProjetoBanco.Domain.Contas;
+﻿using ProjetoBanco.Domain.Conta;
+using ProjetoBanco.Domain.Contas;
 using ProjetoBanco.Domain.Entities;
 using System.Web.Http;
 
@@ -6,17 +7,17 @@ namespace Web_Api.Controllers
 {
     public class ContaClienteController : ApiController
     {
-        private readonly IContaClienteRepository _contaClienteRepository;
+        private readonly IContaClienteService _iContaClienteService;
         private readonly Notifications _notifications;
 
-        public ContaClienteController(IContaClienteRepository contaClienteRepository, Notifications notifications)
+        public ContaClienteController(Notifications notifications, IContaClienteService iContaClienteService)
         {
-            _contaClienteRepository = contaClienteRepository;
             _notifications = notifications;
+            _iContaClienteService = iContaClienteService;
         }
         public IHttpActionResult AddContaCliente(Conta conta)
         {
-            _contaClienteRepository.AddContaCliente(conta);
+            _iContaClienteService.AddContaCliente(conta);
             if (_notifications.Notificacoes.Count > 0)
             {
                 string erros = "";
@@ -34,7 +35,7 @@ namespace Web_Api.Controllers
         public IHttpActionResult GetConta(string conta, int agencia, string senha)
         {
             var contaClienteAlteracao = new ContaClienteAlteracao();
-            contaClienteAlteracao = _contaClienteRepository.GetConta(conta, agencia, senha);
+            contaClienteAlteracao = _iContaClienteService.GetConta(conta, agencia, senha);
             if (_notifications.Notificacoes.Count > 0)
             {
                 string erros = "";
@@ -51,7 +52,7 @@ namespace Web_Api.Controllers
         }
         public IHttpActionResult UpdateConta(Conta conta)
         {
-            _contaClienteRepository.UpdateConta(conta);
+            _iContaClienteService.UpdateConta(conta);
             if (_notifications.Notificacoes.Count > 0)
             {
                 string erros = "";

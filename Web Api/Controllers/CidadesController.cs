@@ -1,4 +1,5 @@
-﻿using ProjetoBanco.Domain.Cidades;
+﻿using ProjetoBanco.Domain.Cidade;
+using ProjetoBanco.Domain.Cidades;
 using ProjetoBanco.Domain.Entities;
 using System.Collections.Generic;
 using System.Web.Http;
@@ -7,18 +8,18 @@ namespace Web_Api.Controllers
 {
     public class CidadesController : ApiController
     {
-        private readonly ICidadeRepository _cidadeRepository;
+        private readonly ICidadeService _cidadeService;
         private readonly Notifications _notifications;
 
-        public CidadesController(ICidadeRepository cidadeRepository, Notifications notifications)
+        public CidadesController(Notifications notifications, ICidadeService cidadeService)
         {
-            _cidadeRepository = cidadeRepository;
             _notifications = notifications;
+            _cidadeService = cidadeService;
         }
 
         public IHttpActionResult GetCidadesByEstadoId(int id)
         {
-            List<Cidade> cidades = new List<Cidade>(_cidadeRepository.GetCidadesByEstadoId(id));
+            List<Cidade> cidades = new List<Cidade>(_cidadeService.GetCidadesByEstadoId(id));
             if (_notifications.Notificacoes.Count > 0)
             {
                 string erros = "";

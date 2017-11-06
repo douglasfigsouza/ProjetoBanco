@@ -1,10 +1,10 @@
 ﻿using ProjetoBanco.Domain.Operacoes.Dto;
 
-namespace ProjetoBanco.Domain.Operacoes
+namespace ProjetoBanco.Domain.Operacao
 {
-    public interface IOperacoesRepository
+    public interface IOperacaoService
     {
-        void AddOperacao(Dto.Operacoes op);
+        void AddOperacao(Operacoes.Operacoes op);
         Transacao VerificaDadosTransacao(Transacao transacao);
         Transacao VerificaDadosTransferencia(Transacao transacao);
         Transacao ConsultaSaldo(Transacao transacao);

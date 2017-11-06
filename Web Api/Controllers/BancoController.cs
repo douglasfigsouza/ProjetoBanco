@@ -1,4 +1,5 @@
-﻿using ProjetoBanco.Domain.Bancos;
+﻿using ProjetoBanco.Domain.Banco;
+using ProjetoBanco.Domain.Bancos;
 using ProjetoBanco.Domain.Entities;
 using System.Collections.Generic;
 using System.Web.Http;
@@ -7,18 +8,18 @@ namespace Web_Api.Controllers
 {
     public class BancoController : ApiController
     {
-        private readonly IBancoRepository _bancoRepository;
+        private readonly IBancoService _bancoService;
         private readonly Notifications _notifications;
 
-        public BancoController(IBancoRepository bancoRepository, Notifications notifications)
+        public BancoController(Notifications notifications, IBancoService bancoService)
         {
-            _bancoRepository = bancoRepository;
             _notifications = notifications;
+            _bancoService = bancoService;
         }
 
         public IHttpActionResult AddBanco(Banco banco)
         {
-            _bancoRepository.AddBanco(banco);
+            _bancoService.AddBanco(banco);
             if (_notifications.Notificacoes.Count > 0)
             {
                 string erros = "";
@@ -35,7 +36,7 @@ namespace Web_Api.Controllers
         }
         public IHttpActionResult GetAllBancos()
         {
-            List<Banco> bancos = new List<Banco>(_bancoRepository.GetAllBancos());
+            List<Banco> bancos = new List<Banco>(_bancoService.GetAllBancos());
             if (_notifications.Notificacoes.Count > 0)
             {
                 string erros = "";

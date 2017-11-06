@@ -1,6 +1,6 @@
 ﻿using ProjetoBanco.Application.Interfaces;
-using ProjetoBanco.Domain.Clientes.Dto;
-using ProjetoBanco.Domain.Estados.Dto;
+using ProjetoBanco.Domain.Clientes;
+using ProjetoBanco.Domain.Estados;
 using ProjetoBanco.MVC.ViewModels;
 using System;
 using System.Collections.Generic;

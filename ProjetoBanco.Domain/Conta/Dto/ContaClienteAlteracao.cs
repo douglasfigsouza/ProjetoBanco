@@ -1,4 +1,4 @@
-﻿using ProjetoBanco.Domain.Clientes.Dto;
+﻿using ProjetoBanco.Domain.Clientes;
 using System.Collections.Generic;
 
 namespace ProjetoBanco.Domain.Contas

@@ -1,4 +1,5 @@
-﻿using ProjetoBanco.Domain.Agencias;
+﻿using ProjetoBanco.Domain.Agencia;
+using ProjetoBanco.Domain.Agencias;
 using ProjetoBanco.Domain.Entities;
 using System.Collections.Generic;
 using System.Web.Http;
@@ -7,18 +8,18 @@ namespace Web_Api.Controllers
 {
     public class AgenciasController : ApiController
     {
-        private readonly IAgenciaRepository _agenciaRepository;
+        private readonly IAgenciaService _agenciaService;
         private readonly Notifications _notifications;
 
-        public AgenciasController(IAgenciaRepository agenciaRepository, Notifications notifications)
+        public AgenciasController(Notifications notifications, IAgenciaService agenciaService)
         {
-            _agenciaRepository = agenciaRepository;
             _notifications = notifications;
+            _agenciaService = agenciaService;
         }
 
         public IHttpActionResult AddAgencia(Agencia agencia)
         {
-            _agenciaRepository.AddAgencia(agencia);
+            _agenciaService.AddAgencia(agencia);
             if (_notifications.Notificacoes.Count > 0)
             {
                 string erros = "";
@@ -36,7 +37,7 @@ namespace Web_Api.Controllers
         public IHttpActionResult GetAgenciaByNum(int agencia)
         {
             var Agencia = new Agencia();
-            Agencia = _agenciaRepository.GetAgenciaByNum(agencia);
+            Agencia = _agenciaService.GetAgenciaByNum(agencia);
             if (_notifications.Notificacoes.Count > 0)
             {
                 string erros = "";
@@ -53,7 +54,7 @@ namespace Web_Api.Controllers
         }
         public IHttpActionResult GetAllAgencias()
         {
-            var agencias = new List<Agencia>(_agenciaRepository.GetAllAgencias());
+            var agencias = new List<Agencia>(_agenciaService.GetAllAgencias());
             if (_notifications.Notificacoes.Count > 0)
             {
                 string erros = "";
@@ -70,7 +71,7 @@ namespace Web_Api.Controllers
         }
         public IHttpActionResult UpdateAgencia(Agencia agencia)
         {
-            _agenciaRepository.UpdateAgencia(agencia);
+            _agenciaService.UpdateAgencia(agencia);
             if (_notifications.Notificacoes.Count > 0)
             {
                 string erros = "";

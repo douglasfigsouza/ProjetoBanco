@@ -13,7 +13,7 @@
 <div class="row">
     <div class="col s12">
         <hr />
-        @using (Ajax.BeginForm("Login", "Usuarios", null, new AjaxOptions
+        @using (Ajax.BeginForm("CreateUsuario", "Usuarios", null, new AjaxOptions
         {
             HttpMethod = "POST",
             OnSuccess = "sucesso()",
@@ -58,10 +58,12 @@
         $("#nome").val("");
         $("#senha").val("");
         $("#conf_senha").val("");
+        $(".divErroNaOperacao").hide();
         $(".divSucessoNaOperacao").fadeIn(3000);
         $(".sucessoOperacao").html("<i class='tiny material-icons'>check_circle</i> Usuário cadastrado com Sucesso!");
     }
     function erro(xhr) {
+        $(".divSucessoNaOperacao").hide();
         $(".divErroNaOperacao").fadeIn(3000);
         $(".erroOperacao").html("<i class='tiny material-icons'>error</i>Ops! algo deu errado. " + xhr.responseText);
     }

@@ -1,5 +1,4 @@
 ﻿using ProjetoBanco.Domain.Clientes;
-using ProjetoBanco.Domain.Clientes.Dto;
 using ProjetoBanco.Domain.Entities;
 using System.Collections.Generic;
 using System.Web.Http;
@@ -8,16 +7,16 @@ namespace Web_Api.Controllers
 {
     public class ClientesController : ApiController
     {
-        private readonly IClienteRepository _clienteRepository;
+        private readonly IClienteService _clienteService;
         private readonly Notifications _notifications;
-        public ClientesController(IClienteRepository clienteRepository, Notifications notifications)
+        public ClientesController(Notifications notifications, IClienteService clienteService)
         {
-            _clienteRepository = clienteRepository;
             _notifications = notifications;
+            _clienteService = clienteService;
         }
         public IHttpActionResult AddCliente(Cliente cliente)
         {
-            _clienteRepository.AddCliente(cliente);
+            _clienteService.AddCliente(cliente);
             if (_notifications.Notificacoes.Count > 0)
             {
                 string erros = "";
@@ -35,7 +34,7 @@ namespace Web_Api.Controllers
         public IHttpActionResult GetAllClientes(int op)
         {
             IEnumerable<Cliente> clientes = new List<Cliente>();
-            clientes = _clienteRepository.GetAllClientes(op);
+            clientes = _clienteService.GetAllClientes(op);
             if (_notifications.Notificacoes.Count > 0)
             {
                 string erros = "";
@@ -52,7 +51,7 @@ namespace Web_Api.Controllers
         }
         public IHttpActionResult UpdateCliente(Cliente cliente)
         {
-            _clienteRepository.UpdateClientes(cliente);
+            _clienteService.UpdateClientes(cliente);
             if (_notifications.Notificacoes.Count > 0)
             {
                 string erros = "";
@@ -70,7 +69,7 @@ namespace Web_Api.Controllers
         public IHttpActionResult GetByClienteId(int id)
         {
             var cliente = new Cliente();
-            cliente = _clienteRepository.GetByClienteId(id);
+            cliente = _clienteService.GetByClienteId(id);
 
             if (_notifications.Notificacoes.Count > 0)
             {
@@ -89,7 +88,7 @@ namespace Web_Api.Controllers
         public IHttpActionResult GetClienteByCpf(string cpf)
         {
             var cliente = new Cliente();
-            cliente = _clienteRepository.GetClienteByCpf(cpf);
+            cliente = _clienteService.GetClienteByCpf(cpf);
 
             if (_notifications.Notificacoes.Count > 0)
             {

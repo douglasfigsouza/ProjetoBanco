@@ -30,19 +30,37 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Compile Include="Agencia\AgenciaService.cs" />
     <Compile Include="Agencia\Dto\Agencia.cs" />
+    <Compile Include="Agencia\IAgenciaService.cs" />
+    <Compile Include="Banco\BancoService.cs" />
     <Compile Include="Banco\Dto\Banco.cs" />
+    <Compile Include="Banco\IBancoService.cs" />
+    <Compile Include="Cidade\CidadeService.cs" />
     <Compile Include="Cidade\Dto\Cidade.cs" />
+    <Compile Include="Cidade\ICidadeService.cs" />
+    <Compile Include="Cliente\ClienteService.cs" />
     <Compile Include="Cliente\Dto\Cliente.cs" />
+    <Compile Include="Cliente\IClienteService.cs" />
+    <Compile Include="Conta\ContaClienteService.cs" />
     <Compile Include="Conta\Dto\Conta.cs" />
     <Compile Include="Conta\Dto\ContaCliente.cs" />
     <Compile Include="Conta\Dto\ContaClienteAlteracao.cs" />
+    <Compile Include="Conta\IContaClienteService.cs" />
     <Compile Include="Estado\Dto\Estado.cs" />
-    <Compile Include="Operacão\Dto\DadosGetOpReal.cs" />
-    <Compile Include="Operacão\Dto\Estorno.cs" />
+    <Compile Include="Estado\EstadoService.cs" />
+    <Compile Include="Estado\IEstadoService.cs" />
+    <Compile Include="Operacao\Dto\DadosGetOpReal.cs" />
+    <Compile Include="Operacao\Dto\Estorno.cs" />
+    <Compile Include="Operacao\IOperacaoRealizadaService.cs" />
+    <Compile Include="Operacao\IOperacaoService.cs" />
+    <Compile Include="Operacao\OperacaoRealizadaService.cs" />
+    <Compile Include="Operacao\OperacoesService.cs" />
+    <Compile Include="Usuario\IUsuarioService.cs" />
+    <Compile Include="Usuario\UsuarioService.cs" />
     <Compile Include="Utilitario\feedBack.cs" />
     <Compile Include="Utilitario\Notifications.cs" />
-    <Compile Include="Operacão\Dto\Transacao.cs" />
+    <Compile Include="Operacao\Dto\Transacao.cs" />
     <Compile Include="Usuario\Dto\Usuario.cs" />
     <Compile Include="Agencia\IAgenciaRepository.cs" />
     <Compile Include="Banco\IBancoRepository.cs" />
@@ -50,11 +68,11 @@
     <Compile Include="Cliente\IClienteRepository.cs" />
     <Compile Include="Conta\IContaClienteRepository.cs" />
     <Compile Include="Estado\IEstadoRepository.cs" />
-    <Compile Include="Operacão\IOperacoesRealizadasRepository.cs" />
-    <Compile Include="Operacão\IOperacoesRepository.cs" />
+    <Compile Include="Operacao\IOperacoesRealizadasRepository.cs" />
+    <Compile Include="Operacao\IOperacoesRepository.cs" />
     <Compile Include="Usuario\IUsuarioRepository.cs" />
-    <Compile Include="Operacão\Dto\Operacoes.cs" />
-    <Compile Include="Operacão\Dto\OperacoesRealizadas.cs" />
+    <Compile Include="Operacao\Dto\Operacoes.cs" />
+    <Compile Include="Operacao\Dto\OperacoesRealizadas.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>

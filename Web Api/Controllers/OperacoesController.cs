@@ -1,4 +1,6 @@
 ﻿using ProjetoBanco.Domain.Entities;
+using ProjetoBanco.Domain.Operacao;
+using ProjetoBanco.Domain.Operacão;
 using ProjetoBanco.Domain.Operacoes;
 using ProjetoBanco.Domain.Operacoes.Dto;
 using System.Collections.Generic;
@@ -8,20 +10,20 @@ namespace Web_Api.Controllers
 {
     public class OperacoesController : ApiController
     {
-        private readonly IOperacoesRepository _operacoesRepository;
-        private readonly IOperacoesRealizadasRepository _operacoesRealizadasRepository;
+        private readonly IOperacaoService _operacaoService;
+        private readonly IOperacaoRealizadaService _operacaoRealizadaService;
         private readonly Notifications _notifications;
 
-        public OperacoesController(IOperacoesRepository operacoesRepository, Notifications notifications, IOperacoesRealizadasRepository operacoesRealizadasRepository)
+        public OperacoesController(Notifications notifications, IOperacaoService operacaoService, IOperacaoRealizadaService operacaoRealizadaService)
         {
-            _operacoesRepository = operacoesRepository;
             _notifications = notifications;
-            _operacoesRealizadasRepository = operacoesRealizadasRepository;
+            _operacaoService = operacaoService;
+            _operacaoRealizadaService = operacaoRealizadaService;
         }
 
         public IHttpActionResult AddOperacao(Operacoes op)
         {
-            _operacoesRepository.AddOperacao(op);
+            _operacaoService.AddOperacao(op);
             if (_notifications.Notificacoes.Count > 0)
             {
                 string erros = "";
@@ -39,7 +41,7 @@ namespace Web_Api.Controllers
 
         public IHttpActionResult Deposito(OperacoesRealizadas operacoesRealizadas)
         {
-            _operacoesRealizadasRepository.Deposito(operacoesRealizadas);
+            _operacaoRealizadaService.Deposito(operacoesRealizadas);
             if (_notifications.Notificacoes.Count > 0)
             {
                 string erros = "";
@@ -58,7 +60,7 @@ namespace Web_Api.Controllers
         public IHttpActionResult VerificaDadosTransferencia(Transacao transacao)
         {
             var transact = new Transacao();
-            transact = _operacoesRepository.VerificaDadosTransferencia(transacao);
+            transact = _operacaoService.VerificaDadosTransferencia(transacao);
             if (_notifications.Notificacoes.Count > 0)
             {
                 string erros = "";
@@ -76,7 +78,7 @@ namespace Web_Api.Controllers
 
         public IHttpActionResult Transferencia(List<OperacoesRealizadas> operacoes)
         {
-            _operacoesRealizadasRepository.Transferencia(operacoes);
+            _operacaoRealizadaService.Transferencia(operacoes);
             if (_notifications.Notificacoes.Count > 0)
             {
                 string erros = "";
@@ -94,7 +96,7 @@ namespace Web_Api.Controllers
 
         public IHttpActionResult Saque(OperacoesRealizadas operacoesRealizadas)
         {
-            _operacoesRealizadasRepository.Saque(operacoesRealizadas);
+            _operacaoRealizadaService.Saque(operacoesRealizadas);
             if (_notifications.Notificacoes.Count > 0)
             {
                 string erros = "";
@@ -113,7 +115,7 @@ namespace Web_Api.Controllers
         public IHttpActionResult VerificaDadosTransacao(Transacao transacao)
         {
             var transact = new Transacao();
-            transact = _operacoesRepository.VerificaDadosTransacao(transacao);
+            transact = _operacaoService.VerificaDadosTransacao(transacao);
             if (_notifications.Notificacoes.Count > 0)
             {
                 string erros = "";
@@ -132,7 +134,7 @@ namespace Web_Api.Controllers
         public IHttpActionResult ConsultaSaldo(Transacao transacao)
         {
             var transact = new Transacao();
-            transact = _operacoesRepository.ConsultaSaldo(transacao);
+            transact = _operacaoService.ConsultaSaldo(transacao);
             if (_notifications.Notificacoes.Count > 0)
             {
                 string erros = "";
@@ -158,7 +160,7 @@ namespace Web_Api.Controllers
                 senha = senha,
                 conta = conta
             };
-            transacts = _operacoesRealizadasRepository.GetAllOperacoesPorContaParaEstorno(dadosGetOpReal);
+            transacts = _operacaoRealizadaService.GetAllOperacoesPorContaParaEstorno(dadosGetOpReal);
             if (_notifications.Notificacoes.Count > 0)
             {
                 string erros = "";
@@ -177,7 +179,7 @@ namespace Web_Api.Controllers
         public IHttpActionResult GetOpRealizadaEstornoById(string Id)
         {
             var estorno = new Estorno();
-            estorno = _operacoesRealizadasRepository.GetOpRealizadaEstornoById(int.Parse(Id));
+            estorno = _operacaoRealizadaService.GetOpRealizadaEstornoById(int.Parse(Id));
             if (_notifications.Notificacoes.Count > 0)
             {
                 string erros = "";
@@ -194,7 +196,7 @@ namespace Web_Api.Controllers
         }
         public IHttpActionResult confirmEstorno(Estorno estorno)
         {
-            _operacoesRealizadasRepository.ConfirmEstorno(estorno.Id);
+            _operacaoRealizadaService.ConfirmEstorno(estorno.Id);
             if (_notifications.Notificacoes.Count > 0)
             {
                 string erros = "";
@@ -211,7 +213,7 @@ namespace Web_Api.Controllers
         }
         public IHttpActionResult GetAllOperacoesEstorno()
         {
-            List<Estorno> opsEstornos = new List<Estorno>(_operacoesRealizadasRepository.GetAllOperacoesEstorno());
+            List<Estorno> opsEstornos = new List<Estorno>(_operacaoRealizadaService.GetAllOperacoesEstorno());
             if (_notifications.Notificacoes.Count > 0)
             {
                 string erros = "";

@@ -1,10 +1,10 @@
 ﻿using ProjetoBanco.Application.Interfaces;
 using ProjetoBanco.Domain.Agencias;
-using ProjetoBanco.Domain.Estados.Dto;
 using ProjetoBanco.MVC.ViewModels;
 using System.Collections.Generic;
 using System.Net.Http;
 using System.Web.Mvc;
+using ProjetoBanco.Domain.Estados;
 
 namespace ProjetoBanco.MVC.Controllers
 {

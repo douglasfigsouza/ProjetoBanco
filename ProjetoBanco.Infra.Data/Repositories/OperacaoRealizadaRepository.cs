@@ -1,5 +1,4 @@
-﻿using ProjetoBanco.Domain.Entities;
-using ProjetoBanco.Domain.Operacoes;
+﻿using ProjetoBanco.Domain.Operacoes;
 using ProjetoBanco.Domain.Operacoes.Dto;
 using System;
 using System.Collections.Generic;
@@ -11,7 +10,6 @@ namespace ProjetoBanco.Infra.Data.Repositories
     public class OperacaoRealizadaRepository : IOperacoesRealizadasRepository
     {
         private readonly Conexao _conn;
-        private Notifications _notifications;
         private enum Procedure
         {
             PBSP_DEPOSITO,
@@ -23,9 +21,8 @@ namespace ProjetoBanco.Infra.Data.Repositories
             PBSP_GETOPREALIZADAESTORNOBYID
         }
 
-        public OperacaoRealizadaRepository(Notifications notifications, Conexao conn)
+        public OperacaoRealizadaRepository(Conexao conn)
         {
-            _notifications = notifications;
             _conn = conn;
         }
         public void Deposito(OperacoesRealizadas operacaoRealizada)
@@ -35,19 +32,10 @@ namespace ProjetoBanco.Infra.Data.Repositories
             _conn.AddParameter("@contaId", operacaoRealizada.contaId);
             _conn.AddParameter("@clienteId", operacaoRealizada.clienteId);
             _conn.AddParameter("@dataOp", operacaoRealizada.dataOp);
-            _conn.AddParameter("@valorOp", operacaoRealizada.valorOp);
-            try
-            {
-                _conn.ExecuteNonQuery();
-            }
-            catch (Exception e)
-            {
-                _notifications.Notificacoes.Add($"Conta não encontrada! Erro {e.Message}");
-                throw;
-            }
-
+            _conn.AddParameter("@valorOp",operacaoRealizada.valorOp);
+            _conn.ExecuteNonQuery();
         }
-        public void Transferencia(List<OperacoesRealizadas> operacoes)
+        public int Transferencia(List<OperacoesRealizadas> operacoes)
         {
             OperacoesRealizadas opConta1 = new OperacoesRealizadas();
             OperacoesRealizadas opConta2 = new OperacoesRealizadas();
@@ -69,11 +57,13 @@ namespace ProjetoBanco.Infra.Data.Repositories
                 _conn.AddParameter("@dataOp", opConta2.dataOp);
                 _conn.AddParameter("@valorOp", opConta1.valorOp);
                 _conn.ExecuteNonQuery();
+                return 1;
             }
 
             else
             {
-                _notifications.Notificacoes.Add("A transferência não pode ser realizada, você não possui saldo suficiente");
+                return 0;
+
             }
         }
         public List<Estorno> GetAllOperacoesPorContaParaEstorno(DadosGetOpReal dadosGetOp)
@@ -84,88 +74,8 @@ namespace ProjetoBanco.Infra.Data.Repositories
             _conn.AddParameter("@conta", dadosGetOp.conta);
             _conn.AddParameter("@senha", dadosGetOp.senha);
             _conn.AddParameter("@agencia", dadosGetOp.agencia);
-            try
-            {
-                result = _conn.ExecuteReader();
-                while (result.Read())
-                {
-                    OpsEstorno.Add(new Estorno
-                    {
-                        Id = Convert.ToInt32(result["Id"].ToString()),
-                        opId = Convert.ToInt32(result["codTipoOp"].ToString()),
-                        dataOp = Convert.ToDateTime(result["dataOp"].ToString()),
-                        valorOp = Convert.ToDecimal(result["valorOp"].ToString()),
-                        saldoAnterior = Convert.ToDecimal(result["saldoAnterior"].ToString()),
-                        descricao = result["descricao"].ToString(),
-                        agencia = Convert.ToInt32(result["agencia"].ToString()),
-                        conta = result["num"].ToString(),
-                        cliente = result["nome"].ToString()
-                    });
-                }
-                if (OpsEstorno.Count == 0)
-                {
-                    _notifications.Notificacoes.Add("Não existem operações para estorno!");
-                }
-                return OpsEstorno;
-            }
-            catch (Exception ex)
-            {
-                _notifications.Notificacoes.Add($"Impossível obter operações para estorno! Erro {ex.Message}");
-                return null;
-            }
 
-
-        }
-        public void ConfirmEstorno(int id)
-        {
-            _conn.ExecuteProcedure(Procedure.PBSP_ESTORNA);
-            _conn.AddParameter("@id", id);
-            //insere a operação informando que a operação é um estorno 
-            _conn.AddParameter("@opId", 5);
-
-            try
-            {
-                _conn.ExecuteNonQuery();
-            }
-            catch (Exception e)
-            {
-                _notifications.Notificacoes.Add($"Impossível realizar o estorno!Erro {e.Message}");
-            }
-
-        }
-        public void Saque(OperacoesRealizadas operacaoRealizada)
-        {
-            _conn.ExecuteProcedure(Procedure.PBSP_SAQUE);
-            _conn.AddParameter("@codTipoOp", operacaoRealizada.operacaoId);
-            _conn.AddParameter("@contaId", operacaoRealizada.contaId);
-            _conn.AddParameter("@clienteId", operacaoRealizada.clienteId);
-            _conn.AddParameter("@dataOp", operacaoRealizada.dataOp);
-            _conn.AddParameter("@valorOp", operacaoRealizada.valorOp);
-            try
-            {
-                if (_conn.ExecuteNonQueryWithReturn() == 0)
-                    _notifications.Notificacoes.Add("Você não possui saldo suficiente!");
-            }
-            catch (Exception e)
-            {
-                _notifications.Notificacoes.Add($"Impossível realizar saque!Erro {e.Message}");
-                throw;
-            }
-        }
-        public IEnumerable<Estorno> GetAllOperacoesEstorno()
-        {
-            SqlDataReader result = null;
-            var OpsEstorno = new List<Estorno>();
-
-            _conn.ExecuteProcedure(Procedure.PBSP_GETALLOPERACOESESTORNO);
-            try
-            {
-                result = _conn.ExecuteReader();
-            }
-            catch (Exception e)
-            {
-                _notifications.Notificacoes.Add($"Impossível buscar operações! Erro {e.Message}");
-            }
+            result = _conn.ExecuteReader();
             while (result.Read())
             {
                 OpsEstorno.Add(new Estorno
@@ -181,9 +91,54 @@ namespace ProjetoBanco.Infra.Data.Repositories
                     cliente = result["nome"].ToString()
                 });
             }
-            if (OpsEstorno.Count == 0)
+            return OpsEstorno;
+        }
+        public void ConfirmEstorno(int id)
+        {
+            _conn.ExecuteProcedure(Procedure.PBSP_ESTORNA);
+            _conn.AddParameter("@id", id);
+            //insere a operação informando que a operação é um estorno 
+            _conn.AddParameter("@opId", 5);
+            _conn.ExecuteNonQuery();
+        }
+        public int Saque(OperacoesRealizadas operacaoRealizada)
+        {
+            _conn.ExecuteProcedure(Procedure.PBSP_SAQUE);
+            _conn.AddParameter("@codTipoOp", operacaoRealizada.operacaoId);
+            _conn.AddParameter("@contaId", operacaoRealizada.contaId);
+            _conn.AddParameter("@clienteId", operacaoRealizada.clienteId);
+            _conn.AddParameter("@dataOp", operacaoRealizada.dataOp);
+            _conn.AddParameter("@valorOp", operacaoRealizada.valorOp);
+            if (_conn.ExecuteNonQueryWithReturn() == 0)
             {
-                _notifications.Notificacoes.Add("Não existem operações para estorno!");
+                return 0;
+            }
+            else
+            {
+                return 1;
+            }
+        }
+        public IEnumerable<Estorno> GetAllOperacoesEstorno()
+        {
+            SqlDataReader result = null;
+            var OpsEstorno = new List<Estorno>();
+
+            _conn.ExecuteProcedure(Procedure.PBSP_GETALLOPERACOESESTORNO);
+            result = _conn.ExecuteReader();
+            while (result.Read())
+            {
+                OpsEstorno.Add(new Estorno
+                {
+                    Id = Convert.ToInt32(result["Id"].ToString()),
+                    opId = Convert.ToInt32(result["codTipoOp"].ToString()),
+                    dataOp = Convert.ToDateTime(result["dataOp"].ToString()),
+                    valorOp = Convert.ToDecimal(result["valorOp"].ToString()),
+                    saldoAnterior = Convert.ToDecimal(result["saldoAnterior"].ToString()),
+                    descricao = result["descricao"].ToString(),
+                    agencia = Convert.ToInt32(result["agencia"].ToString()),
+                    conta = result["num"].ToString(),
+                    cliente = result["nome"].ToString()
+                });
             }
             return OpsEstorno;
         }
@@ -194,15 +149,7 @@ namespace ProjetoBanco.Infra.Data.Repositories
             _conn.ExecuteProcedure(Procedure.PBSP_GETOPREALIZADAESTORNOBYID);
             _conn.AddParameter("@Id", Id);
             Estorno estorno = null;
-            try
-            {
-                result = _conn.ExecuteReader();
-            }
-            catch (Exception e)
-            {
-                _notifications.Notificacoes.Add($"Impossível buscar a operação selecionada! Erro: {e.Message}");
-                throw;
-            }
+            result = _conn.ExecuteReader();
             while (result.Read())
             {
                 estorno = new Estorno
@@ -217,10 +164,6 @@ namespace ProjetoBanco.Infra.Data.Repositories
                     conta = result["num"].ToString(),
                     cliente = result["nome"].ToString()
                 };
-            }
-            if (estorno == null)
-            {
-                _notifications.Notificacoes.Add("Operação não encontrada!");
             }
             return estorno;
         }

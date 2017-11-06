@@ -1,5 +1,5 @@
 ﻿using ProjetoBanco.Application.Interfaces;
-using ProjetoBanco.Domain.Clientes.Dto;
+using ProjetoBanco.Domain.Clientes;
 using System.Net.Http;
 using Web_Api.Utilitarios;
 

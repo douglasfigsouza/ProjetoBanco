@@ -1,4 +1,4 @@
-﻿namespace ProjetoBanco.Domain.Estados.Dto
+﻿namespace ProjetoBanco.Domain.Estados
 {
     public class Estado
     {

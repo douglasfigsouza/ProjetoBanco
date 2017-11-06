@@ -1,5 +1,4 @@
-﻿using ProjetoBanco.Domain.Estados.Dto;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 
 namespace ProjetoBanco.Domain.Estados
 {

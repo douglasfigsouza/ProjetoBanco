@@ -1,6 +1,6 @@
 ﻿using ProjetoBanco.Application.Interfaces;
 using ProjetoBanco.Domain.Cidades;
-using ProjetoBanco.Domain.Estados.Dto;
+using ProjetoBanco.Domain.Estados;
 using System.Collections.Generic;
 using System.Net.Http;
 using System.Web.Mvc;

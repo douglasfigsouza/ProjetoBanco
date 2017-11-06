@@ -1,5 +1,4 @@
 ﻿using ProjetoBanco.Domain.Agencias;
-using ProjetoBanco.Domain.Entities;
 using System;
 using System.Collections.Generic;
 using System.Data.SqlClient;
@@ -10,7 +9,6 @@ namespace ProjetoBanco.Infra.Data.Repositories
     public class AgenciaRepository : IAgenciaRepository
     {
         private readonly Conexao _conn;
-        private Notifications _notifications;
         public enum Procedures
         {
             PBSP_INSERTAGENCIA,
@@ -18,27 +16,20 @@ namespace ProjetoBanco.Infra.Data.Repositories
             PBSP_GETAGENCIABYNUM,
             PBSP_UPDATEAGENCIA
         }
-        public AgenciaRepository(Conexao conn, Notifications notifications)
+        public AgenciaRepository(Conexao conn)
         {
             _conn = conn;
-            _notifications = notifications;
         }
 
         public void AddAgencia(Agencia agencia)
         {
-            try
-            {
-                _conn.ExecuteProcedure(Procedures.PBSP_INSERTAGENCIA);
-                _conn.AddParameter("@cidadeId", agencia.CidadeId);
-                _conn.AddParameter("@bancoId", agencia.bancoId);
-                _conn.AddParameter("@agencia", agencia.agencia);
-                _conn.AddParameter("@ativo", agencia.agencia);
-                _conn.ExecuteNonQuery();
-            }
-            catch (Exception e)
-            {
-                _notifications.Notificacoes.Add($"Impossível cadastrar agência! Erro {e.Message}");
-            }
+
+            _conn.ExecuteProcedure(Procedures.PBSP_INSERTAGENCIA);
+            _conn.AddParameter("@cidadeId", agencia.CidadeId);
+            _conn.AddParameter("@bancoId", agencia.bancoId);
+            _conn.AddParameter("@agencia", agencia.agencia);
+            _conn.AddParameter("@ativo", agencia.agencia);
+            _conn.ExecuteNonQuery();
 
         }
 
@@ -46,15 +37,10 @@ namespace ProjetoBanco.Infra.Data.Repositories
         {
             SqlDataReader result = null;
             var Agencias = new List<Agencia>();
-            try
-            {
-                _conn.ExecuteProcedure(Procedures.PBSP_GETALLAGENCIAS);
-                result = _conn.ExecuteReader();
-            }
-            catch (Exception e)
-            {
-                _notifications.Notificacoes.Add($"Impossível buscar agências! Erro {e.Message}");
-            }
+
+            _conn.ExecuteProcedure(Procedures.PBSP_GETALLAGENCIAS);
+            result = _conn.ExecuteReader();
+
             while (result.Read())
             {
                 Agencias.Add(new Agencia
@@ -65,10 +51,6 @@ namespace ProjetoBanco.Infra.Data.Repositories
                     ativo = Convert.ToBoolean(result["ativo"].ToString())
                 });
             }
-            if (Agencias.Count == 0)
-            {
-                _notifications.Notificacoes.Add("Nenhuma agência cadastrada!");
-            }
             return Agencias.ToList();
         }
         public void UpdateAgencia(Agencia agencia)
@@ -76,14 +58,7 @@ namespace ProjetoBanco.Infra.Data.Repositories
             _conn.ExecuteProcedure(Procedures.PBSP_UPDATEAGENCIA);
             _conn.AddParameter("@agencia", agencia.agencia);
             _conn.AddParameter("@ativo", agencia.ativo);
-            try
-            {
-                _conn.ExecuteNonQuery();
-            }
-            catch (Exception e)
-            {
-                _notifications.Notificacoes.Add($"Impossível cadastrar agencia! Erro {e.Message}");
-            }
+            _conn.ExecuteNonQuery();
         }
         public Agencia GetAgenciaByNum(int agencia)
         {
@@ -91,14 +66,7 @@ namespace ProjetoBanco.Infra.Data.Repositories
             Agencia Agencia = null;
             _conn.ExecuteProcedure(Procedures.PBSP_GETAGENCIABYNUM);
             _conn.AddParameter("@agencia", agencia);
-            try
-            {
-                result = _conn.ExecuteReader();
-            }
-            catch (Exception e)
-            {
-                _notifications.Notificacoes.Add($"Impossível buscar agencias! Erro {e.Message}");
-            }
+            result = _conn.ExecuteReader();
             while (result.Read())
             {
                 Agencia = new Agencia
@@ -107,10 +75,6 @@ namespace ProjetoBanco.Infra.Data.Repositories
                     banco = result["nome"].ToString(),
                     ativo = Convert.ToBoolean(result["ativo"].ToString()),
                 };
-            }
-            if (Agencia == null)
-            {
-                _notifications.Notificacoes.Add("Nenhuma agência encontrada!");
             }
             return Agencia;
         }

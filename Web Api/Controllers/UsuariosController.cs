@@ -8,17 +8,17 @@ namespace Web_Api.Controllers
     public class UsuariosController : ApiController
     {
         private readonly Notifications _notifications;
-        private readonly IUsuarioRepository _usuarioRepository;
+        private readonly IUsuarioService _usuarioService;
 
-        public UsuariosController(Notifications notifications, IUsuarioRepository usuarioRepository)
+        public UsuariosController(Notifications notifications, IUsuarioService usuarioService)
         {
             _notifications = notifications;
-            _usuarioRepository = usuarioRepository;
+            _usuarioService = usuarioService;
         }
 
         public IHttpActionResult AddUsuario(Usuario usuario)
         {
-            _usuarioRepository.AddUsuario(usuario);
+            _usuarioService.AddUsuario(usuario);
             if (_notifications.Notificacoes.Count > 0)
             {
                 string erros = "";
@@ -35,7 +35,7 @@ namespace Web_Api.Controllers
         }
         public IHttpActionResult GetAllUsuarios()
         {
-            IEnumerable<Usuario> usuarios = new List<Usuario>(_usuarioRepository.GetAllUsuarios());
+            IEnumerable<Usuario> usuarios = new List<Usuario>(_usuarioService.GetAllUsuarios());
             if (_notifications.Notificacoes.Count > 0)
             {
                 string erros = "";
@@ -53,7 +53,7 @@ namespace Web_Api.Controllers
         public IHttpActionResult GetByUsuarioId(int id)
         {
             var usuario = new Usuario();
-            usuario = _usuarioRepository.GetByUsuarioId(id);
+            usuario = _usuarioService.GetByUsuarioId(id);
             if (_notifications.Notificacoes.Count > 0)
             {
                 string erros = "";
@@ -70,7 +70,7 @@ namespace Web_Api.Controllers
         }
         public IHttpActionResult UpdateUsuario(Usuario usuario)
         {
-            _usuarioRepository.UpdateUsuario(usuario);
+            _usuarioService.UpdateUsuario(usuario);
             if (_notifications.Notificacoes.Count > 0)
             {
                 string erros = "";
@@ -87,7 +87,7 @@ namespace Web_Api.Controllers
         }
         public IHttpActionResult VerificaLogin(Usuario usuario)
         {
-            usuario = _usuarioRepository.VerificaLogin(usuario);
+            usuario = _usuarioService.VerificaLogin(usuario);
             if (_notifications.Notificacoes.Count > 0)
             {
                 string erros = "";

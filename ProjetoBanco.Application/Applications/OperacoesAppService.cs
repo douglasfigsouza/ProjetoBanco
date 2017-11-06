@@ -2,6 +2,7 @@
 using ProjetoBanco.Domain.Operacoes.Dto;
 using System.Net.Http;
 using System.Web.Http;
+using ProjetoBanco.Domain.Operacoes;
 using Web_Api.Utilitarios;
 
 namespace ProjetoBanco.Application

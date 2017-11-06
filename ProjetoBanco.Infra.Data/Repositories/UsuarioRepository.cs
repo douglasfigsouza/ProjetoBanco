@@ -1,5 +1,4 @@
-﻿using ProjetoBanco.Domain.Entities;
-using ProjetoBanco.Domain.Usuarios;
+﻿using ProjetoBanco.Domain.Usuarios;
 using System;
 using System.Collections.Generic;
 using System.Data.SqlClient;
@@ -9,7 +8,6 @@ namespace ProjetoBanco.Infra.Data.Repositories
     public class UsuarioRepository : IUsuarioRepository
     {
         private readonly Conexao _conn;
-        private Notifications _notifications;
         public enum Procedures
         {
             PBSP_INSERTUSUARIOS,
@@ -19,10 +17,9 @@ namespace ProjetoBanco.Infra.Data.Repositories
             PBSP_UPDATEUSUARIO
         }
 
-        public UsuarioRepository(Conexao conn, Notifications notifications)
+        public UsuarioRepository(Conexao conn)
         {
             _conn = conn;
-            _notifications = notifications;
         }
         public void AddUsuario(Usuario usuario)
         {
@@ -30,15 +27,8 @@ namespace ProjetoBanco.Infra.Data.Repositories
             _conn.AddParameter("@clienteId", usuario.clienteId);
             _conn.AddParameter("@nome", usuario.nome);
             _conn.AddParameter("@senha", usuario.senha);
-            try
-            {
-                _conn.ExecuteNonQuery();
-
-            }
-            catch (Exception e)
-            {
-                _notifications.Notificacoes.Add($"Impossível cadastrar usuário! Erro {e.Message}");
-            }
+            _conn.AddParameter("@ativo",true);
+            _conn.ExecuteNonQuery();
         }
 
         public Usuario VerificaLogin(Usuario usuario)
@@ -48,14 +38,7 @@ namespace ProjetoBanco.Infra.Data.Repositories
             _conn.AddParameter("@nome", usuario.nome);
             _conn.AddParameter("@senha", usuario.senha);
             usuario = null;
-            try
-            {
-                result = _conn.ExecuteReader();
-            }
-            catch (Exception e)
-            {
-                _notifications.Notificacoes.Add($"Impossível fazer login! Erro {e.Message}");
-            }
+            result = _conn.ExecuteReader();
             while (result.Read())
             {
                 usuario = new Usuario();
@@ -63,10 +46,6 @@ namespace ProjetoBanco.Infra.Data.Repositories
                 usuario.nome = result["nome"].ToString();
                 usuario.senha = result["senha"].ToString();
                 usuario.nivel = char.Parse(result["nivel"].ToString());
-            }
-            if (usuario == null)
-            {
-                _notifications.Notificacoes.Add("Usuário ou senha inválidos!");
             }
             return usuario;
         }
@@ -77,14 +56,7 @@ namespace ProjetoBanco.Infra.Data.Repositories
             Usuario usuario = null;
             _conn.ExecuteProcedure(Procedures.PBSP_GETBYUSUARIOID);
             _conn.AddParameter("@id", id);
-            try
-            {
-                result = _conn.ExecuteReader();
-            }
-            catch (Exception e)
-            {
-                _notifications.Notificacoes.Add($"Impossível buscar usuários! Erro {e.Message}");
-            }
+            result = _conn.ExecuteReader();
             while (result.Read())
             {
                 usuario = new Usuario
@@ -95,10 +67,6 @@ namespace ProjetoBanco.Infra.Data.Repositories
                     ativo = Convert.ToBoolean(result["ativo"].ToString())
                 };
             }
-            if (usuario == null)
-            {
-                _notifications.Notificacoes.Add("Não existem usuários cadastrados!");
-            }
             return usuario;
         }
         public IEnumerable<Usuario> GetAllUsuarios()
@@ -106,15 +74,7 @@ namespace ProjetoBanco.Infra.Data.Repositories
             SqlDataReader result = null;
             List<Usuario> usuarios = new List<Usuario>();
             _conn.ExecuteProcedure(Procedures.PBSP_GETALLUSERS);
-
-            try
-            {
-                result = _conn.ExecuteReader();
-            }
-            catch (Exception e)
-            {
-                _notifications.Notificacoes.Add($"Impossível buscar usuários! Erro {e.Message}");
-            }
+            result = _conn.ExecuteReader();
             while (result.Read())
             {
                 usuarios.Add(new Usuario
@@ -125,10 +85,6 @@ namespace ProjetoBanco.Infra.Data.Repositories
                     nomeCli = result["cliNome"].ToString()
                 });
             }
-            if (usuarios.Count == 0)
-            {
-                _notifications.Notificacoes.Add("Não existem usuários!");
-            }
             return usuarios;
         }
         public void UpdateUsuario(Usuario usuario)
@@ -138,14 +94,7 @@ namespace ProjetoBanco.Infra.Data.Repositories
             _conn.AddParameter("@nome", usuario.nome);
             _conn.AddParameter("@senha", usuario.senha);
             _conn.AddParameter("@ativo", usuario.ativo);
-            try
-            {
-                _conn.ExecuteNonQuery();
-            }
-            catch (Exception e)
-            {
-                _notifications.Notificacoes.Add($"Impossível atualizar usuários! Erro {e.Message}");
-            }
+            _conn.ExecuteNonQuery();
         }
     }
 }

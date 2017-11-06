@@ -401,17 +401,15 @@ GO
 	END
 GO
 
---verifica dados da transação
+--Retorna dados do cliente para operação
 
-IF EXISTS (SELECT * FROM dbo.sysobjects WHERE id = object_id(N'[dbo].[PBSP_VERIFICADADOSTRASACAO]') AND objectproperty(id, N'IsPROCEDURE')=1)
-DROP PROCEDURE [dbo].[PBSP_VERIFICADADOSTRASACAO]
+
+IF EXISTS (SELECT * FROM dbo.sysobjects WHERE id = object_id(N'[dbo].[PBSP_SELDADOSCLIENTESAQUE]') AND objectproperty(id, N'IsPROCEDURE')=1)
+DROP PROCEDURE [dbo].[PBSP_SELDADOSCLIENTESAQUE]
 GO
 
-	CREATE PROCEDURE [dbo].[PBSP_VERIFICADADOSTRASACAO]
-		@op INT,
-		@nivel CHAR(1),
-		@senhaCli VARCHAR(20)='',
-		@agencia INT,
+	CREATE PROCEDURE [dbo].[PBSP_SELDADOSCLIENTESAQUE]
+		@senhaCli VARCHAR(20),
 		@conta VARCHAR(20),
 		@clienteId SMALLINT
 	AS
@@ -419,58 +417,60 @@ GO
 	/*
 	Documentação
 	Arquivo Fonte.....: ArquivoFonte.sql
-	Objetivo..........:	Garantir que a trasação possa ser realizada
+	Objetivo..........:	Retorna dados do cliente para Saque
 	Autor.............: SMN - Douglas
 	Data..............: 06/10/2017
-	Ex................: EXEC [dbo].[PBSP_VERIFICADADOSTRASACAO]
+	Ex................: EXEC [dbo].[PBSP_SELDADOSCLIENTESAQUE]
 
 	*/
 
 	BEGIN
-		IF(@op=1)
-			BEGIN
-				DECLARE @Id SMALLINT;
-				SET @Id = (SELECT TOP(1) Clientes.Id FROM Clientes WITH(NOLOCK)
-				INNER JOIN ContaCliente WITH(NOLOCK) ON Clientes.Id = ContaCliente.clienteId
-				INNER JOIN Agencia WITH(NOLOCK) ON ContaCliente.agencia = Agencia.agencia
-				INNER JOIN Conta WITH(NOLOCK) ON ContaCliente.contaId = Conta.Id
-					WHERE Conta.num = @conta AND Agencia.agencia= @agencia AND Clientes.ativo=1
-
-	);
-		BEGIN
-			SELECT Clientes.Id AS clienteId, Clientes.nome,Banco.Id AS bancoId, Agencia.agencia, Conta.Id as contaId FROM ContaCliente
-			INNER JOIN Clientes ON ContaCliente.clienteId = Clientes.Id
-			INNER JOIN Conta ON ContaCliente.contaId = Conta.Id
-			INNER JOIN Agencia ON ContaCliente.agencia = Agencia.agencia
-			INNER JOIN Banco ON ContaCliente.bancoId = Banco.Id
-				WHERE Conta.num = @conta AND Agencia.agencia = @agencia AND Clientes.ID = @Id AND agencia.ativo=1 AND Conta.ativo=1;
-		END
+		SELECT Clientes.Id AS clienteId,
+				Clientes.nome,
+				Banco.Id AS bancoId, 
+				Agencia.agencia, 
+				Conta.Id AS
+				contaId 
+				FROM ContaCliente
+					INNER JOIN Clientes ON ContaCliente.clienteId = Clientes.Id
+					INNER JOIN Conta ON ContaCliente.contaId = Conta.Id
+					INNER JOIN Agencia ON ContaCliente.agencia = Agencia.agencia
+					INNER JOIN Banco ON ContaCliente.bancoId = Banco.Id
+		WHERE ContaCliente.clienteId = @clienteId AND Conta.num=@conta AND Conta.senha=@senhaCli AND Conta.ativo=1;
 	END
-		ELSE IF(@op=2)
-			BEGIN
-				IF(@nivel='f')
-					BEGIN
-						SELECT Clientes.Id AS clienteId, Clientes.nome,Banco.Id AS bancoId, Agencia.agencia, Conta.Id as contaId FROM ContaCliente
-						INNER JOIN Clientes ON ContaCliente.clienteId = Clientes.Id
-						INNER JOIN Conta ON ContaCliente.contaId = Conta.Id
-						INNER JOIN Agencia ON ContaCliente.agencia = Agencia.agencia
-						INNER JOIN Banco ON ContaCliente.bancoId = Banco.Id
-						WHERE Conta.num = @conta AND Agencia.agencia = @agencia AND Conta.senha=@senhaCli AND Agencia.ativo=1 AND Conta.ativo=1 AND Clientes.ativo=1;
-					END
-				ELSE IF(@nivel='c')
-					BEGIN
-						SELECT Clientes.Id AS clienteId, Clientes.nome,Banco.Id AS bancoId, Agencia.agencia, Conta.Id as contaId FROM ContaCliente
-						INNER JOIN Clientes ON ContaCliente.clienteId = Clientes.Id
-						INNER JOIN Conta ON ContaCliente.contaId = Conta.Id
-						INNER JOIN Agencia ON ContaCliente.agencia = Agencia.agencia
-						INNER JOIN Banco ON ContaCliente.bancoId = Banco.Id
-							WHERE Conta.num = @conta AND Agencia.agencia = @agencia
-							AND Clientes.ID = @clienteId AND Conta.senha=@senhaCli AND Clientes.ativo=1
-							AND Conta.ativo=1 AND Agencia.ativo=1;
-					END
+GO
 
-				END
+IF EXISTS (SELECT * FROM dbo.sysobjects WHERE id = object_id(N'[dbo].[PBSP_SELDADOSCLIENTEDEPOSITO]') AND objectproperty(id, N'IsPROCEDURE')=1)
+DROP PROCEDURE [dbo].[PBSP_SELDADOSCLIENTEDEPOSITO]
+GO
 
+	CREATE PROCEDURE [dbo].[PBSP_SELDADOSCLIENTEDEPOSITO]
+		@conta VARCHAR(20)
+	AS
+
+	/*
+	Documentação
+	Arquivo Fonte.....: ArquivoFonte.sql
+	Objetivo..........:	Retorna dados do cliente para depósito
+	Autor.............: SMN - Douglas
+	Data..............: 06/11/2017
+	Ex................: EXEC [dbo].[PBSP_SELDADOSCLIENTEDEPÓSITO]
+
+	*/
+
+	BEGIN
+		SELECT Clientes.Id AS clienteId,
+				Clientes.nome,
+				Banco.Id AS bancoId, 
+				Agencia.agencia, 
+				Conta.Id AS
+				contaId 
+				FROM ContaCliente
+					INNER JOIN Clientes ON ContaCliente.clienteId = Clientes.Id
+					INNER JOIN Conta ON ContaCliente.contaId = Conta.Id
+					INNER JOIN Agencia ON ContaCliente.agencia = Agencia.agencia
+					INNER JOIN Banco ON ContaCliente.bancoId = Banco.Id
+		WHERE  Conta.num= @conta AND Conta.ativo=1 ;
 	END
 GO
 --insere operacao realizada

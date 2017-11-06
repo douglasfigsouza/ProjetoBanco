@@ -1,4 +1,4 @@
-﻿namespace ProjetoBanco.Domain.Operacoes.Dto
+﻿namespace ProjetoBanco.Domain.Operacoes
 {
     public class Operacoes
     {

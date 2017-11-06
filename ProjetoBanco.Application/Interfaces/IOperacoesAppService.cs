@@ -1,4 +1,5 @@
-﻿using ProjetoBanco.Domain.Operacoes.Dto;
+﻿using ProjetoBanco.Domain.Operacoes;
+using ProjetoBanco.Domain.Operacoes.Dto;
 using System.Net.Http;
 
 namespace ProjetoBanco.Application.Interfaces

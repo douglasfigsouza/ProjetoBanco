@@ -1,4 +1,5 @@
 ﻿using ProjetoBanco.Application.Interfaces;
+using ProjetoBanco.Domain.Operacoes;
 using ProjetoBanco.Domain.Operacoes.Dto;
 using ProjetoBanco.MVC.ViewModels;
 using System;
@@ -83,8 +84,6 @@ namespace ProjetoBanco.MVC.Controllers
             var statusCode = new HttpResponseMessage();
             ClienteViewModel cli = (ClienteViewModel)Session["cliente"];
 
-            transacao.clienteId = cli.Id;
-            var valor = decimal.Parse(Utilitarios.Utilitarios.retiraMaskMoney(transacaoViewModel.valor));
             transacao.agencia = int.Parse(Utilitarios.Utilitarios.retiraMask(transacaoViewModel.agencia));
             transacao.conta = Utilitarios.Utilitarios.retiraMask(transacaoViewModel.conta);
             transacao.senhaCli = transacaoViewModel.senhaCli;
@@ -101,6 +100,7 @@ namespace ProjetoBanco.MVC.Controllers
             {
                 ViewBag.descOp = "Saque";
                 ViewBag.operacao = 2;
+                transacao.clienteId = cli.Id;
             }
 
             statusCode = _OperacaoAppService.VerificaDadosTransacao(transacao);
@@ -169,11 +169,9 @@ namespace ProjetoBanco.MVC.Controllers
             var cliente = (ClienteViewModel)Session["cliente"];
             var statusCode = new HttpResponseMessage();
             var operacaoRealizada = new OperacoesRealizadas();
-            decimal valor;
             operacaoRealizada.contaId = int.Parse(contaId);
             operacaoRealizada.clienteId = cliente.Id;
             operacaoRealizada.dataOp = DateTime.Now;
-            decimal.TryParse(valorASacar, out valor);
 
             operacaoRealizada.valorOp = decimal.Parse(valorASacar.Replace(".", ","));
             operacaoRealizada.operacaoId = 2;
