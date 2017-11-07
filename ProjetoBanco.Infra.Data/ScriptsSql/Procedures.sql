@@ -996,7 +996,7 @@ GO
 									FROM OperacoesRealizadas AS opReal WITH(NOLOCK)
 								WHERE opReal.Id = @id)*(-1);
 
-				SET @valorUltOp =dbo.RetornaValorUltOp(@id);
+				SET @valorUltOp = dbo.RetornaValorUltOp(@id);
 				--recupera o valor da op da primeira opercão
 				IF(@valorUltOp < 0)
 					BEGIN

@@ -1,21 +1,6 @@
 ﻿using ProjetoBanco.Application;
 using ProjetoBanco.Application.Interfaces;
-using ProjetoBanco.Domain.Agencia;
-using ProjetoBanco.Domain.Agencias;
-using ProjetoBanco.Domain.Banco;
-using ProjetoBanco.Domain.Bancos;
-using ProjetoBanco.Domain.Cidade;
-using ProjetoBanco.Domain.Cidades;
-using ProjetoBanco.Domain.Clientes;
-using ProjetoBanco.Domain.Conta;
-using ProjetoBanco.Domain.Contas;
-using ProjetoBanco.Domain.Estados;
-using ProjetoBanco.Domain.Operacao;
-using ProjetoBanco.Domain.Operacão;
-using ProjetoBanco.Domain.Operacoes;
-using ProjetoBanco.Infra.Data.Repositories;
 using SimpleInjector;
-
 namespace ProjetoBanco.MVC.App_Start
 {
     public static class SimpleInjectorContainerMvc
