@@ -76,7 +76,7 @@ namespace ProjetoBanco.Domain.Operacão
             {
                 _notifications.Notificacoes.Add($"Conta não encontrada!{e.Message}");
             }
-            if (transact.conta == null)
+            if (transact.nome == null)
             {
                 _notifications.Notificacoes.Add("Conta não encontrada!");
             }

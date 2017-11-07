@@ -144,5 +144,5 @@
                 required: "O campo usuário é obrigatório digite-o!"
             }
         }
-    }).resetForm();
+    });
 });

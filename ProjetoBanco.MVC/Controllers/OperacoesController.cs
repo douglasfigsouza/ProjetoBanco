@@ -140,6 +140,7 @@ namespace ProjetoBanco.MVC.Controllers
             return Json(statusCode.Content.ReadAsStringAsync().Result);
         }
         [HttpPost]
+        [Authorize]
         public ActionResult Saldo(TransacaoViewModel trasacaoViewModel)
         {
             var transacao = new Transacao();

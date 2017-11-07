@@ -621,9 +621,7 @@ GO
 	BEGIN
 		DECLARE @contaId SMALLINT,
 		@saldoConta DECIMAL(18,2);
-		IF(@nivel='c')
-			BEGIN
-				SET @contaId = (SELECT Conta.Id 
+			SET @contaId = (SELECT Conta.Id 
 									FROM Conta WITH(NOLOCK)
 										INNER JOIN ContaCliente WITH(NOLOCK) ON Conta.Id = ContaCliente.contaId
 										INNER JOIN Clientes WITH(NOLOCK) ON ContaCliente.clienteId = Clientes.Id
@@ -631,22 +629,11 @@ GO
 								WHERE Conta.num = @conta AND Clientes.Id =@clienteId
 									AND Conta.senha=@senhaCli AND Conta.ativo=1
 									AND agencia.ativo=1 AND Clientes.ativo=1);
-			END
-		ELSE IF(@nivel='f')
-			BEGIN
-				SET @contaId =	(SELECT TOP(1) Conta.Id 
-									FROM Conta WITH(NOLOCK)
-										INNER JOIN ContaCliente WITH(NOLOCK) ON Conta.Id = ContaCliente.contaId
-										INNER JOIN Clientes WITH(NOLOCK) ON ContaCliente.clienteId = Clientes.Id
-										INNER JOIN Agencia WITH(NOLOCK) ON ContaCliente.agencia = Agencia.agencia
-								WHERE Conta.num = @conta AND Conta.senha=@senhaCli AND Conta.ativo=1 AND Agencia.ativo=1
-										AND Clientes.ativo=1
-										ORDER BY Conta.num )
-			END
 			SELECT	dbo.RetornaSaldo(@contaId) AS saldo, 
 					Clientes.nome AS nome, 
 					Conta.num AS num, 
 					OperacoesRealizadas.Id AS opId
+
 					FROM OperacoesRealizadas WITH(NOLOCK)
 						INNER JOIN Conta WITH(NOLOCK) ON Conta.ID = OperacoesRealizadas.contaId
 						INNER JOIN ContaCliente WITH(NOLOCK) ON Conta.Id = ContaCliente.contaId

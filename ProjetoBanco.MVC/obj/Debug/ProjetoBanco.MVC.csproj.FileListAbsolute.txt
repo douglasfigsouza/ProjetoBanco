@@ -57,11 +57,11 @@ C:\Users\Douglas\ProjetoBanco\ProjetoBanco.MVC\bin\Microsoft.CodeDom.Providers.D
 C:\Users\Douglas\ProjetoBanco\ProjetoBanco.MVC\bin\SimpleInjector.xml
 C:\Users\Douglas\ProjetoBanco\ProjetoBanco.MVC\bin\SimpleInjector.Integration.Web.Mvc.xml
 C:\Users\Douglas\ProjetoBanco\ProjetoBanco.MVC\bin\System.Net.Http.Formatting.xml
-C:\Users\Douglas\ProjetoBanco\ProjetoBanco.MVC\bin\System.Web.Http.xml
 C:\Users\Douglas\ProjetoBanco\ProjetoBanco.MVC\bin\System.Web.Helpers.xml
+C:\Users\Douglas\ProjetoBanco\ProjetoBanco.MVC\bin\System.Web.Http.xml
+C:\Users\Douglas\ProjetoBanco\ProjetoBanco.MVC\bin\System.Web.Razor.xml
 C:\Users\Douglas\ProjetoBanco\ProjetoBanco.MVC\bin\System.Web.Mvc.xml
 C:\Users\Douglas\ProjetoBanco\ProjetoBanco.MVC\bin\System.Web.Optimization.xml
-C:\Users\Douglas\ProjetoBanco\ProjetoBanco.MVC\bin\System.Web.Razor.xml
 C:\Users\Douglas\ProjetoBanco\ProjetoBanco.MVC\bin\System.Web.WebPages.xml
 C:\Users\Douglas\ProjetoBanco\ProjetoBanco.MVC\bin\System.Web.WebPages.Deployment.xml
 C:\Users\Douglas\ProjetoBanco\ProjetoBanco.MVC\bin\System.Web.WebPages.Razor.xml
