@@ -10,11 +10,12 @@
     @Scripts.Render("~/bundles/modernizr")
     <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/v/dt/dt-1.10.16/datatables.min.css" />
     @Scripts.Render("~/bundles/jquery")
+    <script src="~/Scripts/materialize/SisBankValidate.js"></script>
     <script src="~/Scripts/jquery.validate.js"></script>
+    <script src="~/Scripts/jquery.maskedinput.js"></script>
+    <script src="~/Scripts/mascaras.js"></script>
     @Scripts.Render("~/bundles/unobtrusive")
     <script src="http://ajax.aspnetcdn.com/ajax/mvc/4.0/jquery.validate.unobtrusive.min.js"></script>
-    <script src="~/Scripts/materialize/SisBankValidate.js"></script>
-
 
 </head>
 <body>
@@ -47,18 +48,18 @@
             <div class="nav-wrapper #42a5f5 blue lighten-1">
                 <a href="/Usuarios/Logout" class="brand-logo"><i class="material-icons right" title="Deseja sair do sistema?">highlight_off</i></a>
                 <a href="/Home/Index" class="brand-logo center" title="Ir para página inicial?"><i class="material-icons">home</i></a>
-                @{ 
+                @{
                     var cliente = (ProjetoBanco.MVC.ViewModels.ClienteViewModel)Session["cliente"];
                     <span id="usuarioLogado">Bem Vindo(a): @cliente.nome</span>
                 }
                 <ul class="right hide-on-med-and-down">
-                    @if (cliente.nivel.ToString()=="f")
+                    @if (cliente.nivel.ToString() == "f")
                     {
                         <li><a class="dropdown-button" href="#!" data-activates="alteracoes">Alteracões<i class="material-icons right">arrow_drop_down</i></a></li>
                         <li><a class="dropdown-button" href="#!" data-activates="cadastros">Cadastros<i class="material-icons right">arrow_drop_down</i></a></li>
                         <li><a class="dropdown-button" href="#!" data-activates="operacoes">Operações<i class="material-icons right">arrow_drop_down</i></a></li>
                     }
-                    @if (cliente.nivel.ToString()=="c")
+                    @if (cliente.nivel.ToString() == "c")
                     {
                         <li><a class="dropdown-button" href="#!" data-activates="operacoes">Operações<i class="material-icons right">arrow_drop_down</i></a></li>
                     }
@@ -71,9 +72,9 @@
         @RenderBody()
     </div>
     <footer class="page-footer #42a5f5 blue lighten-1 center-align">
-
         SisBank - © 2017 Copyright SMN
     </footer>
+    <script src="~/Scripts/materialize/SisBankValidate.js"></script>
     @Scripts.Render("~/bundles/bootstrap")
     @RenderSection("scripts", required: false)
 </body>

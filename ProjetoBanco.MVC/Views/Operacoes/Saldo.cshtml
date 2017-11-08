@@ -2,14 +2,14 @@
     Layout = null;
 }
 @model ProjetoBanco.MVC.ViewModels.TransacaoViewModel
-<div class="col s12"id="dadosContaCliente">
+<div class="col s12" id="dadosContaCliente">
     @using (Ajax.BeginForm("Saldo", "Operacoes", null, new AjaxOptions
     {
         HttpMethod = "POST",
         OnSuccess = "sucesso",
         OnFailure = "erro(xhr)",
-        OnBegin="progresso",
-        OnComplete="fim"
+        OnBegin = "progresso",
+        OnComplete = "fim"
     }))
     {
         @Html.ValidationSummary(true)
@@ -25,18 +25,18 @@
             <div class="row">
                 <div class="col s6 ">
                     <label class="col s12" for="conta">Conta</label>
-                    @Html.TextBoxFor(t => t.conta, new { @class = "col s12 conta",@required=true})
+                    @Html.TextBoxFor(t => t.conta, new { @class = "col s12 conta", @required = true })
                 </div>
                 <div class="col s6 ">
                     <label class="col s12" for="agencia">Agência</label>
-                    @Html.TextBoxFor(t => t.agencia, new { @class = "col s12 agencia", @required = true})
+                    @Html.TextBoxFor(t => t.agencia, new { @class = "col s12 agencia", required = true })
                 </div>
 
             </div>
             <div class="row">
                 <div class="col s6 ">
                     <label class="col s12" for="senhaCli">Senha</label>
-                    @Html.TextBoxFor(t => t.senhaCli, new { @class = "col s12", @type = "password",@required = true })
+                    @Html.TextBoxFor(t => t.senhaCli, new { @class = "col s12", @type = "password", @required = true })
                 </div>
             </div>
 
@@ -53,10 +53,9 @@
 </div>
 <div class="row" id="exibeSaldo">
     <div class="col s12">
-            <h6 id="clienteConta"></h6>
-            <hr />
-            <h5 id="saldoCliente">
-            </h5>
+        <h6 id="clienteConta"></h6>
+        <hr />
+        <h5 id="saldoCliente"></h5>
     </div>
 </div>
 <script>
@@ -64,7 +63,7 @@
         $("#dadosContaCliente").hide();
         $("#exibeSaldo").fadeIn(3000);
         $("#clienteConta").text("Cliente: " + response.nome + " / " + "Conta:" + response.conta);
-        $("#saldoCliente").text("Seu saldo é de R$ "+response.valor+" Reais.")
+        $("#saldoCliente").text("Seu saldo é de R$ " + response.valor + " Reais.")
     }
     function erro(xhr) {
         $(".divErroNaOperacao").fadeIn(3000);

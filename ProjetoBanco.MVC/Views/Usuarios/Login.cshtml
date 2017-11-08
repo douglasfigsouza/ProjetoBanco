@@ -10,7 +10,7 @@
             OnFailure = "erro(xhr)",
             OnBegin = "progresso",
             OnComplete = "fim"
-        }))
+        }, new { @id = "login" }))
         {
             <div class="row divErroNaOperacao">
                 <div class="col s12">
@@ -27,6 +27,7 @@
                     <i class="large material-icons prefix">account_box</i>
                     <input id="usuario" type="text" name="usuario">
                     <label for="usuario" class="center-align">Usuário</label>
+                    <span class="displayNone" id="usuarioError"></span>
                 </div>
             </div>
             <div class="row margin">
@@ -34,11 +35,12 @@
                     <i class="material-icons prefix">enhanced_encryption</i>
                     <input id="senha" type="password" name="senha">
                     <label for="senha">Password</label>
+                    <span class="displayNone" id="senhaError"></span>
                 </div>
             </div>
             <div class="row">
                 <div class="input-field col s12">
-                    <button class="btn waves-effect waves-light col s12" type="submit">Login</button>
+                    <button class="btn waves-effect waves-light col s12" id="btnLogin" type="submit">Login</button>
                 </div>
             </div>
         }

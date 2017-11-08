@@ -110,5 +110,10 @@ nav {
 #usuarioLogado {
     margin-left:4%;
     font-weight:800;
-    style
+}
+.displayNone {
+    display: none;
+}
+.displayBlock {
+    display: block;
 }

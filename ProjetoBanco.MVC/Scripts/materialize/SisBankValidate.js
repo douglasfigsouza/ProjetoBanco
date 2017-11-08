@@ -1,8 +1,5 @@
 ﻿$(document).ready(function () {
     $("form").validate({
-        submitHandler: function (form) {
-            form.submit();
-        },
         rules: {
             nome: {
                 required: true,

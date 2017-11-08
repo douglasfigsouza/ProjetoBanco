@@ -397,7 +397,7 @@ GO
 		SET @bancoId = (SELECT Id 
 							FROM [dbo].[Banco] WITH(NOLOCK)
 								INNER JOIN [dbo].[Agencia] WITH(NOLOCK) ON Banco.Id = Agencia.bancoId
-						WHERE Agencia.agencia = @agencia);
+							WHERE Agencia.agencia = @agencia);
 		INSERT INTO[dbo].[ContaCliente](contaId, agencia, bancoId, clienteId)
 			VALUES(@contaId, @agencia, @bancoId, @clienteId);
 	END
@@ -435,10 +435,12 @@ GO
 				cli.nivel,
 				cli.dataCadastro,
 				estado.EstadoId 
-				FROM Clientes AS cli WITH(NOLOCK)
-					INNER JOIN Cidade AS city WITH(NOLOCK)  on cli.CidadeId= city.CidadeId
-					INNER JOIN Estado AS estado WITH(NOLOCK) ON city.EstadoId = estado.EstadoId
-		WHERE cli.Id=@id;
+			FROM Clientes AS cli WITH(NOLOCK)
+				INNER JOIN Cidade AS city WITH(NOLOCK)  
+					ON cli.CidadeId= city.CidadeId
+				INNER JOIN Estado AS estado WITH(NOLOCK) 
+					ON city.EstadoId = estado.EstadoId
+			WHERE cli.Id=@id;
 	END
 GO
 
@@ -755,7 +757,7 @@ GO
 				num=@num,
 				ativo=@ativo,
 				nivel=@nivel
-		WHERE Clientes.Id = @id;
+			WHERE Clientes.Id = @id;
 	END
 GO
 
