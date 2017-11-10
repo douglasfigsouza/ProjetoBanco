@@ -65,10 +65,12 @@
 </div>
 <script>
     function sucesso() {
+        $(".divErroNaOperacao").hide();
         $(".divSucessoNaOperacao").fadeIn(3000);
         $(".sucessoOperacao").html("<i class='tiny material-icons'>check_circle</i> Agência Alterada com Sucesso!");
     }
     function erro(xhr) {
+        $(".sucessoOperacao").hide();
         $(".divErroNaOperacao").fadeIn(3000);
         $(".erroOperacao").html("<i class='tiny material-icons'>error</i>Ops! algo deu errado. " + xhr.responseText);
     }

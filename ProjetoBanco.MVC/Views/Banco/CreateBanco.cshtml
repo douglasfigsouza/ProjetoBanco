@@ -43,10 +43,12 @@
 <script>
     function sucesso() {
         $("#nome").val("");
+        $(".divErroNaOperacao").hide();
         $(".divSucessoNaOperacao").fadeIn(3000);
         $(".sucessoOperacao").html("<i class='tiny material-icons'>check_circle</i> Banco cadastrado com Sucesso!");
     }
     function erro(xhr) {
+        $(".sucessoOperacao").hide();
         $(".divErroNaOperacao").fadeIn(3000);
         $(".erroOperacao").html("<i class='tiny material-icons'>error</i>Ops! algo deu errado. " + xhr.responseText);
     }

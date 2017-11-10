@@ -60,6 +60,7 @@
 </div>
 <script>
     function sucesso(response) {
+        $(".divErroNaOperacao").hide();
         $("#dadosContaCliente").hide();
         $("#exibeSaldo").fadeIn(3000);
         $("#clienteConta").text("Cliente: " + response.nome + " / " + "Conta:" + response.conta);

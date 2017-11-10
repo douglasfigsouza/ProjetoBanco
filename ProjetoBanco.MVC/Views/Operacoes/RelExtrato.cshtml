@@ -19,7 +19,7 @@
     <table class="bordered striped centered">
         <thead>
             <tr>
-                <th>Data Operação</th>
+                <th>Data e Hora da Operação</th>
                 <th>Operação</th>
                 <th>Valor</th>
                 <th>Saldo Anterior</th>
@@ -41,5 +41,6 @@
     </table>
 </div>
 <div>
-    <h6 align="right">Saldo Atual:R$ @Model.AsEnumerable().ElementAt(0).saldo</h6>
+    
+    <h6 class="negrito right">Saldo Atual:R$ @Model.AsEnumerable().ElementAt(0).saldo</h6>
 </div>

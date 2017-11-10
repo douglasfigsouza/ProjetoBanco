@@ -107,6 +107,7 @@
 </div>
 <script>
     function sucesso() {
+        $(".divErroNaOperacao").hide();
         $("#nome").val("");
         $("#rua").val("");
         $("#bairro").val("");
@@ -118,6 +119,7 @@
         $(".sucessoOperacao").html("<i class='tiny material-icons'>check_circle</i> Cliente cadastrado com Sucesso!");
     }
     function erro(xhr) {
+        $(".divSucessoNaOperacao").hide();
         $(".divErroNaOperacao").fadeIn(3000);
         $(".erroOperacao").html("<i class='tiny material-icons'>error</i>Ops! algo deu errado. " + xhr.responseText);
     }
