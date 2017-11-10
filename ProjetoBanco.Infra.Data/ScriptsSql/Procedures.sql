@@ -1261,7 +1261,54 @@ CREATE PROCEDURE [dbo].[PBSP_GETOPREALIZADAESTORNOBYID]
 		WHERE opReal.Id = @Id
 	END
 GO
-																						
+
+IF EXISTS (SELECT * FROM dbo.sysobjects WHERE id = object_id(N'[dbo].[PBSP_EXTRATOPORDATA]') AND objectproperty(id, N'IsPROCEDURE')=1)
+	DROP PROCEDURE [dbo].[PBSP_EXTRATOPORDATA]
+GO
+
+CREATE PROCEDURE [dbo].[PBSP_EXTRATOPORDATA]
+	@conta VARCHAR(8),
+	@senha VARCHAR(8),
+	@dataInicial DATETIME,
+	@dataFinal DATETIME
+	AS
+
+	/*
+	Documentação
+	Arquivo Fonte.....: ArquivoFonte.sql
+	Objetivo..........: Recupera dados para geração do relatoriuo por data
+	Autor.............: SMN - Douglas
+ 	Data..............: 10/11/2017
+	Ex................: EXEC [dbo].[PBSP_EXTRATOPORDATA]
+
+	*/
+
+	BEGIN
+			DECLARE @saldo DECIMAL(18,2),
+					@contaId SMALLINT
+			SET @contaId = (SELECT Id FROM Conta WITH(NOLOCK)
+								WHERE Conta.num=@conta
+			)
+			SET @saldo = dbo.RetornaSaldo(@contaId)
+			SELECT opReal.Id,
+				   @saldo AS SALDO,
+				   opReal.codTipoOp, 
+				   opReal.dataOP,
+				   opReal.valorOp,
+				   opReal.saldoAnterior, 
+				   op.descricao, 
+				   ag.agencia,
+				   conta.num , cli.nome
+				   FROM OperacoesRealizadas AS opReal WITH(NOLOCK)
+					INNER JOIN Operacoes AS op WITH(NOLOCK) on opReal.codTipoOp = op.Id
+					INNER JOIN Agencia AS ag WITH(NOLOCK) ON opReal.agencia = ag.agencia
+					INNER JOIN Conta AS conta WITH(NOLOCK) ON opReal.contaId = conta.Id
+					INNER JOIN Clientes AS cli WITH(NOLOCK) ON opReal.clienteId = cli.Id
+			WHERE conta.num=@conta AND conta.senha=@senha
+				AND conta.ativo=1 AND ag.ativo=1 AND cli.ativo=1 AND opReal.dataOp BETWEEN @dataInicial AND @dataFinal
+	END
+GO
+																							
 --Funções
 --função que retorna o Saldo
 CREATE FUNCTION dbo.RetornaSaldo(@contaId SMALLINT)
