@@ -365,21 +365,21 @@ namespace ProjetoBanco.MVC.Controllers
             return Json(statusCode.Content.ReadAsAsync<Estorno>().Result, JsonRequestBehavior.AllowGet);
         }
 
-        public ActionResult GetExtratoPorData()
+        public ActionResult GetExtrato()
         {
             return View("_Extrato");
         }
-        [HttpPost]
-        public ActionResult GetExtratoPorData(FormCollection form)
+        [HttpGet]
+        public ActionResult GetExtratoPorData(DadosGetOpReal dadosOp)
         {
             var statusCode = new HttpResponseMessage();
             List<EstornoViewModel> opsEstornoViewModels = new List<EstornoViewModel>();
             var dadosOpGetReal = new DadosGetOpReal();
-            
-            dadosOpGetReal.conta = Utilitarios.Utilitarios.retiraMask(form["conta"]);
-            dadosOpGetReal.senha = Utilitarios.Utilitarios.retiraMask(form["senha"]);
-            dadosOpGetReal.dataInicial = Convert.ToDateTime(form["dataInicial"]);
-            dadosOpGetReal.dataFinal = Convert.ToDateTime(form["dataFinal"]);
+
+            dadosOpGetReal.conta = Utilitarios.Utilitarios.retiraMask(dadosOp.conta);
+            dadosOpGetReal.senha = Utilitarios.Utilitarios.retiraMask(dadosOp.senha);
+            dadosOpGetReal.dataInicial = Convert.ToDateTime(dadosOp.dataInicial);
+            dadosOpGetReal.dataFinal = Convert.ToDateTime(dadosOp.dataFinal);
             statusCode = _operacaoesRealizadasAppService.ExtratoPorData(dadosOpGetReal);
             if (!statusCode.IsSuccessStatusCode)
             {
@@ -403,14 +403,11 @@ namespace ProjetoBanco.MVC.Controllers
                     dataOp = op.dataOp,
                     descricao = op.descricao,
                     saldo = op.saldo,
-                    dataInicial = Convert.ToDateTime(form["dataInicial"]).Date,
-                    dataFinal = Convert.ToDateTime(form["dataFinal"]).Date
+                    dataFormatadaInicial = dadosOp.dataInicial.ToString("dd/MM/yyyy"),
+                    dataFormatadaFinal = dadosOp.dataFinal.ToString("dd/MM/yyyy"),
 
                 });
             }
-            //RazorPdf
-            //var pdf = new PdfResult(opsEstornoViewModels, "_Extrato");
-            ////rotativa
             var pdf = new ViewAsPdf("RelExtrato", opsEstornoViewModels);
             return pdf;
 

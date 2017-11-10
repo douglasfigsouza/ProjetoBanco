@@ -5,38 +5,38 @@
 
 <div class="row" id="opEstorno">
     <h5 align="center">Extrato</h5>
-    <br/>
-    <h6>Periodo: @Model.AsEnumerable().ElementAt(0).dataInicial á @Model.AsEnumerable().ElementAt(0).dataFinal</h6>
+    <br />
+    <h6>Periodo: @Model.AsEnumerable().ElementAt(0).dataFormatadaInicial á @Model.AsEnumerable().ElementAt(0).dataFormatadaFinal</h6>
     <hr />
     <div align="center">
         <h7>Cliente: @Model.AsEnumerable().ElementAt(0).cliente</h7>
-        <br/>
+        <br />
         <h7>Agência: @Model.AsEnumerable().ElementAt(0).agencia</h7>
-        <br/>
+        <br />
         <h7>Conta: @Model.AsEnumerable().ElementAt(0).conta</h7>
     </div>
-    <hr/>
+    <hr />
     <table class="bordered striped centered">
         <thead>
-        <tr>
-            <th>Data Operação</th>
-            <th>Operação</th>
-            <th>Valor</th>
-            <th>Saldo Anterior</th>
-        </tr>
+            <tr>
+                <th>Data Operação</th>
+                <th>Operação</th>
+                <th>Valor</th>
+                <th>Saldo Anterior</th>
+            </tr>
         </thead>
         <tbody>
-        @foreach (var op in @Model)
-        {
-            <tr>
+            @foreach (var op in @Model)
+            {
+                <tr>
 
-                <td>@op.dataOp</td>
-                <td>@op.descricao</td>
-                <td>R$ @op.valorOp</td>
-                <td>R$ @op.saldoAnterior</td>
+                    <td>@op.dataOp</td>
+                    <td>@op.descricao</td>
+                    <td>R$ @op.valorOp</td>
+                    <td>R$ @op.saldoAnterior</td>
 
-            </tr>
-        }
+                </tr>
+            }
         </tbody>
     </table>
 </div>

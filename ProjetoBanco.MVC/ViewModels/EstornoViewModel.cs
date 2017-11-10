@@ -11,11 +11,13 @@ namespace ProjetoBanco.MVC.ViewModels
         public string dataFormatada { get; set; }
         public decimal valorOp { get; set; }
         public decimal saldoAnterior { get; set; }
-        public int  agencia { get; set; }
-        public string  conta { get; set; }
-        public string  cliente { get; set; }
+        public int agencia { get; set; }
+        public string conta { get; set; }
+        public string cliente { get; set; }
         public decimal saldo { get; set; }
         public DateTime dataInicial { get; set; }
         public DateTime dataFinal { get; set; }
-    } 
+        public string dataFormatadaInicial { get; set; }
+        public string dataFormatadaFinal { get; set; }
+    }
 }
