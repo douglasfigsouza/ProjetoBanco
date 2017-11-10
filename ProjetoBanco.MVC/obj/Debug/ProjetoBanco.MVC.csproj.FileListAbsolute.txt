@@ -1,4 +1,5 @@
 C:\Users\Douglas\ProjetoBanco\ProjetoBanco.MVC\obj\Debug\ProjetoBanco.MVC.csprojResolveAssemblyReference.cache
+C:\Users\Douglas\ProjetoBanco\ProjetoBanco.MVC\bin\ApplicationInsights.config
 C:\Users\Douglas\ProjetoBanco\ProjetoBanco.MVC\bin\roslyn\csc.exe
 C:\Users\Douglas\ProjetoBanco\ProjetoBanco.MVC\bin\roslyn\Microsoft.Build.Tasks.CodeAnalysis.dll
 C:\Users\Douglas\ProjetoBanco\ProjetoBanco.MVC\bin\roslyn\Microsoft.CodeAnalysis.CSharp.dll
@@ -11,11 +12,16 @@ C:\Users\Douglas\ProjetoBanco\ProjetoBanco.MVC\bin\roslyn\System.Reflection.Meta
 C:\Users\Douglas\ProjetoBanco\ProjetoBanco.MVC\bin\roslyn\vbc.exe
 C:\Users\Douglas\ProjetoBanco\ProjetoBanco.MVC\bin\roslyn\VBCSCompiler.exe
 C:\Users\Douglas\ProjetoBanco\ProjetoBanco.MVC\bin\roslyn\VBCSCompiler.exe.config
-C:\Users\Douglas\ProjetoBanco\ProjetoBanco.MVC\bin\ApplicationInsights.config
 C:\Users\Douglas\ProjetoBanco\ProjetoBanco.MVC\bin\ProjetoBanco.MVC.dll.config
 C:\Users\Douglas\ProjetoBanco\ProjetoBanco.MVC\bin\ProjetoBanco.MVC.dll
 C:\Users\Douglas\ProjetoBanco\ProjetoBanco.MVC\bin\ProjetoBanco.MVC.pdb
+C:\Users\Douglas\ProjetoBanco\ProjetoBanco.MVC\bin\AngleSharp.dll
 C:\Users\Douglas\ProjetoBanco\ProjetoBanco.MVC\bin\Antlr3.Runtime.dll
+C:\Users\Douglas\ProjetoBanco\ProjetoBanco.MVC\bin\CrystalDecisions.CrystalReports.Engine.dll
+C:\Users\Douglas\ProjetoBanco\ProjetoBanco.MVC\bin\CrystalDecisions.ReportSource.dll
+C:\Users\Douglas\ProjetoBanco\ProjetoBanco.MVC\bin\CrystalDecisions.Shared.dll
+C:\Users\Douglas\ProjetoBanco\ProjetoBanco.MVC\bin\CrystalDecisions.Web.dll
+C:\Users\Douglas\ProjetoBanco\ProjetoBanco.MVC\bin\itextsharp.dll
 C:\Users\Douglas\ProjetoBanco\ProjetoBanco.MVC\bin\Microsoft.AI.Agent.Intercept.dll
 C:\Users\Douglas\ProjetoBanco\ProjetoBanco.MVC\bin\Microsoft.AI.DependencyCollector.dll
 C:\Users\Douglas\ProjetoBanco\ProjetoBanco.MVC\bin\Microsoft.AI.PerfCounterCollector.dll
@@ -28,7 +34,9 @@ C:\Users\Douglas\ProjetoBanco\ProjetoBanco.MVC\bin\Microsoft.Web.Infrastructure.
 C:\Users\Douglas\ProjetoBanco\ProjetoBanco.MVC\bin\Newtonsoft.Json.dll
 C:\Users\Douglas\ProjetoBanco\ProjetoBanco.MVC\bin\ProjetoBanco.Application.dll
 C:\Users\Douglas\ProjetoBanco\ProjetoBanco.MVC\bin\ProjetoBanco.Domain.dll
-C:\Users\Douglas\ProjetoBanco\ProjetoBanco.MVC\bin\ProjetoBanco.Infra.Data.dll
+C:\Users\Douglas\ProjetoBanco\ProjetoBanco.MVC\bin\protobuf-net.dll
+C:\Users\Douglas\ProjetoBanco\ProjetoBanco.MVC\bin\RazorPDF.dll
+C:\Users\Douglas\ProjetoBanco\ProjetoBanco.MVC\bin\Rotativa.dll
 C:\Users\Douglas\ProjetoBanco\ProjetoBanco.MVC\bin\SimpleInjector.dll
 C:\Users\Douglas\ProjetoBanco\ProjetoBanco.MVC\bin\SimpleInjector.Integration.Web.Mvc.dll
 C:\Users\Douglas\ProjetoBanco\ProjetoBanco.MVC\bin\System.Net.Http.Formatting.dll
@@ -43,17 +51,33 @@ C:\Users\Douglas\ProjetoBanco\ProjetoBanco.MVC\bin\System.Web.WebPages.Razor.dll
 C:\Users\Douglas\ProjetoBanco\ProjetoBanco.MVC\bin\WebActivatorEx.dll
 C:\Users\Douglas\ProjetoBanco\ProjetoBanco.MVC\bin\WebGrease.dll
 C:\Users\Douglas\ProjetoBanco\ProjetoBanco.MVC\bin\Web Api.dll
+C:\Users\Douglas\ProjetoBanco\ProjetoBanco.MVC\bin\CrystalDecisions.ReportAppServer.DataDefModel.dll
+C:\Users\Douglas\ProjetoBanco\ProjetoBanco.MVC\bin\CrystalDecisions.ReportAppServer.ClientDoc.dll
+C:\Users\Douglas\ProjetoBanco\ProjetoBanco.MVC\bin\CrystalDecisions.ReportAppServer.ReportDefModel.dll
+C:\Users\Douglas\ProjetoBanco\ProjetoBanco.MVC\bin\CrystalDecisions.ReportAppServer.Controllers.dll
+C:\Users\Douglas\ProjetoBanco\ProjetoBanco.MVC\bin\CrystalDecisions.ReportAppServer.CommLayer.dll
+C:\Users\Douglas\ProjetoBanco\ProjetoBanco.MVC\bin\CrystalDecisions.ReportAppServer.DataSetConversion.dll
+C:\Users\Douglas\ProjetoBanco\ProjetoBanco.MVC\bin\CrystalDecisions.ReportAppServer.Prompting.dll
+C:\Users\Douglas\ProjetoBanco\ProjetoBanco.MVC\bin\CrystalDecisions.ReportAppServer.XmlSerialize.dll
+C:\Users\Douglas\ProjetoBanco\ProjetoBanco.MVC\bin\CrystalDecisions.ReportAppServer.CubeDefModel.dll
+C:\Users\Douglas\ProjetoBanco\ProjetoBanco.MVC\bin\CrystalDecisions.ReportAppServer.CommonObjectModel.dll
+C:\Users\Douglas\ProjetoBanco\ProjetoBanco.MVC\bin\CrystalDecisions.ReportAppServer.ObjectFactory.dll
+C:\Users\Douglas\ProjetoBanco\ProjetoBanco.MVC\bin\ProjetoBanco.Infra.Data.dll
 C:\Users\Douglas\ProjetoBanco\ProjetoBanco.MVC\bin\System.Web.Http.WebHost.dll
 C:\Users\Douglas\ProjetoBanco\ProjetoBanco.MVC\bin\SimpleInjector.Integration.WebApi.dll
+C:\Users\Douglas\ProjetoBanco\ProjetoBanco.MVC\bin\CrystalDecisions.ReportAppServer.CommonControls.dll
+C:\Users\Douglas\ProjetoBanco\ProjetoBanco.MVC\bin\stdole.dll
 C:\Users\Douglas\ProjetoBanco\ProjetoBanco.MVC\bin\ProjetoBanco.Application.pdb
 C:\Users\Douglas\ProjetoBanco\ProjetoBanco.MVC\bin\ProjetoBanco.Domain.pdb
-C:\Users\Douglas\ProjetoBanco\ProjetoBanco.MVC\bin\ProjetoBanco.Infra.Data.pdb
+C:\Users\Douglas\ProjetoBanco\ProjetoBanco.MVC\bin\AngleSharp.xml
 C:\Users\Douglas\ProjetoBanco\ProjetoBanco.MVC\bin\Microsoft.AI.DependencyCollector.xml
 C:\Users\Douglas\ProjetoBanco\ProjetoBanco.MVC\bin\Microsoft.AI.ServerTelemetryChannel.xml
 C:\Users\Douglas\ProjetoBanco\ProjetoBanco.MVC\bin\Microsoft.AI.Web.xml
 C:\Users\Douglas\ProjetoBanco\ProjetoBanco.MVC\bin\Microsoft.AI.WindowsServer.xml
 C:\Users\Douglas\ProjetoBanco\ProjetoBanco.MVC\bin\Microsoft.ApplicationInsights.xml
 C:\Users\Douglas\ProjetoBanco\ProjetoBanco.MVC\bin\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.xml
+C:\Users\Douglas\ProjetoBanco\ProjetoBanco.MVC\bin\protobuf-net.pdb
+C:\Users\Douglas\ProjetoBanco\ProjetoBanco.MVC\bin\protobuf-net.xml
 C:\Users\Douglas\ProjetoBanco\ProjetoBanco.MVC\bin\SimpleInjector.xml
 C:\Users\Douglas\ProjetoBanco\ProjetoBanco.MVC\bin\SimpleInjector.Integration.Web.Mvc.xml
 C:\Users\Douglas\ProjetoBanco\ProjetoBanco.MVC\bin\System.Net.Http.Formatting.xml
@@ -68,6 +92,7 @@ C:\Users\Douglas\ProjetoBanco\ProjetoBanco.MVC\bin\System.Web.WebPages.Razor.xml
 C:\Users\Douglas\ProjetoBanco\ProjetoBanco.MVC\bin\Antlr3.Runtime.pdb
 C:\Users\Douglas\ProjetoBanco\ProjetoBanco.MVC\bin\Newtonsoft.Json.xml
 C:\Users\Douglas\ProjetoBanco\ProjetoBanco.MVC\bin\Web Api.pdb
+C:\Users\Douglas\ProjetoBanco\ProjetoBanco.MVC\bin\ProjetoBanco.Infra.Data.pdb
 C:\Users\Douglas\ProjetoBanco\ProjetoBanco.MVC\bin\System.Web.Http.WebHost.xml
 C:\Users\Douglas\ProjetoBanco\ProjetoBanco.MVC\bin\SimpleInjector.Integration.WebApi.xml
 C:\Users\Douglas\ProjetoBanco\ProjetoBanco.MVC\obj\Debug\ProjetoBanco.MVC.dll

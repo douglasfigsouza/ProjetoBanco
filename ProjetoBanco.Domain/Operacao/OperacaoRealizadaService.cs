@@ -120,6 +120,24 @@ namespace ProjetoBanco.Domain.Operacao
             return estorno;
         }
 
+        public List<Estorno> GetExtratoPorData(DadosGetOpReal dadosGetOp)
+        {
+            List<Estorno> operacoes = new List<Estorno>();
+            try
+            {
+                operacoes = _operacoesRealizadasRepository.GetExtratoPorData(dadosGetOp);
+            }
+            catch (Exception e)
+            {
+                _notifications.Notificacoes.Add($"Impossível buscar Extrato! Erro {e.Message}");
+            }
+            if (operacoes.Count == 0)
+            {
+                _notifications.Notificacoes.Add("Não existem movimentações nessa conta!");
+            }
+            return operacoes;
+        }
+
         public void ConfirmEstorno(int id)
         {
             try

@@ -117,3 +117,6 @@ nav {
 .displayBlock {
     display: block;
 }
+#table {
+    border: 2px solid #000000;
+}

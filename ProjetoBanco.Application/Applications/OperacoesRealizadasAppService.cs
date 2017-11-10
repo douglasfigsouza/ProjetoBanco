@@ -74,5 +74,12 @@ namespace ProjetoBanco.Application
             return response;
         }
 
+        public HttpResponseMessage ExtratoPorData(DadosGetOpReal dadosGetOp)
+        {
+            HttpResponseMessage response;
+            response = HttpClientConf.HttpClientConfig("Operacoes")
+                .PostAsJsonAsync("ExtratoPorData",dadosGetOp).Result;
+            return response;
+        }
     }
 }

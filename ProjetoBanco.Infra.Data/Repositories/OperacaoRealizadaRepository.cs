@@ -18,7 +18,8 @@ namespace ProjetoBanco.Infra.Data.Repositories
             PBSP_GETALLOPERACOESESTORNO,
             PBSP_GETOPREALIZADASPORCONTA,
             PBSP_ESTORNA,
-            PBSP_GETOPREALIZADAESTORNOBYID
+            PBSP_GETOPREALIZADAESTORNOBYID,
+            PBSP_EXTRATOPORDATA
         }
 
         public OperacaoRealizadaRepository(Conexao conn)
@@ -166,6 +167,36 @@ namespace ProjetoBanco.Infra.Data.Repositories
                 };
             }
             return estorno;
+        }
+
+        public List<Estorno> GetExtratoPorData(DadosGetOpReal dadosGetOp)
+        {
+
+            var OpsEstorno = new List<Estorno>();
+            _conn.ExecuteProcedure(Procedure.PBSP_EXTRATOPORDATA);
+            _conn.AddParameter("@conta", dadosGetOp.conta);
+            _conn.AddParameter("@senha", dadosGetOp.senha);
+            _conn.AddParameter("@dataInicial", dadosGetOp.dataInicial);
+            _conn.AddParameter("@dataFinal", dadosGetOp.dataFinal);
+
+            using (var result=_conn.ExecuteReader())
+                while (result.Read())
+                {
+                    OpsEstorno.Add(new Estorno
+                    {
+                        Id = Convert.ToInt32(result["Id"].ToString()),
+                        opId = Convert.ToInt32(result["codTipoOp"].ToString()),
+                        dataOp = Convert.ToDateTime(result["dataOp"].ToString()),
+                        valorOp = Convert.ToDecimal(result["valorOp"].ToString()),
+                        saldoAnterior = Convert.ToDecimal(result["saldoAnterior"].ToString()),
+                        descricao = result["descricao"].ToString(),
+                        agencia = Convert.ToInt32(result["agencia"].ToString()),
+                        conta = result["num"].ToString(),
+                        cliente = result["nome"].ToString(),
+                        saldo = decimal.Parse(result["saldo"].ToString())
+                    });
+                }
+            return OpsEstorno;
         }
     }
 }

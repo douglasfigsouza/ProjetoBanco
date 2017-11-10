@@ -3,7 +3,7 @@
     public interface IContaClienteRepository
     {
         void AddContaCliente(Conta conta);
-        ContaClienteAlteracao GetConta(string conta, int agencia, string senha);
+        ContaClienteAlteracao GetConta(string conta, string senha);
         void UpdateConta(Conta conta);
     }
 }

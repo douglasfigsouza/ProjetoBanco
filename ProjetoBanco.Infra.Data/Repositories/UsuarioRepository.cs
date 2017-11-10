@@ -27,7 +27,7 @@ namespace ProjetoBanco.Infra.Data.Repositories
             _conn.AddParameter("@clienteId", usuario.clienteId);
             _conn.AddParameter("@nome", usuario.nome);
             _conn.AddParameter("@senha", usuario.senha);
-            _conn.AddParameter("@ativo",true);
+            _conn.AddParameter("@ativo", true);
             _conn.ExecuteNonQuery();
         }
 

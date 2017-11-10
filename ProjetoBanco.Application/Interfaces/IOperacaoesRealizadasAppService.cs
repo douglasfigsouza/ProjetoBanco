@@ -13,5 +13,6 @@ namespace ProjetoBanco.Application.Interfaces
         HttpResponseMessage GetOpRealizadaEstornoById(int Id);
         HttpResponseMessage ConfirmEstorno(Estorno estorno);
         HttpResponseMessage GetAllOperacoesEstorno();
+        HttpResponseMessage ExtratoPorData(DadosGetOpReal dadosGetOp);
     }
 }

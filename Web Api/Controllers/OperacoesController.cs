@@ -228,5 +228,22 @@ namespace Web_Api.Controllers
                 return Ok(opsEstornos);
             }
         }
+        public IHttpActionResult ExtratoPorData(DadosGetOpReal dadosGetOp)
+        {
+            List<Estorno> opsEstornos = new List<Estorno>(_operacaoRealizadaService.GetExtratoPorData(dadosGetOp));
+            if (_notifications.Notificacoes.Count > 0)
+            {
+                string erros = "";
+                foreach (var erro in _notifications.Notificacoes)
+                {
+                    erros = erros + " " + erro;
+                }
+                return BadRequest(erros);
+            }
+            else
+            {
+                return Ok(opsEstornos);
+            }
+        }
     }
 }

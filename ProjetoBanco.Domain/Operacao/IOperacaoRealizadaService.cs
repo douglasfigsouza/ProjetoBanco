@@ -11,6 +11,7 @@ namespace ProjetoBanco.Domain.Operacão
         List<Estorno> GetAllOperacoesPorContaParaEstorno(DadosGetOpReal dadosGetOp);
         IEnumerable<Estorno> GetAllOperacoesEstorno();
         Estorno GetOpRealizadaEstornoById(int id);
+        List<Estorno> GetExtratoPorData(DadosGetOpReal dadosGetOp);
         void ConfirmEstorno(int id);
     }
 }

@@ -13,7 +13,8 @@ namespace ProjetoBanco.Infra.Data.Repositories
             PBSP_INSERTCONTA,
             PBSP_INSERTCONTACLIENTE,
             PBSP_GETCONTA,
-            PBSP_UPDATECONTA
+            PBSP_UPDATECONTA,
+            PBSP_SELDADOSCONTACLIENTE
         }
 
         public ContaClienteRepository(Conexao conn)
@@ -46,23 +47,19 @@ namespace ProjetoBanco.Infra.Data.Repositories
             _conn.AddParameter("@ativo", conta.ativo);
             _conn.ExecuteNonQuery();
         }
-        public ContaClienteAlteracao GetConta(string conta, int agencia, string senha)
+        public ContaClienteAlteracao GetConta(string conta,string senha)
         {
-            ContaClienteAlteracao contaClienteAlteracao = null;
-            _conn.ExecuteProcedure(Procedure.PBSP_GETCONTA);
+            var contaClienteAlteracao = new ContaClienteAlteracao();
+            _conn.ExecuteProcedure(Procedure.PBSP_SELDADOSCONTACLIENTE);
             _conn.AddParameter("@conta", conta);
             _conn.AddParameter("@senha", senha);
-            _conn.AddParameter("@agencia", agencia);
             SqlDataReader result;
             result = _conn.ExecuteReader();
             while (result.Read())
             {
-                contaClienteAlteracao = new ContaClienteAlteracao
-                {
-                    conta = result["num"].ToString(),
-                    senha = result["senha"].ToString()
-                };
-                contaClienteAlteracao.Clientes.Add(new Cliente
+                contaClienteAlteracao.conta = result["num"].ToString();
+                contaClienteAlteracao.senha = result["senha"].ToString();
+                contaClienteAlteracao.Clientes.Add(new Cliente()
                 {
                     nome = result["nome"].ToString()
                 });

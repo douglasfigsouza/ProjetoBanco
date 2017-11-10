@@ -91,14 +91,6 @@ CREATE TABLE OperacoesRealizadas
 	CONSTRAINT FK_Opercoes_OpRealizadas FOREIGN KEY(codTipoOp) REFERENCES Operacoes,
 	CONSTRAINT FK_Clientes_OpRealizadas FOREIGN KEY(clienteId) REFERENCES Clientes,
 	CONSTRAINT FK_Agencia_OpRealizadas FOREIGN KEY(agencia,bancoId) REFERENCES Agencia,
-	CONSTRAINT FK_Conta_OpRealizadas FOREIGN KEY(contaId) REFERENCES Operacoes
+	CONSTRAINT FK_Conta_OpRealizadas FOREIGN KEY(contaId) REFERENCES Conta
 );
 GO
-INSERT INTO Clientes VALUES(1,'Admin','00000000000','0000000','0000000000','default','default',0,CONVERT(datetime,GETDATE()),'f',1);
-INSERT INTO Usuario VALUES(1,'Admin','Admin',1);
-
-insert into Operacoes values('Depósito',1)
-insert into Operacoes values('Saque',1)
-insert into Operacoes values('Saldo',1)
-insert into Operacoes values('Transferência',1)
-insert into Operacoes values('Estorno',1)

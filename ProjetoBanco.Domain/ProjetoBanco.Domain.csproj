@@ -58,7 +58,6 @@
     <Compile Include="Operacao\OperacoesService.cs" />
     <Compile Include="Usuario\IUsuarioService.cs" />
     <Compile Include="Usuario\UsuarioService.cs" />
-    <Compile Include="Utilitario\feedBack.cs" />
     <Compile Include="Utilitario\Notifications.cs" />
     <Compile Include="Operacao\Dto\Transacao.cs" />
     <Compile Include="Usuario\Dto\Usuario.cs" />

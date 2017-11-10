@@ -27,18 +27,18 @@ namespace ProjetoBanco.Domain.Conta
             }
         }
 
-        public ContaClienteAlteracao GetConta(string numConta, int agencia, string senha)
+        public ContaClienteAlteracao GetConta(string numConta, string senha)
         {
             var conta = new ContaClienteAlteracao();
             try
             {
-                _contaClienteRepository.GetConta(numConta, agencia, senha);
+               conta = _contaClienteRepository.GetConta(numConta, senha);
             }
             catch (Exception e)
             {
                 _notifications.Notificacoes.Add($"Impossível buscar conta! Erro {e.Message}");
             }
-            if (conta.conta == "")
+            if (conta == null)
             {
                 _notifications.Notificacoes.Add("Conta não encontrada!");
             }

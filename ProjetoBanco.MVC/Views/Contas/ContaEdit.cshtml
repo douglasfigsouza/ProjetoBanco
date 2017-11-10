@@ -7,28 +7,30 @@
     <div class="col s12">
         <div class="row">
             <h5>Informe os Dados para recuperar a conta a ser alterada</h5>
-            <hr/>
+            <hr />
         </div>
-        <div class="row">
-            <div class="col s4">
-                <label class="col s12">Conta</label>
-                <input type="text" class="col s12 conta" name="conta" id="conta">
+        <form>
+            <div class="row">
+                <div class="col s4">
+                    <label class="col s12">Conta</label>
+                    <input type="text" class="col s12 conta" name="conta" id="conta">
+                </div>
+                <div class="col s4">
+                    <label class="col s12">Agência</label>
+                    <input type="text" class="col s12 agencia" name="agencia" id="agencia">
+                </div>
+                <div class="col s4">
+                    <label class="col s12">Senha</label>
+                    <input type="password" class="col s12" name="senha" id="senha">
+                </div>
             </div>
-            <div class="col s4">
-                <label class="col s12">Agência</label>
-                <input type="text" class="col s12 agencia" name="agencia" id="agencia">
+            <div class="row">
+                <button class="btn waves-effect waves-light" type="button" id="getConta">
+                    Buscar
+                    <i class="material-icons right">send</i>
+                </button>
             </div>
-            <div class="col s4">
-                <label class="col s12">Senha</label>
-                <input type="password" class="col s12" name="senha" id="senha">
-            </div>
-        </div>
-        <div class="row">
-            <button class="btn waves-effect waves-light" type="button" id="getConta">
-                Buscar
-                <i class="material-icons right">send</i>
-            </button>
-        </div>
+        </form>
     </div>
 </div>
 <div class="row" id="divDadosDaConta">
@@ -45,7 +47,7 @@
     </div>
     <div class="col s8">
         <h5 id="contaCli"></h5>
-        <hr/>
+        <hr />
         @using (Ajax.BeginForm("UpdateConta", "Contas", null, new AjaxOptions
         {
             HttpMethod = "POST",
@@ -56,7 +58,7 @@
         }))
         {
             <div class="row">
-                <input type="hidden" name="conta" id="contaAlteracao"/>
+                <input type="hidden" name="conta" id="contaAlteracao" />
                 <div class="row">
                     <div class="col s12">
                         <h6 class="col s4">Cliente(s):</h6>
@@ -66,16 +68,16 @@
                 <div class="row">
                     <div class="col s6">
                         <label class="col s12">Senha</label>
-                        <input type="password" class="col s12" name="senha" id="senhaAlter"/>
+                        <input type="password" class="col s12" name="senha" id="senhaAlter" />
                     </div>
                     <div class="col s6">
                         <label class="col s12">Confirme a Senha</label>
-                        <input type="password" class="col s12" name="confSenha" id="confSenhaAlter"/>
+                        <input type="password" class="col s12" name="confSenha" id="confSenhaAlter" />
                     </div>
                 </div>
                 <div class="row">
                     <div class="col s3 ">
-                        <input type="checkbox" id="ativo" name="ativo" checked/>
+                        <input type="checkbox" id="ativo" name="ativo" checked />
                         <label for="ativo">Ativo</label>
                     </div>
                 </div>
@@ -114,7 +116,7 @@
                     agencia: $("#agencia").val()
                 },
                 success: function (dados) {
-                    debugger;
+                    $(".divErroNaOperacao").hide();
                     $("#contaAlteracao").val(dados.conta);
                     $("#senhaAlter").val(dados.senha);
                     $("#confSenhaAlter").val(dados.senha);
@@ -125,9 +127,10 @@
                         $("#ativo").prop('checked', false);
                         $("#ativo").val(false);
                     }
+                    debugger;
                     $("#contaCli").text("Conta: " + dados.conta);
                     for (var i = 0; i < dados.Clientes.length; i++) {
-                        $("#nomeCli").text(dados.Clientes[i].nome + "/" + $("#nomeCli").text());
+                        $("#nomeCli").html(dados.Clientes[i].nome + "<br/>" + $("#nomeCli").text());
                     }
                     $("#dadosContaCliente").hide();
                     $("#divDadosDaConta").show();

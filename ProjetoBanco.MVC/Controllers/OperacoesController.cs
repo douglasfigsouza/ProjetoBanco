@@ -2,6 +2,7 @@
 using ProjetoBanco.Domain.Operacoes;
 using ProjetoBanco.Domain.Operacoes.Dto;
 using ProjetoBanco.MVC.ViewModels;
+using Rotativa;
 using System;
 using System.Collections.Generic;
 using System.Net.Http;
@@ -362,6 +363,58 @@ namespace ProjetoBanco.MVC.Controllers
             }
             Response.StatusCode = 200;
             return Json(statusCode.Content.ReadAsAsync<Estorno>().Result, JsonRequestBehavior.AllowGet);
+        }
+
+        public ActionResult GetExtratoPorData()
+        {
+            return View("_Extrato");
+        }
+        [HttpPost]
+        public ActionResult GetExtratoPorData(FormCollection form)
+        {
+            var statusCode = new HttpResponseMessage();
+            List<EstornoViewModel> opsEstornoViewModels = new List<EstornoViewModel>();
+            var dadosOpGetReal = new DadosGetOpReal();
+            
+            dadosOpGetReal.conta = Utilitarios.Utilitarios.retiraMask(form["conta"]);
+            dadosOpGetReal.senha = Utilitarios.Utilitarios.retiraMask(form["senha"]);
+            dadosOpGetReal.dataInicial = Convert.ToDateTime(form["dataInicial"]);
+            dadosOpGetReal.dataFinal = Convert.ToDateTime(form["dataFinal"]);
+            statusCode = _operacaoesRealizadasAppService.ExtratoPorData(dadosOpGetReal);
+            if (!statusCode.IsSuccessStatusCode)
+            {
+                Response.TrySkipIisCustomErrors = true;
+                Response.StatusCode = 400;
+                return Content(Utilitarios.Utilitarios.limpaMenssagemErro(statusCode.Content.ReadAsStringAsync().Result));
+
+            }
+
+            foreach (var op in statusCode.Content.ReadAsAsync<IEnumerable<Estorno>>().Result)
+            {
+                opsEstornoViewModels.Add(new EstornoViewModel
+                {
+                    Id = op.Id,
+                    opId = op.opId,
+                    cliente = op.cliente,
+                    agencia = op.agencia,
+                    conta = op.conta,
+                    saldoAnterior = op.saldoAnterior,
+                    valorOp = op.valorOp,
+                    dataOp = op.dataOp,
+                    descricao = op.descricao,
+                    saldo = op.saldo,
+                    dataInicial = Convert.ToDateTime(form["dataInicial"]).Date,
+                    dataFinal = Convert.ToDateTime(form["dataFinal"]).Date
+
+                });
+            }
+            //RazorPdf
+            //var pdf = new PdfResult(opsEstornoViewModels, "_Extrato");
+            ////rotativa
+            var pdf = new ViewAsPdf("RelExtrato", opsEstornoViewModels);
+            return pdf;
+
+
         }
     }
 }

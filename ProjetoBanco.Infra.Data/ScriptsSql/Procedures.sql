@@ -628,7 +628,7 @@ GO
 										INNER JOIN ContaCliente WITH(NOLOCK) ON Conta.Id = ContaCliente.contaId
 										INNER JOIN Clientes WITH(NOLOCK) ON ContaCliente.clienteId = Clientes.Id
 										INNER JOIN Agencia WITH(NOLOCK) ON ContaCliente.agencia = Agencia.agencia
-								WHERE Conta.num = @conta AND Clientes.Id =@clienteId
+								WHERE Conta.num = @conta AND ContaCliente.clienteId = @clienteId
 									AND Conta.senha=@senhaCli AND Conta.ativo=1
 									AND agencia.ativo=1 AND Clientes.ativo=1);
 			SELECT	dbo.RetornaSaldo(@contaId) AS saldo, 
@@ -1078,37 +1078,39 @@ GO
 	END
 GO
 
-IF EXISTS (SELECT * FROM dbo.sysobjects WHERE id = object_id(N'[dbo].[PBSP_GETCONTA]') AND objectproperty(id, N'IsPROCEDURE')=1)
-	DROP PROCEDURE [dbo].[PBSP_GETCONTA]
+IF EXISTS (SELECT * FROM dbo.sysobjects WHERE id = object_id(N'[dbo].[PBSP_SELDADOSCONTACLIENTE]') AND objectproperty(id, N'IsPROCEDURE')=1)
+	DROP PROCEDURE [dbo].[PBSP_SELDADOSCONTACLIENTE]
 GO
 
-CREATE PROCEDURE [dbo].[PBSP_GETCONTA]
-		@agencia INT,
-		@conta VARCHAR(20),
-		@senha VARCHAR(20)
+CREATE PROCEDURE [dbo].[PBSP_SELDADOSCONTACLIENTE]
+	@conta VARCHAR(20),
+	@senha VARCHAR(8)
 	AS
+
 	/*
 	Documentação
 	Arquivo Fonte.....: ArquivoFonte.sql
-	Objetivo..........: Retorna a conta especifica
+	Objetivo..........: Retorna dados da conta cliente com os clientes pertecentes a conta 
 	Autor.............: SMN - Douglas
- 	Data..............: 16/10/2017
-	Ex................: EXEC [dbo].[PBSP_GETCONTACLIENTE]
+ 	Data..............: 01/01/2017
+	Ex................: EXEC [dbo].[PBSP_SELDADOSCONTACLIENTE]
 
 	*/
 
 	BEGIN
-		SELECT  cli.nome,
-				conta.num,
-				conta.Id, 
-				conta.senha, 
-				conta.ativo 
-				FROM ContaCliente AS contaCli WITH(NOLOCK)
-					INNER JOIN Clientes AS cli	WITH(NOLOCK) ON contaCli.clienteId = cli.Id
-					INNER JOIN Conta AS conta WITH(NOLOCK) ON contaCli.contaId = conta.Id
-					INNER JOIN Agencia AS ag WITH(NOLOCK) ON contaCli.agencia = ag.agencia
-		WHERE conta.num = @conta AND conta.senha = @senha AND ag.agencia = @agencia
-			AND ag.ativo=1 AND cli.ativo=1;
+		SELECT	c.num,
+				c.senha,
+				c.ativo,
+				a.agencia,
+				cli.nome 
+			FROM Conta AS c WITH(NOLOCK)
+				INNER JOIN ContaCliente AS cc WITH(NOLOCK)
+					ON c.Id = cc.contaId
+				INNER JOIN Agencia AS a WITH(NOLOCK)
+					ON cc.agencia = a.agencia
+				INNER JOIN Clientes AS cli
+					ON cc.clienteId = cli.Id
+			WHERE c.num = @conta AND c.senha=@senha
 	END
 GO
 

@@ -32,10 +32,10 @@ namespace Web_Api.Controllers
                 return Ok();
             }
         }
-        public IHttpActionResult GetConta(string conta, int agencia, string senha)
+        public IHttpActionResult GetConta(string conta, string senha)
         {
             var contaClienteAlteracao = new ContaClienteAlteracao();
-            contaClienteAlteracao = _iContaClienteService.GetConta(conta, agencia, senha);
+            contaClienteAlteracao = _iContaClienteService.GetConta(conta, senha);
             if (_notifications.Notificacoes.Count > 0)
             {
                 string erros = "";

@@ -14,5 +14,6 @@ namespace ProjetoBanco.Domain.Operacoes.Dto
         public int agencia { get; set; }
         public string conta { get; set; }
         public string cliente { get; set; }
+        public decimal saldo { get; set; }
     }
 }

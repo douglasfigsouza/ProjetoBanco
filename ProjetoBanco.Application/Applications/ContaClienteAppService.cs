@@ -15,7 +15,7 @@ namespace ProjetoBanco.Application
             return response;
         }
 
-        public HttpResponseMessage GetConta(string conta, int agencia, string senha)
+        public HttpResponseMessage GetConta(string conta, string senha)
         {
             HttpResponseMessage response;
             //Create a query
@@ -23,7 +23,6 @@ namespace ProjetoBanco.Application
             response = client.GetAsync(HttpClientConf.HttpClientConfigGet("ContaCliente/GetConta", new
             {
                 conta,
-                agencia,
                 senha
 
             })).Result;

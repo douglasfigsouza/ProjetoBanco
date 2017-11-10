@@ -135,7 +135,7 @@ namespace ProjetoBanco.MVC.Controllers
 
                 conta = Utilitarios.Utilitarios.retiraMask(conta);
                 agencia = Utilitarios.Utilitarios.retiraMask(agencia);
-                statusCode = _contaClienteAppService.GetConta(conta, int.Parse(agencia), senha);
+                statusCode = _contaClienteAppService.GetConta(conta, senha);
 
                 if (!statusCode.IsSuccessStatusCode)
                 {
