@@ -1,6 +1,7 @@
 ﻿using ProjetoBanco.Domain.Conta;
 using ProjetoBanco.Domain.Contas;
 using ProjetoBanco.Domain.Entities;
+using System.Collections.Generic;
 using System.Web.Http;
 
 namespace Web_Api.Controllers
@@ -67,5 +68,25 @@ namespace Web_Api.Controllers
                 return Ok();
             }
         }
+        public IHttpActionResult GetAllContas()
+        {
+            var contas = new List<ContaClienteAlteracao>(_iContaClienteService.GetAllContas());
+
+            if (_notifications.Notificacoes.Count > 0)
+            {
+                string erros = "";
+                foreach (var erro in _notifications.Notificacoes)
+                {
+                    erros = erros + " " + erro;
+                }
+                return BadRequest(erros);
+            }
+            else
+            {
+                return Ok(contas);
+            }
+        }
+
     }
 }
+

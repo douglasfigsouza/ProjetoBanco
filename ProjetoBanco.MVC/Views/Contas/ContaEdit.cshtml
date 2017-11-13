@@ -1,4 +1,5 @@
-﻿<div class="row" id="dadosContaCliente">
+﻿@model IEnumerable<ProjetoBanco.MVC.ViewModels.ContaClienteAlteracaoViewModel>
+<div class="row" id="dadosContaCliente">
     <div class="row divErroNaOperacao">
         <div class="col s12">
             <h6 class="erroOperacao"></h6>
@@ -9,28 +10,48 @@
             <h5>Informe os Dados para recuperar a conta a ser alterada</h5>
             <hr />
         </div>
-        <form>
-            <div class="row">
-                <div class="col s4">
-                    <label class="col s12">Conta</label>
-                    <input type="text" class="col s12 conta" name="conta" id="conta">
-                </div>
-                <div class="col s4">
-                    <label class="col s12">Agência</label>
-                    <input type="text" class="col s12 agencia" name="agencia" id="agencia">
-                </div>
-                <div class="col s4">
-                    <label class="col s12">Senha</label>
-                    <input type="password" class="col s12" name="senha" id="senha">
-                </div>
-            </div>
-            <div class="row">
-                <button class="btn waves-effect waves-light" type="button" id="getConta">
-                    Buscar
-                    <i class="material-icons right">send</i>
-                </button>
-            </div>
-        </form>
+        <div class="row" id="divContaEditaveis">
+            <table id="tlbContaEditaveis" class="striped responsive-table centered">
+                <thead>
+                    <tr>
+                        <th>Clientes</th>
+                        <th>Conta</th>
+                        <th>Alterar</th>
+                    </tr>
+                </thead>
+                <tbody id="tbdClientesConta">
+                    @if (Model.Any() || Model.AsEnumerable().ElementAt(0).Clientes.Count() != 0)
+                    {
+                        foreach (var contaCli in Model)
+                        {
+                            <tr id=@contaCli.Id>
+                                <td>
+                                    @foreach (var cli in contaCli.Clientes)
+                                    {
+                                        @cli.nome
+                                        <br />
+                                    }
+                                </td>
+                                <td>
+                                    @contaCli.conta
+                                </td>
+                                <td>
+                                    <button type="button" class="modal-action modal-close btn green btn-small" id="getConta">
+                                        <i class="material-icons">edit_box</i>
+                                    </button>
+                                </td>
+                            </tr>
+                        }
+                    }
+                    else
+                    {
+                        <tr>
+                            <td>Nenhum Registro encontrado.</td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
     </div>
 </div>
 <div class="row" id="divDadosDaConta">
@@ -49,14 +70,14 @@
         <h5 id="contaCli"></h5>
         <hr />
         @using (Ajax.BeginForm("UpdateConta", "Contas", null, new AjaxOptions
-        {
-            HttpMethod = "POST",
-            OnSuccess = "sucesso",
-            OnFailure = "erro(xhr)",
-            OnBegin = "progresso",
-            OnComplete = "fim"
-        }))
-        {
+            {
+                HttpMethod = "POST",
+                OnSuccess = "sucesso",
+                OnFailure = "erro(xhr)",
+                OnBegin = "progresso",
+                OnComplete = "fim"
+            }))
+            {
             <div class="row">
                 <input type="hidden" name="conta" id="contaAlteracao" />
                 <div class="row">
@@ -103,6 +124,32 @@
         $(".erroOperacao").html("<i class='tiny material-icons'>error</i>Ops! algo deu errado. " + xhr.responseText);
     }
     $(document).ready(function () {
+        $("#tlbContaEditaveis").dataTable({
+            language: {
+                "sEmptyTable": "Nenhum registro encontrado",
+                "sInfo": "Mostrando de _START_ até _END_ de _TOTAL_ registros",
+                "sInfoEmpty": "Mostrando 0 até 0 de 0 registros",
+                "sInfoFiltered": "(Filtrados de _MAX_ registros)",
+                "sInfoPostFix": "",
+                "sInfoThousands": ".",
+                "sLengthMenu": "Exibir _MENU_",
+                "sLoadingRecords": "Carregando...",
+                "sProcessing": "Processando...",
+                "sZeroRecords": "Nenhum registro encontrado",
+                "sSearch": "Pesquisar",
+                "oPaginate": {
+                    "sNext": "Próximo",
+                    "sPrevious": "Anterior",
+                    "sFirst": "Primeiro",
+                    "sLast": "Último"
+                },
+                "oAria": {
+                    "sSortAscending": ": Ordenar colunas de forma ascendente",
+                    "sSortDescending": ": Ordenar colunas de forma descendente"
+                }
+            }
+
+        });
         $(".container").addClass("diminuicao50");
         $("#divDadosDaConta").hide();
         $("#getConta").click(function () {

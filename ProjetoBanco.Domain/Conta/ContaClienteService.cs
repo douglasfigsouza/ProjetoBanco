@@ -1,6 +1,7 @@
 ﻿using ProjetoBanco.Domain.Contas;
 using ProjetoBanco.Domain.Entities;
 using System;
+using System.Collections.Generic;
 
 namespace ProjetoBanco.Domain.Conta
 {
@@ -25,6 +26,20 @@ namespace ProjetoBanco.Domain.Conta
             {
                 _notifications.Notificacoes.Add($"Impossível cadastrar conta! Erro {e.Message}");
             }
+        }
+
+        public List<ContaClienteAlteracao> GetAllContas()
+        {
+            var contas = new List<ContaClienteAlteracao>();
+            try
+            {
+                contas = _contaClienteRepository.GetAllContas();
+            }
+            catch (Exception e)
+            {
+                _notifications.Notificacoes.Add($"Impossível buscar conta! Erro {e.Message}");
+            }
+            return contas;
         }
 
         public ContaClienteAlteracao GetConta(string numConta, string senha)

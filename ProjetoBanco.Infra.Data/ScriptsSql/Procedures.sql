@@ -333,7 +333,6 @@ GO
 				CidadeId, 
 				ativo 
 				FROM[dbo].[Agencia] WITH(NOLOCK)
-		WHERE ativo = 1;
 	END
 GO
 
@@ -1308,7 +1307,41 @@ CREATE PROCEDURE [dbo].[PBSP_EXTRATOPORDATA]
 				AND conta.ativo=1 AND ag.ativo=1 AND cli.ativo=1 AND opReal.dataOp BETWEEN @dataInicial AND @dataFinal
 	END
 GO
-																							
+
+IF EXISTS (SELECT * FROM dbo.sysobjects WHERE id = object_id(N'[dbo].[PBSP_GETALLCONTAS]') AND objectproperty(id, N'IsPROCEDURE')=1)
+	DROP PROCEDURE [dbo].[PBSP_GETALLCONTAS]
+GO
+
+CREATE PROCEDURE [dbo].[PBSP_GETALLCONTAS]
+
+	AS
+
+	/*
+	Documentação
+	Arquivo Fonte.....: ArquivoFonte.sql
+	Objetivo..........: Retorna todas as contas bem como seus donos 
+	Autor.............: SMN - Douglas
+ 	Data..............: 13/11/2017
+	Ex................: EXEC [dbo].[PBSP_GETALLCONTAS]
+
+	*/
+
+	BEGIN
+		SELECT  cli.nome,
+				cli.Id AS clienteId,
+				conta.Id AS contaId,
+				conta.num, 
+				conta.senha, 
+				ag.agencia
+			FROM ContaCliente AS contaCli WITH(NOLOCK)	
+				INNER JOIN Clientes AS cli WITH(NOLOCK) ON contaCli.clienteId = cli.Id
+				INNER JOIN Conta AS conta WITH(NOLOCK) ON contaCli.contaId = conta.Id
+				INNER JOIN Agencia AS ag WITH(NOLOCK)	ON ag.agencia = contaCli.agencia 
+
+			
+	END
+GO
+																									
 --Funções
 --função que retorna o Saldo
 CREATE FUNCTION dbo.RetornaSaldo(@contaId SMALLINT)

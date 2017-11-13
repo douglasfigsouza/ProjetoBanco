@@ -93,7 +93,18 @@ namespace ProjetoBanco.MVC.Controllers
 
         public ActionResult EditConta()
         {
-            return View("ContaEdit");
+            var statusCode = new HttpResponseMessage();
+            statusCode = _contaClienteAppService.GetAllContas();
+            if (!statusCode.IsSuccessStatusCode)
+            {
+                Response.TrySkipIisCustomErrors = true;
+                Response.StatusCode = 400;
+                return Json(Utilitarios.Utilitarios.limpaMenssagemErro(statusCode.Content.ReadAsStringAsync().Result));
+
+            }
+            Response.StatusCode = 200;
+            List<ContaClienteAlteracao> model = statusCode.Content.ReadAsAsync<List<ContaClienteAlteracao>>().Result;
+            return View("ContaEdit", model);
         }
 
         [HttpPost]

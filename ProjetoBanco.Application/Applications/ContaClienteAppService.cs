@@ -36,5 +36,13 @@ namespace ProjetoBanco.Application
                 .PostAsJsonAsync("UpdateConta", conta).Result;
             return response;
         }
+        public HttpResponseMessage GetAllContas()
+        {
+
+            HttpResponseMessage response;
+            response = HttpClientConf.HttpClientConfig("ContaCliente")
+                .GetAsync("GetAllContas").Result;
+            return response;
+        }
     }
 }

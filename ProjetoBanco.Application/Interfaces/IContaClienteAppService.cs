@@ -8,5 +8,6 @@ namespace ProjetoBanco.Application.Interfaces
         HttpResponseMessage AddContaCliente(Conta conta);
         HttpResponseMessage GetConta(string conta, string senha);
         HttpResponseMessage UpdateConta(Conta conta);
+        HttpResponseMessage GetAllContas();
     }
 }

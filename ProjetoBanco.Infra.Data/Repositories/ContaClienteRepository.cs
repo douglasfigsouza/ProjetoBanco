@@ -1,6 +1,6 @@
 ﻿using ProjetoBanco.Domain.Clientes;
 using ProjetoBanco.Domain.Contas;
-using System.Data.SqlClient;
+using System.Collections.Generic;
 
 namespace ProjetoBanco.Infra.Data.Repositories
 {
@@ -14,7 +14,8 @@ namespace ProjetoBanco.Infra.Data.Repositories
             PBSP_INSERTCONTACLIENTE,
             PBSP_GETCONTA,
             PBSP_UPDATECONTA,
-            PBSP_SELDADOSCONTACLIENTE
+            PBSP_SELDADOSCONTACLIENTE,
+            PBSP_GETALLCONTAS
         }
 
         public ContaClienteRepository(Conexao conn)
@@ -47,25 +48,53 @@ namespace ProjetoBanco.Infra.Data.Repositories
             _conn.AddParameter("@ativo", conta.ativo);
             _conn.ExecuteNonQuery();
         }
-        public ContaClienteAlteracao GetConta(string conta,string senha)
+        public ContaClienteAlteracao GetConta(string conta, string senha)
         {
             var contaClienteAlteracao = new ContaClienteAlteracao();
             _conn.ExecuteProcedure(Procedure.PBSP_SELDADOSCONTACLIENTE);
             _conn.AddParameter("@conta", conta);
             _conn.AddParameter("@senha", senha);
-            SqlDataReader result;
-            result = _conn.ExecuteReader();
-            while (result.Read())
-            {
-                contaClienteAlteracao.conta = result["num"].ToString();
-                contaClienteAlteracao.senha = result["senha"].ToString();
-                contaClienteAlteracao.Clientes.Add(new ClienteDto()
+            using (var result = _conn.ExecuteReader())
+                while (result.Read())
                 {
-                    nome = result["nome"].ToString()
-                });
-                contaClienteAlteracao.ativo = bool.Parse(result["ativo"].ToString());
-            }
+                    contaClienteAlteracao.conta = result["num"].ToString();
+                    contaClienteAlteracao.senha = result["senha"].ToString();
+                    contaClienteAlteracao.Clientes.Add(new ClienteDto()
+                    {
+                        nome = result["nome"].ToString()
+                    });
+                    contaClienteAlteracao.ativo = bool.Parse(result["ativo"].ToString());
+                }
             return contaClienteAlteracao;
+        }
+
+        public List<ContaClienteAlteracao> GetAllContas()
+        {
+            _conn.ExecuteProcedure(Procedure.PBSP_GETALLCONTAS);
+            var contas = new List<ContaClienteAlteracao>();
+            var contaCliAlteracao = new ContaClienteAlteracao();
+            using (var result = _conn.ExecuteReader())
+                while (result.Read())
+                {
+                    contaCliAlteracao.agencia = int.Parse(result["agencia"].ToString());
+                    contaCliAlteracao.contaId = int.Parse(result["contaId"].ToString());
+                    contaCliAlteracao.conta = result["num"].ToString();
+                    contaCliAlteracao.senha = result["senha"].ToString();
+                    contaCliAlteracao.clienteId = int.Parse(result["clienteId"].ToString());
+                    contaCliAlteracao.idCliContaCliente = int.Parse(result["idCliContaCliente"].ToString());
+                    if (contaCliAlteracao.idCliContaCliente == contaCliAlteracao.clienteId)
+                    {
+                        contaCliAlteracao.Clientes.Add(new ClienteDto
+                        {
+                            Id = int.Parse(result["clienteId"].ToString()),
+                            nome = result["nome"].ToString()
+
+                        });
+                    }
+                    contas.Add(contaCliAlteracao);
+
+                }
+            return contas;
         }
     }
 }

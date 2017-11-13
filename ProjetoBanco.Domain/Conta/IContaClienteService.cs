@@ -1,4 +1,5 @@
 ﻿using ProjetoBanco.Domain.Contas;
+using System.Collections.Generic;
 
 namespace ProjetoBanco.Domain.Conta
 {
@@ -7,6 +8,7 @@ namespace ProjetoBanco.Domain.Conta
         void AddContaCliente(Contas.Conta conta);
         ContaClienteAlteracao GetConta(string conta, string senha);
         void UpdateConta(Contas.Conta conta);
+        List<ContaClienteAlteracao> GetAllContas();
 
     }
 }
