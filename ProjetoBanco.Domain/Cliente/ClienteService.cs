@@ -15,7 +15,7 @@ namespace ProjetoBanco.Domain.Clientes
             _notifications = notifications;
         }
 
-        public void AddCliente(Cliente cliente)
+        public void AddCliente(ClienteDto cliente)
         {
             try
             {
@@ -27,27 +27,23 @@ namespace ProjetoBanco.Domain.Clientes
             }
         }
 
-        public IEnumerable<Cliente> GetAllClientes(int op)
+        public IEnumerable<ClienteDto> GetAllClientes(int op)
         {
-            IEnumerable<Cliente> clientes = null;
+            IEnumerable<ClienteDto> clientes = null;
             try
             {
-                clientes = new List<Cliente>(_clienteRepository.GetAllClientes(op));
+                clientes = new List<ClienteDto>(_clienteRepository.GetAllClientes(op));
             }
             catch (Exception e)
             {
                 _notifications.Notificacoes.Add($"Impossível buscar clientes! Erro {e.Message}");
             }
-            if (clientes == null)
-            {
-                _notifications.Notificacoes.Add("Não existem clientes cadastrados!");
-            }
             return clientes;
         }
 
-        public Cliente GetByClienteId(int id)
+        public ClienteDto GetByClienteId(int id)
         {
-            var cliente = new Cliente();
+            var cliente = new ClienteDto();
             try
             {
                 cliente = _clienteRepository.GetByClienteId(id);
@@ -63,9 +59,9 @@ namespace ProjetoBanco.Domain.Clientes
             return cliente;
         }
 
-        public Cliente GetClienteByCpf(string cpf)
+        public ClienteDto GetClienteByCpf(string cpf)
         {
-            var cliente = new Cliente();
+            var cliente = new ClienteDto();
             try
             {
                 cliente = _clienteRepository.GetClienteByCpf(cpf);
@@ -81,7 +77,7 @@ namespace ProjetoBanco.Domain.Clientes
             return cliente;
         }
 
-        public void UpdateClientes(Cliente cliente)
+        public void UpdateClientes(ClienteDto cliente)
         {
             try
             {

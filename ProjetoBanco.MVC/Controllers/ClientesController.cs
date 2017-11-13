@@ -38,10 +38,10 @@ namespace ProjetoBanco.MVC.Controllers
         // POST: Clientes/Create
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult CreateCliente(ClienteViewModel clienteViewModel, FormCollection form)
+        public ActionResult CreateCliente(ClienteViewModel clienteViewModel)
         {
 
-            var cliente = new Cliente
+            var cliente = new ClienteDto
             {
                 cidadeId = clienteViewModel.cidadeId,
                 nome = clienteViewModel.nome,
@@ -114,7 +114,7 @@ namespace ProjetoBanco.MVC.Controllers
         [HttpPost]
         public ActionResult EditarCliente(ClienteViewModel clienteViewModel)
         {
-            var cliente = new Cliente
+            var cliente = new ClienteDto
             {
                 Id = clienteViewModel.Id,
                 nome = clienteViewModel.nome,

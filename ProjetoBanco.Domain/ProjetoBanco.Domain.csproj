@@ -40,7 +40,7 @@
     <Compile Include="Cidade\Dto\Cidade.cs" />
     <Compile Include="Cidade\ICidadeService.cs" />
     <Compile Include="Cliente\ClienteService.cs" />
-    <Compile Include="Cliente\Dto\Cliente.cs" />
+    <Compile Include="Cliente\Dto\ClienteDto.cs" />
     <Compile Include="Cliente\IClienteService.cs" />
     <Compile Include="Conta\ContaClienteService.cs" />
     <Compile Include="Conta\Dto\Conta.cs" />

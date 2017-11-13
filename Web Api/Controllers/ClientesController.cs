@@ -14,7 +14,7 @@ namespace Web_Api.Controllers
             _notifications = notifications;
             _clienteService = clienteService;
         }
-        public IHttpActionResult AddCliente(Cliente cliente)
+        public IHttpActionResult AddCliente(ClienteDto cliente)
         {
             _clienteService.AddCliente(cliente);
             if (_notifications.Notificacoes.Count > 0)
@@ -33,7 +33,7 @@ namespace Web_Api.Controllers
         }
         public IHttpActionResult GetAllClientes(int op)
         {
-            IEnumerable<Cliente> clientes = new List<Cliente>();
+            IEnumerable<ClienteDto> clientes = new List<ClienteDto>();
             clientes = _clienteService.GetAllClientes(op);
             if (_notifications.Notificacoes.Count > 0)
             {
@@ -49,7 +49,7 @@ namespace Web_Api.Controllers
                 return Ok(clientes);
             }
         }
-        public IHttpActionResult UpdateCliente(Cliente cliente)
+        public IHttpActionResult UpdateCliente(ClienteDto cliente)
         {
             _clienteService.UpdateClientes(cliente);
             if (_notifications.Notificacoes.Count > 0)
@@ -68,7 +68,7 @@ namespace Web_Api.Controllers
         }
         public IHttpActionResult GetByClienteId(int id)
         {
-            var cliente = new Cliente();
+            var cliente = new ClienteDto();
             cliente = _clienteService.GetByClienteId(id);
 
             if (_notifications.Notificacoes.Count > 0)
@@ -87,7 +87,7 @@ namespace Web_Api.Controllers
         }
         public IHttpActionResult GetClienteByCpf(string cpf)
         {
-            var cliente = new Cliente();
+            var cliente = new ClienteDto();
             cliente = _clienteService.GetClienteByCpf(cpf);
 
             if (_notifications.Notificacoes.Count > 0)

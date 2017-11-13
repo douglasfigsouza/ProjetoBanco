@@ -11,25 +11,34 @@
                     <th>Bairro</th>
                     <th>Rua</th>
                     <th>Num</th>
-                    <th>Incluir</th>
+                    <th>Alterar</th>
                 </tr>
             </thead>
             <tbody id="tbdClientesConta">
-                @foreach (var cli in Model.Clientes)
-            {
-                    <tr id=@cli.Id>
-                        <td>@cli.nome</td>
-                        <td>@cli.cpf</td>
-                        <td>@cli.rg</td>
-                        <td>@cli.fone</td>
-                        <td>@cli.bairro</td>
-                        <td>@cli.rua</td>
-                        <td>@cli.num</td>
-                        <td>
-                            <button type="button" class="btnClienteEditavel modal-action modal-close btn green">
-                                <i class="material-icons">add_box</i>
-                            </button>
-                        </td>
+                @if (!Model.Clientes.Any() || Model.Clientes.Count() != 0)
+                {
+                    foreach (var cli in Model.Clientes)
+                    {
+                        <tr id=@cli.Id>
+                            <td>@cli.nome</td>
+                            <td>@cli.cpf</td>
+                            <td>@cli.rg</td>
+                            <td>@cli.fone</td>
+                            <td>@cli.bairro</td>
+                            <td>@cli.rua</td>
+                            <td>@cli.num</td>
+                            <td>
+                                <button type="button" class="btnClienteEditavel modal-action modal-close btn green btn-small">
+                                    <i class="material-icons">edit_box</i>
+                                </button>
+                            </td>
+                        </tr>
+                    }
+                }
+                else
+                {
+                    <tr>
+                        <td>Nenhum Registro encontrado.</td>
                     </tr>
                 }
             </tbody>
@@ -77,22 +86,14 @@
                     </div>
 
                     <div class="row">
-                        <div class="col s6">
+                        <div class="col s3">
                             <label for="cpf" class="col s12">CPF</label>
                             @Html.EditorFor(model => model.cpf, new { htmlAttributes = new { @class = "col s12 cpf" } })
                             @Html.ValidationMessageFor(model => model.cpf, "", new { @class = "text-danger" })
                         </div>
-                        <div class="col s6 ">
+                        <div class="col s3 ">
                             <label for="rg" class="col s12">RG</label>
                             @Html.EditorFor(model => model.rg, new { htmlAttributes = new { @class = "col s12 rg" } })
-                        </div>
-                    </div>
-
-                    <div class="row">
-                        <div class="col s6 ">
-                            <label for="fone" class="col s12">Fone</label>
-                            @Html.EditorFor(model => model.fone, new { htmlAttributes = new { @class = "col s12 fone" } })
-                            @Html.ValidationMessageFor(model => model.fone, "", new { @class = "text-danger" })
                         </div>
                         <div class="col s6">
                             <label class="col s12">Nivel de Usuário</label>
@@ -108,15 +109,15 @@
                     </div>
 
                     <div class="row">
-                        <div class="col s5">
+                        <div class="col s6 padding-left">
                             <label class="col s12" for="ddlestadoClientes">Estado</label>
-                            <select id="ddlestadoClientes" name="EstadoId" class="col s8" disabled>
+                            <select id="ddlestadoClientes" name="EstadoId" class="col s12" disabled>
                                 <option value="0">Selecione</option>
                             </select>
                         </div>
-                        <div class="col s7">
+                        <div class="col s6">
                             <label class="col s12" for="ddlCidadesClientes">Cidade</label>
-                            <select id="ddlCidadesCliente" name="cidadeId" class="col s8" disabled>
+                            <select id="ddlCidadesCliente" name="cidadeId" class="col s12" disabled>
                                 <option value="0">Selecione</option>
                             </select>
                         </div>
@@ -135,12 +136,19 @@
                         </div>
                         <div class="col s3 ">
                             <label for="num" class="col s12">N°</label>
-                            @Html.EditorFor(model => model.num, new { htmlAttributes = new { @class = "col s6" } })
+                            @Html.EditorFor(model => model.num, new { htmlAttributes = new { @class = "col s12" } })
                             @Html.ValidationMessageFor(model => model.num, "", new { @class = "text-danger" })
                         </div>
                     </div>
                     <div class="row">
-                        <div class="col s3 ">
+                        <div class="col s2 ">
+                            <label for="fone" class="col s12">Fone</label>
+                            @Html.EditorFor(model => model.fone, new { htmlAttributes = new { @class = "col s12 fone" } })
+                            @Html.ValidationMessageFor(model => model.fone, "", new { @class = "text-danger" })
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col s3">
                             <input type="checkbox" id="ativo" name="ativo" checked />
                             <label for="ativo">Ativo</label>
                         </div>

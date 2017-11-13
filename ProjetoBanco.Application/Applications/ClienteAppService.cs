@@ -7,7 +7,7 @@ namespace ProjetoBanco.Application
 {
     public class ClienteAppService : IClienteAppService
     {
-        public HttpResponseMessage AddCliente(Cliente cliente)
+        public HttpResponseMessage AddCliente(ClienteDto cliente)
         {
             var response = new HttpResponseMessage();
             response = HttpClientConf.HttpClientConfig("Clientes")
@@ -51,7 +51,7 @@ namespace ProjetoBanco.Application
             return response;
         }
 
-        public HttpResponseMessage UpdateCliente(Cliente cliente)
+        public HttpResponseMessage UpdateCliente(ClienteDto cliente)
         {
             var response = new HttpResponseMessage();
             response = HttpClientConf.HttpClientConfig("Clientes")

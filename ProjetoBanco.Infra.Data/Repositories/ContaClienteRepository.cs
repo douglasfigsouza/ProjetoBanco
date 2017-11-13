@@ -59,7 +59,7 @@ namespace ProjetoBanco.Infra.Data.Repositories
             {
                 contaClienteAlteracao.conta = result["num"].ToString();
                 contaClienteAlteracao.senha = result["senha"].ToString();
-                contaClienteAlteracao.Clientes.Add(new Cliente()
+                contaClienteAlteracao.Clientes.Add(new ClienteDto()
                 {
                     nome = result["nome"].ToString()
                 });

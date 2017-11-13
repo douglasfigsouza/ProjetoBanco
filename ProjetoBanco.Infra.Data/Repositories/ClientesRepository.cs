@@ -1,7 +1,6 @@
 ﻿using ProjetoBanco.Domain.Clientes;
 using System;
 using System.Collections.Generic;
-using System.Data.SqlClient;
 using System.Linq;
 
 namespace ProjetoBanco.Infra.Data.Repositories
@@ -25,7 +24,7 @@ namespace ProjetoBanco.Infra.Data.Repositories
             PBSP_GETCLIENTEBYCPF
         }
 
-        public void AddCliente(Cliente cliente)
+        public void AddCliente(ClienteDto cliente)
         {
             _conn.ExecuteProcedure(Procedures.PBSP_INSERTCLIENTE);
             _conn.AddParameter("@cidadeId", cliente.cidadeId);
@@ -42,63 +41,61 @@ namespace ProjetoBanco.Infra.Data.Repositories
             _conn.ExecuteNonQuery();
         }
 
-        public Cliente GetByClienteId(int id)
+        public ClienteDto GetByClienteId(int id)
         {
-            SqlDataReader result = null;
-            Cliente cliente = null;
+            ClienteDto cliente = null;
             _conn.ExecuteProcedure(Procedures.PBSP_GETCLIENTEBYID);
             _conn.AddParameter("@id", id);
-            result = _conn.ExecuteReader();
-            while (result.Read())
-            {
-                cliente = new Cliente
+            using (var result = _conn.ExecuteReader())
+                while (result.Read())
                 {
-                    Id = Convert.ToInt32(result["Id"].ToString()),
-                    nome = result["nome"].ToString(),
-                    cpf = result["cpf"].ToString(),
-                    rg = result["rg"].ToString(),
-                    rua = result["rua"].ToString(),
-                    fone = result["fone"].ToString(),
-                    bairro = result["bairro"].ToString(),
-                    nivel = Convert.ToChar(result["nivel"].ToString()),
-                    num = Convert.ToInt32(result["num"].ToString()),
-                    dataCadastro = Convert.ToDateTime(result["dataCadastro"].ToString()),
-                    ativo = Convert.ToBoolean(result["ativo"].ToString()),
-                    cidadeId = Convert.ToInt32(result["CidadeId"].ToString()),
-                    estadoId = Convert.ToInt32(result["EstadoId"].ToString())
-                };
-            }
+                    cliente = new ClienteDto
+                    {
+                        Id = Convert.ToInt32(result["Id"].ToString()),
+                        nome = result["nome"].ToString(),
+                        cpf = result["cpf"].ToString(),
+                        rg = result["rg"].ToString(),
+                        rua = result["rua"].ToString(),
+                        fone = result["fone"].ToString(),
+                        bairro = result["bairro"].ToString(),
+                        nivel = Convert.ToChar(result["nivel"].ToString()),
+                        num = Convert.ToInt32(result["num"].ToString()),
+                        dataCadastro = Convert.ToDateTime(result["dataCadastro"].ToString()),
+                        ativo = Convert.ToBoolean(result["ativo"].ToString()),
+                        cidadeId = Convert.ToInt32(result["CidadeId"].ToString()),
+                        estadoId = Convert.ToInt32(result["EstadoId"].ToString())
+                    };
+                }
             return cliente;
         }
 
-        public IEnumerable<Cliente> GetAllClientes(int op)
+        public IEnumerable<ClienteDto> GetAllClientes(int op)
         {
-            SqlDataReader result = null;
-            List<Cliente> lstClientes = new List<Cliente>();
+            List<ClienteDto> lstClientes = new List<ClienteDto>();
             _conn.ExecuteProcedure(Procedures.PBSP_GETALLCLIENTES);
             //o parametro 0 é para recuperar todos os clientes ativos e nao ativos
             _conn.AddParameter("@op", op);
-            result = _conn.ExecuteReader();
-            while (result.Read())
-            {
-                lstClientes.Add(new Cliente
+            using (var result = _conn.ExecuteReader())
+                while (result.Read())
                 {
-                    Id = Convert.ToInt32(result["Id"].ToString()),
-                    nome = result["nome"].ToString(),
-                    cpf = result["cpf"].ToString(),
-                    rg = result["rg"].ToString(),
-                    rua = result["rua"].ToString(),
-                    fone = result["fone"].ToString(),
-                    bairro = result["bairro"].ToString(),
-                    nivel = Convert.ToChar(result["nivel"].ToString()),
-                    num = Convert.ToInt32(result["num"].ToString()),
-                    dataCadastro = Convert.ToDateTime(result["dataCadastro"].ToString())
-                });
-            }
+                    lstClientes.Add(new ClienteDto
+                    {
+                        Id = Convert.ToInt32(result["Id"].ToString()),
+                        nome = result["nome"].ToString(),
+                        cpf = result["cpf"].ToString(),
+                        rg = result["rg"].ToString(),
+                        rua = result["rua"].ToString(),
+                        fone = result["fone"].ToString(),
+                        bairro = result["bairro"].ToString(),
+                        nivel = Convert.ToChar(result["nivel"].ToString()),
+                        num = Convert.ToInt32(result["num"].ToString()),
+                        dataCadastro = Convert.ToDateTime(result["dataCadastro"].ToString())
+                    });
+                }
             return lstClientes.ToList();
         }
 
-        public void UpdateClientes(Cliente cliente)
+        public void UpdateClientes(ClienteDto cliente)
         {
             _conn.ExecuteProcedure(Procedures.PBSP_UPDATECLIENTE);
             _conn.AddParameter("@id", cliente.Id);
@@ -115,22 +112,22 @@ namespace ProjetoBanco.Infra.Data.Repositories
             _conn.ExecuteNonQuery();
         }
 
-        public Cliente GetClienteByCpf(string cpf)
+        public ClienteDto GetClienteByCpf(string cpf)
         {
-            SqlDataReader result = null;
-            Cliente cliente = null;
+            ClienteDto cliente = null;
             _conn.ExecuteProcedure(Procedures.PBSP_GETCLIENTEBYCPF);
             _conn.AddParameter("@cpf", cpf);
-            result = _conn.ExecuteReader();
-            while (result.Read())
-            {
-                cliente = new Cliente
+            using (var result = _conn.ExecuteReader())
+                while (result.Read())
                 {
-                    Id = int.Parse(result["Id"].ToString()),
-                    nome = result["nome"].ToString()
-                };
-            }
+                    cliente = new ClienteDto
+                    {
+                        Id = int.Parse(result["Id"].ToString()),
+                        nome = result["nome"].ToString()
+                    };
+                }
             return cliente;
         }
     }
 }
+

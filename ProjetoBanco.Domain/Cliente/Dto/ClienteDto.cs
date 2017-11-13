@@ -2,7 +2,7 @@
 
 namespace ProjetoBanco.Domain.Clientes
 {
-    public class Cliente
+    public class ClienteDto
     {
         public int cidadeId { get; set; }
         public int estadoId { get; set; }
