@@ -60,7 +60,7 @@
     <Compile Include="Usuario\UsuarioService.cs" />
     <Compile Include="Utilitario\Notifications.cs" />
     <Compile Include="Operacao\Dto\Transacao.cs" />
-    <Compile Include="Usuario\Dto\Usuario.cs" />
+    <Compile Include="Usuario\Dto\UsuarioDto.cs" />
     <Compile Include="Agencia\IAgenciaRepository.cs" />
     <Compile Include="Banco\IBancoRepository.cs" />
     <Compile Include="Cidade\ICidadeRepository.cs" />

@@ -16,7 +16,7 @@ namespace Web_Api.Controllers
             _usuarioService = usuarioService;
         }
 
-        public IHttpActionResult AddUsuario(Usuario usuario)
+        public IHttpActionResult AddUsuario(UsuarioDto usuario)
         {
             _usuarioService.AddUsuario(usuario);
             if (_notifications.Notificacoes.Count > 0)
@@ -35,7 +35,7 @@ namespace Web_Api.Controllers
         }
         public IHttpActionResult GetAllUsuarios()
         {
-            IEnumerable<Usuario> usuarios = new List<Usuario>(_usuarioService.GetAllUsuarios());
+            IEnumerable<UsuarioDto> usuarios = new List<UsuarioDto>(_usuarioService.GetAllUsuarios());
             if (_notifications.Notificacoes.Count > 0)
             {
                 string erros = "";
@@ -52,7 +52,7 @@ namespace Web_Api.Controllers
         }
         public IHttpActionResult GetByUsuarioId(int id)
         {
-            var usuario = new Usuario();
+            var usuario = new UsuarioDto();
             usuario = _usuarioService.GetByUsuarioId(id);
             if (_notifications.Notificacoes.Count > 0)
             {
@@ -68,7 +68,7 @@ namespace Web_Api.Controllers
                 return Ok(usuario);
             }
         }
-        public IHttpActionResult UpdateUsuario(Usuario usuario)
+        public IHttpActionResult UpdateUsuario(UsuarioDto usuario)
         {
             _usuarioService.UpdateUsuario(usuario);
             if (_notifications.Notificacoes.Count > 0)
@@ -85,7 +85,7 @@ namespace Web_Api.Controllers
                 return Ok(usuario);
             }
         }
-        public IHttpActionResult VerificaLogin(Usuario usuario)
+        public IHttpActionResult VerificaLogin(UsuarioDto usuario)
         {
             usuario = _usuarioService.VerificaLogin(usuario);
             if (_notifications.Notificacoes.Count > 0)

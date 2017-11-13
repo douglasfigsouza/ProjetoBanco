@@ -1,7 +1,7 @@
 ﻿
 namespace ProjetoBanco.Domain.Usuarios
 {
-    public class Usuario
+    public class UsuarioDto
     {
         public int clienteId  { get; set; }
         public string nome { get; set; }

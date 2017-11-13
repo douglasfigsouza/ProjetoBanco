@@ -8,7 +8,7 @@ namespace ProjetoBanco.Application
     public class UsuarioAppService : IUsuarioAppService
     {
 
-        public HttpResponseMessage AddUsuario(Usuario usuario)
+        public HttpResponseMessage AddUsuario(UsuarioDto usuario)
         {
             var response = HttpClientConf.HttpClientConfig("Usuarios")
                  .PostAsJsonAsync("AddUsuario", usuario).Result;
@@ -32,14 +32,14 @@ namespace ProjetoBanco.Application
             return response;
         }
 
-        public HttpResponseMessage UpdateUsuario(Usuario usuario)
+        public HttpResponseMessage UpdateUsuario(UsuarioDto usuario)
         {
             var response = HttpClientConf.HttpClientConfig("Usuarios")
                 .PostAsJsonAsync("UpdateUsuario", usuario).Result;
             return response;
         }
 
-        public HttpResponseMessage VerificaLogin(Usuario usuario)
+        public HttpResponseMessage VerificaLogin(UsuarioDto usuario)
         {
             var response = HttpClientConf.HttpClientConfig("Usuarios")
                 .PostAsJsonAsync("VerificaLogin", usuario).Result;

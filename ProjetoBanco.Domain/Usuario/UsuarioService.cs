@@ -1,7 +1,6 @@
 ﻿using ProjetoBanco.Domain.Entities;
 using System;
 using System.Collections.Generic;
-using System.Linq;
 
 namespace ProjetoBanco.Domain.Usuarios
 {
@@ -16,7 +15,7 @@ namespace ProjetoBanco.Domain.Usuarios
             _notifications = notifications;
         }
 
-        public void AddUsuario(Usuario usuario)
+        public void AddUsuario(UsuarioDto usuario)
         {
             try
             {
@@ -28,9 +27,9 @@ namespace ProjetoBanco.Domain.Usuarios
             }
         }
 
-        public Usuario VerificaLogin(Usuario usuario)
+        public UsuarioDto VerificaLogin(UsuarioDto usuario)
         {
-            var user = new Usuario();
+            var user = new UsuarioDto();
             try
             {
                 user = _usuarioRepository.VerificaLogin(usuario);
@@ -46,9 +45,9 @@ namespace ProjetoBanco.Domain.Usuarios
             return user;
         }
 
-        public Usuario GetByUsuarioId(int id)
+        public UsuarioDto GetByUsuarioId(int id)
         {
-            var usuario = new Usuario();
+            var usuario = new UsuarioDto();
             try
             {
                 usuario = _usuarioRepository.GetByUsuarioId(id);
@@ -64,9 +63,9 @@ namespace ProjetoBanco.Domain.Usuarios
             return usuario;
         }
 
-        public IEnumerable<Usuario> GetAllUsuarios()
+        public IEnumerable<UsuarioDto> GetAllUsuarios()
         {
-            IEnumerable<Usuario> usuarios = new List<Usuario>();
+            IEnumerable<UsuarioDto> usuarios = new List<UsuarioDto>();
             try
             {
                 usuarios = _usuarioRepository.GetAllUsuarios();
@@ -75,14 +74,10 @@ namespace ProjetoBanco.Domain.Usuarios
             {
                 _notifications.Notificacoes.Add($"Impossível buscar usuários! Erro {e.Message}");
             }
-            if (usuarios.Count() == 0)
-            {
-                _notifications.Notificacoes.Add("Não existem usuários cadastrados");
-            }
             return usuarios;
         }
 
-        public void UpdateUsuario(Usuario usuario)
+        public void UpdateUsuario(UsuarioDto usuario)
         {
             try
             {

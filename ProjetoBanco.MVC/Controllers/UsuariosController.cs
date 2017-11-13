@@ -27,13 +27,13 @@ namespace ProjetoBanco.MVC.Controllers
         }
 
         [HttpPost]
-        public ActionResult Login(FormCollection form)
+        public ActionResult Login(UsuarioViewModel usuarioViewModel)
         {
             HttpResponseMessage statusCode;
-            var usuario = new Usuario
+            var usuario = new UsuarioDto
             {
-                nome = form["usuario"],
-                senha = form["senha"],
+                nome = usuarioViewModel.nome,
+                senha = usuarioViewModel.senha,
             };
             if (usuario.senha != "" && usuario.nome != "")
             {
@@ -45,7 +45,7 @@ namespace ProjetoBanco.MVC.Controllers
                     return Content(Utilitarios.Utilitarios.limpaMenssagemErro(statusCode.Content.ReadAsStringAsync().Result));
 
                 }
-                statusCode = _clienteAppService.GetByClienteId(statusCode.Content.ReadAsAsync<Usuario>().Result.clienteId);
+                statusCode = _clienteAppService.GetByClienteId(statusCode.Content.ReadAsAsync<UsuarioDto>().Result.clienteId);
                 if (!statusCode.IsSuccessStatusCode)
                 {
                     Logout();
@@ -91,7 +91,7 @@ namespace ProjetoBanco.MVC.Controllers
         public ActionResult CreateUsuario(UsuarioViewModel usuarioViewModel)
         {
             var statusCode = new HttpResponseMessage();
-            var usuario = new Usuario
+            var usuario = new UsuarioDto
             {
                 clienteId = usuarioViewModel.clienteId,
                 nome = usuarioViewModel.nome,
@@ -133,7 +133,7 @@ namespace ProjetoBanco.MVC.Controllers
         public ActionResult EditUsuario(UsuarioViewModel usuarioViewModel)
         {
             HttpResponseMessage statusCode;
-            var usuario = new Usuario
+            var usuario = new UsuarioDto
             {
                 clienteId = usuarioViewModel.clienteId,
                 senha = usuarioViewModel.senha,
@@ -165,7 +165,7 @@ namespace ProjetoBanco.MVC.Controllers
 
             }
             Response.StatusCode = 200;
-            return Json(statusCode.Content.ReadAsAsync<Usuario>().Result, JsonRequestBehavior.AllowGet);
+            return Json(statusCode.Content.ReadAsAsync<UsuarioDto>().Result, JsonRequestBehavior.AllowGet);
         }
     }
 }

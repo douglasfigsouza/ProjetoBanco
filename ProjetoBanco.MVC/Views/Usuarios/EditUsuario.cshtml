@@ -11,17 +11,25 @@
                 </tr>
             </thead>
             <tbody id="tbdClientesConta">
-                @foreach (var usu in Model.usuarios)
-            {
-                    <tr id=@usu.clienteId>
-                        <td>@usu.nomeCli</td>
-                        <td>@usu.nome</td>
-                        <td>@usu.senha</td>
-                        <td>
-                            <button type="button" class="btnUsuarioEditavel modal-action modal-close btn green">
-                                <i class="material-icons">add_box</i>
-                            </button>
-                        </td>
+                @if (Model.usuarios.Any() || Model.usuarios != null)
+                {
+                    foreach (var usu in Model.usuarios)
+                    {
+                        <tr id=@usu.clienteId>
+                            <td>@usu.nomeCli</td>
+                            <td>@usu.nome</td>
+                            <td>@usu.senha</td>
+                            <td>
+                                <button type="button" class="btnUsuarioEditavel modal-action modal-close btn btn-small green">
+                                    <i class="material-icons">edit_box</i>
+                                </button>
+                            </td>
+                        </tr>
+                    }
+                }
+                else {
+                    <tr>
+                        <td>Nenhum registro encontrado.</td>
                     </tr>
                 }
             </tbody>

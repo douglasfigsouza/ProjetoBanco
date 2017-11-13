@@ -1,7 +1,6 @@
 ﻿using ProjetoBanco.Domain.Usuarios;
 using System;
 using System.Collections.Generic;
-using System.Data.SqlClient;
 
 namespace ProjetoBanco.Infra.Data.Repositories
 {
@@ -21,7 +20,7 @@ namespace ProjetoBanco.Infra.Data.Repositories
         {
             _conn = conn;
         }
-        public void AddUsuario(Usuario usuario)
+        public void AddUsuario(UsuarioDto usuario)
         {
             _conn.ExecuteProcedure(Procedures.PBSP_INSERTUSUARIOS);
             _conn.AddParameter("@clienteId", usuario.clienteId);
@@ -31,63 +30,62 @@ namespace ProjetoBanco.Infra.Data.Repositories
             _conn.ExecuteNonQuery();
         }
 
-        public Usuario VerificaLogin(Usuario usuario)
+        public UsuarioDto VerificaLogin(UsuarioDto usuario)
         {
-            SqlDataReader result = null;
+
             _conn.ExecuteProcedure(Procedures.PBSP_AUTENTICA);
             _conn.AddParameter("@nome", usuario.nome);
             _conn.AddParameter("@senha", usuario.senha);
             usuario = null;
-            result = _conn.ExecuteReader();
-            while (result.Read())
-            {
-                usuario = new Usuario();
-                usuario.clienteId = int.Parse(result["clienteId"].ToString());
-                usuario.nome = result["nome"].ToString();
-                usuario.senha = result["senha"].ToString();
-                usuario.nivel = char.Parse(result["nivel"].ToString());
-            }
+            // cria a variavel e ao termino do uso ja limpa da memoria e realiza o dispose 
+            using (var result = _conn.ExecuteReader())
+                while (result.Read())
+                {
+                    usuario = new UsuarioDto();
+                    usuario.clienteId = int.Parse(result["clienteId"].ToString());
+                    usuario.nome = result["nome"].ToString();
+                    usuario.senha = result["senha"].ToString();
+                    usuario.nivel = char.Parse(result["nivel"].ToString());
+                }
             return usuario;
         }
 
-        public Usuario GetByUsuarioId(int id)
+        public UsuarioDto GetByUsuarioId(int id)
         {
-            SqlDataReader result = null;
-            Usuario usuario = null;
+            UsuarioDto usuario = null;
             _conn.ExecuteProcedure(Procedures.PBSP_GETBYUSUARIOID);
             _conn.AddParameter("@id", id);
-            result = _conn.ExecuteReader();
-            while (result.Read())
-            {
-                usuario = new Usuario
+            using (var result = _conn.ExecuteReader())
+                while (result.Read())
                 {
-                    clienteId = Convert.ToInt32(result["clienteId"].ToString()),
-                    nome = result["nome"].ToString(),
-                    senha = result["senha"].ToString(),
-                    ativo = Convert.ToBoolean(result["ativo"].ToString())
-                };
-            }
+                    usuario = new UsuarioDto
+                    {
+                        clienteId = Convert.ToInt32(result["clienteId"].ToString()),
+                        nome = result["nome"].ToString(),
+                        senha = result["senha"].ToString(),
+                        ativo = Convert.ToBoolean(result["ativo"].ToString())
+                    };
+                }
             return usuario;
         }
-        public IEnumerable<Usuario> GetAllUsuarios()
+        public IEnumerable<UsuarioDto> GetAllUsuarios()
         {
-            SqlDataReader result = null;
-            List<Usuario> usuarios = new List<Usuario>();
+            List<UsuarioDto> usuarios = new List<UsuarioDto>();
             _conn.ExecuteProcedure(Procedures.PBSP_GETALLUSERS);
-            result = _conn.ExecuteReader();
-            while (result.Read())
-            {
-                usuarios.Add(new Usuario
+            using (var result = _conn.ExecuteReader())
+                while (result.Read())
                 {
-                    clienteId = Convert.ToInt32(result["clienteId"].ToString()),
-                    nome = result["usuNome"].ToString(),
-                    senha = result["senha"].ToString(),
-                    nomeCli = result["cliNome"].ToString()
-                });
-            }
+                    usuarios.Add(new UsuarioDto
+                    {
+                        clienteId = Convert.ToInt32(result["clienteId"].ToString()),
+                        nome = result["usuNome"].ToString(),
+                        senha = result["senha"].ToString(),
+                        nomeCli = result["cliNome"].ToString()
+                    });
+                }
             return usuarios;
         }
-        public void UpdateUsuario(Usuario usuario)
+        public void UpdateUsuario(UsuarioDto usuario)
         {
             _conn.ExecuteProcedure(Procedures.PBSP_UPDATEUSUARIO);
             _conn.AddParameter("@clienteId", usuario.clienteId);

@@ -5,10 +5,10 @@ namespace ProjetoBanco.Application.Interfaces
 {
     public interface IUsuarioAppService
     {
-        HttpResponseMessage AddUsuario(Usuario usuario);
-        HttpResponseMessage VerificaLogin(Usuario usuario);
+        HttpResponseMessage AddUsuario(UsuarioDto usuario);
+        HttpResponseMessage VerificaLogin(UsuarioDto usuario);
         HttpResponseMessage GetByUsuarioId(int id);
         HttpResponseMessage GetAllUsuarios();
-        HttpResponseMessage UpdateUsuario(Usuario usuario);
+        HttpResponseMessage UpdateUsuario(UsuarioDto usuario);
     }
 }
