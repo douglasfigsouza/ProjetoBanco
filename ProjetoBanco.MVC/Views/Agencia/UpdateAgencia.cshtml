@@ -1,21 +1,38 @@
 ﻿
 @model ProjetoBanco.MVC.ViewModels.AgenciaViewModel
-<div class="row" id="divAlterAgencia">
-    <h5>Alteração de Agência</h5>
-    <hr />
-    <div class="col s12">
-        <div class="row">
-            <div class="col s10">
-                <label for="agencia" class="col s12">Agencia</label>
-                <input type="text" class="col s12 agencia" id="agencia" />
-                <button class="btn waves-effect waves-light col s12" type="button" name="getAgencia" id="btnGetAgencia">
-                    Buscar
-                    <i class="material-icons right">send</i>
-                </button>
-            </div>
-        </div>
-    </div>
+<div class="row" id="divAgenciasEditaveis" >
+    <table id="tlbAgenciasEditaveis" class="striped responsive-table centered">
+        <thead>
+            <tr>
+                <th>Agencia</th>
+                <th>Alterar</th>
+            </tr>
+        </thead>
+        <tbody id="tbdClientesConta">
+            @if (!Model.agencias.Any() || Model.agencias.Count() != 0)
+            {
+                foreach (var ag in Model.agencias)
+                {
+                    <tr id=@ag.agencia>
+                        <td>@ag.agencia</td>
+                        <td>
+                            <button type="button" class="modal-action modal-close btn green btn-small" id="btnAgenciaEditavel">
+                                <i class="material-icons">edit_box</i>
+                            </button>
+                        </td>
+                    </tr>
+                }
+            }
+            else
+            {
+                <tr>
+                    <td>Nenhum Registro encontrado.</td>
+                </tr>
+            }
+        </tbody>
+    </table>
 </div>
+
 <div class="row" id="divAgenciaEditavel">
     <div class="col s10">
         <div class="row divErroNaOperacao">
@@ -29,16 +46,17 @@
                 <h6 class="sucessoOperacao"></h6>
             </div>
         </div>
+
         <h6>Agência</h6>
-        <hr />
-        <div class="row">
-            <h6 class="col s6">Banco:</h6>
-            <h6 class="col s6" id="banco"></h6>
-        </div>
-        <div class="row">
-            <h6 class="col s6">Agencia:</h6>
-            <h6 class="col s6" id="numAgencia"></h6>
-        </div>
+            <hr />
+            <div class="row">
+                <h6 class="col s6">Banco:</h6>
+                <h6 class="col s6" id="banco"></h6>
+            </div>
+            <div class="row">
+                <h6 class="col s6">Agencia:</h6>
+                <h6 class="col s6" id="numAgencia"></h6>
+            </div>
         @using (Ajax.BeginForm("UpdateAgencia", "Agencia", null, new AjaxOptions
         {
             HttpMethod = "POST",
@@ -75,12 +93,38 @@
         $(".erroOperacao").html("<i class='tiny material-icons'>error</i>Ops! algo deu errado. " + xhr.responseText);
     }
     $(document).ready(function () {
-        $(".container").addClass("diminuicao30");
+        $("#tlbAgenciasEditaveis").dataTable({
+            language: {
+                "sEmptyTable": "Nenhum registro encontrado",
+                "sInfo": "Mostrando de _START_ até _END_ de _TOTAL_ registros",
+                "sInfoEmpty": "Mostrando 0 até 0 de 0 registros",
+                "sInfoFiltered": "(Filtrados de _MAX_ registros)",
+                "sInfoPostFix": "",
+                "sInfoThousands": ".",
+                "sLengthMenu": "Exibir _MENU_",
+                "sLoadingRecords": "Carregando...",
+                "sProcessing": "Processando...",
+                "sZeroRecords": "Nenhum registro encontrado",
+                "sSearch": "Pesquisar",
+                "oPaginate": {
+                    "sNext": "Próximo",
+                    "sPrevious": "Anterior",
+                    "sFirst": "Primeiro",
+                    "sLast": "Último"
+                },
+                "oAria": {
+                    "sSortAscending": ": Ordenar colunas de forma ascendente",
+                    "sSortDescending": ": Ordenar colunas de forma descendente"
+                }
+            }
+
+        });
+        $(".container").addClass("diminuicao40");
         $("#divAgenciaEditavel").hide();
-        $("#btnGetAgencia").click(function () {
+        $("#btnAgenciaEditavel").click(function () {
             debugger;
-            $("#divAlterAgencia").hide();
-            var agencia = $("#agencia").val();
+            $("#divAgenciasEditaveis").hide();
+            var agencia = $(this).closest("tr").attr("id");
             if (agencia == "") agencia = null;
             $.ajax({
                 type: "GET",

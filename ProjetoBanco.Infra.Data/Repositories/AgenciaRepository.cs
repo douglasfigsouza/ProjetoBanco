@@ -1,7 +1,6 @@
 ﻿using ProjetoBanco.Domain.Agencias;
 using System;
 using System.Collections.Generic;
-using System.Data.SqlClient;
 using System.Linq;
 
 namespace ProjetoBanco.Infra.Data.Repositories
@@ -21,7 +20,7 @@ namespace ProjetoBanco.Infra.Data.Repositories
             _conn = conn;
         }
 
-        public void AddAgencia(Agencia agencia)
+        public void AddAgencia(AgenciaDto agencia)
         {
 
             _conn.ExecuteProcedure(Procedures.PBSP_INSERTAGENCIA);
@@ -33,49 +32,47 @@ namespace ProjetoBanco.Infra.Data.Repositories
 
         }
 
-        public IEnumerable<Agencia> GetAllAgencias()
+        public IEnumerable<AgenciaDto> GetAllAgencias()
         {
-            SqlDataReader result = null;
-            var Agencias = new List<Agencia>();
+            var Agencias = new List<AgenciaDto>();
 
             _conn.ExecuteProcedure(Procedures.PBSP_GETALLAGENCIAS);
-            result = _conn.ExecuteReader();
 
-            while (result.Read())
-            {
-                Agencias.Add(new Agencia
+            using (var result = _conn.ExecuteReader())
+                while (result.Read())
                 {
-                    bancoId = Convert.ToInt32(result["bancoId"].ToString()),
-                    agencia = Convert.ToInt32(result["agencia"].ToString()),
-                    CidadeId = Convert.ToInt32(result["CidadeId"].ToString()),
-                    ativo = Convert.ToBoolean(result["ativo"].ToString())
-                });
-            }
+                    Agencias.Add(new AgenciaDto
+                    {
+                        bancoId = Convert.ToInt32(result["bancoId"].ToString()),
+                        agencia = Convert.ToInt32(result["agencia"].ToString()),
+                        CidadeId = Convert.ToInt32(result["CidadeId"].ToString()),
+                        ativo = Convert.ToBoolean(result["ativo"].ToString())
+                    });
+                }
             return Agencias.ToList();
         }
-        public void UpdateAgencia(Agencia agencia)
+        public void UpdateAgencia(AgenciaDto agencia)
         {
             _conn.ExecuteProcedure(Procedures.PBSP_UPDATEAGENCIA);
             _conn.AddParameter("@agencia", agencia.agencia);
             _conn.AddParameter("@ativo", agencia.ativo);
             _conn.ExecuteNonQuery();
         }
-        public Agencia GetAgenciaByNum(int agencia)
+        public AgenciaDto GetAgenciaByNum(int agencia)
         {
-            SqlDataReader result = null;
-            Agencia Agencia = null;
+            AgenciaDto Agencia = null;
             _conn.ExecuteProcedure(Procedures.PBSP_GETAGENCIABYNUM);
             _conn.AddParameter("@agencia", agencia);
-            result = _conn.ExecuteReader();
-            while (result.Read())
-            {
-                Agencia = new Agencia
+            using (var result = _conn.ExecuteReader())
+                while (result.Read())
                 {
-                    agencia = int.Parse(result["agencia"].ToString()),
-                    banco = result["nome"].ToString(),
-                    ativo = Convert.ToBoolean(result["ativo"].ToString()),
-                };
-            }
+                    Agencia = new AgenciaDto
+                    {
+                        agencia = int.Parse(result["agencia"].ToString()),
+                        banco = result["nome"].ToString(),
+                        ativo = Convert.ToBoolean(result["ativo"].ToString()),
+                    };
+                }
             return Agencia;
         }
     }

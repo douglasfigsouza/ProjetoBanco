@@ -2,7 +2,6 @@
 using ProjetoBanco.Domain.Entities;
 using System;
 using System.Collections.Generic;
-using System.Linq;
 
 namespace ProjetoBanco.Domain.Agencia
 {
@@ -17,7 +16,7 @@ namespace ProjetoBanco.Domain.Agencia
             _notifications = notifications;
         }
 
-        public void AddAgencia(Agencias.Agencia agencia)
+        public void AddAgencia(Agencias.AgenciaDto agencia)
         {
             try
             {
@@ -29,9 +28,9 @@ namespace ProjetoBanco.Domain.Agencia
             }
         }
 
-        public Agencias.Agencia GetAgenciaByNum(int numAgencia)
+        public Agencias.AgenciaDto GetAgenciaByNum(int numAgencia)
         {
-            var agencia = new Agencias.Agencia();
+            var agencia = new Agencias.AgenciaDto();
             try
             {
                 agencia = _agenciaRepository.GetAgenciaByNum(numAgencia);
@@ -47,9 +46,9 @@ namespace ProjetoBanco.Domain.Agencia
             return agencia;
         }
 
-        public IEnumerable<Agencias.Agencia> GetAllAgencias()
+        public IEnumerable<Agencias.AgenciaDto> GetAllAgencias()
         {
-            IEnumerable<Agencias.Agencia> agencias = new List<Agencias.Agencia>();
+            IEnumerable<Agencias.AgenciaDto> agencias = new List<Agencias.AgenciaDto>();
             try
             {
                 agencias = _agenciaRepository.GetAllAgencias();
@@ -58,14 +57,10 @@ namespace ProjetoBanco.Domain.Agencia
             {
                 _notifications.Notificacoes.Add($"Impossível buscar agências! Erro {e.Message}");
             }
-            if (agencias.Count() == 0)
-            {
-                _notifications.Notificacoes.Add("Agências não encontradas!");
-            }
             return agencias;
         }
 
-        public void UpdateAgencia(Agencias.Agencia agencia)
+        public void UpdateAgencia(Agencias.AgenciaDto agencia)
         {
             try
             {

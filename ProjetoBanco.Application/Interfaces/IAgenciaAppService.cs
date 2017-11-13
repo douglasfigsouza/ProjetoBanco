@@ -5,10 +5,10 @@ namespace ProjetoBanco.Application.Interfaces
 {
     public interface IAgenciaAppService
     {
-        HttpResponseMessage AddAgencia(Agencia agencia);
+        HttpResponseMessage AddAgencia(AgenciaDto agencia);
         HttpResponseMessage GetAgenciaByNum(int agencia);
         HttpResponseMessage GetAllAgencias();
-        HttpResponseMessage UpdateAgencia(Agencia agencia);
+        HttpResponseMessage UpdateAgencia(AgenciaDto agencia);
 
     }
 }

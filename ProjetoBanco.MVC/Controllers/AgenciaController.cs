@@ -1,10 +1,10 @@
 ﻿using ProjetoBanco.Application.Interfaces;
 using ProjetoBanco.Domain.Agencias;
+using ProjetoBanco.Domain.Estados;
 using ProjetoBanco.MVC.ViewModels;
 using System.Collections.Generic;
 using System.Net.Http;
 using System.Web.Mvc;
-using ProjetoBanco.Domain.Estados;
 
 namespace ProjetoBanco.MVC.Controllers
 {
@@ -46,7 +46,7 @@ namespace ProjetoBanco.MVC.Controllers
         [HttpPost]
         public ActionResult CreateAgencia(AgenciaViewModel agenciaViewModel)
         {
-            var agencia = new Agencia
+            var agencia = new AgenciaDto
             {
                 CidadeId = agenciaViewModel.CidadeId,
                 bancoId = agenciaViewModel.bancoId,
@@ -69,13 +69,28 @@ namespace ProjetoBanco.MVC.Controllers
 
         public ActionResult UpdateAgencia()
         {
-            return View();
+            var agenciaViewModel = new AgenciaViewModel();
+
+            var statusCode = new HttpResponseMessage();
+            statusCode = _agenciaAppService.GetAllAgencias();
+            if (!statusCode.IsSuccessStatusCode)
+            {
+                Response.TrySkipIisCustomErrors = true;
+                Response.StatusCode = 400;
+                return Content(
+                    Utilitarios.Utilitarios.limpaMenssagemErro(statusCode.
+                        Content.ReadAsStringAsync().Result));
+            }
+            Response.StatusCode = 200;
+            agenciaViewModel.agencias = statusCode.Content.ReadAsAsync<List<AgenciaViewModel>>().Result;
+
+            return View(agenciaViewModel);
         }
 
         [HttpPost]
         public ActionResult UpdateAgencia(AgenciaViewModel agenciaViewModel)
         {
-            var agencia = new Agencia
+            var agencia = new AgenciaDto
             {
                 agencia = int.Parse(Utilitarios.Utilitarios.retiraMask(agenciaViewModel.agencia)),
                 ativo = agenciaViewModel.ativo

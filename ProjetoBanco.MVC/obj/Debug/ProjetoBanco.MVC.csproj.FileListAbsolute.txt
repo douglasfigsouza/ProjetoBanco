@@ -50,7 +50,6 @@ C:\Users\Douglas\ProjetoBanco\ProjetoBanco.MVC\bin\System.Web.WebPages.dll
 C:\Users\Douglas\ProjetoBanco\ProjetoBanco.MVC\bin\System.Web.WebPages.Razor.dll
 C:\Users\Douglas\ProjetoBanco\ProjetoBanco.MVC\bin\WebActivatorEx.dll
 C:\Users\Douglas\ProjetoBanco\ProjetoBanco.MVC\bin\WebGrease.dll
-C:\Users\Douglas\ProjetoBanco\ProjetoBanco.MVC\bin\Web Api.dll
 C:\Users\Douglas\ProjetoBanco\ProjetoBanco.MVC\bin\CrystalDecisions.ReportAppServer.DataDefModel.dll
 C:\Users\Douglas\ProjetoBanco\ProjetoBanco.MVC\bin\CrystalDecisions.ReportAppServer.ClientDoc.dll
 C:\Users\Douglas\ProjetoBanco\ProjetoBanco.MVC\bin\CrystalDecisions.ReportAppServer.ReportDefModel.dll
@@ -62,9 +61,6 @@ C:\Users\Douglas\ProjetoBanco\ProjetoBanco.MVC\bin\CrystalDecisions.ReportAppSer
 C:\Users\Douglas\ProjetoBanco\ProjetoBanco.MVC\bin\CrystalDecisions.ReportAppServer.CubeDefModel.dll
 C:\Users\Douglas\ProjetoBanco\ProjetoBanco.MVC\bin\CrystalDecisions.ReportAppServer.CommonObjectModel.dll
 C:\Users\Douglas\ProjetoBanco\ProjetoBanco.MVC\bin\CrystalDecisions.ReportAppServer.ObjectFactory.dll
-C:\Users\Douglas\ProjetoBanco\ProjetoBanco.MVC\bin\ProjetoBanco.Infra.Data.dll
-C:\Users\Douglas\ProjetoBanco\ProjetoBanco.MVC\bin\System.Web.Http.WebHost.dll
-C:\Users\Douglas\ProjetoBanco\ProjetoBanco.MVC\bin\SimpleInjector.Integration.WebApi.dll
 C:\Users\Douglas\ProjetoBanco\ProjetoBanco.MVC\bin\CrystalDecisions.ReportAppServer.CommonControls.dll
 C:\Users\Douglas\ProjetoBanco\ProjetoBanco.MVC\bin\stdole.dll
 C:\Users\Douglas\ProjetoBanco\ProjetoBanco.MVC\bin\ProjetoBanco.Application.pdb
@@ -91,9 +87,5 @@ C:\Users\Douglas\ProjetoBanco\ProjetoBanco.MVC\bin\System.Web.WebPages.Deploymen
 C:\Users\Douglas\ProjetoBanco\ProjetoBanco.MVC\bin\System.Web.WebPages.Razor.xml
 C:\Users\Douglas\ProjetoBanco\ProjetoBanco.MVC\bin\Antlr3.Runtime.pdb
 C:\Users\Douglas\ProjetoBanco\ProjetoBanco.MVC\bin\Newtonsoft.Json.xml
-C:\Users\Douglas\ProjetoBanco\ProjetoBanco.MVC\bin\Web Api.pdb
-C:\Users\Douglas\ProjetoBanco\ProjetoBanco.MVC\bin\ProjetoBanco.Infra.Data.pdb
-C:\Users\Douglas\ProjetoBanco\ProjetoBanco.MVC\bin\System.Web.Http.WebHost.xml
-C:\Users\Douglas\ProjetoBanco\ProjetoBanco.MVC\bin\SimpleInjector.Integration.WebApi.xml
 C:\Users\Douglas\ProjetoBanco\ProjetoBanco.MVC\obj\Debug\ProjetoBanco.MVC.dll
 C:\Users\Douglas\ProjetoBanco\ProjetoBanco.MVC\obj\Debug\ProjetoBanco.MVC.pdb

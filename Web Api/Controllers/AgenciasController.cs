@@ -17,7 +17,7 @@ namespace Web_Api.Controllers
             _agenciaService = agenciaService;
         }
 
-        public IHttpActionResult AddAgencia(Agencia agencia)
+        public IHttpActionResult AddAgencia(AgenciaDto agencia)
         {
             _agenciaService.AddAgencia(agencia);
             if (_notifications.Notificacoes.Count > 0)
@@ -36,7 +36,7 @@ namespace Web_Api.Controllers
         }
         public IHttpActionResult GetAgenciaByNum(int agencia)
         {
-            var Agencia = new Agencia();
+            var Agencia = new AgenciaDto();
             Agencia = _agenciaService.GetAgenciaByNum(agencia);
             if (_notifications.Notificacoes.Count > 0)
             {
@@ -54,7 +54,7 @@ namespace Web_Api.Controllers
         }
         public IHttpActionResult GetAllAgencias()
         {
-            var agencias = new List<Agencia>(_agenciaService.GetAllAgencias());
+            var agencias = new List<AgenciaDto>(_agenciaService.GetAllAgencias());
             if (_notifications.Notificacoes.Count > 0)
             {
                 string erros = "";
@@ -69,7 +69,7 @@ namespace Web_Api.Controllers
                 return Ok(agencias);
             }
         }
-        public IHttpActionResult UpdateAgencia(Agencia agencia)
+        public IHttpActionResult UpdateAgencia(AgenciaDto agencia)
         {
             _agenciaService.UpdateAgencia(agencia);
             if (_notifications.Notificacoes.Count > 0)

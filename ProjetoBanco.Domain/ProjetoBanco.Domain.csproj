@@ -31,7 +31,7 @@
   </PropertyGroup>
   <ItemGroup>
     <Compile Include="Agencia\AgenciaService.cs" />
-    <Compile Include="Agencia\Dto\Agencia.cs" />
+    <Compile Include="Agencia\Dto\AgenciaDto.cs" />
     <Compile Include="Agencia\IAgenciaService.cs" />
     <Compile Include="Banco\BancoService.cs" />
     <Compile Include="Banco\Dto\Banco.cs" />

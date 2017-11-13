@@ -1,6 +1,6 @@
 ﻿namespace ProjetoBanco.Domain.Agencias
 {
-    public class Agencia
+    public class AgenciaDto
     {
         public int agencia { get; set; }
         public int bancoId { get; set; }

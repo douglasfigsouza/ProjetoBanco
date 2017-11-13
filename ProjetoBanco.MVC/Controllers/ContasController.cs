@@ -1,7 +1,6 @@
 ﻿using ProjetoBanco.Application.Interfaces;
 using ProjetoBanco.Domain.Contas;
 using ProjetoBanco.MVC.ViewModels;
-using System;
 using System.Collections.Generic;
 using System.Net.Http;
 using System.Web.Mvc;
@@ -59,17 +58,17 @@ namespace ProjetoBanco.MVC.Controllers
             return View(cmbContaViewModel);
         }
         [HttpPost]
-        public ActionResult CreateConta(List<int> ClientesSelecionados, FormCollection form)
+        public ActionResult CreateConta(List<int> ClientesSelecionados, ContaViewModel contaViewModel)
         {
             var statusCode = new HttpResponseMessage();
             var conta = new Conta
             {
-                num = Utilitarios.Utilitarios.retiraMask(form["num"]),
-                senha = form["senha"],
-                tipo = char.Parse(Utilitarios.Utilitarios.retiraMask(form["tipoConta"])),
+                num = Utilitarios.Utilitarios.retiraMask(contaViewModel.num),
+                senha = contaViewModel.senha,
+                tipo = char.Parse(Utilitarios.Utilitarios.retiraMask(contaViewModel.tipo)),
                 ativo = true
             };
-            int agencia = int.Parse(form["ddlAgencias"]);
+            int agencia = contaViewModel.dllAgencias;
 
             foreach (var item in ClientesSelecionados)
             {
@@ -98,16 +97,16 @@ namespace ProjetoBanco.MVC.Controllers
         }
 
         [HttpPost]
-        public ActionResult UpdateConta(FormCollection form)
+        public ActionResult UpdateConta(ContaViewModel contaViewModel)
         {
             var statusCode = new HttpResponseMessage();
-            if (form != null)
+            if (contaViewModel != null)
             {
                 var conta = new Conta
                 {
-                    num = Utilitarios.Utilitarios.retiraMask(form["conta"]),
-                    senha = form["senha"],
-                    ativo = Convert.ToBoolean(form["ativo"]),
+                    num = Utilitarios.Utilitarios.retiraMask(contaViewModel.conta),
+                    senha = contaViewModel.senha,
+                    ativo = contaViewModel.ativo,
                 };
                 statusCode = _contaClienteAppService.UpdateConta(conta);
                 if (!statusCode.IsSuccessStatusCode)

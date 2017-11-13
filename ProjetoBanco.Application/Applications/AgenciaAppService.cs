@@ -8,7 +8,7 @@ namespace ProjetoBanco.Application
     public class AgenciaAppService : IAgenciaAppService
     {
 
-        public HttpResponseMessage AddAgencia(Agencia agencia)
+        public HttpResponseMessage AddAgencia(AgenciaDto agencia)
         {
             var response = new HttpResponseMessage();
             response = HttpClientConf.HttpClientConfig("Agencias")
@@ -24,7 +24,7 @@ namespace ProjetoBanco.Application
             return response;
         }
 
-        public HttpResponseMessage UpdateAgencia(Agencia agencia)
+        public HttpResponseMessage UpdateAgencia(AgenciaDto agencia)
         {
             var response = new HttpResponseMessage();
             response = HttpClientConf.HttpClientConfig("Agencias")

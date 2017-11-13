@@ -4,9 +4,9 @@ namespace ProjetoBanco.Domain.Agencia
 {
     public interface IAgenciaService
     {
-        void AddAgencia(Agencias.Agencia agencia);
-        Agencias.Agencia GetAgenciaByNum(int agencia);
-        IEnumerable<Agencias.Agencia> GetAllAgencias();
-        void UpdateAgencia(Agencias.Agencia agencia);
+        void AddAgencia(Agencias.AgenciaDto agencia);
+        Agencias.AgenciaDto GetAgenciaByNum(int agencia);
+        IEnumerable<Agencias.AgenciaDto> GetAllAgencias();
+        void UpdateAgencia(Agencias.AgenciaDto agencia);
     }
 }
