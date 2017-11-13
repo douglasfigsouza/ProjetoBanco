@@ -29,20 +29,20 @@
                 </div>
             </div>
 
-                <div class="row">
-                    <div class="col s4">
-                        <label for="nome" class="col s12">Usuário</label>
-                        @Html.TextBoxFor(u => u.nome, new { @class = "col s12" })
-                    </div>
-                    <div class="col s4">
-                        <label for="senha" class="col s12">Senha</label>
-                        @Html.TextBoxFor(u => u.senha, new { @class = "col s12", type = "password" })
-                    </div>
-                    <div class="col s4">
-                        <label for="nome" class="col s12">Confirme sua Senha</label>
-                        <input type="password" class="col s12" name="conf_senha" />
-                    </div>
+            <div class="row">
+                <div class="col s4">
+                    <label for="nome" class="col s12">Usuário</label>
+                    @Html.TextBoxFor(u => u.nome, new { @class = "col s12" })
                 </div>
+                <div class="col s4">
+                    <label for="senha" class="col s12">Senha</label>
+                    @Html.TextBoxFor(u => u.senha, new { @class = "col s12", type = "password" })
+                </div>
+                <div class="col s4">
+                    <label for="nome" class="col s12">Confirme sua Senha</label>
+                    <input type="password" class="col s12" name="conf_senha" />
+                </div>
+            </div>
 
                 <div class="row">
                     <button class="btn waves-effect waves-light right" type="submit" name="CadastraUsuario">

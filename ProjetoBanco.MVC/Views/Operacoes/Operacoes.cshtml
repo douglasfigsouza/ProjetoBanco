@@ -1,6 +1,6 @@
 ﻿<div class="row Operacoes">
     <div class="row">
-        @if (Convert.ToInt32(TempData["operacao"])==1)
+        @if (Convert.ToInt32(TempData["operacao"]) == 1)
         {
             @Html.Partial("Deposito")
         }
@@ -8,7 +8,7 @@
         {
             @Html.Partial("Saque")
         }
-        @if (Convert.ToInt32(TempData["operacao"])==3)
+        @if (Convert.ToInt32(TempData["operacao"]) == 3)
         {
             @Html.Partial("Saldo")
         }

@@ -84,7 +84,7 @@ namespace ProjetoBanco.MVC.Controllers
                 Response.TrySkipIisCustomErrors = true;
                 Response.StatusCode = 400;
 
-                return Json(Utilitarios.Utilitarios.limpaMenssagemErro(statusCode.Content.ReadAsStringAsync().Result),JsonRequestBehavior.AllowGet);
+                return Json(Utilitarios.Utilitarios.limpaMenssagemErro(statusCode.Content.ReadAsStringAsync().Result), JsonRequestBehavior.AllowGet);
 
             }
             Response.StatusCode = 200;
@@ -175,11 +175,6 @@ namespace ProjetoBanco.MVC.Controllers
             }
             Response.StatusCode = 200;
             return Json(statusCode.Content.ReadAsAsync<ClienteViewModel>().Result, JsonRequestBehavior.AllowGet);
-            //caso der pau, olhar esse trecho de código
-            //cliente = _clienteApp.GetClienteByCpf(Utilitarios.Utilitarios.retiraMask(cpf));
-            //clienteViewModel.Id = cliente.Id;
-            //clienteViewModel.nome = cliente.nome;
-            //return Json(cliente, JsonRequestBehavior.AllowGet);
         }
     }
 }

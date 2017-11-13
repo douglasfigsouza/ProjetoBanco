@@ -126,7 +126,7 @@ namespace ProjetoBanco.MVC.Controllers
             operacaoRealizada.contaId = int.Parse(contaId);
             operacaoRealizada.clienteId = cliente.Id;
             operacaoRealizada.dataOp = DateTime.Now;
-            operacaoRealizada.valorOp = decimal.Parse(valorADepositar);
+            operacaoRealizada.valorOp = decimal.Parse(valorADepositar.Replace(".",","));
             operacaoRealizada.operacaoId = 1;
 
             statusCode = _operacaoesRealizadasAppService.Deposito(operacaoRealizada);

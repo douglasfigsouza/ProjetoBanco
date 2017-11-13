@@ -46,24 +46,24 @@
                 </div>
             </div>
 
-                <div class="row">
-                    <div class="col s6 ">
-                        <label for="fone" class="col s12">Fone</label>
-                        @Html.EditorFor(model => model.fone, new { htmlAttributes = new { @class = "col s12 fone" } })
-                        @Html.ValidationMessageFor(model => model.fone, "", new { @class = "text-danger" })
-                    </div>
-                    <div class="col s6">
-                        <label class="col s12">Nivel de Usuário</label>
-                        <p>
-                            <input class="with-gap col s1" value="c" name="nivel" type="radio" id="cliente" checked />
-                            <label for="cliente" class="col s4">Cliente</label>
-                        </p>
-                        <p>
-                            <input class="with-gap col s1" name="nivel" value="f" type="radio" id="funcionario" />
-                            <label for="funcionario" class="col s4">Funcionario</label>
-                        </p>
-                    </div>
+            <div class="row">
+                <div class="col s6 ">
+                    <label for="fone" class="col s12">Fone</label>
+                    @Html.EditorFor(model => model.fone, new { htmlAttributes = new { @class = "col s12 fone" } })
+                    @Html.ValidationMessageFor(model => model.fone, "", new { @class = "text-danger" })
                 </div>
+                <div class="col s6">
+                    <label class="col s12">Nivel de Usuário</label>
+                    <p>
+                        <input class="with-gap col s1" value="c" name="nivel" type="radio" id="cliente" checked />
+                        <label for="cliente" class="col s4">Cliente</label>
+                    </p>
+                    <p>
+                        <input class="with-gap col s1" name="nivel" value="f" type="radio" id="funcionario" />
+                        <label for="funcionario" class="col s4">Funcionario</label>
+                    </p>
+                </div>
+            </div>
 
                 <div class="row">
                     <div class="col s5 ">

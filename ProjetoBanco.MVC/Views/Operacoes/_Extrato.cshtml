@@ -1,7 +1,4 @@
-﻿@{
-
-}
-<div class="col s12" id="dadosContaCliente">
+﻿<div class="col s12" id="dadosContaCliente">
     <div class="row divErroNaOperacao">
         <div class="col s12">
             <h6 class="erroOperacao"></h6>
@@ -44,7 +41,7 @@
 </div>
 <script>
     function sucesso() {
-        window.open('@Url.Action("GetExtratoPorData")?'+$("#extratoPorData").serialize(), "_blank");
+        window.open('@Url.Action("GetExtratoPorData")?' + $("#extratoPorData").serialize(), "_blank");
     };
     function erro(xhr) {
         $(".divErroNaOperacao").fadeIn(3000);

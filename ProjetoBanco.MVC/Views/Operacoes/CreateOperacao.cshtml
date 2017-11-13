@@ -3,7 +3,7 @@
     <div class="col s12">
         <div class="row divErroNaOperacao">
             <div class="col s12">
-                <h6  class="erroOperacao"></h6>
+                <h6 class="erroOperacao"></h6>
             </div>
         </div>
 
@@ -14,22 +14,22 @@
         </div>
         <h5>Cadastro de Operação</h5>
         <hr />
-       @using (Ajax.BeginForm("CreateOperacao", "Operacoes", null, new AjaxOptions
-       {
-           HttpMethod = "POST",
-           OnSuccess = "sucesso",
-           OnFailure = "erro(xhr)",
-           OnBegin = "progresso",
-           OnComplete = "fim"
-       }))
-       {
+        @using (Ajax.BeginForm("CreateOperacao", "Operacoes", null, new AjaxOptions
+        {
+            HttpMethod = "POST",
+            OnSuccess = "sucesso",
+            OnFailure = "erro(xhr)",
+            OnBegin = "progresso",
+            OnComplete = "fim"
+        }))
+        {
             @Html.AntiForgeryToken()
             @Html.ValidationSummary(true)
             {
                 <div class="row">
                     <div class="col s12 ">
                         <label for="descricao" class="col s12">Operacão</label>
-                        @Html.TextBoxFor(o=>o.descricao, new { @class = "col s12" })
+                        @Html.TextBoxFor(o => o.descricao, new { @class = "col s12" })
                     </div>
                 </div>
 
