@@ -103,7 +103,7 @@ namespace ProjetoBanco.MVC.Controllers
 
             }
             Response.StatusCode = 200;
-            List<ContaClienteAlteracao> model = statusCode.Content.ReadAsAsync<List<ContaClienteAlteracao>>().Result;
+            IEnumerable<ContaClienteViewModel> model = statusCode.Content.ReadAsAsync<IEnumerable<ContaClienteViewModel>>().Result;
             return View("ContaEdit", model);
         }
 
@@ -137,15 +137,13 @@ namespace ProjetoBanco.MVC.Controllers
         }
 
         [HttpPost]
-        public JsonResult GetConta(string conta, string agencia, string senha)
+        public JsonResult GetConta(int contaId)
         {
-            if (conta != "" && agencia != "" && senha != "")
+            if (contaId != 0)
             {
                 var statusCode = new HttpResponseMessage();
 
-                conta = Utilitarios.Utilitarios.retiraMask(conta);
-                agencia = Utilitarios.Utilitarios.retiraMask(agencia);
-                statusCode = _contaClienteAppService.GetConta(conta, senha);
+                statusCode = _contaClienteAppService.GetConta(contaId);
 
                 if (!statusCode.IsSuccessStatusCode)
                 {

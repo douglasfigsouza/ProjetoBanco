@@ -15,7 +15,8 @@ namespace ProjetoBanco.Infra.Data.Repositories
             PBSP_GETCONTA,
             PBSP_UPDATECONTA,
             PBSP_SELDADOSCONTACLIENTE,
-            PBSP_GETALLCONTAS
+            PBSP_GETALLCONTAS,
+            PBSP_GETALLCLIENTESCONTA
         }
 
         public ContaClienteRepository(Conexao conn)
@@ -48,12 +49,11 @@ namespace ProjetoBanco.Infra.Data.Repositories
             _conn.AddParameter("@ativo", conta.ativo);
             _conn.ExecuteNonQuery();
         }
-        public ContaClienteAlteracao GetConta(string conta, string senha)
+        public ContaClienteAlteracao GetConta(int contaId)
         {
             var contaClienteAlteracao = new ContaClienteAlteracao();
             _conn.ExecuteProcedure(Procedure.PBSP_SELDADOSCONTACLIENTE);
-            _conn.AddParameter("@conta", conta);
-            _conn.AddParameter("@senha", senha);
+            _conn.AddParameter("@contaId", contaId);
             using (var result = _conn.ExecuteReader())
                 while (result.Read())
                 {
@@ -72,29 +72,39 @@ namespace ProjetoBanco.Infra.Data.Repositories
         {
             _conn.ExecuteProcedure(Procedure.PBSP_GETALLCONTAS);
             var contas = new List<ContaClienteAlteracao>();
-            var contaCliAlteracao = new ContaClienteAlteracao();
+            ContaClienteAlteracao contaCliAlteracao;
             using (var result = _conn.ExecuteReader())
                 while (result.Read())
                 {
-                    contaCliAlteracao.agencia = int.Parse(result["agencia"].ToString());
-                    contaCliAlteracao.contaId = int.Parse(result["contaId"].ToString());
-                    contaCliAlteracao.conta = result["num"].ToString();
-                    contaCliAlteracao.senha = result["senha"].ToString();
-                    contaCliAlteracao.clienteId = int.Parse(result["clienteId"].ToString());
-                    contaCliAlteracao.idCliContaCliente = int.Parse(result["idCliContaCliente"].ToString());
-                    if (contaCliAlteracao.idCliContaCliente == contaCliAlteracao.clienteId)
+                    contaCliAlteracao = new ContaClienteAlteracao
                     {
-                        contaCliAlteracao.Clientes.Add(new ClienteDto
-                        {
-                            Id = int.Parse(result["clienteId"].ToString()),
-                            nome = result["nome"].ToString()
+                        contaId = result.GetInt16(result.GetOrdinal("contaId")),
+                        conta = result["num"].ToString(),
+                        agencia = result.GetInt16(result.GetOrdinal("agencia")),
+                        senha = result["senha"].ToString()
+                    };
 
-                        });
-                    }
                     contas.Add(contaCliAlteracao);
-
                 }
+
             return contas;
+        }
+        public List<ContaCliente> GetAllClientesConta()
+        {
+            _conn.ExecuteProcedure(Procedure.PBSP_GETALLCLIENTESCONTA);
+            var clientesConta = new List<ContaCliente>();
+            using (var result = _conn.ExecuteReader())
+                while (result.Read())
+                {
+                    var contaCliente = new ContaCliente
+                    {
+                        contaId = result.GetInt16(result.GetOrdinal("contaCliId")),
+                        clienteId = result.GetInt16(result.GetOrdinal("Id")),
+                        nome = result["nome"].ToString()
+                    };
+                    clientesConta.Add(contaCliente);
+                }
+            return clientesConta;
         }
     }
 }

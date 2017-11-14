@@ -6,9 +6,10 @@ namespace ProjetoBanco.Domain.Conta
     public interface IContaClienteService
     {
         void AddContaCliente(Contas.Conta conta);
-        ContaClienteAlteracao GetConta(string conta, string senha);
+        ContaClienteAlteracao GetConta(int contaId);
         void UpdateConta(Contas.Conta conta);
-        List<ContaClienteAlteracao> GetAllContas();
+        List<ContaCliente> GetAllContas();
+        List<ContaCliente> GetAllClientesConta();
 
     }
 }

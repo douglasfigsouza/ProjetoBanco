@@ -33,10 +33,10 @@ namespace Web_Api.Controllers
                 return Ok();
             }
         }
-        public IHttpActionResult GetConta(string conta, string senha)
+        public IHttpActionResult GetConta(int contaId)
         {
             var contaClienteAlteracao = new ContaClienteAlteracao();
-            contaClienteAlteracao = _iContaClienteService.GetConta(conta, senha);
+            contaClienteAlteracao = _iContaClienteService.GetConta(contaId);
             if (_notifications.Notificacoes.Count > 0)
             {
                 string erros = "";
@@ -70,7 +70,7 @@ namespace Web_Api.Controllers
         }
         public IHttpActionResult GetAllContas()
         {
-            var contas = new List<ContaClienteAlteracao>(_iContaClienteService.GetAllContas());
+            var contas = new List<ContaCliente>(_iContaClienteService.GetAllContas());
 
             if (_notifications.Notificacoes.Count > 0)
             {

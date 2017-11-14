@@ -1082,8 +1082,7 @@ IF EXISTS (SELECT * FROM dbo.sysobjects WHERE id = object_id(N'[dbo].[PBSP_SELDA
 GO
 
 CREATE PROCEDURE [dbo].[PBSP_SELDADOSCONTACLIENTE]
-	@conta VARCHAR(20),
-	@senha VARCHAR(8)
+	@contaId VARCHAR(20)
 	AS
 
 	/*
@@ -1109,7 +1108,7 @@ CREATE PROCEDURE [dbo].[PBSP_SELDADOSCONTACLIENTE]
 					ON cc.agencia = a.agencia
 				INNER JOIN Clientes AS cli
 					ON cc.clienteId = cli.Id
-			WHERE c.num = @conta AND c.senha=@senha
+			WHERE c.Id = @contaId
 	END
 GO
 
@@ -1325,22 +1324,49 @@ CREATE PROCEDURE [dbo].[PBSP_GETALLCONTAS]
 	Ex................: EXEC [dbo].[PBSP_GETALLCONTAS]
 
 	*/
-
 	BEGIN
-		SELECT  cli.nome,
+		SELECT 	cli.nome,
 				cli.Id AS clienteId,
-				conta.Id AS contaId,
+				contaCli.clienteId AS Id,
+				contaCli.contaId,
 				conta.num, 
 				conta.senha, 
 				ag.agencia
 			FROM ContaCliente AS contaCli WITH(NOLOCK)	
 				INNER JOIN Clientes AS cli WITH(NOLOCK) ON contaCli.clienteId = cli.Id
 				INNER JOIN Conta AS conta WITH(NOLOCK) ON contaCli.contaId = conta.Id
-				INNER JOIN Agencia AS ag WITH(NOLOCK)	ON ag.agencia = contaCli.agencia 
-
-			
+				INNER JOIN Agencia AS ag WITH(NOLOCK)	ON ag.agencia = contaCli.agencia
 	END
 GO
+
+
+IF EXISTS (SELECT * FROM dbo.sysobjects WHERE id = object_id(N'[dbo].[PBSP_GETALLCLIENTESCONTA]') AND objectproperty(id, N'IsPROCEDURE')=1)
+	DROP PROCEDURE [dbo].[PBSP_GETALLCLIENTESCONTA]
+GO
+
+CREATE PROCEDURE [dbo].[PBSP_GETALLCLIENTESCONTA]
+
+	AS
+
+	/*
+	Documentação
+	Arquivo Fonte.....: ArquivoFonte.sql
+	Objetivo..........: Retorna todos os clientes da conta 
+	Autor.............: SMN - Douglas
+ 	Data..............: 14/11/2017
+	Ex................: EXEC [dbo].[PBSP_GETALLCLIENTESCONTA]
+
+	*/
+
+	BEGIN
+		SELECT Cli.nome,
+			   Cli.Id,
+			   contaCli.contaId AS contaCliId
+			FROM ContaCliente as contaCli WITH(NOLOCK) 
+				INNER JOIN Clientes AS Cli WITH(NOLOCK) ON contaCli.clienteId = Cli.Id	
+	END
+GO
+	
 																									
 --Funções
 --função que retorna o Saldo

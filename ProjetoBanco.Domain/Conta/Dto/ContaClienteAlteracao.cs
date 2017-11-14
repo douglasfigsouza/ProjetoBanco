@@ -7,15 +7,18 @@ namespace ProjetoBanco.Domain.Contas
     {
         public ContaClienteAlteracao()
         {
-            Clientes= new List<ClienteDto>();
+            Clientes = new List<ClienteDto>();
+            contasClientes = new List<ContaClienteAlteracao>();
         }
-        public int contaId{ get; set; }
+        public int Id { get; set; }
+        public int contaId { get; set; }
         public int clienteId { get; set; }
         public List<ClienteDto> Clientes { get; set; }
         public string conta { get; set; }
-        public int  agencia { get; set; }
+        public int agencia { get; set; }
         public string senha { get; set; }
         public bool ativo { get; set; }
-        public int idCliContaCliente { get; set;}
+        public int idCliContaCliente { get; set; }
+        public List<ContaClienteAlteracao> contasClientes { get; set; }
     }
 }

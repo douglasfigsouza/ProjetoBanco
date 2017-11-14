@@ -15,15 +15,14 @@ namespace ProjetoBanco.Application
             return response;
         }
 
-        public HttpResponseMessage GetConta(string conta, string senha)
+        public HttpResponseMessage GetConta(int contaId)
         {
             HttpResponseMessage response;
             //Create a query
             HttpClient client = new HttpClient();
             response = client.GetAsync(HttpClientConf.HttpClientConfigGet("ContaCliente/GetConta", new
             {
-                conta,
-                senha
+                contaId
 
             })).Result;
             return response;

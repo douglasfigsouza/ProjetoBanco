@@ -1,4 +1,4 @@
-﻿@model IEnumerable<ProjetoBanco.MVC.ViewModels.ContaClienteAlteracaoViewModel>
+﻿@model IEnumerable<ProjetoBanco.MVC.ViewModels.ContaClienteViewModel>
 <div class="row" id="dadosContaCliente">
     <div class="row divErroNaOperacao">
         <div class="col s12">
@@ -20,23 +20,25 @@
                     </tr>
                 </thead>
                 <tbody id="tbdClientesConta">
-                    @if (Model.Any() || Model.AsEnumerable().ElementAt(0).Clientes.Count() != 0)
+                    @if (Model.Any() || Model.AsEnumerable().ElementAt(0).clientes.Count() != 0)
                     {
                         foreach (var contaCli in Model)
                         {
-                            <tr id=@contaCli.Id>
+                            <tr id=@contaCli.contaId>
                                 <td>
-                                    @foreach (var cli in contaCli.Clientes)
+
+                                    @foreach (var cli in contaCli.clientes)
                                     {
-                                        @cli.nome
-                                        <br />
-                                    }
+                                        @cli.nome 
+                                       <br />
+                                    }    
+
                                 </td>
                                 <td>
                                     @contaCli.conta
                                 </td>
                                 <td>
-                                    <button type="button" class="modal-action modal-close btn green btn-small" id="getConta">
+                                    <button type="button" class="modal-action modal-close btn green btn-small getConta">
                                         <i class="material-icons">edit_box</i>
                                     </button>
                                 </td>
@@ -152,15 +154,15 @@
         });
         $(".container").addClass("diminuicao50");
         $("#divDadosDaConta").hide();
-        $("#getConta").click(function () {
+        $(".getConta").click(function () {
+            debugger;
+            var contaId = $(this).closest("tr").attr("id");
             $.ajax({
                 type: "POST",
                 url: "/Contas/GetConta",
                 dataType: "Json",
                 data: {
-                    conta: $("#conta").val(),
-                    senha: $("#senha").val(),
-                    agencia: $("#agencia").val()
+                    contaId:contaId
                 },
                 success: function (dados) {
                     $(".divErroNaOperacao").hide();
