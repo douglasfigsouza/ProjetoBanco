@@ -27,12 +27,8 @@
                             <tr id=@contaCli.contaId>
                                 <td>
 
-                                    @foreach (var cli in contaCli.clientes)
-                                    {
-                                        @cli.nome 
-                                       <br />
-                                    }    
-
+                                        @contaCli.nome
+                                        
                                 </td>
                                 <td>
                                     @contaCli.conta
@@ -162,7 +158,7 @@
                 url: "/Contas/GetConta",
                 dataType: "Json",
                 data: {
-                    contaId:contaId
+                    contaId: contaId
                 },
                 success: function (dados) {
                     $(".divErroNaOperacao").hide();

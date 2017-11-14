@@ -2,7 +2,6 @@
 using ProjetoBanco.Domain.Entities;
 using System;
 using System.Collections.Generic;
-using System.Linq;
 
 namespace ProjetoBanco.Domain.Conta
 {
@@ -29,61 +28,11 @@ namespace ProjetoBanco.Domain.Conta
             }
         }
 
-        public List<ContaCliente> GetAllClientesConta()
+        public List<ContaCliente> GetAllDadosEClientesDaConta()
         {
-            throw new NotImplementedException();
+            var dadosEClientesDaConta = new List<ContaCliente>();
+            return dadosEClientesDaConta = _contaClienteRepository.GetAllDadosEClientesDaConta();
         }
-
-        public List<ContaCliente> GetAllContas()
-        {
-            var contas = new List<ContaClienteAlteracao>();
-            var clientesConta = new List<ContaCliente>();
-            var contaCliente = new List<ContaCliente>();
-            var dadosContasClientesUnicos = new List<ContaCliente>();
-            try
-            {
-                contas = _contaClienteRepository.GetAllContas();
-                clientesConta = _contaClienteRepository.GetAllClientesConta();
-            }
-            catch (Exception e)
-            {
-                _notifications.Notificacoes.Add($"Impossível buscar conta! Erro {e.Message}");
-            }
-            foreach (var conta in contas)
-            {
-                var contacli = new ContaCliente
-                {
-                    contaId = conta.contaId,
-                    agencia = conta.agencia,
-                    senha = conta.senha,
-                    conta = conta.conta
-                };
-                foreach (var cli in clientesConta)
-                {
-                    if (cli.contaId == conta.contaId)
-                    {
-                        contacli.clientes.Add(new Clientes.ClienteDto
-                        {
-                            nome = cli.nome
-                        });
-                    }
-                }
-                contaCliente.Add(contacli);
-            }
-            dadosContasClientesUnicos.Add(contaCliente.AsEnumerable().ElementAt(0));
-            foreach (var dado in contaCliente)
-            {
-                foreach (var conta in new List<ContaCliente>(dadosContasClientesUnicos))
-                {
-                    if (conta.contaId != dado.contaId)
-                    {
-                        dadosContasClientesUnicos.Add(dado);
-                    }
-                }
-            }
-            return dadosContasClientesUnicos;
-        }
-
         public ContaClienteAlteracao GetConta(int contaId)
         {
             var conta = new ContaClienteAlteracao();
@@ -112,6 +61,11 @@ namespace ProjetoBanco.Domain.Conta
             {
                 _notifications.Notificacoes.Add($"Impossível atualizar conta! Erro {e.Message}");
             }
+        }
+
+        public List<ContaCliente> GetAllClientesConta()
+        {
+            throw new NotImplementedException();
         }
     }
 }

@@ -16,7 +16,8 @@ namespace ProjetoBanco.Infra.Data.Repositories
             PBSP_UPDATECONTA,
             PBSP_SELDADOSCONTACLIENTE,
             PBSP_GETALLCONTAS,
-            PBSP_GETALLCLIENTESCONTA
+            PBSP_GETALLCLIENTESCONTA,
+            PBSP_GETALLDADOSECLIENTESDACONTA
         }
 
         public ContaClienteRepository(Conexao conn)
@@ -67,44 +68,20 @@ namespace ProjetoBanco.Infra.Data.Repositories
                 }
             return contaClienteAlteracao;
         }
-
-        public List<ContaClienteAlteracao> GetAllContas()
-        {
-            _conn.ExecuteProcedure(Procedure.PBSP_GETALLCONTAS);
-            var contas = new List<ContaClienteAlteracao>();
-            ContaClienteAlteracao contaCliAlteracao;
+        public List<ContaCliente> GetAllDadosEClientesDaConta() {
+            var dadosEClientesDaConta = new List<ContaCliente>();
+            _conn.ExecuteProcedure(Procedure.PBSP_GETALLDADOSECLIENTESDACONTA);
             using (var result = _conn.ExecuteReader())
-                while (result.Read())
-                {
-                    contaCliAlteracao = new ContaClienteAlteracao
+                while (result.Read()) {
+                    dadosEClientesDaConta.Add(new ContaCliente
                     {
-                        contaId = result.GetInt16(result.GetOrdinal("contaId")),
                         conta = result["num"].ToString(),
-                        agencia = result.GetInt16(result.GetOrdinal("agencia")),
-                        senha = result["senha"].ToString()
-                    };
-
-                    contas.Add(contaCliAlteracao);
+                        contaId = result.GetInt16(result.GetOrdinal("contaId")),
+                        nome = result["nome"].ToString(),
+                        agencia = result.GetInt16(result.GetOrdinal("agencia"))
+                    });
                 }
-
-            return contas;
-        }
-        public List<ContaCliente> GetAllClientesConta()
-        {
-            _conn.ExecuteProcedure(Procedure.PBSP_GETALLCLIENTESCONTA);
-            var clientesConta = new List<ContaCliente>();
-            using (var result = _conn.ExecuteReader())
-                while (result.Read())
-                {
-                    var contaCliente = new ContaCliente
-                    {
-                        contaId = result.GetInt16(result.GetOrdinal("contaCliId")),
-                        clienteId = result.GetInt16(result.GetOrdinal("Id")),
-                        nome = result["nome"].ToString()
-                    };
-                    clientesConta.Add(contaCliente);
-                }
-            return clientesConta;
+            return dadosEClientesDaConta;
         }
     }
 }

@@ -94,7 +94,7 @@ namespace ProjetoBanco.MVC.Controllers
         public ActionResult EditConta()
         {
             var statusCode = new HttpResponseMessage();
-            statusCode = _contaClienteAppService.GetAllContas();
+            statusCode = _contaClienteAppService.GetAllDadosEClientesDaConta();
             if (!statusCode.IsSuccessStatusCode)
             {
                 Response.TrySkipIisCustomErrors = true;

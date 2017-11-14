@@ -68,9 +68,9 @@ namespace Web_Api.Controllers
                 return Ok();
             }
         }
-        public IHttpActionResult GetAllContas()
+        public IHttpActionResult GetAllDadosEClientesDaConta()
         {
-            var contas = new List<ContaCliente>(_iContaClienteService.GetAllContas());
+            var contas = new List<ContaCliente>(_iContaClienteService.GetAllDadosEClientesDaConta());
 
             if (_notifications.Notificacoes.Count > 0)
             {

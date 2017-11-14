@@ -7,7 +7,6 @@ namespace ProjetoBanco.Domain.Contas
         void AddContaCliente(Conta conta);
         ContaClienteAlteracao GetConta(int contaId);
         void UpdateConta(Conta conta);
-        List<ContaClienteAlteracao> GetAllContas();
-        List<ContaCliente> GetAllClientesConta();
+        List<ContaCliente> GetAllDadosEClientesDaConta();
     }
 }

@@ -227,12 +227,12 @@ GO
 --verifica se tem o usuario do acesso cadastrado
 
 IF EXISTS (SELECT * FROM dbo.sysobjects WHERE id = object_id(N'[dbo].[PBSP_AUTENTICA]') AND objectproperty(id, N'IsPROCEDURE')=1)
-DROP PROCEDURE [dbo].[PBSP_AUTENTICA]
+	DROP PROCEDURE [dbo].[PBSP_AUTENTICA]
 GO
 
-	CREATE PROCEDURE [dbo].[PBSP_AUTENTICA]
-		@nome VARCHAR(20),
-		@senha VARCHAR(8)
+CREATE PROCEDURE [dbo].[PBSP_AUTENTICA]
+	@nome VARCHAR(20),
+	@senha VARCHAR(8)
 	AS
 
 	/*
@@ -249,9 +249,11 @@ GO
 				Usuario.nome,
 				Usuario.senha, 
 				Clientes.nivel 
-				FROM [dbo].[Usuario] WITH(NOLOCK)
-					INNER JOIN Clientes ON Clientes.Id = Usuario.clienteId
-		WHERE [dbo].[Usuario].nome=@nome and [dbo].[Usuario].senha=@senha
+			FROM [dbo].[Usuario] WITH(NOLOCK)
+				INNER JOIN Clientes 
+					ON Clientes.Id = Usuario.clienteId
+			WHERE [dbo].[Usuario].nome=@nome 
+				AND [dbo].[Usuario].senha=@senha
 	END
 GO
 --insere Operacaoes
@@ -1366,7 +1368,50 @@ CREATE PROCEDURE [dbo].[PBSP_GETALLCLIENTESCONTA]
 				INNER JOIN Clientes AS Cli WITH(NOLOCK) ON contaCli.clienteId = Cli.Id	
 	END
 GO
-	
+
+IF EXISTS (SELECT * FROM dbo.sysobjects WHERE id = object_id(N'[dbo].[PBSP_GETALLDADOSECLIENTESDACONTA]') AND objectproperty(id, N'IsPROCEDURE')=1)
+	DROP PROCEDURE [dbo].[PBSP_GETALLDADOSECLIENTESDACONTA]
+GO
+
+CREATE PROCEDURE [dbo].[PBSP_GETALLDADOSECLIENTESDACONTA]
+
+	AS
+
+	/*
+	Documentação
+	Arquivo Fonte.....: ArquivoFonte.sql
+	Objetivo..........: Retorna dados conta e clientes da mesma
+	Autor.............: SMN - Douglas
+ 	Data..............: 14/11/2017
+	Ex................: EXEC [dbo].[PBSP_GETALLDADOSECLIENTESDACONTA]
+
+	*/
+
+	BEGIN
+		SELECT DISTINCT	cliente.nomesClientes AS nome,
+				contaCli.contaId,
+				conta.num, 
+				conta.senha, 
+				ag.agencia
+			FROM ContaCliente AS contaCli WITH(NOLOCK)	
+				INNER JOIN Clientes AS cli WITH(NOLOCK) 
+					ON contaCli.clienteId = cli.Id
+				INNER JOIN Conta AS conta WITH(NOLOCK) 
+					ON contaCli.contaId = conta.Id
+				INNER JOIN Agencia AS ag WITH(NOLOCK)	
+					ON ag.agencia = contaCli.agencia	
+				CROSS APPLY(
+						SELECT STUFF(( --Busca todas os nomes dos clientes vinculados as contas
+							SELECT  ', ' + nome
+								FROM ContaCliente AS cc WITH(NOLOCK)	
+									INNER JOIN Clientes AS c WITH(NOLOCK) 
+										ON c.Id = cc.clienteId
+								WHERE cc.contaId = contaCli.contaId
+						  FOR XML PATH('') ), 1, 1, '') AS nomesClientes
+				)cliente		
+	END
+GO
+					
 																									
 --Funções
 --função que retorna o Saldo
