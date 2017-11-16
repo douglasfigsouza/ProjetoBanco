@@ -1,6 +1,7 @@
 ﻿using ProjetoBanco.Domain.Agencia;
 using ProjetoBanco.Domain.Agencias;
 using ProjetoBanco.Domain.Entities;
+using System;
 using System.Collections.Generic;
 using System.Web.Http;
 
@@ -9,30 +10,27 @@ namespace Web_Api.Controllers
     public class AgenciasController : ApiController
     {
         private readonly IAgenciaService _agenciaService;
+        IAgenciaRepository _agenciaRepository;
         private readonly Notifications _notifications;
 
-        public AgenciasController(Notifications notifications, IAgenciaService agenciaService)
+        public AgenciasController(Notifications notifications, IAgenciaService agenciaService, IAgenciaRepository agenciaRepository)
         {
             _notifications = notifications;
             _agenciaService = agenciaService;
+            _agenciaRepository = agenciaRepository;
         }
 
         public IHttpActionResult AddAgencia(AgenciaDto agencia)
         {
-            _agenciaService.AddAgencia(agencia);
-            if (_notifications.Notificacoes.Count > 0)
+            try
             {
-                string erros = "";
-                foreach (var erro in _notifications.Notificacoes)
-                {
-                    erros = erros + " " + erro;
-                }
-                return BadRequest(erros);
+                _agenciaRepository.AddAgencia(agencia);
             }
-            else
+            catch (Exception e)
             {
-                return Ok();
+                return BadRequest("Ops! algo deu errado! Erro" + e.Message);
             }
+            return Ok();
         }
         public IHttpActionResult GetAgenciaByNum(int agencia)
         {

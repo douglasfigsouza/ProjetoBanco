@@ -2,6 +2,7 @@
 using ProjetoBanco.Domain.Agencias;
 using ProjetoBanco.Domain.Estados;
 using ProjetoBanco.MVC.ViewModels;
+using System;
 using System.Collections.Generic;
 using System.Net.Http;
 using System.Web.Mvc;
@@ -25,21 +26,35 @@ namespace ProjetoBanco.MVC.Controllers
         // GET: Agencia
         public ActionResult CreateAgencia()
         {
-            var statusCode = new HttpResponseMessage();
-
-            statusCode = _estadoAppService.GetAllEstados();
-            if (!statusCode.IsSuccessStatusCode)
+            var statusCodeEstados = new HttpResponseMessage();
+            var statusCodeBancos = new HttpResponseMessage();
+            try
             {
-                return null;
+                statusCodeEstados = _estadoAppService.GetAllEstados();
+                statusCodeBancos = _bancoAppService.GetAllBancos();
             }
-            ViewBag.estados = statusCode.Content.ReadAsAsync<IEnumerable<Estado>>().Result;
-
-            statusCode = _bancoAppService.GetAllBancos();
-            if (!statusCode.IsSuccessStatusCode)
+            catch (Exception e)
             {
-                return null;
+                ViewBag.erros = "Ops! algo deu errado!" + e.Message;
+                return View();
             }
-            ViewBag.bancos = statusCode.Content.ReadAsAsync<IEnumerable<BancoViewModel>>().Result;
+            if (!statusCodeEstados.IsSuccessStatusCode)
+            {
+                Response.StatusCode = 400;
+                ViewBag.erros = Utilitarios.Utilitarios.limpaMenssagemErro(statusCodeEstados.
+                        Content.ReadAsStringAsync().Result);
+                return View();
+            }
+            if (!statusCodeBancos.IsSuccessStatusCode)
+            {
+                Response.StatusCode = 400;
+                ViewBag.erros = Utilitarios.Utilitarios.limpaMenssagemErro(statusCodeBancos.
+                        Content.ReadAsStringAsync().Result);
+                return View();
+            }
+
+            ViewBag.estados = statusCodeEstados.Content.ReadAsAsync<IEnumerable<Estado>>().Result;
+            ViewBag.bancos = statusCodeBancos.Content.ReadAsAsync<IEnumerable<BancoViewModel>>().Result;
             return View();
         }
 

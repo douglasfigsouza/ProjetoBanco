@@ -16,16 +16,9 @@ namespace ProjetoBanco.Domain.Agencia
             _notifications = notifications;
         }
 
-        public void AddAgencia(Agencias.AgenciaDto agencia)
+        public void AddAgencia(AgenciaDto agencia)
         {
-            try
-            {
-                _agenciaRepository.AddAgencia(agencia);
-            }
-            catch (Exception e)
-            {
-                _notifications.Notificacoes.Add($"Impossível cadastrar agência! Erro {e.Message}");
-            }
+            throw new NotImplementedException();
         }
 
         public Agencias.AgenciaDto GetAgenciaByNum(int numAgencia)
