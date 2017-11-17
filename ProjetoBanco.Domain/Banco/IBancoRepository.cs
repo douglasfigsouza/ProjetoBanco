@@ -3,7 +3,7 @@ namespace ProjetoBanco.Domain.Bancos
 {
     public interface IBancoRepository
     {
-        void AddBanco(Banco banco);
+        void PostBanco(Banco banco);
         IEnumerable<Banco> GetAllBancos();
     }
 }

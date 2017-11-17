@@ -5,7 +5,7 @@ namespace ProjetoBanco.Application.Interfaces
 {
     public interface IBancoAppService
     {
-        HttpResponseMessage AddBanco(Banco banco);
+        HttpResponseMessage PostBanco(Banco banco);
         HttpResponseMessage GetAllBancos();
     }
 }

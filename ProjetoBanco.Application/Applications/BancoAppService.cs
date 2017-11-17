@@ -7,11 +7,11 @@ namespace ProjetoBanco.Application
 {
     public class BancoAppService : IBancoAppService
     {
-        public HttpResponseMessage AddBanco(Banco banco)
+        public HttpResponseMessage PostBanco(Banco banco)
         {
             var response = new HttpResponseMessage();
             response = HttpClientConf.HttpClientConfig("Banco")
-                .PostAsJsonAsync("AddBanco", banco).Result;
+                .PostAsJsonAsync("PostBanco", banco).Result;
             return response;
         }
 

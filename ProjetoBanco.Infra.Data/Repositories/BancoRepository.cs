@@ -16,7 +16,7 @@ namespace ProjetoBanco.Infra.Data.Repositories
         {
             _conn = conn;
         }
-        public void AddBanco(Banco banco)
+        public void PostBanco(Banco banco)
         {
 
             _conn.ExecuteProcedure(Procedures.PBSP_INSERTBANCO);
