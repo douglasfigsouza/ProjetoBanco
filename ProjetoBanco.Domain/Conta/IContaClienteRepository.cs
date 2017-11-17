@@ -4,9 +4,9 @@ namespace ProjetoBanco.Domain.Contas
 {
     public interface IContaClienteRepository
     {
-        void AddContaCliente(Conta conta);
+        void PostContaCliente(Conta conta);
         ContaClienteAlteracao GetConta(int contaId);
-        void UpdateConta(Conta conta);
+        void PutConta(Conta conta);
         List<ContaCliente> GetAllDadosEClientesDaConta();
     }
 }

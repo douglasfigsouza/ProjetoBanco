@@ -24,7 +24,7 @@
         <hr>
     </div>
     <div class="col s12">
-        @using (Ajax.BeginForm("CreateCliente", "Clientes", null, new AjaxOptions
+        @using (Ajax.BeginForm("PostCliente", "Clientes", null, new AjaxOptions
         {
             HttpMethod = "POST",
             OnSuccess = "sucesso",

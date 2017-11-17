@@ -24,7 +24,7 @@ namespace ProjetoBanco.MVC.Controllers
         }
 
         // GET: Agencia
-        public ActionResult PostAgencia()
+        public ActionResult CadastraAgencia()
         {
             var statusCodeEstados = new HttpResponseMessage();
             var statusCodeBancos = new HttpResponseMessage();
@@ -37,14 +37,14 @@ namespace ProjetoBanco.MVC.Controllers
                     Response.StatusCode = 400;
                     ViewBag.erros = Utilitarios.Utilitarios.limpaMenssagemErro(statusCodeEstados.
                             Content.ReadAsStringAsync().Result);
-                    return View();
+                    return View("PostAgencia");
                 }
                 if (!statusCodeBancos.IsSuccessStatusCode)
                 {
                     Response.StatusCode = 400;
                     ViewBag.erros = Utilitarios.Utilitarios.limpaMenssagemErro(statusCodeBancos.
                             Content.ReadAsStringAsync().Result);
-                    return View();
+                    return View("PostAgencia");
                 }
 
                 ViewBag.estados = statusCodeEstados.Content.ReadAsAsync<IEnumerable<Estado>>().Result;
@@ -54,12 +54,10 @@ namespace ProjetoBanco.MVC.Controllers
             catch (Exception e)
             {
                 ViewBag.erros = "Ops! algo deu errado!" + e.Message;
-                return View();
+                return View("PostAgencia");
             }
 
         }
-
-        [HttpPost]
         public ActionResult PostAgencia(AgenciaViewModel agenciaViewModel)
         {
             try
@@ -92,8 +90,7 @@ namespace ProjetoBanco.MVC.Controllers
 
 
         }
-
-        public ActionResult PutAgencia()
+        public ActionResult EditaAgencia()
         {
             try
             {
@@ -112,16 +109,15 @@ namespace ProjetoBanco.MVC.Controllers
                 Response.StatusCode = 200;
                 agenciaViewModel.agencias = statusCode.Content.ReadAsAsync<List<AgenciaViewModel>>().Result;
 
-                return View(agenciaViewModel);
+                return View("PutAgencia",agenciaViewModel);
             }
             catch (Exception e)
             {
                 ViewBag.erros = "Ops! algo deu errado!" + e.Message;
-                return View();
+                return View("PutAgencia");
             }
         }
 
-        [HttpPut]
         public ActionResult PutAgencia(AgenciaViewModel agenciaViewModel)
         {
             try

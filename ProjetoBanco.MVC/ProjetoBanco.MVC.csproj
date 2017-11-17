@@ -279,7 +279,7 @@
     <Content Include="Views\Usuarios\Login.cshtml" />
     <Content Include="Views\Operacoes\CreateOperacao.cshtml" />
     <Content Include="Views\Agencia\PostAgencia.cshtml" />
-    <Content Include="Views\Contas\CreateConta.cshtml" />
+    <Content Include="Views\Contas\PostConta.cshtml" />
     <Content Include="Views\Operacoes\Operacoes.cshtml" />
     <Content Include="Views\Operacoes\Deposito.cshtml" />
     <Content Include="Views\Operacoes\Saldo.cshtml" />
@@ -291,7 +291,7 @@
     <Content Include="Views\Usuarios\EditUsuario.cshtml" />
     <Content Include="Views\Operacoes\OpRealizadasEstorno.cshtml" />
     <Content Include="Views\Operacoes\ContaEstorno.cshtml" />
-    <Content Include="Views\Contas\ContaEdit.cshtml" />
+    <Content Include="Views\Contas\PutConta.cshtml" />
     <Content Include="Views\Agencia\PutAgencia.cshtml" />
     <Content Include="Views\Shared\_Layout.cshtml" />
     <Content Include="Views\Operacoes\_Extrato.cshtml" />

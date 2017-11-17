@@ -28,7 +28,7 @@ namespace ProjetoBanco.Application
         {
             var response = new HttpResponseMessage();
             response = HttpClientConf.HttpClientConfig("Agencias")
-                .PostAsJsonAsync("PutAgencia", agencia).Result;
+                .PutAsJsonAsync("PutAgencia", agencia).Result;
             return response;
         }
 

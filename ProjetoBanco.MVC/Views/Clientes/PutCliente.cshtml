@@ -72,9 +72,9 @@
             <hr>
         </div>
         <div class="col s12">
-            @using (Ajax.BeginForm("EditarCliente", "Clientes", null, new AjaxOptions
+            @using (Ajax.BeginForm("PutCliente", "Clientes", null, new AjaxOptions
             {
-                HttpMethod = "POST",
+                HttpMethod = "PUT",
                 OnSuccess = "sucesso",
                 OnFailure = "erro(xhr)",
                 OnBegin = "progresso",

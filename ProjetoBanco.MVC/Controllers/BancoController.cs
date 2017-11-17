@@ -15,9 +15,9 @@ namespace ProjetoBanco.MVC.Controllers
         {
             _bancoAppService = bancoAppService;
         }
-        public ActionResult PostBanco()
+        public ActionResult CadastraBanco()
         {
-            return View();
+            return View("PostBanco");
         }
 
         [HttpPost]

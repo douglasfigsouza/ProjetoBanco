@@ -64,9 +64,9 @@
                 <h6 class="col s6">Agencia:</h6>
                 <h6 class="col s6" id="numAgencia"></h6>
             </div>
-        @using (Ajax.BeginForm("UpdateAgencia", "Agencia", null, new AjaxOptions
+        @using (Ajax.BeginForm("PutAgencia", "Agencia", null, new AjaxOptions
         {
-            HttpMethod = "POST",
+            HttpMethod = "PUT",
             OnSuccess = "sucesso",
             OnFailure = "erro(xhr)",
             OnBegin = "progresso",

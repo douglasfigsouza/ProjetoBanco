@@ -23,7 +23,7 @@ namespace ProjetoBanco.MVC.Controllers
             _cidadesAppService = ICidadeAppService;
         }
         // GET: Clientes/Create
-        public ActionResult PostCliente()
+        public ActionResult CadastraCliente()
         {
             try
             {
@@ -34,17 +34,16 @@ namespace ProjetoBanco.MVC.Controllers
                     return null;
                 }
                 ViewBag.estados = statusCode.Content.ReadAsAsync<IEnumerable<Estado>>().Result;
-                return View();
+                return View("PostCliente");
             }
             catch (Exception e)
             {
                 ViewBag.erros = $"Ops!algo deu errado!Erro: {e.Message}";
-                return View();
+                return View("PostCliente");
             }
         }
 
         // POST: Clientes/Create
-        [HttpPost]
         [ValidateAntiForgeryToken]
         public ActionResult PostCliente(ClienteViewModel clienteViewModel)
         {
@@ -83,7 +82,6 @@ namespace ProjetoBanco.MVC.Controllers
                 return View();
             }
         }
-        [HttpGet]
         public JsonResult GetCidadesByIdEstado(int id)
         {
             try
@@ -95,7 +93,6 @@ namespace ProjetoBanco.MVC.Controllers
                 return null;
             }
         }
-        [HttpGet]
         public JsonResult GetAllClientes()
         {
             try
@@ -139,7 +136,7 @@ namespace ProjetoBanco.MVC.Controllers
                 {
                     Clientes = statusCode.Content.ReadAsAsync<IEnumerable<ClienteViewModel>>().Result
                 };
-                return View(cliente);
+                return View("PutCliente",cliente);
             }
             catch (Exception e)
             {
@@ -148,7 +145,6 @@ namespace ProjetoBanco.MVC.Controllers
             }
         }
 
-        [HttpPut]
         public ActionResult PutCliente(ClienteViewModel clienteViewModel)
         {
             try
@@ -206,7 +202,7 @@ namespace ProjetoBanco.MVC.Controllers
                 Response.StatusCode = 200;
                 return Json(statusCode.Content.ReadAsAsync<ClienteViewModel>().Result, JsonRequestBehavior.AllowGet);
             }
-            catch (Exception e)
+            catch
             {
                 return null;
             }
@@ -230,7 +226,7 @@ namespace ProjetoBanco.MVC.Controllers
                 Response.StatusCode = 200;
                 return Json(statusCode.Content.ReadAsAsync<ClienteViewModel>().Result, JsonRequestBehavior.AllowGet);
             }
-            catch (Exception e)
+            catch
             {
                 return null;
             }

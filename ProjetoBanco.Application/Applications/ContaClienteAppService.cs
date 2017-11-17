@@ -7,11 +7,11 @@ namespace ProjetoBanco.Application
 {
     public class ContaClienteAppService : IContaClienteAppService
     {
-        public HttpResponseMessage AddContaCliente(Conta conta)
+        public HttpResponseMessage PostContaCliente(Conta conta)
         {
             var response = new HttpResponseMessage();
             response = HttpClientConf.HttpClientConfig("ContaCliente")
-                .PostAsJsonAsync("AddContaCliente", conta).Result;
+                .PostAsJsonAsync("PostContaCliente", conta).Result;
             return response;
         }
 
@@ -28,11 +28,11 @@ namespace ProjetoBanco.Application
             return response;
         }
 
-        public HttpResponseMessage UpdateConta(Conta conta)
+        public HttpResponseMessage PutConta(Conta conta)
         {
             var response = new HttpResponseMessage();
             response = HttpClientConf.HttpClientConfig("ContaCliente")
-                .PostAsJsonAsync("UpdateConta", conta).Result;
+                .PostAsJsonAsync("PutConta", conta).Result;
             return response;
         }
         public HttpResponseMessage GetAllDadosEClientesDaConta()

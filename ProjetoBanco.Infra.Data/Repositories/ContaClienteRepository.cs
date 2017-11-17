@@ -24,7 +24,7 @@ namespace ProjetoBanco.Infra.Data.Repositories
         {
             _conn = conn;
         }
-        public void AddContaCliente(Conta conta)
+        public void PostContaCliente(Conta conta)
         {
             _conn.ExecuteProcedure(Procedure.PBSP_INSERTCONTA);
             _conn.AddParameter("@num", conta.num);
@@ -42,7 +42,7 @@ namespace ProjetoBanco.Infra.Data.Repositories
                 _conn.ExecuteNonQuery();
             }
         }
-        public void UpdateConta(Conta conta)
+        public void PutConta(Conta conta)
         {
             _conn.ExecuteProcedure(Procedure.PBSP_UPDATECONTA);
             _conn.AddParameter("@conta", conta.num);
@@ -68,11 +68,13 @@ namespace ProjetoBanco.Infra.Data.Repositories
                 }
             return contaClienteAlteracao;
         }
-        public List<ContaCliente> GetAllDadosEClientesDaConta() {
+        public List<ContaCliente> GetAllDadosEClientesDaConta()
+        {
             var dadosEClientesDaConta = new List<ContaCliente>();
             _conn.ExecuteProcedure(Procedure.PBSP_GETALLDADOSECLIENTESDACONTA);
             using (var result = _conn.ExecuteReader())
-                while (result.Read()) {
+                while (result.Read())
+                {
                     dadosEClientesDaConta.Add(new ContaCliente
                     {
                         conta = result["num"].ToString(),

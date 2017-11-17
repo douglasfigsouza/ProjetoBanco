@@ -67,9 +67,9 @@
     <div class="col s8">
         <h5 id="contaCli"></h5>
         <hr />
-        @using (Ajax.BeginForm("UpdateConta", "Contas", null, new AjaxOptions
+        @using (Ajax.BeginForm("PutConta", "Contas", null, new AjaxOptions
             {
-                HttpMethod = "POST",
+                HttpMethod = "PUT",
                 OnSuccess = "sucesso",
                 OnFailure = "erro(xhr)",
                 OnBegin = "progresso",
@@ -154,7 +154,7 @@
             debugger;
             var contaId = $(this).closest("tr").attr("id");
             $.ajax({
-                type: "POST",
+                type: "GET",
                 url: "/Contas/GetConta",
                 dataType: "Json",
                 data: {

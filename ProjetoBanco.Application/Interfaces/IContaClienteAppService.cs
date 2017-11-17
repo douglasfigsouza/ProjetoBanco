@@ -5,9 +5,9 @@ namespace ProjetoBanco.Application.Interfaces
 {
     public interface IContaClienteAppService
     {
-        HttpResponseMessage AddContaCliente(Conta conta);
+        HttpResponseMessage PostContaCliente(Conta conta);
         HttpResponseMessage GetConta(int contaId);
-        HttpResponseMessage UpdateConta(Conta conta);
+        HttpResponseMessage PutConta(Conta conta);
         HttpResponseMessage GetAllDadosEClientesDaConta();
     }
 }

@@ -1,7 +1,5 @@
 ﻿using ProjetoBanco.Domain.Contas;
 using ProjetoBanco.Domain.Entities;
-using System;
-using System.Collections.Generic;
 
 namespace ProjetoBanco.Domain.Conta
 {
@@ -15,57 +13,15 @@ namespace ProjetoBanco.Domain.Conta
             _contaClienteRepository = contaClienteRepository;
             _notifications = notifications;
         }
-
-        public void AddContaCliente(Contas.Conta conta)
-        {
-            try
-            {
-                _contaClienteRepository.AddContaCliente(conta);
-            }
-            catch (Exception e)
-            {
-                _notifications.Notificacoes.Add($"Impossível cadastrar conta! Erro {e.Message}");
-            }
-        }
-
-        public List<ContaCliente> GetAllDadosEClientesDaConta()
-        {
-            var dadosEClientesDaConta = new List<ContaCliente>();
-            return dadosEClientesDaConta = _contaClienteRepository.GetAllDadosEClientesDaConta();
-        }
         public ContaClienteAlteracao GetConta(int contaId)
         {
             var conta = new ContaClienteAlteracao();
-            try
-            {
-                conta = _contaClienteRepository.GetConta(contaId);
-            }
-            catch (Exception e)
-            {
-                _notifications.Notificacoes.Add($"Impossível buscar conta! Erro {e.Message}");
-            }
+            conta = _contaClienteRepository.GetConta(contaId);
             if (conta == null)
             {
                 _notifications.Notificacoes.Add("Conta não encontrada!");
             }
             return conta;
-        }
-
-        public void UpdateConta(Contas.Conta conta)
-        {
-            try
-            {
-                _contaClienteRepository.UpdateConta(conta);
-            }
-            catch (Exception e)
-            {
-                _notifications.Notificacoes.Add($"Impossível atualizar conta! Erro {e.Message}");
-            }
-        }
-
-        public List<ContaCliente> GetAllClientesConta()
-        {
-            throw new NotImplementedException();
         }
     }
 }
