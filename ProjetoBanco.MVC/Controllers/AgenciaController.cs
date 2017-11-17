@@ -121,7 +121,7 @@ namespace ProjetoBanco.MVC.Controllers
             }
         }
 
-        [HttpPost]
+        [HttpPut]
         public ActionResult PutAgencia(AgenciaViewModel agenciaViewModel)
         {
             try

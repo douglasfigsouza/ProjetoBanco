@@ -7,11 +7,11 @@ namespace ProjetoBanco.Application
 {
     public class ClienteAppService : IClienteAppService
     {
-        public HttpResponseMessage AddCliente(ClienteDto cliente)
+        public HttpResponseMessage PostCliente(ClienteDto cliente)
         {
             var response = new HttpResponseMessage();
             response = HttpClientConf.HttpClientConfig("Clientes")
-                .PostAsJsonAsync("AddCliente", cliente).Result;
+                .PostAsJsonAsync("PostCliente", cliente).Result;
             return response;
         }
 
@@ -51,11 +51,11 @@ namespace ProjetoBanco.Application
             return response;
         }
 
-        public HttpResponseMessage UpdateCliente(ClienteDto cliente)
+        public HttpResponseMessage PutCliente(ClienteDto cliente)
         {
             var response = new HttpResponseMessage();
             response = HttpClientConf.HttpClientConfig("Clientes")
-                .PostAsJsonAsync("UpdateCliente", cliente).Result;
+                .PostAsJsonAsync("PutCliente", cliente).Result;
             return response;
         }
 

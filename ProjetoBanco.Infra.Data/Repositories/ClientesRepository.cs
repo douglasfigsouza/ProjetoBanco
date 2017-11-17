@@ -24,7 +24,7 @@ namespace ProjetoBanco.Infra.Data.Repositories
             PBSP_GETCLIENTEBYCPF
         }
 
-        public void AddCliente(ClienteDto cliente)
+        public void PostCliente(ClienteDto cliente)
         {
             _conn.ExecuteProcedure(Procedures.PBSP_INSERTCLIENTE);
             _conn.AddParameter("@cidadeId", cliente.cidadeId);
@@ -95,7 +95,7 @@ namespace ProjetoBanco.Infra.Data.Repositories
             return lstClientes.ToList();
         }
 
-        public void UpdateClientes(ClienteDto cliente)
+        public void PutClientes(ClienteDto cliente)
         {
             _conn.ExecuteProcedure(Procedures.PBSP_UPDATECLIENTE);
             _conn.AddParameter("@id", cliente.Id);

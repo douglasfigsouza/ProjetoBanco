@@ -1,5 +1,6 @@
 ﻿using ProjetoBanco.Domain.Clientes;
 using ProjetoBanco.Domain.Entities;
+using System;
 using System.Collections.Generic;
 using System.Web.Http;
 
@@ -8,100 +9,103 @@ namespace Web_Api.Controllers
     public class ClientesController : ApiController
     {
         private readonly IClienteService _clienteService;
+        private readonly IClienteRepository _clienteRepository;
         private readonly Notifications _notifications;
-        public ClientesController(Notifications notifications, IClienteService clienteService)
+        public ClientesController(Notifications notifications, IClienteService clienteService, IClienteRepository clienteRepository)
         {
             _notifications = notifications;
             _clienteService = clienteService;
+            _clienteRepository = clienteRepository;
         }
-        public IHttpActionResult AddCliente(ClienteDto cliente)
+        public IHttpActionResult PostCliente(ClienteDto cliente)
         {
-            _clienteService.AddCliente(cliente);
-            if (_notifications.Notificacoes.Count > 0)
+            try
             {
-                string erros = "";
-                foreach (var erro in _notifications.Notificacoes)
-                {
-                    erros = erros + " " + erro;
-                }
-                return BadRequest(erros);
-            }
-            else
-            {
+                _clienteRepository.PostCliente(cliente);
                 return Ok();
             }
+            catch (Exception e)
+            {
+                return BadRequest($"Ops! algo deu errado! Erro: {e.Message}");
+            }
+
         }
         public IHttpActionResult GetAllClientes(int op)
         {
-            IEnumerable<ClienteDto> clientes = new List<ClienteDto>();
-            clientes = _clienteService.GetAllClientes(op);
-            if (_notifications.Notificacoes.Count > 0)
+            try
             {
-                string erros = "";
-                foreach (var erro in _notifications.Notificacoes)
-                {
-                    erros = erros + " " + erro;
-                }
-                return BadRequest(erros);
-            }
-            else
-            {
+                var clientes = new List<ClienteDto>(_clienteRepository.GetAllClientes(op));
                 return Ok(clientes);
+
+            }
+            catch (Exception e)
+            {
+                return BadRequest($"Ops! algo deu errado! Erro: {e.Message}");
             }
         }
-        public IHttpActionResult UpdateCliente(ClienteDto cliente)
+        public IHttpActionResult PutCliente(ClienteDto cliente)
         {
-            _clienteService.UpdateClientes(cliente);
-            if (_notifications.Notificacoes.Count > 0)
+            try
             {
-                string erros = "";
-                foreach (var erro in _notifications.Notificacoes)
-                {
-                    erros = erros + " " + erro;
-                }
-                return BadRequest(erros);
-            }
-            else
-            {
+                _clienteRepository.PutClientes(cliente);
                 return Ok();
             }
+            catch (Exception e)
+            {
+                return BadRequest($"Ops! algo deu errado! Erro: {e.Message}");
+            }
+
         }
         public IHttpActionResult GetByClienteId(int id)
         {
-            var cliente = new ClienteDto();
-            cliente = _clienteService.GetByClienteId(id);
+            try
+            {
+                var cliente = new ClienteDto();
+                cliente = _clienteService.GetByClienteId(id);
 
-            if (_notifications.Notificacoes.Count > 0)
-            {
-                string erros = "";
-                foreach (var erro in _notifications.Notificacoes)
+                if (_notifications.Notificacoes.Count > 0)
                 {
-                    erros = erros + " " + erro;
+                    string erros = "";
+                    foreach (var erro in _notifications.Notificacoes)
+                    {
+                        erros = erros + " " + erro;
+                    }
+                    return BadRequest(erros);
                 }
-                return BadRequest(erros);
+                else
+                {
+                    return Ok(cliente);
+                }
             }
-            else
+            catch (Exception e)
             {
-                return Ok(cliente);
+                return BadRequest($"Ops! algo deu errado! Erro: {e.Message}");
             }
         }
         public IHttpActionResult GetClienteByCpf(string cpf)
         {
-            var cliente = new ClienteDto();
-            cliente = _clienteService.GetClienteByCpf(cpf);
+            try
+            {
+                var cliente = new ClienteDto();
+                cliente = _clienteService.GetClienteByCpf(cpf);
 
-            if (_notifications.Notificacoes.Count > 0)
-            {
-                string erros = "";
-                foreach (var erro in _notifications.Notificacoes)
+                if (_notifications.Notificacoes.Count > 0)
                 {
-                    erros = erros + " " + erro;
+                    string erros = "";
+                    foreach (var erro in _notifications.Notificacoes)
+                    {
+                        erros = erros + " " + erro;
+                    }
+                    return BadRequest(erros);
                 }
-                return BadRequest(erros);
+                else
+                {
+                    return Ok(cliente);
+                }
             }
-            else
+            catch (Exception e)
             {
-                return Ok(cliente);
+                return BadRequest($"Ops! algo deu errado! Erro: {e.Message}");
             }
         }
     }

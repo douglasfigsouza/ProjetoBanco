@@ -1,4 +1,12 @@
 ﻿@model ProjetoBanco.MVC.ViewModels.ClienteViewModel
+@if (ViewBag.erros != null)
+{
+    <div class="row">
+        <div class="col s12">
+            <h6>@ViewBag.erros</h6>
+        </div>
+    </div>
+}
 <div id="divTblClientesEditaveis">
     <div class="">
         <table id="tlbClientesEditaveis" class="striped responsive-table centered">

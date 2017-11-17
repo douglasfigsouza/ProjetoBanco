@@ -12,7 +12,7 @@ namespace ProjetoBanco.Application
         {
             var response = new HttpResponseMessage();
             response = HttpClientConf.HttpClientConfig("Agencias")
-                .PostAsJsonAsync("AddAgencia", agencia).Result;
+                .PostAsJsonAsync("PostAgencia", agencia).Result;
             return response;
         }
 
@@ -28,7 +28,7 @@ namespace ProjetoBanco.Application
         {
             var response = new HttpResponseMessage();
             response = HttpClientConf.HttpClientConfig("Agencias")
-                .PostAsJsonAsync("UpdateAgencia", agencia).Result;
+                .PostAsJsonAsync("PutAgencia", agencia).Result;
             return response;
         }
 

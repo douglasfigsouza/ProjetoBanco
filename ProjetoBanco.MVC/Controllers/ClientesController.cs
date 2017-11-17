@@ -23,158 +23,217 @@ namespace ProjetoBanco.MVC.Controllers
             _cidadesAppService = ICidadeAppService;
         }
         // GET: Clientes/Create
-        public ActionResult CreateCliente()
+        public ActionResult PostCliente()
         {
-            var statusCode = new HttpResponseMessage();
-            statusCode = _estadoAppService.GetAllEstados();
-            if (!statusCode.IsSuccessStatusCode)
+            try
             {
-                return null;
+                var statusCode = new HttpResponseMessage();
+                statusCode = _estadoAppService.GetAllEstados();
+                if (!statusCode.IsSuccessStatusCode)
+                {
+                    return null;
+                }
+                ViewBag.estados = statusCode.Content.ReadAsAsync<IEnumerable<Estado>>().Result;
+                return View();
             }
-            ViewBag.estados = statusCode.Content.ReadAsAsync<IEnumerable<Estado>>().Result;
-            return View();
+            catch (Exception e)
+            {
+                ViewBag.erros = $"Ops!algo deu errado!Erro: {e.Message}";
+                return View();
+            }
         }
 
         // POST: Clientes/Create
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult CreateCliente(ClienteViewModel clienteViewModel)
+        public ActionResult PostCliente(ClienteViewModel clienteViewModel)
         {
-
-            var cliente = new ClienteDto
+            try
             {
-                cidadeId = clienteViewModel.cidadeId,
-                nome = clienteViewModel.nome,
-                cpf = Utilitarios.Utilitarios.retiraMask(clienteViewModel.cpf),
-                rg = Utilitarios.Utilitarios.retiraMask(clienteViewModel.rg),
-                fone = Utilitarios.Utilitarios.retiraMask(clienteViewModel.fone),
-                rua = clienteViewModel.rua,
-                bairro = clienteViewModel.bairro,
-                num = clienteViewModel.num,
-                nivel = clienteViewModel.nivel,
-                dataCadastro = DateTime.Now,
-                ativo = true
-            };
-            var statusCode = new HttpResponseMessage();
+                var cliente = new ClienteDto
+                {
+                    cidadeId = clienteViewModel.cidadeId,
+                    nome = clienteViewModel.nome,
+                    cpf = Utilitarios.Utilitarios.retiraMask(clienteViewModel.cpf),
+                    rg = Utilitarios.Utilitarios.retiraMask(clienteViewModel.rg),
+                    fone = Utilitarios.Utilitarios.retiraMask(clienteViewModel.fone),
+                    rua = clienteViewModel.rua,
+                    bairro = clienteViewModel.bairro,
+                    num = clienteViewModel.num,
+                    nivel = clienteViewModel.nivel,
+                    dataCadastro = DateTime.Now,
+                    ativo = true
+                };
+                var statusCode = new HttpResponseMessage();
 
-            statusCode = _clienteApp.AddCliente(cliente);
-            if (!statusCode.IsSuccessStatusCode)
-            {
-                Response.TrySkipIisCustomErrors = true;
-                Response.StatusCode = 400;
-                return Content(Utilitarios.Utilitarios.limpaMenssagemErro(statusCode.Content.ReadAsStringAsync().Result));
+                statusCode = _clienteApp.PostCliente(cliente);
+                if (!statusCode.IsSuccessStatusCode)
+                {
+                    Response.TrySkipIisCustomErrors = true;
+                    Response.StatusCode = 400;
+                    return Content(Utilitarios.Utilitarios.limpaMenssagemErro(statusCode.Content.ReadAsStringAsync().Result));
 
+                }
+                Response.StatusCode = 200;
+                return Json(statusCode.Content.ReadAsStringAsync().Result);
             }
-            Response.StatusCode = 200;
-            return Json(statusCode.Content.ReadAsStringAsync().Result);
+            catch (Exception e)
+            {
+                ViewBag.erros = $"Ops!algo deu errado!Erro: {e.Message}";
+                return View();
+            }
         }
         [HttpGet]
         public JsonResult GetCidadesByIdEstado(int id)
         {
-            return Json(_cidadesAppService.GetCidadesByEstadoId(id), JsonRequestBehavior.AllowGet);
+            try
+            {
+                return Json(_cidadesAppService.GetCidadesByEstadoId(id), JsonRequestBehavior.AllowGet);
+            }
+            catch
+            {
+                return null;
+            }
         }
         [HttpGet]
         public JsonResult GetAllClientes()
         {
-            var statusCode = new HttpResponseMessage();
-
-            statusCode = _clienteApp.GetAllClientes(1);
-            if (!statusCode.IsSuccessStatusCode)
+            try
             {
-                Response.TrySkipIisCustomErrors = true;
-                Response.StatusCode = 400;
+                var statusCode = new HttpResponseMessage();
 
-                return Json(Utilitarios.Utilitarios.limpaMenssagemErro(statusCode.Content.ReadAsStringAsync().Result), JsonRequestBehavior.AllowGet);
+                statusCode = _clienteApp.GetAllClientes(1);
+                if (!statusCode.IsSuccessStatusCode)
+                {
+                    Response.TrySkipIisCustomErrors = true;
+                    Response.StatusCode = 400;
 
+                    return Json(Utilitarios.Utilitarios.limpaMenssagemErro(statusCode.Content.ReadAsStringAsync().Result), JsonRequestBehavior.AllowGet);
+
+                }
+                Response.StatusCode = 200;
+                return Json(statusCode.Content.ReadAsAsync<IEnumerable<ClienteViewModel>>().Result, JsonRequestBehavior.AllowGet);
             }
-            Response.StatusCode = 200;
-            return Json(statusCode.Content.ReadAsAsync<IEnumerable<ClienteViewModel>>().Result, JsonRequestBehavior.AllowGet);
+            catch
+            {
+                return null;
+            }
         }
 
-        public ActionResult EditarCliente()
+        public ActionResult PutCliente()
         {
-            var statusCode = new HttpResponseMessage();
-
-            statusCode = _clienteApp.GetAllClientes(0);
-            if (!statusCode.IsSuccessStatusCode)
+            try
             {
-                Response.TrySkipIisCustomErrors = true;
-                Response.StatusCode = 400;
-                return Content(Utilitarios.Utilitarios.limpaMenssagemErro(statusCode.Content.ReadAsStringAsync().Result));
+                var statusCode = new HttpResponseMessage();
 
+                statusCode = _clienteApp.GetAllClientes(0);
+                if (!statusCode.IsSuccessStatusCode)
+                {
+                    Response.TrySkipIisCustomErrors = true;
+                    Response.StatusCode = 400;
+                    return Content(Utilitarios.Utilitarios.limpaMenssagemErro(statusCode.Content.ReadAsStringAsync().Result));
+
+                }
+                Response.StatusCode = 200;
+                var cliente = new ClienteViewModel
+                {
+                    Clientes = statusCode.Content.ReadAsAsync<IEnumerable<ClienteViewModel>>().Result
+                };
+                return View(cliente);
             }
-            Response.StatusCode = 200;
-            var cliente = new ClienteViewModel
+            catch (Exception e)
             {
-                Clientes = statusCode.Content.ReadAsAsync<IEnumerable<ClienteViewModel>>().Result
-            };
-            return View(cliente);
+                ViewBag.erros = $"Ops!algo deu errado!Erro: {e.Message}";
+                return View();
+            }
         }
 
-        [HttpPost]
-        public ActionResult EditarCliente(ClienteViewModel clienteViewModel)
+        [HttpPut]
+        public ActionResult PutCliente(ClienteViewModel clienteViewModel)
         {
-            var cliente = new ClienteDto
+            try
             {
-                Id = clienteViewModel.Id,
-                nome = clienteViewModel.nome,
-                cpf = Utilitarios.Utilitarios.retiraMask(clienteViewModel.cpf),
-                rg = Utilitarios.Utilitarios.retiraMask(clienteViewModel.rg),
-                fone = Utilitarios.Utilitarios.retiraMask(clienteViewModel.fone),
-                bairro = clienteViewModel.bairro,
-                rua = clienteViewModel.rua,
-                num = clienteViewModel.num,
-                nivel = clienteViewModel.nivel,
-                ativo = clienteViewModel.ativo,
-                cidadeId = clienteViewModel.cidadeId,
-            };
+                var cliente = new ClienteDto
+                {
+                    Id = clienteViewModel.Id,
+                    nome = clienteViewModel.nome,
+                    cpf = Utilitarios.Utilitarios.retiraMask(clienteViewModel.cpf),
+                    rg = Utilitarios.Utilitarios.retiraMask(clienteViewModel.rg),
+                    fone = Utilitarios.Utilitarios.retiraMask(clienteViewModel.fone),
+                    bairro = clienteViewModel.bairro,
+                    rua = clienteViewModel.rua,
+                    num = clienteViewModel.num,
+                    nivel = clienteViewModel.nivel,
+                    ativo = clienteViewModel.ativo,
+                    cidadeId = clienteViewModel.cidadeId,
+                };
 
-            var statusCode = new HttpResponseMessage();
+                var statusCode = new HttpResponseMessage();
 
-            statusCode = _clienteApp.UpdateCliente(cliente);
-            if (!statusCode.IsSuccessStatusCode)
-            {
-                Response.TrySkipIisCustomErrors = true;
-                Response.StatusCode = 400;
-                return Content(Utilitarios.Utilitarios.limpaMenssagemErro(statusCode.Content.ReadAsStringAsync().Result));
+                statusCode = _clienteApp.PutCliente(cliente);
+                if (!statusCode.IsSuccessStatusCode)
+                {
+                    Response.TrySkipIisCustomErrors = true;
+                    Response.StatusCode = 400;
+                    return Content(Utilitarios.Utilitarios.limpaMenssagemErro(statusCode.Content.ReadAsStringAsync().Result));
 
+                }
+                Response.StatusCode = 200;
+                return Json(statusCode.Content.ReadAsStringAsync().Result);
             }
-            Response.StatusCode = 200;
-            return Json(statusCode.Content.ReadAsStringAsync().Result);
+            catch (Exception e)
+            {
+                ViewBag.erros = $"Ops!algo deu errado!Erro: {e.Message}";
+                return View();
+            }
 
         }
 
         public JsonResult GetByClienteId(int Id)
         {
-            var statusCode = new HttpResponseMessage();
-
-            statusCode = _clienteApp.GetByClienteId(Id);
-            if (!statusCode.IsSuccessStatusCode)
+            try
             {
-                Response.TrySkipIisCustomErrors = true;
-                Response.StatusCode = 400;
-                return Json(Utilitarios.Utilitarios.limpaMenssagemErro(statusCode.Content.ReadAsStringAsync().Result), JsonRequestBehavior.AllowGet);
+                var statusCode = new HttpResponseMessage();
 
+                statusCode = _clienteApp.GetByClienteId(Id);
+                if (!statusCode.IsSuccessStatusCode)
+                {
+                    Response.TrySkipIisCustomErrors = true;
+                    Response.StatusCode = 400;
+                    return Json(Utilitarios.Utilitarios.limpaMenssagemErro(statusCode.Content.ReadAsStringAsync().Result), JsonRequestBehavior.AllowGet);
+
+                }
+                Response.StatusCode = 200;
+                return Json(statusCode.Content.ReadAsAsync<ClienteViewModel>().Result, JsonRequestBehavior.AllowGet);
             }
-            Response.StatusCode = 200;
-            return Json(statusCode.Content.ReadAsAsync<ClienteViewModel>().Result, JsonRequestBehavior.AllowGet);
+            catch (Exception e)
+            {
+                return null;
+            }
         }
 
         [HttpGet]
         public JsonResult GetClienteByCPF(string cpf)
         {
-            var statusCode = new HttpResponseMessage();
-
-            statusCode = _clienteApp.GetClienteByCpf(cpf);
-            if (!statusCode.IsSuccessStatusCode)
+            try
             {
-                Response.TrySkipIisCustomErrors = true;
-                Response.StatusCode = 400;
-                return Json(Utilitarios.Utilitarios.limpaMenssagemErro(statusCode.Content.ReadAsStringAsync().Result), JsonRequestBehavior.AllowGet);
+                var statusCode = new HttpResponseMessage();
 
+                statusCode = _clienteApp.GetClienteByCpf(cpf);
+                if (!statusCode.IsSuccessStatusCode)
+                {
+                    Response.TrySkipIisCustomErrors = true;
+                    Response.StatusCode = 400;
+                    return Json(Utilitarios.Utilitarios.limpaMenssagemErro(statusCode.Content.ReadAsStringAsync().Result), JsonRequestBehavior.AllowGet);
+
+                }
+                Response.StatusCode = 200;
+                return Json(statusCode.Content.ReadAsAsync<ClienteViewModel>().Result, JsonRequestBehavior.AllowGet);
             }
-            Response.StatusCode = 200;
-            return Json(statusCode.Content.ReadAsAsync<ClienteViewModel>().Result, JsonRequestBehavior.AllowGet);
+            catch (Exception e)
+            {
+                return null;
+            }
         }
     }
 }

@@ -20,7 +20,7 @@ namespace Web_Api.Controllers
             _agenciaRepository = agenciaRepository;
         }
 
-        public IHttpActionResult AddAgencia(AgenciaDto agencia)
+        public IHttpActionResult PostAgencia(AgenciaDto agencia)
         {
             try
             {
@@ -82,7 +82,7 @@ namespace Web_Api.Controllers
                 return Ok(agencias);
             }
         }
-        public IHttpActionResult UpdateAgencia(AgenciaDto agencia)
+        public IHttpActionResult PutAgencia(AgenciaDto agencia)
         {
             try
             {
