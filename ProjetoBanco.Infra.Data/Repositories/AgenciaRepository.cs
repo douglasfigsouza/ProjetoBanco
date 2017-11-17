@@ -20,7 +20,7 @@ namespace ProjetoBanco.Infra.Data.Repositories
             _conn = conn;
         }
 
-        public void AddAgencia(AgenciaDto agencia)
+        public void PostAgencia(AgenciaDto agencia)
         {
 
             _conn.ExecuteProcedure(Procedures.PBSP_INSERTAGENCIA);
@@ -51,7 +51,7 @@ namespace ProjetoBanco.Infra.Data.Repositories
                 }
             return Agencias.ToList();
         }
-        public void UpdateAgencia(AgenciaDto agencia)
+        public void PutAgencia(AgenciaDto agencia)
         {
             _conn.ExecuteProcedure(Procedures.PBSP_UPDATEAGENCIA);
             _conn.AddParameter("@agencia", agencia.agencia);

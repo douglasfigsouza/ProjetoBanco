@@ -1,7 +1,5 @@
 ﻿using ProjetoBanco.Domain.Agencias;
 using ProjetoBanco.Domain.Entities;
-using System;
-using System.Collections.Generic;
 
 namespace ProjetoBanco.Domain.Agencia
 {
@@ -15,23 +13,10 @@ namespace ProjetoBanco.Domain.Agencia
             _agenciaRepository = agenciaRepository;
             _notifications = notifications;
         }
-
-        public void AddAgencia(AgenciaDto agencia)
-        {
-            throw new NotImplementedException();
-        }
-
         public Agencias.AgenciaDto GetAgenciaByNum(int numAgencia)
         {
             var agencia = new Agencias.AgenciaDto();
-            try
-            {
-                agencia = _agenciaRepository.GetAgenciaByNum(numAgencia);
-            }
-            catch (Exception e)
-            {
-                _notifications.Notificacoes.Add($"Impossível buscar agência com o numero informado! Erro {e.Message}");
-            }
+            agencia = _agenciaRepository.GetAgenciaByNum(numAgencia);
             if (agencia.agencia == 0)
             {
                 _notifications.Notificacoes.Add("Nenhuma agência encontrada!");
@@ -39,30 +24,5 @@ namespace ProjetoBanco.Domain.Agencia
             return agencia;
         }
 
-        public IEnumerable<Agencias.AgenciaDto> GetAllAgencias()
-        {
-            IEnumerable<Agencias.AgenciaDto> agencias = new List<Agencias.AgenciaDto>();
-            try
-            {
-                agencias = _agenciaRepository.GetAllAgencias();
-            }
-            catch (Exception e)
-            {
-                _notifications.Notificacoes.Add($"Impossível buscar agências! Erro {e.Message}");
-            }
-            return agencias;
-        }
-
-        public void UpdateAgencia(Agencias.AgenciaDto agencia)
-        {
-            try
-            {
-                _agenciaRepository.UpdateAgencia(agencia);
-            }
-            catch (Exception e)
-            {
-                _notifications.Notificacoes.Add($"Impossível atualizar agência! Erro {e.Message}");
-            }
-        }
     }
 }

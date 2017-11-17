@@ -24,18 +24,25 @@ namespace Web_Api.Controllers
         {
             try
             {
-                _agenciaRepository.AddAgencia(agencia);
+                _agenciaRepository.PostAgencia(agencia);
             }
             catch (Exception e)
             {
-                return BadRequest("Ops! algo deu errado! Erro" + e.Message);
+                return BadRequest($"Ops! algo deu errado! Erro: {e.Message}");
             }
             return Ok();
         }
         public IHttpActionResult GetAgenciaByNum(int agencia)
         {
             var Agencia = new AgenciaDto();
-            Agencia = _agenciaService.GetAgenciaByNum(agencia);
+            try
+            {
+                Agencia = _agenciaService.GetAgenciaByNum(agencia);
+            }
+            catch (Exception e)
+            {
+                return BadRequest($"Ops! algo de errado! Erro:{e.Message}");
+            }
             if (_notifications.Notificacoes.Count > 0)
             {
                 string erros = "";
@@ -52,7 +59,15 @@ namespace Web_Api.Controllers
         }
         public IHttpActionResult GetAllAgencias()
         {
-            var agencias = new List<AgenciaDto>(_agenciaService.GetAllAgencias());
+            List<AgenciaDto> agencias;
+            try
+            {
+                agencias = new List<AgenciaDto>(_agenciaRepository.GetAllAgencias());
+            }
+            catch (Exception e)
+            {
+                return BadRequest($"Ops! algo de errado! Erro:{e.Message}");
+            }
             if (_notifications.Notificacoes.Count > 0)
             {
                 string erros = "";
@@ -69,7 +84,14 @@ namespace Web_Api.Controllers
         }
         public IHttpActionResult UpdateAgencia(AgenciaDto agencia)
         {
-            _agenciaService.UpdateAgencia(agencia);
+            try
+            {
+                _agenciaRepository.PutAgencia(agencia);
+            }
+            catch (Exception e)
+            {
+                return BadRequest($"Ops! algo de errado! Erro:{e.Message}");
+            }
             if (_notifications.Notificacoes.Count > 0)
             {
                 string erros = "";

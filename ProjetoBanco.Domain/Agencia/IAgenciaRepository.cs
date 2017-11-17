@@ -4,9 +4,9 @@ namespace ProjetoBanco.Domain.Agencias
 {
     public interface IAgenciaRepository
     {
-        void AddAgencia(AgenciaDto agencia);
+        void PostAgencia(AgenciaDto agencia);
         AgenciaDto GetAgenciaByNum(int agencia);
         IEnumerable<AgenciaDto> GetAllAgencias();
-        void UpdateAgencia(AgenciaDto agencia);
+        void PutAgencia(AgenciaDto agencia);
     }
 }

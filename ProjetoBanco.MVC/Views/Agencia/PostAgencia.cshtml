@@ -1,7 +1,15 @@
 ﻿@model ProjetoBanco.MVC.ViewModels.AgenciaViewModel
 
 @{
-    ViewBag.Title = "CreateAgência";
+    ViewBag.Title = "Criar Agência";
+}
+@if (ViewBag.erros != null)
+{
+    <div class="row divErroNaOperacao">
+        <div class="col s12">
+            <h6>@ViewBag.erros</h6>
+        </div>
+    </div>
 }
 <div class="row divErroNaOperacao">
     <div class="col s12">
@@ -20,7 +28,7 @@
         <hr>
     </div>
     <div class="col s12">
-        @using (Ajax.BeginForm("CreateAgencia", "Agencia", null, new AjaxOptions
+        @using (Ajax.BeginForm("PostAgencia", "Agencia", null, new AjaxOptions
         {
             HttpMethod = "POST",
             OnSuccess = "sucesso",
