@@ -1,6 +1,7 @@
 ﻿using ProjetoBanco.Application.Interfaces;
 using ProjetoBanco.Domain.Usuarios;
 using ProjetoBanco.MVC.ViewModels;
+using System;
 using System.Collections.Generic;
 using System.Net.Http;
 using System.Web.Mvc;
@@ -29,36 +30,47 @@ namespace ProjetoBanco.MVC.Controllers
         [HttpPost]
         public ActionResult Login(UsuarioViewModel usuarioViewModel)
         {
-            HttpResponseMessage statusCode;
-            var usuario = new UsuarioDto
+            try
             {
-                nome = usuarioViewModel.nome,
-                senha = usuarioViewModel.senha,
-            };
-            if (usuario.senha != "" && usuario.nome != "")
-            {
-                statusCode = _usuarioAppService.VerificaLogin(usuario);
-                if (!statusCode.IsSuccessStatusCode)
+                HttpResponseMessage statusCode;
+                var usuario = new UsuarioDto
                 {
-                    Response.TrySkipIisCustomErrors = true;
-                    Response.StatusCode = 400;
-                    return Content(Utilitarios.Utilitarios.limpaMenssagemErro(statusCode.Content.ReadAsStringAsync().Result));
+                    nome = usuarioViewModel.nome,
+                    senha = usuarioViewModel.senha,
+                };
+                if (usuario.senha != "" && usuario.nome != "")
+                {
+                    statusCode = _usuarioAppService.VerificaLogin(usuario);
+                    if (!statusCode.IsSuccessStatusCode)
+                    {
+                        Response.TrySkipIisCustomErrors = true;
+                        Response.StatusCode = 400;
+                        return Content(
+                            Utilitarios.Utilitarios.limpaMenssagemErro(statusCode.Content.ReadAsStringAsync().Result));
 
+                    }
+                    statusCode =
+                        _clienteAppService.GetByClienteId(statusCode.Content.ReadAsAsync<UsuarioDto>().Result
+                            .clienteId);
+                    if (!statusCode.IsSuccessStatusCode)
+                    {
+                        Logout();
+                        return null;
+                    }
+                    Response.TrySkipIisCustomErrors = true;
+                    Response.StatusCode = 200;
+                    Session["cliente"] = statusCode.Content.ReadAsAsync<ClienteViewModel>().Result;
+                    FormsAuthentication.SetAuthCookie(usuario.nome, false);
+                    return Json(statusCode.Content.ReadAsStringAsync().Result);
                 }
-                statusCode = _clienteAppService.GetByClienteId(statusCode.Content.ReadAsAsync<UsuarioDto>().Result.clienteId);
-                if (!statusCode.IsSuccessStatusCode)
+                else
                 {
-                    Logout();
-                    return null;
+                    return View("Login");
                 }
-                Response.TrySkipIisCustomErrors = true;
-                Response.StatusCode = 200;
-                Session["cliente"] = statusCode.Content.ReadAsAsync<ClienteViewModel>().Result;
-                FormsAuthentication.SetAuthCookie(usuario.nome, false);
-                return Json(statusCode.Content.ReadAsStringAsync().Result);
             }
-            else
+            catch (Exception e)
             {
+                ViewBag.erros = $"Ops! algo deu errado! Erro: {e.Message}";
                 return View("Login");
             }
 
@@ -71,101 +83,149 @@ namespace ProjetoBanco.MVC.Controllers
             return Redirect("/");
         }
         [Authorize]
-        public ActionResult CreateUsuario()
+        public ActionResult CadastraUsuario()
         {
-            var statusCode = new HttpResponseMessage();
-            statusCode = _clienteAppService.GetAllClientes(1);
-            if (!statusCode.IsSuccessStatusCode)
+            try
             {
-                Response.TrySkipIisCustomErrors = true;
-                Response.StatusCode = 400;
-                return Json(Utilitarios.Utilitarios.limpaMenssagemErro(statusCode.Content.ReadAsStringAsync().Result), JsonRequestBehavior.AllowGet);
+                var statusCode = new HttpResponseMessage();
+                statusCode = _clienteAppService.GetAllClientes(1);
+                if (!statusCode.IsSuccessStatusCode)
+                {
+                    Response.TrySkipIisCustomErrors = true;
+                    Response.StatusCode = 400;
+                    return Json(
+                        Utilitarios.Utilitarios.limpaMenssagemErro(statusCode.Content.ReadAsStringAsync().Result),
+                        JsonRequestBehavior.AllowGet);
 
+                }
+                Response.StatusCode = 200;
+                ViewBag.clientes = statusCode.Content.ReadAsAsync<IEnumerable<ClienteViewModel>>().Result;
+                return View("PostUsuario");
             }
-            Response.StatusCode = 200;
-            ViewBag.clientes = statusCode.Content.ReadAsAsync<IEnumerable<ClienteViewModel>>().Result;
-            return View();
+            catch (Exception e)
+            {
+                ViewBag.erros = $"Ops! algo deu errado! Erro: {e.Message}";
+                return View("PostUsuario");
+            }
         }
         [Authorize]
-        [HttpPost]
-        public ActionResult CreateUsuario(UsuarioViewModel usuarioViewModel)
+        public ActionResult PostUsuario(UsuarioViewModel usuarioViewModel)
         {
-            var statusCode = new HttpResponseMessage();
-            var usuario = new UsuarioDto
+            try
             {
-                clienteId = usuarioViewModel.clienteId,
-                nome = usuarioViewModel.nome,
-                senha = usuarioViewModel.senha,
-            };
-            statusCode = _usuarioAppService.AddUsuario(usuario);
-            if (!statusCode.IsSuccessStatusCode)
-            {
-                Response.TrySkipIisCustomErrors = true;
-                Response.StatusCode = 400;
-                return Json(Utilitarios.Utilitarios.limpaMenssagemErro(statusCode.Content.ReadAsStringAsync().Result), JsonRequestBehavior.AllowGet);
+                var statusCode = new HttpResponseMessage();
+                var usuario = new UsuarioDto
+                {
+                    clienteId = usuarioViewModel.clienteId,
+                    nome = usuarioViewModel.nome,
+                    senha = usuarioViewModel.senha,
+                };
+                statusCode = _usuarioAppService.PostUsuario(usuario);
+                if (!statusCode.IsSuccessStatusCode)
+                {
+                    Response.TrySkipIisCustomErrors = true;
+                    Response.StatusCode = 400;
+                    return Json(
+                        Utilitarios.Utilitarios.limpaMenssagemErro(statusCode.Content.ReadAsStringAsync().Result),
+                        JsonRequestBehavior.AllowGet);
+                }
+                Response.StatusCode = 200;
+                return Json(statusCode.Content.ReadAsStringAsync().Result);
             }
-            Response.StatusCode = 200;
-            return Json(statusCode.Content.ReadAsStringAsync().Result);
+            catch (Exception e)
+            {
+                ViewBag.erros = $"Ops! algo deu errado! Erro: {e.Message}";
+                return View("PostUsuario");
+            }
 
         }
         [Authorize]
-        public ActionResult EditUsuario()
+        public ActionResult EditaUsuario()
         {
-            var statusCode = new HttpResponseMessage();
-            statusCode = _usuarioAppService.GetAllUsuarios();
-            if (!statusCode.IsSuccessStatusCode)
+            try
             {
-                Response.TrySkipIisCustomErrors = true;
-                Response.StatusCode = 400;
-                return Json(Utilitarios.Utilitarios.limpaMenssagemErro(statusCode.Content.ReadAsStringAsync().Result), JsonRequestBehavior.AllowGet);
+                var statusCode = new HttpResponseMessage();
+                statusCode = _usuarioAppService.GetAllUsuarios();
+                if (!statusCode.IsSuccessStatusCode)
+                {
+                    Response.TrySkipIisCustomErrors = true;
+                    Response.StatusCode = 400;
+                    return Json(
+                        Utilitarios.Utilitarios.limpaMenssagemErro(statusCode.Content.ReadAsStringAsync().Result),
+                        JsonRequestBehavior.AllowGet);
 
+                }
+                Response.StatusCode = 200;
+                UsuarioViewModel usuario = new UsuarioViewModel
+                {
+                    usuarios = statusCode.Content.ReadAsAsync<IEnumerable<UsuarioViewModel>>().Result
+                };
+                return View("PutUsuario", usuario);
             }
-            Response.StatusCode = 200;
-            UsuarioViewModel usuario = new UsuarioViewModel
+            catch (Exception e)
             {
-                usuarios = statusCode.Content.ReadAsAsync<IEnumerable<UsuarioViewModel>>().Result
-            };
-            return View(usuario);
+                ViewBag.erros = $"Ops! algo deu errado! Erro: {e.Message}";
+                return View("PutUsuario");
+            }
 
         }
         [Authorize]
         [HttpPost]
         public ActionResult EditUsuario(UsuarioViewModel usuarioViewModel)
         {
-            HttpResponseMessage statusCode;
-            var usuario = new UsuarioDto
+            try
             {
-                clienteId = usuarioViewModel.clienteId,
-                senha = usuarioViewModel.senha,
-                nome = usuarioViewModel.nome,
-                ativo = usuarioViewModel.ativo,
-            };
-            statusCode = _usuarioAppService.UpdateUsuario(usuario);
-            if (!statusCode.IsSuccessStatusCode)
-            {
-                Response.TrySkipIisCustomErrors = true;
-                Response.StatusCode = 400;
-                return Json(Utilitarios.Utilitarios.limpaMenssagemErro(statusCode.Content.ReadAsStringAsync().Result), JsonRequestBehavior.AllowGet);
+                HttpResponseMessage statusCode;
+                var usuario = new UsuarioDto
+                {
+                    clienteId = usuarioViewModel.clienteId,
+                    senha = usuarioViewModel.senha,
+                    nome = usuarioViewModel.nome,
+                    ativo = usuarioViewModel.ativo,
+                };
+                statusCode = _usuarioAppService.PutUsuario(usuario);
+                if (!statusCode.IsSuccessStatusCode)
+                {
+                    Response.TrySkipIisCustomErrors = true;
+                    Response.StatusCode = 400;
+                    return Json(
+                        Utilitarios.Utilitarios.limpaMenssagemErro(statusCode.Content.ReadAsStringAsync().Result),
+                        JsonRequestBehavior.AllowGet);
+                }
+                Response.StatusCode = 200;
+                return Json(statusCode.Content.ReadAsStringAsync().Result);
             }
-            Response.StatusCode = 200;
-            return Json(statusCode.Content.ReadAsStringAsync().Result);
+            catch (Exception e)
+            {
+                ViewBag.erros = $"Ops! algo deu errado! Erro: {e.Message}";
+                return View("PutUsuario");
+            }
 
         }
         [Authorize]
         [HttpGet]
         public JsonResult GetByUsuarioId(int clienteId)
         {
-            var statusCode = new HttpResponseMessage();
-            statusCode = _usuarioAppService.GetByUsuarioId(clienteId);
-            if (!statusCode.IsSuccessStatusCode)
+            try
             {
-                Response.TrySkipIisCustomErrors = true;
-                Response.StatusCode = 400;
-                return Json(Utilitarios.Utilitarios.limpaMenssagemErro(statusCode.Content.ReadAsStringAsync().Result), JsonRequestBehavior.AllowGet);
+                var statusCode = new HttpResponseMessage();
+                statusCode = _usuarioAppService.GetByUsuarioId(clienteId);
+                if (!statusCode.IsSuccessStatusCode)
+                {
+                    Response.TrySkipIisCustomErrors = true;
+                    Response.StatusCode = 400;
+                    return Json(
+                        Utilitarios.Utilitarios.limpaMenssagemErro(statusCode.Content.ReadAsStringAsync().Result),
+                        JsonRequestBehavior.AllowGet);
 
+                }
+                Response.StatusCode = 200;
+                return Json(statusCode.Content.ReadAsAsync<UsuarioDto>().Result, JsonRequestBehavior.AllowGet);
             }
-            Response.StatusCode = 200;
-            return Json(statusCode.Content.ReadAsAsync<UsuarioDto>().Result, JsonRequestBehavior.AllowGet);
+            catch (Exception e)
+            {
+                return null;
+            }
         }
     }
 }

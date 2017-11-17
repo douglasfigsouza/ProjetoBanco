@@ -1,5 +1,6 @@
 ﻿using ProjetoBanco.Domain.Entities;
 using ProjetoBanco.Domain.Usuarios;
+using System;
 using System.Collections.Generic;
 using System.Web.Http;
 
@@ -9,97 +10,98 @@ namespace Web_Api.Controllers
     {
         private readonly Notifications _notifications;
         private readonly IUsuarioService _usuarioService;
+        private readonly IUsuarioRepository _usuarioRepository;
 
-        public UsuariosController(Notifications notifications, IUsuarioService usuarioService)
+        public UsuariosController(Notifications notifications, IUsuarioService usuarioService, IUsuarioRepository usuarioRepository)
         {
             _notifications = notifications;
             _usuarioService = usuarioService;
+            _usuarioRepository = usuarioRepository;
         }
 
-        public IHttpActionResult AddUsuario(UsuarioDto usuario)
+        public IHttpActionResult PostUsuario(UsuarioDto usuario)
         {
-            _usuarioService.AddUsuario(usuario);
-            if (_notifications.Notificacoes.Count > 0)
+            try
             {
-                string erros = "";
-                foreach (var erro in _notifications.Notificacoes)
-                {
-                    erros = erros + " " + erro;
-                }
-                return BadRequest(erros);
-            }
-            else
-            {
+                _usuarioRepository.PostUsuario(usuario);
                 return Ok();
+            }
+            catch (Exception e)
+            {
+                return BadRequest($"Ops! algo deu errado! Erro: {e.Message}");
             }
         }
         public IHttpActionResult GetAllUsuarios()
         {
-            IEnumerable<UsuarioDto> usuarios = new List<UsuarioDto>(_usuarioService.GetAllUsuarios());
-            if (_notifications.Notificacoes.Count > 0)
+            try
             {
-                string erros = "";
-                foreach (var erro in _notifications.Notificacoes)
-                {
-                    erros = erros + " " + erro;
-                }
-                return BadRequest(erros);
-            }
-            else
-            {
+                IEnumerable<UsuarioDto> usuarios = new List<UsuarioDto>(_usuarioRepository.GetAllUsuarios());
                 return Ok(usuarios);
+            }
+            catch (Exception e)
+            {
+                return BadRequest($"Ops! algo deu errado! Erro: {e.Message}");
             }
         }
         public IHttpActionResult GetByUsuarioId(int id)
         {
-            var usuario = new UsuarioDto();
-            usuario = _usuarioService.GetByUsuarioId(id);
-            if (_notifications.Notificacoes.Count > 0)
+            try
             {
-                string erros = "";
-                foreach (var erro in _notifications.Notificacoes)
+                var usuario = new UsuarioDto();
+                usuario = _usuarioService.GetByUsuarioId(id);
+                if (_notifications.Notificacoes.Count > 0)
                 {
-                    erros = erros + " " + erro;
+                    string erros = "";
+                    foreach (var erro in _notifications.Notificacoes)
+                    {
+                        erros = erros + " " + erro;
+                    }
+                    return BadRequest(erros);
                 }
-                return BadRequest(erros);
+                else
+                {
+                    return Ok(usuario);
+                }
             }
-            else
+            catch (Exception e)
             {
-                return Ok(usuario);
+                return BadRequest($"Ops! algo deu errado! Erro: {e.Message}");
             }
         }
-        public IHttpActionResult UpdateUsuario(UsuarioDto usuario)
+        public IHttpActionResult PutUsuario(UsuarioDto usuario)
         {
-            _usuarioService.UpdateUsuario(usuario);
-            if (_notifications.Notificacoes.Count > 0)
+            try
             {
-                string erros = "";
-                foreach (var erro in _notifications.Notificacoes)
-                {
-                    erros = erros + " " + erro;
-                }
-                return BadRequest(erros);
+                _usuarioRepository.PutUsuario(usuario);
+                return Ok();
             }
-            else
+            catch (Exception e)
             {
-                return Ok(usuario);
+                return BadRequest($"Ops! algo deu errado! Erro: {e.Message}");
             }
         }
         public IHttpActionResult VerificaLogin(UsuarioDto usuario)
         {
-            usuario = _usuarioService.VerificaLogin(usuario);
-            if (_notifications.Notificacoes.Count > 0)
+            try
             {
-                string erros = "";
-                foreach (var erro in _notifications.Notificacoes)
+                usuario = _usuarioService.VerificaLogin(usuario);
+                if (_notifications.Notificacoes.Count > 0)
                 {
-                    erros = erros + " " + erro;
+                    string erros = "";
+                    foreach (var erro in _notifications.Notificacoes)
+                    {
+                        erros = erros + " " + erro;
+                    }
+                    return BadRequest(erros);
                 }
-                return BadRequest(erros);
+                else
+                {
+                    return Ok(usuario);
+                }
             }
-            else
+            catch (Exception e)
             {
-                return Ok(usuario);
+                return BadRequest($"Ops! algo deu errado! Erro: {e.Message}");
             }
         }
     }

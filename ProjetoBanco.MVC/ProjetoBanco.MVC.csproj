@@ -274,7 +274,7 @@
     <Content Include="Views\Shared\Error.cshtml" />
     <Content Include="Views\Home\Index.cshtml" />
     <Content Include="Views\Banco\CreateBanco.cshtml" />
-    <Content Include="Views\Usuarios\CreateUsuario.cshtml" />
+    <Content Include="Views\Usuarios\PostUsuario.cshtml" />
     <Content Include="Views\Usuarios\_LayoutLogin.cshtml" />
     <Content Include="Views\Usuarios\Login.cshtml" />
     <Content Include="Views\Operacoes\CreateOperacao.cshtml" />
@@ -288,7 +288,7 @@
     <Content Include="Views\Operacoes\ConfirmTransferencia.cshtml" />
     <Content Include="Views\Clientes\PostCliente.cshtml" />
     <Content Include="Views\Clientes\PutCliente.cshtml" />
-    <Content Include="Views\Usuarios\EditUsuario.cshtml" />
+    <Content Include="Views\Usuarios\PutUsuario.cshtml" />
     <Content Include="Views\Operacoes\OpRealizadasEstorno.cshtml" />
     <Content Include="Views\Operacoes\ContaEstorno.cshtml" />
     <Content Include="Views\Contas\PutConta.cshtml" />

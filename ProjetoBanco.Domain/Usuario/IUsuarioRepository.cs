@@ -4,10 +4,10 @@ namespace ProjetoBanco.Domain.Usuarios
 {
     public interface IUsuarioRepository
     {
-        void AddUsuario(UsuarioDto usuario);
+        void PostUsuario(UsuarioDto usuario);
         UsuarioDto VerificaLogin(UsuarioDto usuario);
         UsuarioDto GetByUsuarioId(int id);
         IEnumerable<UsuarioDto> GetAllUsuarios();
-        void UpdateUsuario(UsuarioDto usuario);
+        void PutUsuario(UsuarioDto usuario);
     }
 }

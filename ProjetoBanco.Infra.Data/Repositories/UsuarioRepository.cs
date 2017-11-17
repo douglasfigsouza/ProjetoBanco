@@ -20,7 +20,7 @@ namespace ProjetoBanco.Infra.Data.Repositories
         {
             _conn = conn;
         }
-        public void AddUsuario(UsuarioDto usuario)
+        public void PostUsuario(UsuarioDto usuario)
         {
             _conn.ExecuteProcedure(Procedures.PBSP_INSERTUSUARIOS);
             _conn.AddParameter("@clienteId", usuario.clienteId);
@@ -85,7 +85,7 @@ namespace ProjetoBanco.Infra.Data.Repositories
                 }
             return usuarios;
         }
-        public void UpdateUsuario(UsuarioDto usuario)
+        public void PutUsuario(UsuarioDto usuario)
         {
             _conn.ExecuteProcedure(Procedures.PBSP_UPDATEUSUARIO);
             _conn.AddParameter("@clienteId", usuario.clienteId);
