@@ -23,7 +23,7 @@ namespace ProjetoBanco.Infra.Data.Repositories
             _conn = conn;
         }
 
-        public void AddOperacao(Operacoes op)
+        public void PostOperacao(Operacoes op)
         {
 
             _conn.ExecuteProcedure(Procedures.PBSP_INSERTOPERACAO);

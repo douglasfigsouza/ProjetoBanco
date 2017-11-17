@@ -277,7 +277,7 @@
     <Content Include="Views\Usuarios\PostUsuario.cshtml" />
     <Content Include="Views\Usuarios\_LayoutLogin.cshtml" />
     <Content Include="Views\Usuarios\Login.cshtml" />
-    <Content Include="Views\Operacoes\CreateOperacao.cshtml" />
+    <Content Include="Views\Operacoes\PostOperacao.cshtml" />
     <Content Include="Views\Agencia\PostAgencia.cshtml" />
     <Content Include="Views\Contas\PostConta.cshtml" />
     <Content Include="Views\Operacoes\Operacoes.cshtml" />

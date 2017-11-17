@@ -3,6 +3,7 @@ using ProjetoBanco.Domain.Operacao;
 using ProjetoBanco.Domain.Operacão;
 using ProjetoBanco.Domain.Operacoes;
 using ProjetoBanco.Domain.Operacoes.Dto;
+using System;
 using System.Collections.Generic;
 using System.Web.Http;
 
@@ -12,237 +13,290 @@ namespace Web_Api.Controllers
     {
         private readonly IOperacaoService _operacaoService;
         private readonly IOperacaoRealizadaService _operacaoRealizadaService;
+        private readonly IOperacoesRealizadasRepository _operacoesRealizadasRepository;
+        private readonly IOperacoesRepository _operacoesRepository;
         private readonly Notifications _notifications;
 
-        public OperacoesController(Notifications notifications, IOperacaoService operacaoService, IOperacaoRealizadaService operacaoRealizadaService)
+        public OperacoesController(Notifications notifications, IOperacaoService operacaoService, IOperacaoRealizadaService operacaoRealizadaService, IOperacoesRepository operacoesRepository, IOperacoesRealizadasRepository operacoesRealizadasRepository)
         {
             _notifications = notifications;
             _operacaoService = operacaoService;
             _operacaoRealizadaService = operacaoRealizadaService;
+            _operacoesRepository = operacoesRepository;
+            _operacoesRealizadasRepository = operacoesRealizadasRepository;
         }
 
-        public IHttpActionResult AddOperacao(Operacoes op)
+        public IHttpActionResult PostOperacao(Operacoes op)
         {
-            _operacaoService.AddOperacao(op);
-            if (_notifications.Notificacoes.Count > 0)
+            try
             {
-                string erros = "";
-                foreach (var erro in _notifications.Notificacoes)
-                {
-                    erros = erros + " " + erro;
-                }
-                return BadRequest(erros);
-            }
-            else
-            {
+                _operacoesRepository.PostOperacao(op);
                 return Ok();
+            }
+            catch (Exception e)
+            {
+                return BadRequest($"Ops! algo deu errado! Erro: {e.Message}");
             }
         }
 
         public IHttpActionResult Deposito(OperacoesRealizadas operacoesRealizadas)
         {
-            _operacaoRealizadaService.Deposito(operacoesRealizadas);
-            if (_notifications.Notificacoes.Count > 0)
+            try
             {
-                string erros = "";
-                foreach (var erro in _notifications.Notificacoes)
-                {
-                    erros = erros + " " + erro;
-                }
-                return BadRequest(erros);
-            }
-            else
-            {
+                _operacoesRealizadasRepository.Deposito(operacoesRealizadas);
                 return Ok();
+
             }
+            catch (Exception e)
+            {
+                return BadRequest($"Ops! algo deu errado! Erro: {e.Message}");
+            }
+
         }
 
         public IHttpActionResult VerificaDadosTransferencia(Transacao transacao)
         {
-            var transact = new Transacao();
-            transact = _operacaoService.VerificaDadosTransferencia(transacao);
-            if (_notifications.Notificacoes.Count > 0)
+            try
             {
-                string erros = "";
-                foreach (var erro in _notifications.Notificacoes)
+                var transact = new Transacao();
+                transact = _operacaoService.VerificaDadosTransferencia(transacao);
+                if (_notifications.Notificacoes.Count > 0)
                 {
-                    erros = erros + " " + erro;
+                    string erros = "";
+                    foreach (var erro in _notifications.Notificacoes)
+                    {
+                        erros = erros + " " + erro;
+                    }
+                    return BadRequest(erros);
                 }
-                return BadRequest(erros);
+                else
+                {
+                    return Ok(transact);
+                }
             }
-            else
+            catch (Exception e)
             {
-                return Ok(transact);
+                return BadRequest($"Ops! algo deu errado! Erro: {e.Message}");
             }
         }
 
         public IHttpActionResult Transferencia(List<OperacoesRealizadas> operacoes)
         {
-            _operacaoRealizadaService.Transferencia(operacoes);
-            if (_notifications.Notificacoes.Count > 0)
+            try
             {
-                string erros = "";
-                foreach (var erro in _notifications.Notificacoes)
+                _operacaoRealizadaService.Transferencia(operacoes);
+                if (_notifications.Notificacoes.Count > 0)
                 {
-                    erros = erros + " " + erro;
+                    string erros = "";
+                    foreach (var erro in _notifications.Notificacoes)
+                    {
+                        erros = erros + " " + erro;
+                    }
+                    return BadRequest(erros);
                 }
-                return BadRequest(erros);
+                else
+                {
+                    return Ok();
+                }
             }
-            else
+            catch (Exception e)
             {
-                return Ok();
+                return BadRequest($"Ops! algo deu errado! Erro: {e.Message}");
             }
         }
 
         public IHttpActionResult Saque(OperacoesRealizadas operacoesRealizadas)
         {
-            _operacaoRealizadaService.Saque(operacoesRealizadas);
-            if (_notifications.Notificacoes.Count > 0)
+            try
             {
-                string erros = "";
-                foreach (var erro in _notifications.Notificacoes)
+                _operacaoRealizadaService.Saque(operacoesRealizadas);
+                if (_notifications.Notificacoes.Count > 0)
                 {
-                    erros = erros + " " + erro;
+                    string erros = "";
+                    foreach (var erro in _notifications.Notificacoes)
+                    {
+                        erros = erros + " " + erro;
+                    }
+                    return BadRequest(erros);
                 }
-                return BadRequest(erros);
+                else
+                {
+                    return Ok();
+                }
             }
-            else
+            catch (Exception e)
             {
-                return Ok();
+                return BadRequest($"Ops! algo deu errado! Erro: {e.Message}");
             }
         }
 
         public IHttpActionResult VerificaDadosTransacao(Transacao transacao)
         {
-            var transact = new Transacao();
-            transact = _operacaoService.VerificaDadosTransacao(transacao);
-            if (_notifications.Notificacoes.Count > 0)
+            try
             {
-                string erros = "";
-                foreach (var erro in _notifications.Notificacoes)
+                var transact = new Transacao();
+                transact = _operacaoService.VerificaDadosTransacao(transacao);
+                if (_notifications.Notificacoes.Count > 0)
                 {
-                    erros = erros + " " + erro;
+                    string erros = "";
+                    foreach (var erro in _notifications.Notificacoes)
+                    {
+                        erros = erros + " " + erro;
+                    }
+                    return BadRequest(erros);
                 }
-                return BadRequest(erros);
+                else
+                {
+                    return Ok(transact);
+                }
             }
-            else
+            catch (Exception e)
             {
-                return Ok(transact);
+                return BadRequest($"Ops! algo deu errado! Erro: {e.Message}");
             }
         }
 
         public IHttpActionResult ConsultaSaldo(Transacao transacao)
         {
-            var transact = new Transacao();
-            transact = _operacaoService.ConsultaSaldo(transacao);
-            if (_notifications.Notificacoes.Count > 0)
+            try
             {
-                string erros = "";
-                foreach (var erro in _notifications.Notificacoes)
+                var transact = new Transacao();
+                transact = _operacaoService.ConsultaSaldo(transacao);
+                if (_notifications.Notificacoes.Count > 0)
                 {
-                    erros = erros + " " + erro;
+                    string erros = "";
+                    foreach (var erro in _notifications.Notificacoes)
+                    {
+                        erros = erros + " " + erro;
+                    }
+                    return BadRequest(erros);
                 }
-                return BadRequest(erros);
+                else
+                {
+                    return Ok(transact);
+                }
             }
-            else
+            catch (Exception e)
             {
-                return Ok(transact);
+                return BadRequest($"Ops! algo deu errado! Erro: {e.Message}");
             }
         }
 
         public IHttpActionResult GetAllOperacoesPorContaParaEstorno(string conta, string senha, string agencia)
         {
-
-            List<Estorno> transacts = new List<Estorno>();
-            DadosGetOpReal dadosGetOpReal = new DadosGetOpReal
+            try
             {
-                agencia = int.Parse(agencia),
-                senha = senha,
-                conta = conta
-            };
-            transacts = _operacaoRealizadaService.GetAllOperacoesPorContaParaEstorno(dadosGetOpReal);
-            if (_notifications.Notificacoes.Count > 0)
-            {
-                string erros = "";
-                foreach (var erro in _notifications.Notificacoes)
+                List<Estorno> transacts = new List<Estorno>();
+                DadosGetOpReal dadosGetOpReal = new DadosGetOpReal
                 {
-                    erros = erros + " " + erro;
+                    agencia = int.Parse(agencia),
+                    senha = senha,
+                    conta = conta
+                };
+                transacts = _operacaoRealizadaService.GetAllOperacoesPorContaParaEstorno(dadosGetOpReal);
+                if (_notifications.Notificacoes.Count > 0)
+                {
+                    string erros = "";
+                    foreach (var erro in _notifications.Notificacoes)
+                    {
+                        erros = erros + " " + erro;
+                    }
+                    return BadRequest(erros);
                 }
-                return BadRequest(erros);
+                else
+                {
+                    return Ok(transacts);
+                }
             }
-            else
+            catch (Exception e)
             {
-                return Ok(transacts);
+                return BadRequest($"Ops! algo deu errado! Erro: {e.Message}");
             }
         }
 
         public IHttpActionResult GetOpRealizadaEstornoById(string Id)
         {
-            var estorno = new Estorno();
-            estorno = _operacaoRealizadaService.GetOpRealizadaEstornoById(int.Parse(Id));
-            if (_notifications.Notificacoes.Count > 0)
+            try
             {
-                string erros = "";
-                foreach (var erro in _notifications.Notificacoes)
+                var estorno = new Estorno();
+                estorno = _operacaoRealizadaService.GetOpRealizadaEstornoById(int.Parse(Id));
+                if (_notifications.Notificacoes.Count > 0)
                 {
-                    erros = erros + " " + erro;
+                    string erros = "";
+                    foreach (var erro in _notifications.Notificacoes)
+                    {
+                        erros = erros + " " + erro;
+                    }
+                    return BadRequest(erros);
                 }
-                return BadRequest(erros);
+                else
+                {
+                    return Ok(estorno);
+                }
             }
-            else
+            catch (Exception e)
             {
-                return Ok(estorno);
+                return BadRequest($"Ops! algo deu errado! Erro: {e.Message}");
             }
         }
         public IHttpActionResult confirmEstorno(Estorno estorno)
         {
-            _operacaoRealizadaService.ConfirmEstorno(estorno.Id);
-            if (_notifications.Notificacoes.Count > 0)
+            try
             {
-                string erros = "";
-                foreach (var erro in _notifications.Notificacoes)
-                {
-                    erros = erros + " " + erro;
-                }
-                return BadRequest(erros);
-            }
-            else
-            {
+                _operacoesRealizadasRepository.ConfirmEstorno(estorno.Id);
                 return Ok();
+            }
+            catch (Exception e)
+            {
+                return BadRequest($"Ops! algo deu errado! Erro: {e.Message}");
             }
         }
         public IHttpActionResult GetAllOperacoesEstorno()
         {
-            List<Estorno> opsEstornos = new List<Estorno>(_operacaoRealizadaService.GetAllOperacoesEstorno());
-            if (_notifications.Notificacoes.Count > 0)
+            try
             {
-                string erros = "";
-                foreach (var erro in _notifications.Notificacoes)
+                List<Estorno> opsEstornos = new List<Estorno>(_operacaoRealizadaService.GetAllOperacoesEstorno());
+                if (_notifications.Notificacoes.Count > 0)
                 {
-                    erros = erros + " " + erro;
+                    string erros = "";
+                    foreach (var erro in _notifications.Notificacoes)
+                    {
+                        erros = erros + " " + erro;
+                    }
+                    return BadRequest(erros);
                 }
-                return BadRequest(erros);
+                else
+                {
+                    return Ok(opsEstornos);
+                }
             }
-            else
+            catch (Exception e)
             {
-                return Ok(opsEstornos);
+                return BadRequest($"Ops! algo deu errado! Erro: {e.Message}");
             }
         }
         public IHttpActionResult ExtratoPorData(DadosGetOpReal dadosGetOp)
         {
-            List<Estorno> opsEstornos = new List<Estorno>(_operacaoRealizadaService.GetExtratoPorData(dadosGetOp));
-            if (_notifications.Notificacoes.Count > 0)
+            try
             {
-                string erros = "";
-                foreach (var erro in _notifications.Notificacoes)
+                List<Estorno> opsEstornos = new List<Estorno>(_operacaoRealizadaService.GetExtratoPorData(dadosGetOp));
+                if (_notifications.Notificacoes.Count > 0)
                 {
-                    erros = erros + " " + erro;
+                    string erros = "";
+                    foreach (var erro in _notifications.Notificacoes)
+                    {
+                        erros = erros + " " + erro;
+                    }
+                    return BadRequest(erros);
                 }
-                return BadRequest(erros);
+                else
+                {
+                    return Ok(opsEstornos);
+                }
             }
-            else
+            catch (Exception e)
             {
-                return Ok(opsEstornos);
+                return BadRequest($"Ops! algo deu errado! Erro: {e.Message}");
             }
         }
     }

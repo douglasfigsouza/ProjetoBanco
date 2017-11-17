@@ -1,8 +1,8 @@
 ﻿using ProjetoBanco.Application.Interfaces;
+using ProjetoBanco.Domain.Operacoes;
 using ProjetoBanco.Domain.Operacoes.Dto;
 using System.Net.Http;
 using System.Web.Http;
-using ProjetoBanco.Domain.Operacoes;
 using Web_Api.Utilitarios;
 
 namespace ProjetoBanco.Application
@@ -10,11 +10,11 @@ namespace ProjetoBanco.Application
     public class OperacoesAppService : IOperacoesAppService
     {
 
-        public HttpResponseMessage AddOperacao(Operacoes op)
+        public HttpResponseMessage PostOperacao(Operacoes op)
         {
             HttpResponseMessage response;
             response = HttpClientConf.HttpClientConfig("Operacoes")
-                .PostAsJsonAsync("AddOperacao", op).Result;
+                .PostAsJsonAsync("PostOperacao", op).Result;
             return response;
         }
 

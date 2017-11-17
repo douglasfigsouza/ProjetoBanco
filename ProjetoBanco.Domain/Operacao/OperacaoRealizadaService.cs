@@ -2,7 +2,6 @@
 using ProjetoBanco.Domain.Operacão;
 using ProjetoBanco.Domain.Operacoes;
 using ProjetoBanco.Domain.Operacoes.Dto;
-using System;
 using System.Collections.Generic;
 using System.Linq;
 
@@ -18,30 +17,10 @@ namespace ProjetoBanco.Domain.Operacao
             _operacoesRealizadasRepository = operacoesRealizadasRepository;
             _notifications = notifications;
         }
-
-        public void Deposito(OperacoesRealizadas operacaoRealizada)
-        {
-            try
-            {
-                _operacoesRealizadasRepository.Deposito(operacaoRealizada);
-            }
-            catch (Exception e)
-            {
-                _notifications.Notificacoes.Add($"Impossível efetuar depósito! Erro {e.Message}");
-            }
-        }
-
         public void Saque(OperacoesRealizadas operacaoRealizada)
         {
             int result = -1;
-            try
-            {
-                result =_operacoesRealizadasRepository.Saque(operacaoRealizada);
-            }
-            catch (Exception e)
-            {
-                _notifications.Notificacoes.Add($"Impossível efetuar saque! Erro {e.Message}");
-            }
+            result = _operacoesRealizadasRepository.Saque(operacaoRealizada);
             if (result == 0)
             {
                 _notifications.Notificacoes.Add("Você não possui saldo suficiente!");
@@ -51,14 +30,7 @@ namespace ProjetoBanco.Domain.Operacao
         public void Transferencia(List<OperacoesRealizadas> operacoes)
         {
             int result = -1;
-            try
-            {
-                result = _operacoesRealizadasRepository.Transferencia(operacoes);
-            }
-            catch (Exception e)
-            {
-                _notifications.Notificacoes.Add($"Impossível efetuar transferência! Erro {e.Message}");
-            }
+            result = _operacoesRealizadasRepository.Transferencia(operacoes);
             if (result == 0)
             {
                 _notifications.Notificacoes.Add("A transferência não pode ser realizada, você não possui saldo suficiente");
@@ -69,14 +41,7 @@ namespace ProjetoBanco.Domain.Operacao
         public List<Estorno> GetAllOperacoesPorContaParaEstorno(DadosGetOpReal dadosGetOp)
         {
             var operacoes = new List<Estorno>();
-            try
-            {
-                operacoes = _operacoesRealizadasRepository.GetAllOperacoesPorContaParaEstorno(dadosGetOp);
-            }
-            catch (Exception e)
-            {
-                _notifications.Notificacoes.Add($"Impossível buscar operacões! Erro {e.Message}");
-            }
+            operacoes = _operacoesRealizadasRepository.GetAllOperacoesPorContaParaEstorno(dadosGetOp);
             if (operacoes.Count == 0)
             {
                 _notifications.Notificacoes.Add("Não existem operações cadastradas");
@@ -87,14 +52,7 @@ namespace ProjetoBanco.Domain.Operacao
         public IEnumerable<Estorno> GetAllOperacoesEstorno()
         {
             IEnumerable<Estorno> operacoes = new List<Estorno>();
-            try
-            {
-                operacoes = _operacoesRealizadasRepository.GetAllOperacoesEstorno();
-            }
-            catch (Exception e)
-            {
-                _notifications.Notificacoes.Add($"Impossível buscar operacões! Erro {e.Message}");
-            }
+            operacoes = _operacoesRealizadasRepository.GetAllOperacoesEstorno();
             if (operacoes.Count() == 0)
             {
                 _notifications.Notificacoes.Add("Não existem operações cadastradas");
@@ -105,14 +63,7 @@ namespace ProjetoBanco.Domain.Operacao
         public Estorno GetOpRealizadaEstornoById(int id)
         {
             var estorno = new Estorno();
-            try
-            {
-                estorno = _operacoesRealizadasRepository.GetOpRealizadaEstornoById(id);
-            }
-            catch (Exception e)
-            {
-                _notifications.Notificacoes.Add($"Impossível buscar operacão! Erro {e.Message}");
-            }
+            estorno = _operacoesRealizadasRepository.GetOpRealizadaEstornoById(id);
             if (estorno.conta == "")
             {
                 _notifications.Notificacoes.Add("Não existem operação");
@@ -123,31 +74,12 @@ namespace ProjetoBanco.Domain.Operacao
         public List<Estorno> GetExtratoPorData(DadosGetOpReal dadosGetOp)
         {
             List<Estorno> operacoes = new List<Estorno>();
-            try
-            {
-                operacoes = _operacoesRealizadasRepository.GetExtratoPorData(dadosGetOp);
-            }
-            catch (Exception e)
-            {
-                _notifications.Notificacoes.Add($"Impossível buscar Extrato! Erro {e.Message}");
-            }
+            operacoes = _operacoesRealizadasRepository.GetExtratoPorData(dadosGetOp);
             if (operacoes.Count == 0)
             {
                 _notifications.Notificacoes.Add("Não existem movimentações nessa conta!");
             }
             return operacoes;
-        }
-
-        public void ConfirmEstorno(int id)
-        {
-            try
-            {
-                _operacoesRealizadasRepository.ConfirmEstorno(id);
-            }
-            catch (Exception e)
-            {
-                _notifications.Notificacoes.Add($"Impossível realizar estorno! Erro {e.Message}");
-            }
         }
     }
 }
