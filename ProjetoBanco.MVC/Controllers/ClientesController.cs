@@ -141,7 +141,7 @@ namespace ProjetoBanco.MVC.Controllers
             catch (Exception e)
             {
                 ViewBag.erros = $"Ops!algo deu errado!Erro: {e.Message}";
-                return View();
+                return View("PutCliente");
             }
         }
 

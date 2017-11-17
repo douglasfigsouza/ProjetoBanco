@@ -21,7 +21,7 @@ namespace ProjetoBanco.MVC.Controllers
             _clienteAppService = clienteAppService;
             _contaClienteAppService = contaClienteAppService;
         }
-        public ActionResult PostConta()
+        public ActionResult CadastraConta()
         {
             try
             {
@@ -57,12 +57,12 @@ namespace ProjetoBanco.MVC.Controllers
                         nome = cliente.nome
                     });
                 }
-                return View(cmbContaViewModel);
+                return View("PostConta",cmbContaViewModel);
             }
             catch (Exception e)
             {
                 ViewBag.erros = $"Ops! algo deu errado. Erro: {e.Message}";
-                return View();
+                return View("PostConta");
             }
         }
         [HttpPost]
@@ -107,7 +107,7 @@ namespace ProjetoBanco.MVC.Controllers
             }
         }
 
-        public ActionResult PutConta()
+        public ActionResult EditaConta()
         {
             try
             {
@@ -122,12 +122,12 @@ namespace ProjetoBanco.MVC.Controllers
                 }
                 Response.StatusCode = 200;
                 IEnumerable<ContaClienteViewModel> model = statusCode.Content.ReadAsAsync<IEnumerable<ContaClienteViewModel>>().Result;
-                return View(model);
+                return View("PutConta",model);
             }
             catch (Exception e)
             {
                 ViewBag.erros = $"Ops! algo deu errado. Erro: {e.Message}";
-                return View();
+                return View("PutConta");
             }
         }
 

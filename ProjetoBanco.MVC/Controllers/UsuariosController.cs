@@ -170,8 +170,7 @@ namespace ProjetoBanco.MVC.Controllers
 
         }
         [Authorize]
-        [HttpPost]
-        public ActionResult EditUsuario(UsuarioViewModel usuarioViewModel)
+        public ActionResult PutUsuario(UsuarioViewModel usuarioViewModel)
         {
             try
             {

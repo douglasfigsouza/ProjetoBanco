@@ -26,15 +26,15 @@
         <ul id="alteracoes" class="dropdown-content">
             <li>@Html.ActionLink("Agência", "EditaAgencia", "Agencia")</li>
             <li>@Html.ActionLink("Clientes", "EditaCliente", "Clientes")</li>
-            <li>@Html.ActionLink("Conta", "PutConta", "Contas")</li>
+            <li>@Html.ActionLink("Conta", "EditaConta", "Contas")</li>
             <li>@Html.ActionLink("Estorno", "DadosParaEstorno", "Operacoes")</li>
-            <li>@Html.ActionLink("Usuários", "PostUsuario", "Usuarios")</li>
+            <li>@Html.ActionLink("Usuários", "EditaUsuario", "Usuarios")</li>
         </ul>
         <ul id="cadastros" class="dropdown-content">
-            <li>@Html.ActionLink("Agências", "PostAgencia", "Agencia")</li>
-            <li>@Html.ActionLink("Contas", "PostConta", "Contas")</li>
-            <li>@Html.ActionLink("Clientes", "PostCliente", "Clientes")</li>
-            <li>@Html.ActionLink("Usuários", "PostUsuario", "Usuarios")</li>
+            <li>@Html.ActionLink("Agências", "CadastraAgencia", "Agencia")</li>
+            <li>@Html.ActionLink("Contas", "CadastraConta", "Contas")</li>
+            <li>@Html.ActionLink("Clientes", "CadastraCliente", "Clientes")</li>
+            <li>@Html.ActionLink("Usuários", "CadastraUsuario", "Usuarios")</li>
         </ul>
         <ul id="operacoes" class="dropdown-content">
             <li>@Html.ActionLink("Deposito", "Deposito", "Operacoes")</li>
@@ -48,22 +48,24 @@
                 <a href="/Usuarios/Logout" class="brand-logo"><i class="material-icons right" title="Deseja sair do sistema?">highlight_off</i></a>
                 <a href="/Home/Index" class="brand-logo center" title="Ir para página inicial?"><i class="material-icons">home</i></a>
                 @{
-                    var cliente = (ProjetoBanco.MVC.ViewModels.ClienteViewModel)Session["cliente"];
-                    <span id="usuarioLogado">Bem Vindo(a): @cliente.nome</span>
+                    if (Session["cliente"] != null)
+                    {
+                        var cliente = (ProjetoBanco.MVC.ViewModels.ClienteViewModel)Session["cliente"];
+                        <span id="usuarioLogado">Bem Vindo(a): @cliente.nome</span>
+                        <ul class="right hide-on-med-and-down">
+                            @if (cliente.nivel.ToString() == "f")
+                            {
+                                <li><a class="dropdown-button" href="#!" data-activates="alteracoes">Alteracões<i class="material-icons right">arrow_drop_down</i></a></li>
+                                <li><a class="dropdown-button" href="#!" data-activates="cadastros">Cadastros<i class="material-icons right">arrow_drop_down</i></a></li>
+                                <li><a class="dropdown-button" href="#!" data-activates="operacoes">Operações<i class="material-icons right">arrow_drop_down</i></a></li>
+                            }
+                            @if (cliente.nivel.ToString() == "c")
+                            {
+                                <li><a class="dropdown-button" href="#!" data-activates="operacoes">Operações<i class="material-icons right">arrow_drop_down</i></a></li>
+                            }
+                        </ul>
+                    }
                 }
-                <ul class="right hide-on-med-and-down">
-                    @if (cliente.nivel.ToString() == "f")
-                    {
-                        <li><a class="dropdown-button" href="#!" data-activates="alteracoes">Alteracões<i class="material-icons right">arrow_drop_down</i></a></li>
-                        <li><a class="dropdown-button" href="#!" data-activates="cadastros">Cadastros<i class="material-icons right">arrow_drop_down</i></a></li>
-                        <li><a class="dropdown-button" href="#!" data-activates="operacoes">Operações<i class="material-icons right">arrow_drop_down</i></a></li>
-                    }
-                    @if (cliente.nivel.ToString() == "c")
-                    {
-                        <li><a class="dropdown-button" href="#!" data-activates="operacoes">Operações<i class="material-icons right">arrow_drop_down</i></a></li>
-                    }
-                </ul>
-
             </div>
         </nav>
     </header>

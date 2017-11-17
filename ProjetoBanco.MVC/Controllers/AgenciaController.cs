@@ -49,7 +49,7 @@ namespace ProjetoBanco.MVC.Controllers
 
                 ViewBag.estados = statusCodeEstados.Content.ReadAsAsync<IEnumerable<Estado>>().Result;
                 ViewBag.bancos = statusCodeBancos.Content.ReadAsAsync<IEnumerable<BancoViewModel>>().Result;
-                return View();
+                return View("PostAgencia");
             }
             catch (Exception e)
             {
