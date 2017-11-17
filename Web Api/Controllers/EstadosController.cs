@@ -1,5 +1,6 @@
 ﻿using ProjetoBanco.Domain.Entities;
 using ProjetoBanco.Domain.Estados;
+using System;
 using System.Collections.Generic;
 using System.Web.Http;
 
@@ -17,20 +18,27 @@ namespace Web_Api.Controllers
         }
         public IHttpActionResult GetAllEstados()
         {
-            List<Estado> estados = new List<Estado>(_estadoService.GetAllEstados());
+            try
+            {
+                List<Estado> estados = new List<Estado>(_estadoService.GetAllEstados());
 
-            if (_notifications.Notificacoes.Count > 0)
-            {
-                string erros = "";
-                foreach (var erro in _notifications.Notificacoes)
+                if (_notifications.Notificacoes.Count > 0)
                 {
-                    erros = erros + " " + erro;
+                    string erros = "";
+                    foreach (var erro in _notifications.Notificacoes)
+                    {
+                        erros = erros + " " + erro;
+                    }
+                    return BadRequest(erros);
                 }
-                return BadRequest(erros);
+                else
+                {
+                    return Ok(estados);
+                }
             }
-            else
+            catch (Exception e)
             {
-                return Ok(estados);
+                return BadRequest($"Ops! algo deu errado. Erro :{e.Message}");
             }
         }
     }

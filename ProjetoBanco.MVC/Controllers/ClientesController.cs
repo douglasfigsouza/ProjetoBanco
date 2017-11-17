@@ -117,7 +117,7 @@ namespace ProjetoBanco.MVC.Controllers
             }
         }
 
-        public ActionResult PutCliente()
+        public ActionResult EditaCliente()
         {
             try
             {

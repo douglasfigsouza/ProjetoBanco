@@ -327,12 +327,13 @@
         $(document).on("change",
             "#ddlestadoClientes",
             function () {
+                debugger;
                 var id = $("#ddlestadoClientes").val();
                 $('#ddlCidadesCliente').empty();
                 $.ajax(
                     {
                         type: 'GET',
-                        url: "GetCidadesByIdEstado/" + id,
+                        url: "/EstadosCidades/GetCidadesByIdEstado/" + id,
                         dataType: 'json',
                         cache: false,
                         async: true,

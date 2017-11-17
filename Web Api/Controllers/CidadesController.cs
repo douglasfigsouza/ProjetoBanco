@@ -1,6 +1,7 @@
 ﻿using ProjetoBanco.Domain.Cidade;
 using ProjetoBanco.Domain.Cidades;
 using ProjetoBanco.Domain.Entities;
+using System;
 using System.Collections.Generic;
 using System.Web.Http;
 
@@ -19,19 +20,26 @@ namespace Web_Api.Controllers
 
         public IHttpActionResult GetCidadesByEstadoId(int id)
         {
-            List<Cidade> cidades = new List<Cidade>(_cidadeService.GetCidadesByEstadoId(id));
-            if (_notifications.Notificacoes.Count > 0)
+            try
             {
-                string erros = "";
-                foreach (var erro in _notifications.Notificacoes)
+                List<Cidade> cidades = new List<Cidade>(_cidadeService.GetCidadesByEstadoId(id));
+                if (_notifications.Notificacoes.Count > 0)
                 {
-                    erros = erros + " " + erro;
+                    string erros = "";
+                    foreach (var erro in _notifications.Notificacoes)
+                    {
+                        erros = erros + " " + erro;
+                    }
+                    return BadRequest(erros);
                 }
-                return BadRequest(erros);
+                else
+                {
+                    return Ok(cidades);
+                }
             }
-            else
+            catch (Exception e)
             {
-                return Ok(cidades);
+                return BadRequest($"Ops! algo deu errado. Erro :{e.Message}");
             }
         }
     }

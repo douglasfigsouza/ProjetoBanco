@@ -24,76 +24,100 @@ namespace ProjetoBanco.MVC.Controllers
         // GET: EstadosCidades
         public IEnumerable<Estado> GetAllEstados()
         {
-            var statusCode = _estadoAppService.GetAllEstados();
-            if (!statusCode.IsSuccessStatusCode)
+            try
             {
+                var statusCode = _estadoAppService.GetAllEstados();
+                if (!statusCode.IsSuccessStatusCode)
+                {
+                    return null;
+                }
+                return statusCode.Content.ReadAsAsync<IEnumerable<Estado>>().Result;
+            }
+            catch {
                 return null;
             }
-            return statusCode.Content.ReadAsAsync<IEnumerable<Estado>>().Result;
         }
 
         //Busca Cidades pelo id do estado
-        [HttpGet]
         public JsonResult GetCidadesByIdEstado(int id)
         {
-            var statusCode = new HttpResponseMessage();
-            statusCode = _cidadeAppService.GetCidadesByEstadoId(id);
-            if (!statusCode.IsSuccessStatusCode)
+            try
             {
-                Response.TrySkipIisCustomErrors = true;
-                Response.StatusCode = 400;
-                return Json(statusCode.Content.ReadAsStringAsync().Result, JsonRequestBehavior.AllowGet);
+                var statusCode = new HttpResponseMessage();
+                statusCode = _cidadeAppService.GetCidadesByEstadoId(id);
+                if (!statusCode.IsSuccessStatusCode)
+                {
+                    Response.TrySkipIisCustomErrors = true;
+                    Response.StatusCode = 400;
+                    return Json(statusCode.Content.ReadAsStringAsync().Result, JsonRequestBehavior.AllowGet);
+                }
+                return Json(statusCode.Content.ReadAsAsync<IEnumerable<Cidade>>().Result, JsonRequestBehavior.AllowGet);
             }
-            return Json(statusCode.Content.ReadAsAsync<IEnumerable<Cidade>>().Result, JsonRequestBehavior.AllowGet);
+            catch
+            {
+                return null;
+            }
         }
-        [HttpGet]
+     
         public JsonResult GetCidadeJaCadastrada(int cidadeId, int EstadoId)
         {
-            var statusCode = new HttpResponseMessage();
-            statusCode = _cidadeAppService.GetCidadesByEstadoId(EstadoId);
-            if (!statusCode.IsSuccessStatusCode)
+            try
             {
-                Response.TrySkipIisCustomErrors = true;
-                Response.StatusCode = 400;
-                return Json(statusCode.Content.ReadAsStringAsync().Result, JsonRequestBehavior.AllowGet);
-            }
-            var cidades = new List<Cidade>(statusCode.Content.ReadAsAsync<IEnumerable<Cidade>>().Result);
-            foreach (var item in cidades)
-            {
-                if (item.cidadeId == cidadeId)
+                var statusCode = new HttpResponseMessage();
+                statusCode = _cidadeAppService.GetCidadesByEstadoId(EstadoId);
+                if (!statusCode.IsSuccessStatusCode)
+                {
+                    Response.TrySkipIisCustomErrors = true;
+                    Response.StatusCode = 400;
+                    return Json(statusCode.Content.ReadAsStringAsync().Result, JsonRequestBehavior.AllowGet);
+                }
+                var cidades = new List<Cidade>(statusCode.Content.ReadAsAsync<IEnumerable<Cidade>>().Result);
+                foreach (var item in cidades)
+                {
+                    if (item.cidadeId == cidadeId)
+                    {
+                        Cidades.Add(new SelectListItem() { Text = item.Nome, Value = item.cidadeId + "" });
+                    }
+                }
+                foreach (var item in cidades)
                 {
                     Cidades.Add(new SelectListItem() { Text = item.Nome, Value = item.cidadeId + "" });
                 }
+                Response.StatusCode = 200;
+                return Json(new SelectList(Cidades, "Value", "Text", 0), JsonRequestBehavior.AllowGet);
             }
-            foreach (var item in cidades)
-            {
-                Cidades.Add(new SelectListItem() { Text = item.Nome, Value = item.cidadeId + "" });
+            catch {
+                return null;
             }
-            Response.StatusCode = 200;
-            return Json(new SelectList(Cidades, "Value", "Text", 0), JsonRequestBehavior.AllowGet);
         }
         [HttpGet]
         public JsonResult GetEstadoJaCadastrado(int EstadoId)
         {
-            var statusCode = new HttpResponseMessage();
-            statusCode = _estadoAppService.GetAllEstados();
-            if (!statusCode.IsSuccessStatusCode)
+            try
             {
-                return null;
-            }
-            var estados = new List<Estado>(statusCode.Content.ReadAsAsync<IEnumerable<Estado>>().Result);
-            foreach (var item in estados)
-            {
-                if (item.EstadoId == EstadoId)
+                var statusCode = new HttpResponseMessage();
+                statusCode = _estadoAppService.GetAllEstados();
+                if (!statusCode.IsSuccessStatusCode)
+                {
+                    return null;
+                }
+                var estados = new List<Estado>(statusCode.Content.ReadAsAsync<IEnumerable<Estado>>().Result);
+                foreach (var item in estados)
+                {
+                    if (item.EstadoId == EstadoId)
+                    {
+                        Cidades.Add(new SelectListItem() { Text = item.Sigla, Value = item.EstadoId + "" });
+                    }
+                }
+                foreach (var item in estados)
                 {
                     Cidades.Add(new SelectListItem() { Text = item.Sigla, Value = item.EstadoId + "" });
                 }
+                return Json(new SelectList(Cidades, "Value", "Text", 0), JsonRequestBehavior.AllowGet);
             }
-            foreach (var item in estados)
-            {
-                Cidades.Add(new SelectListItem() { Text = item.Sigla, Value = item.EstadoId + "" });
+            catch {
+                return null;
             }
-            return Json(new SelectList(Cidades, "Value", "Text", 0), JsonRequestBehavior.AllowGet);
         }
     }
 }
