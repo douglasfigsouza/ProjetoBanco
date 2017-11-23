@@ -1,0 +1,5 @@
+C:\Users\Douglas\ProjetoBanco\ProjetoBanco.Domain\bin\Release\ProjetoBanco.Domain.dll
+C:\Users\Douglas\ProjetoBanco\ProjetoBanco.Domain\bin\Release\ProjetoBanco.Domain.pdb
+C:\Users\Douglas\ProjetoBanco\ProjetoBanco.Domain\obj\Release\ProjetoBanco.Domain.csprojResolveAssemblyReference.cache
+C:\Users\Douglas\ProjetoBanco\ProjetoBanco.Domain\obj\Release\ProjetoBanco.Domain.dll
+C:\Users\Douglas\ProjetoBanco\ProjetoBanco.Domain\obj\Release\ProjetoBanco.Domain.pdb

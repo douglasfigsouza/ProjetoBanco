@@ -78,7 +78,7 @@ namespace ProjetoBanco.MVC.Controllers
                     tipo = char.Parse(Utilitarios.Utilitarios.retiraMask(contaViewModel.tipo)),
                     ativo = true
                 };
-                int agencia = contaViewModel.dllAgencias;
+                int agencia = contaViewModel.ddlAgencias;
 
                 foreach (var item in ClientesSelecionados)
                 {

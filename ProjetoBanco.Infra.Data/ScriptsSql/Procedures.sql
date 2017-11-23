@@ -1411,6 +1411,113 @@ CREATE PROCEDURE [dbo].[PBSP_GETALLDADOSECLIENTESDACONTA]
 				)cliente		
 	END
 GO
+---Procedure estorna refatorado e ainda nao executado testar
+
+IF EXISTS (SELECT * FROM dbo.sysobjects WHERE id = object_id(N'[dbo].[PBSP_ESTORNOREFATORADO]') AND objectproperty(id, N'IsPROCEDURE')=1)
+	DROP PROCEDURE [dbo].[PBSP_ESTORNO]
+GO
+
+CREATE PROCEDURE [dbo].[PBSP_ESTORNO]
+	@opReal SMALLINT,
+	@clienteId SMALLINT,
+	@agencia INT
+	AS
+
+	/*
+	Documentação
+	Arquivo Fonte.....: ArquivoFonte.sql
+	Objetivo..........: Objetivo
+	Autor.............: SMN - Douglas
+ 	Data..............: 01/01/2017
+	Ex................: EXEC [dbo].[PBSP_ESTORNO]
+
+	*/
+
+	BEGIN
+		DECLARE @codTipoOp SMALLINT,
+				@idConta SMALLINT,
+				@valorOp DECIMAL(18,2), 
+				@bancoId SMALLINT, 
+				@saldoAnterior DECIMAL(18,2)
+
+		SET @codTipoOp = (SELECT opRealizadas.codTipoOp
+								FROM OperacoesRealizadas AS opRealizadas WITH(NOLOCK)
+						  WHERE opRealizadas.Id = @opReal)
+		SET @valorOp = (SELECT opRealizadas.valorOp
+								FROM OperacoesRealizadas AS opRealizadas WITH(NOLOCK)
+						  WHERE opRealizadas.Id = @opReal)
+		SET @idConta = (SELECT opRealizadas.contaId
+								FROM OperacoesRealizadas AS opRealizadas WITH(NOLOCK)
+						  WHERE opRealizadas.Id = @opReal)
+		SET @bancoId = (SELECT opRealizadas.bancoId
+							FROM OperacoesRealizadas AS opRealizadas WITH(NOLOCK)
+						WHERE opRealizadas.Id = @opReal)
+		SET @saldoAnterior = dbo.RetornaSaldo(@idConta)
+
+		IF(@codTipoOp = 4)
+			BEGIN
+				INSERT INTO OperacoesRealizadas(agencia , bancoId, clienteId, codTipoOp, contaId, dataOp, SaldoAnterior, valorOp)
+					VALUES(@agencia, @bancoId, @clienteId, 5, @idConta, GETDATE(), @saldoAnterior, @valorOp * (-1))	
+
+				SET @codTipoOp = (SELECT opRealizadas.codTipoOp
+								FROM OperacoesRealizadas AS opRealizadas WITH(NOLOCK)
+						  WHERE opRealizadas.Id = @opReal)
+				SET @valorOp = (SELECT opRealizadas.valorOp
+										FROM OperacoesRealizadas AS opRealizadas WITH(NOLOCK)
+								  WHERE opRealizadas.Id = @opReal - 1)
+				SET @idConta = (SELECT opRealizadas.contaId
+										FROM OperacoesRealizadas AS opRealizadas WITH(NOLOCK)
+								  WHERE opRealizadas.Id = @opReal - 1)
+				SET @bancoId = (SELECT opRealizadas.bancoId
+									FROM OperacoesRealizadas AS opRealizadas WITH(NOLOCK)
+								WHERE opRealizadas.Id = @opReal - 1)
+				SET @saldoAnterior = dbo.RetornaSaldo(@idConta)
+
+				INSERT INTO OperacoesRealizadas(agencia , bancoId, clienteId, codTipoOp, contaId, dataOp, SaldoAnterior, valorOp)
+					VALUES(@agencia, @bancoId, @clienteId, 5, @idConta, GETDATE(), @saldoAnterior, @valorOp * (-1))	
+			END
+		ELSE IF(@codTipoOp = 2)
+			BEGIN
+				IF((SELECT opRealizadas.codTipoOp 
+						FROM OperacoesRealizadas AS opRealizadas
+					WHERE opRealizadas.Id=@opReal)=4)
+					BEGIN
+						INSERT INTO OperacoesRealizadas(agencia , bancoId, clienteId, codTipoOp, contaId, dataOp, SaldoAnterior, valorOp)
+							VALUES(@agencia, @bancoId, @clienteId, 5, @idConta, GETDATE(), @saldoAnterior, @valorOp * (-1))	
+
+						SET @codTipoOp = (SELECT opRealizadas.codTipoOp
+										FROM OperacoesRealizadas AS opRealizadas WITH(NOLOCK)
+								  WHERE opRealizadas.Id = @opReal)
+						SET @valorOp = (SELECT opRealizadas.valorOp
+												FROM OperacoesRealizadas AS opRealizadas WITH(NOLOCK)
+										  WHERE opRealizadas.Id = @opReal + 1)
+						SET @idConta = (SELECT opRealizadas.contaId
+												FROM OperacoesRealizadas AS opRealizadas WITH(NOLOCK)
+										  WHERE opRealizadas.Id = @opReal + 1)
+						SET @bancoId = (SELECT opRealizadas.bancoId
+											FROM OperacoesRealizadas AS opRealizadas WITH(NOLOCK)
+										WHERE opRealizadas.Id = @opReal + 1)
+						SET @saldoAnterior = dbo.RetornaSaldo(@idConta)
+
+						INSERT INTO OperacoesRealizadas(agencia , bancoId, clienteId, codTipoOp, contaId, dataOp, SaldoAnterior, valorOp)
+							VALUES(@agencia, @bancoId, @clienteId, 5, @idConta, GETDATE(), @saldoAnterior, @valorOp * (-1))	
+
+					END
+				ELSE
+					BEGIN
+						INSERT INTO OperacoesRealizadas(agencia , bancoId, clienteId, codTipoOp, contaId, dataOp, SaldoAnterior, valorOp)
+							VALUES(@agencia, @bancoId, @clienteId, 5, @idConta, GETDATE(), @saldoAnterior, @valorOp * (-1))	
+					END
+
+		END
+		ELSE
+			BEGIN
+				INSERT INTO OperacoesRealizadas(agencia , bancoId, clienteId, codTipoOp, contaId, dataOp, SaldoAnterior, valorOp)
+							VALUES(@agencia, @bancoId, @clienteId, 5, @idConta, GETDATE(), @saldoAnterior, @valorOp * (-1))	
+			END
+	END
+GO
+				
 					
 																									
 --Funções

@@ -1,0 +1,1 @@
+C:\Users\Douglas\ProjetoBanco\Web Api\obj\Release\WebApi.csprojResolveAssemblyReference.cache

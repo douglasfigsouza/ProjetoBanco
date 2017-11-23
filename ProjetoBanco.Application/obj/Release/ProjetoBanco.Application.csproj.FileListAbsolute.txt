@@ -1,0 +1,36 @@
+C:\Users\Douglas\ProjetoBanco\ProjetoBanco.Application\bin\Release\roslyn\csc.exe
+C:\Users\Douglas\ProjetoBanco\ProjetoBanco.Application\bin\Release\roslyn\Microsoft.Build.Tasks.CodeAnalysis.dll
+C:\Users\Douglas\ProjetoBanco\ProjetoBanco.Application\bin\Release\roslyn\Microsoft.CodeAnalysis.CSharp.dll
+C:\Users\Douglas\ProjetoBanco\ProjetoBanco.Application\bin\Release\roslyn\Microsoft.CodeAnalysis.dll
+C:\Users\Douglas\ProjetoBanco\ProjetoBanco.Application\bin\Release\roslyn\Microsoft.CodeAnalysis.VisualBasic.dll
+C:\Users\Douglas\ProjetoBanco\ProjetoBanco.Application\bin\Release\roslyn\Microsoft.CSharp.Core.targets
+C:\Users\Douglas\ProjetoBanco\ProjetoBanco.Application\bin\Release\roslyn\Microsoft.VisualBasic.Core.targets
+C:\Users\Douglas\ProjetoBanco\ProjetoBanco.Application\bin\Release\roslyn\System.Collections.Immutable.dll
+C:\Users\Douglas\ProjetoBanco\ProjetoBanco.Application\bin\Release\roslyn\System.Reflection.Metadata.dll
+C:\Users\Douglas\ProjetoBanco\ProjetoBanco.Application\bin\Release\roslyn\vbc.exe
+C:\Users\Douglas\ProjetoBanco\ProjetoBanco.Application\bin\Release\roslyn\VBCSCompiler.exe
+C:\Users\Douglas\ProjetoBanco\ProjetoBanco.Application\bin\Release\roslyn\VBCSCompiler.exe.config
+C:\Users\Douglas\ProjetoBanco\ProjetoBanco.Application\bin\Release\ProjetoBanco.Application.dll.config
+C:\Users\Douglas\ProjetoBanco\ProjetoBanco.Application\bin\Release\ProjetoBanco.Application.dll
+C:\Users\Douglas\ProjetoBanco\ProjetoBanco.Application\bin\Release\ProjetoBanco.Application.pdb
+C:\Users\Douglas\ProjetoBanco\ProjetoBanco.Application\bin\Release\Newtonsoft.Json.dll
+C:\Users\Douglas\ProjetoBanco\ProjetoBanco.Application\bin\Release\ProjetoBanco.Domain.dll
+C:\Users\Douglas\ProjetoBanco\ProjetoBanco.Application\bin\Release\System.Net.Http.Formatting.dll
+C:\Users\Douglas\ProjetoBanco\ProjetoBanco.Application\bin\Release\System.Web.Http.dll
+C:\Users\Douglas\ProjetoBanco\ProjetoBanco.Application\bin\Release\Web Api.dll
+C:\Users\Douglas\ProjetoBanco\ProjetoBanco.Application\bin\Release\SimpleInjector.dll
+C:\Users\Douglas\ProjetoBanco\ProjetoBanco.Application\bin\Release\ProjetoBanco.Infra.Data.dll
+C:\Users\Douglas\ProjetoBanco\ProjetoBanco.Application\bin\Release\System.Web.Http.WebHost.dll
+C:\Users\Douglas\ProjetoBanco\ProjetoBanco.Application\bin\Release\SimpleInjector.Integration.WebApi.dll
+C:\Users\Douglas\ProjetoBanco\ProjetoBanco.Application\bin\Release\ProjetoBanco.Domain.pdb
+C:\Users\Douglas\ProjetoBanco\ProjetoBanco.Application\bin\Release\Web Api.pdb
+C:\Users\Douglas\ProjetoBanco\ProjetoBanco.Application\bin\Release\Newtonsoft.Json.xml
+C:\Users\Douglas\ProjetoBanco\ProjetoBanco.Application\bin\Release\System.Net.Http.Formatting.xml
+C:\Users\Douglas\ProjetoBanco\ProjetoBanco.Application\bin\Release\System.Web.Http.xml
+C:\Users\Douglas\ProjetoBanco\ProjetoBanco.Application\bin\Release\SimpleInjector.xml
+C:\Users\Douglas\ProjetoBanco\ProjetoBanco.Application\bin\Release\ProjetoBanco.Infra.Data.pdb
+C:\Users\Douglas\ProjetoBanco\ProjetoBanco.Application\bin\Release\System.Web.Http.WebHost.xml
+C:\Users\Douglas\ProjetoBanco\ProjetoBanco.Application\bin\Release\SimpleInjector.Integration.WebApi.xml
+C:\Users\Douglas\ProjetoBanco\ProjetoBanco.Application\obj\Release\ProjetoBanco.Application.csprojResolveAssemblyReference.cache
+C:\Users\Douglas\ProjetoBanco\ProjetoBanco.Application\obj\Release\ProjetoBanco.Application.dll
+C:\Users\Douglas\ProjetoBanco\ProjetoBanco.Application\obj\Release\ProjetoBanco.Application.pdb
