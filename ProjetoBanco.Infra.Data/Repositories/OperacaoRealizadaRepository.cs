@@ -19,7 +19,8 @@ namespace ProjetoBanco.Infra.Data.Repositories
             PBSP_GETOPREALIZADASPORCONTA,
             PBSP_ESTORNA,
             PBSP_GETOPREALIZADAESTORNOBYID,
-            PBSP_EXTRATOPORDATA
+            PBSP_EXTRATOPORDATA,
+            PBSP_ESTORNOREFATORADO
         }
 
         public OperacaoRealizadaRepository(Conexao conn)
@@ -96,10 +97,11 @@ namespace ProjetoBanco.Infra.Data.Repositories
         }
         public void ConfirmEstorno(int id)
         {
-            _conn.ExecuteProcedure(Procedure.PBSP_ESTORNA);
+            //_conn.ExecuteProcedure(Procedure.PBSP_ESTORNA);
+            _conn.ExecuteProcedure(Procedure.PBSP_ESTORNOREFATORADO);
             _conn.AddParameter("@id", id);
             //insere a operação informando que a operação é um estorno 
-            _conn.AddParameter("@opId", 5);
+            //_conn.AddParameter("@opId", 5);
             _conn.ExecuteNonQuery();
         }
         public int Saque(OperacoesRealizadas operacaoRealizada)

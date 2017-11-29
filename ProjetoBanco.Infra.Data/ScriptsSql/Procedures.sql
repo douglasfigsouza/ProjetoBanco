@@ -1414,13 +1414,11 @@ GO
 ---Procedure estorna refatorado e ainda nao executado testar
 
 IF EXISTS (SELECT * FROM dbo.sysobjects WHERE id = object_id(N'[dbo].[PBSP_ESTORNOREFATORADO]') AND objectproperty(id, N'IsPROCEDURE')=1)
-	DROP PROCEDURE [dbo].[PBSP_ESTORNO]
+	DROP PROCEDURE [dbo].[PBSP_ESTORNOREFATORADO]
 GO
 
-CREATE PROCEDURE [dbo].[PBSP_ESTORNO]
-	@opReal SMALLINT,
-	@clienteId SMALLINT,
-	@agencia INT
+CREATE PROCEDURE [dbo].[PBSP_ESTORNOREFATORADO]
+	@opReal SMALLINT
 	AS
 
 	/*
@@ -1438,7 +1436,10 @@ CREATE PROCEDURE [dbo].[PBSP_ESTORNO]
 				@idConta SMALLINT,
 				@valorOp DECIMAL(18,2), 
 				@bancoId SMALLINT, 
-				@saldoAnterior DECIMAL(18,2)
+				@saldoAnterior DECIMAL(18,2),
+				@clienteId INT,
+				@agencia INT
+
 
 		SET @codTipoOp = (SELECT opRealizadas.codTipoOp
 								FROM OperacoesRealizadas AS opRealizadas WITH(NOLOCK)
@@ -1450,6 +1451,12 @@ CREATE PROCEDURE [dbo].[PBSP_ESTORNO]
 								FROM OperacoesRealizadas AS opRealizadas WITH(NOLOCK)
 						  WHERE opRealizadas.Id = @opReal)
 		SET @bancoId = (SELECT opRealizadas.bancoId
+							FROM OperacoesRealizadas AS opRealizadas WITH(NOLOCK)
+						WHERE opRealizadas.Id = @opReal)
+		SET @clienteId = (SELECT opRealizadas.clienteId
+							FROM OperacoesRealizadas AS opRealizadas WITH(NOLOCK)
+						WHERE opRealizadas.Id = @opReal)
+		SET @agencia = (SELECT opRealizadas.agencia
 							FROM OperacoesRealizadas AS opRealizadas WITH(NOLOCK)
 						WHERE opRealizadas.Id = @opReal)
 		SET @saldoAnterior = dbo.RetornaSaldo(@idConta)
@@ -1472,6 +1479,12 @@ CREATE PROCEDURE [dbo].[PBSP_ESTORNO]
 									FROM OperacoesRealizadas AS opRealizadas WITH(NOLOCK)
 								WHERE opRealizadas.Id = @opReal - 1)
 				SET @saldoAnterior = dbo.RetornaSaldo(@idConta)
+				SET @clienteId = (SELECT opRealizadas.clienteId
+							FROM OperacoesRealizadas AS opRealizadas WITH(NOLOCK)
+						WHERE opRealizadas.Id = @opReal-1)
+				SET @agencia = (SELECT opRealizadas.agencia
+							FROM OperacoesRealizadas AS opRealizadas WITH(NOLOCK)
+						WHERE opRealizadas.Id = @opReal-1)
 
 				INSERT INTO OperacoesRealizadas(agencia , bancoId, clienteId, codTipoOp, contaId, dataOp, SaldoAnterior, valorOp)
 					VALUES(@agencia, @bancoId, @clienteId, 5, @idConta, GETDATE(), @saldoAnterior, @valorOp * (-1))	
@@ -1498,6 +1511,12 @@ CREATE PROCEDURE [dbo].[PBSP_ESTORNO]
 											FROM OperacoesRealizadas AS opRealizadas WITH(NOLOCK)
 										WHERE opRealizadas.Id = @opReal + 1)
 						SET @saldoAnterior = dbo.RetornaSaldo(@idConta)
+						SET @clienteId = (SELECT opRealizadas.clienteId
+												FROM OperacoesRealizadas AS opRealizadas WITH(NOLOCK)
+										  WHERE opRealizadas.Id = @opReal+1)
+						SET @agencia = (SELECT opRealizadas.agencia
+											FROM OperacoesRealizadas AS opRealizadas WITH(NOLOCK)
+										WHERE opRealizadas.Id = @opReal+1)
 
 						INSERT INTO OperacoesRealizadas(agencia , bancoId, clienteId, codTipoOp, contaId, dataOp, SaldoAnterior, valorOp)
 							VALUES(@agencia, @bancoId, @clienteId, 5, @idConta, GETDATE(), @saldoAnterior, @valorOp * (-1))	
